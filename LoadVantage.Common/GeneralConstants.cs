@@ -11,5 +11,7 @@ namespace LoadVantage.Common
 			public const string BrokerRoleName = "Broker";
 			public const string DriverRoleName = "Driver";
 		}
+
+		
 	}
 }

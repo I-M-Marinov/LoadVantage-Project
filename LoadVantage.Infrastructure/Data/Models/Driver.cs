@@ -1,9 +1,34 @@
-﻿using static LoadVantage.Common.GeneralConstants.UserRoles;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using static LoadVantage.Common.ValidationConstants;
+
 
 namespace LoadVantage.Infrastructure.Data.Models
 {
-	public class Driver : User
+	public class Driver
 	{
-		public override string GetRoleName() => DriverRoleName;
+		[Key]
+		public Guid DriverId { get; set; } = new Guid();
+
+		[Required]
+		[StringLength(FirstNameMaxLength)]
+
+		public string FirstName { get; set; } = null!;
+
+		[Required]
+		[StringLength(LastNameMaxLength)]
+
+		public string LastName { get; set; } = null!;
+
+		[Required]
+		[StringLength(LicenseNumberMaxLength)]
+
+		public string LicenseNumber { get; set; } = null!;
+
+		public int? TruckId { get; set; }
+
+		[ForeignKey(nameof(TruckId))]
+		public virtual Truck? Truck { get; set; }
+		public bool IsAvailable { get; set; } = true;
 	}
 }

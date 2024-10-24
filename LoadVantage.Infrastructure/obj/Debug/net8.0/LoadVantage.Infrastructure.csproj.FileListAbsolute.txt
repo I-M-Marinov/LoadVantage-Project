@@ -35,3 +35,6 @@ C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantag
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Infrastructure\obj\Debug\net8.0\refint\LoadVantage.Infrastructure.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Infrastructure\obj\Debug\net8.0\LoadVantage.Infrastructure.pdb
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Infrastructure\obj\Debug\net8.0\ref\LoadVantage.Infrastructure.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Infrastructure\obj\Debug\net8.0\LoadVantage.Infrastructure.sourcelink.json
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Infrastructure\bin\Debug\net8.0\LoadVantage.Infrastructure.runtimeconfig.json
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Infrastructure\obj\Debug\net8.0\LoadVantage.Infrastructure.genruntimeconfig.cache

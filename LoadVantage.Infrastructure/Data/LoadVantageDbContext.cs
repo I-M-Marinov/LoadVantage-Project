@@ -12,13 +12,26 @@ namespace LoadVantage.Infrastructure.Data
 
 		}
 
+		public DbSet<User> Users { get; set; } = null!;
+		public DbSet<Role> Roles { get; set; } = null!;
+		public DbSet<Broker> Brokers { get; set; }
+		public DbSet<Dispatcher> Dispatchers { get; set; }
+		public DbSet<Truck> Trucks { get; set; }
+		public DbSet<Driver> Drivers { get; set; }
+		public DbSet<Load> Loads { get; set; }
+		public DbSet<BookedLoad> BookedLoads { get; set; }
+		public DbSet<BilledLoad> BilledLoads { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
+
+			modelBuilder.Entity<Driver>()
+				.HasOne(d => d.Truck)
+				.WithOne(t => t.Driver)
+				.HasForeignKey<Driver>(d => d.TruckId);
 		}
 
-		public DbSet<Broker> Brokers { get; set; }
-		public DbSet<Dispatcher> Dispatchers { get; set; }
-		public DbSet<Driver> Drivers { get; set; }
+
 	}
 }

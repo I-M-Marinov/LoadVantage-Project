@@ -1,29 +1,37 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using static LoadVantage.Common.ValidationConstants;
 
 namespace LoadVantage.Infrastructure.Data.Models
 {
-	public abstract class User : IdentityUser<Guid>
-	{
-		[Key]
-		public Guid UserID { get; set; } = Guid.NewGuid(); 
+	
+		public abstract class User : IdentityUser<Guid> 
+		{
+			[Key] 
+			public Guid UserId { get; set; } = new Guid();
 
-		[Required]
-		[StringLength(100)]
-		public override string UserName { get; set; }
+			[Required]
+			[StringLength(UserNameMaxLength)]
+			public override string UserName { get; set; } = null!;
 
-		[Required]
-		[StringLength(100)]
-		public override string Email { get; set; }
+			[Required]
+			[StringLength(EmailMaxLength)]
+			public override string Email { get; set; } = null!;
 
-		[Required]
-		public string PasswordHash { get; set; } 
+			[Required] 
+			public override string PasswordHash { get; set; } = null!;
 
-		public string FullName { get; set; }
+			[Required]
+			[StringLength(FirstNameMaxLength)]
+			public string FirstName { get; set; } = null!;
 
-		// to be implemented by child classes
-		public abstract string GetRoleName();
+			[Required]
+			[StringLength(LastNameMaxLength)]
+			public string LastName { get; set; } = null!;
+
+			public string FullName => $"{FirstName} {LastName}"; // FullName combines FirstName and LastName with an interval in between
+			public abstract string GetRoleName(); // to be implemented by child classes
 	}
-
 }
+
+
