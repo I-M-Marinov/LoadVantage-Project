@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadVantage.App", "LoadVantage\LoadVantage.App.csproj", "{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadVantage", "LoadVantage\LoadVantage.csproj", "{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadVantage.Infrastructure", "LoadVantage.Infrastructure\LoadVantage.Infrastructure.csproj", "{FCE7BBFD-E885-4BF3-AA19-D02042402E2E}"
 EndProject

@@ -1,0 +1,9 @@
+C:\Users\Marinov\source\repos\LoadVantage\LoadVantage\LoadVantage\obj\Debug\net8.0\LoadVantage.csproj.AssemblyReference.cache
+C:\Users\Marinov\source\repos\LoadVantage\LoadVantage\LoadVantage\obj\Debug\net8.0\LoadVantage.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Marinov\source\repos\LoadVantage\LoadVantage\LoadVantage\obj\Debug\net8.0\LoadVantage.AssemblyInfoInputs.cache
+C:\Users\Marinov\source\repos\LoadVantage\LoadVantage\LoadVantage\obj\Debug\net8.0\LoadVantage.AssemblyInfo.cs
+C:\Users\Marinov\source\repos\LoadVantage\LoadVantage\LoadVantage\obj\Debug\net8.0\LoadVantage.csproj.CoreCompileInputs.cache
+C:\Users\Marinov\source\repos\LoadVantage\LoadVantage\LoadVantage\obj\Debug\net8.0\LoadVantage.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Marinov\source\repos\LoadVantage\LoadVantage\LoadVantage\obj\Debug\net8.0\LoadVantage.RazorAssemblyInfo.cache
+C:\Users\Marinov\source\repos\LoadVantage\LoadVantage\LoadVantage\obj\Debug\net8.0\LoadVantage.RazorAssemblyInfo.cs
+C:\Users\Marinov\source\repos\LoadVantage\LoadVantage\LoadVantage\obj\Debug\net8.0\LoadVantage.sourcelink.json
