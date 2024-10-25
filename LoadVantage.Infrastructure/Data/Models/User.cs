@@ -12,7 +12,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 			public User() 
 				: base() 
 			{
-				this.Id = Guid.NewGuid();
+				Id = Guid.NewGuid();
 			} 
             
             public virtual string Role { get; set; } = UserRoleName; // Default role name
@@ -31,8 +31,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 			[Required]
 			public override string PasswordHash { get; set; } = null!; 
 
-
-	}
+	    }
 }
 
 

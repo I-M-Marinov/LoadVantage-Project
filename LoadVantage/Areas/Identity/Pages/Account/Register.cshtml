@@ -1,5 +1,8 @@
 ﻿@page
+@using static LoadVantage.Common.GeneralConstants.UserRoles;
+
 @model RegisterModel
+
 @{
     ViewData["Title"] = "Register";
 }
@@ -28,9 +31,23 @@
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.LastName" class="form-control" autocomplete="lastname" aria-required="true" placeholder="Last Name" />
-                <label asp-for="Input.LastName">Last Name</label>
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+	            <input asp-for="Input.LastName" class="form-control" autocomplete="lastname" aria-required="true" placeholder="Last Name" />
+	            <label asp-for="Input.LastName">Last Name</label>
+	            <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+	            <input asp-for="Input.Company" class="form-control" autocomplete="lastname" aria-required="true" placeholder="Company" />
+                <label asp-for="Input.Company">Company</label>
+                <span asp-validation-for="Input.Company" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+	            <select asp-for="Input.Position" class="form-control" aria-required="true">
+		            <option value="">Select Position</option>
+                    <option value="@DispatcherRoleName">@DispatcherRoleName</option>
+                    <option value="@BrokerRoleName">@BrokerRoleName</option>
+	            </select>
+	            <label asp-for="Input.Position">Position</label>
+	            <span asp-validation-for="Input.Position" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />

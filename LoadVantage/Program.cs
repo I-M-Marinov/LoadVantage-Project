@@ -28,9 +28,8 @@ builder.Services.AddIdentity<User, Role>(options =>
 		options.Lockout.MaxFailedAccessAttempts = 5;
 		options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
 	})
-	.AddEntityFrameworkStores<LoadVantageDbContext>() // This connects your Identity to your DbContext
-	.AddDefaultTokenProviders(); // For token generation (like email confirmation)
-
+	.AddEntityFrameworkStores<LoadVantageDbContext>() 
+	.AddDefaultTokenProviders(); 
 
 builder.Services.AddControllersWithViews()
 	.AddMvcOptions(options =>

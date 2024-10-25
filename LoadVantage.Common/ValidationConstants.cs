@@ -42,8 +42,8 @@ namespace LoadVantage.Common
 
 		public const byte StateMinMaxLength = 2;
 
-		public const decimal LoadPostedPriceMinValue = 1.00m;
-		public const decimal LoadPostedPriceMaxValue = 99999.99m;
+		public const decimal LoadPriceMinValue = 1.00m;
+		public const decimal LoadPriceMaxValue = 99999.99m;
 
 		// DRIVER 
 

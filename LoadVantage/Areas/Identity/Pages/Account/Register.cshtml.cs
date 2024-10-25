@@ -111,6 +111,14 @@ namespace LoadVantage.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "Name of the company where the user works")]
+            public string Company { get; set; }
+
+            [Required]
+            [Display(Name = "Position")]
+            public string Position { get; set; } // Stores either "Dispatcher" or "Broker"
         }
 
 

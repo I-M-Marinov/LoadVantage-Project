@@ -6,9 +6,9 @@ namespace LoadVantage.Infrastructure.Data.Models
 {
 	public class Broker : User
 	{
-		public override string GetRoleName() => BrokerRoleName;
+        public override string Role => BrokerRoleName; // Sets role to Broker
 
-		[Required]
+        [Required]
 		[StringLength(BrokerCompanyMaxLength)]
 		public string Company { get; set; } = null!;
 		public ICollection<Load> Loads { get; set; } = new List<Load>();
