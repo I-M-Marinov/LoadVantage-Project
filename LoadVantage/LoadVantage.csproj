@@ -24,4 +24,8 @@
     <ProjectReference Include="..\LoadVantage.Infrastructure\LoadVantage.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\mystyle\" />
+  </ItemGroup>
+
 </Project>
