@@ -322,9 +322,6 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(256)

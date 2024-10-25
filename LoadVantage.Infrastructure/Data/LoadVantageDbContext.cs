@@ -12,8 +12,7 @@ namespace LoadVantage.Infrastructure.Data
 
 		}
 
-		public DbSet<User> Users { get; set; } = null!;
-		public DbSet<Role> Roles { get; set; } = null!;
+
 		public DbSet<Broker> Brokers { get; set; }
 		public DbSet<Dispatcher> Dispatchers { get; set; }
 		public DbSet<Truck> Trucks { get; set; }

@@ -224,6 +224,10 @@
               "target": "Package",
               "version": "[8.0.10, )"
             },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
             "Microsoft.EntityFrameworkCore.Tools": {
               "target": "Package",
               "version": "[8.0.10, )"
@@ -231,6 +235,10 @@
             "Microsoft.Identity.Client": {
               "target": "Package",
               "version": "[4.66.1, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[8.0.6, )"
             },
             "System.Formats.Asn1": {
               "target": "Package",

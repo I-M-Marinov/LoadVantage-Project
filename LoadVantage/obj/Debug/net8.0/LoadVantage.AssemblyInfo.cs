@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LoadVantage")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+acdf8e5ff30099fd1248c4a6c36e772341931dba")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4220e82db2e9c43906b166f4a4a8525c882453ef")]
 [assembly: System.Reflection.AssemblyProductAttribute("LoadVantage")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LoadVantage")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
