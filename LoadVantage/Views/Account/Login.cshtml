@@ -1,8 +1,11 @@
-﻿@page
-@model LoginModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model LoadVantage.Core.Models.Account.LoginViewModel
 
 @{
-    ViewData["Title"] = "Log In";
+	if (ViewData != null)
+	{
+		ViewData["Title"] = "Log In";
+	}
 }
 
 <div class="container">
@@ -24,25 +27,29 @@
 					<section>
 						<form id="account" method="post" class="row g-3 needs-validation" novalidate>
 							<div class="pt-4 pb-2">
+								@if (TempData["NewAccount"] != null)
+								{
+									<p class="alert alert-success" style="text-align: center; font:500; font-size: 0.8em;">@TempData["NewAccount"]</p>
+								}
 								<h4 class="card-title text-center pb-0 fs-4">Log In</h4>
 								<p class="text-center small">Enter your username & password to login</p>
 							</div>
 							<hr/>
 							<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 							<div class="form-floating mb-3">
-								<input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="username"/>
-								<label asp-for="Input.UserName" class="form-label">Username</label>
-								<span asp-validation-for="Input.UserName" class="text-danger"></span>
+								<input asp-for="UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="username"/>
+								<label asp-for="UserName" class="form-label">Username</label>
+								<span asp-validation-for="UserName" class="text-danger"></span>
 							</div>
 							<div class="form-floating mb-3">
-								<input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password"/>
-								<label asp-for="Input.Password" class="form-label">Password</label>
-								<span asp-validation-for="Input.Password" class="text-danger"></span>
+								<input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password"/>
+								<label asp-for="Password" class="form-label">Password</label>
+								<span asp-validation-for="Password" class="text-danger"></span>
 							</div>
 							<div class="checkbox mb-3">
-								<label asp-for="Input.RememberMe" class="form-label">
-									<input class="form-check-input" asp-for="Input.RememberMe"/>
-									@Html.DisplayNameFor(m => m.Input.RememberMe)
+								<label asp-for="RememberMe" class="form-label">
+									<input class="form-check-input" asp-for="RememberMe"/>
+											@Html.DisplayNameFor(m => m.RememberMe)
 								</label>
 							</div>
 							<div>

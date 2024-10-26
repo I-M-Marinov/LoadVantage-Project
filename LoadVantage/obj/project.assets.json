@@ -3072,6 +3072,19 @@
           "bin/placeholder/LoadVantage.Common.dll": {}
         }
       },
+      "LoadVantage.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "LoadVantage.Infrastructure": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/LoadVantage.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LoadVantage.Core.dll": {}
+        }
+      },
       "LoadVantage.Infrastructure/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
@@ -8383,6 +8396,11 @@
       "path": "../LoadVantage.Common/LoadVantage.Common.csproj",
       "msbuildProject": "../LoadVantage.Common/LoadVantage.Common.csproj"
     },
+    "LoadVantage.Core/1.0.0": {
+      "type": "project",
+      "path": "../LoadVantage.Core/LoadVantage.Core.csproj",
+      "msbuildProject": "../LoadVantage.Core/LoadVantage.Core.csproj"
+    },
     "LoadVantage.Infrastructure/1.0.0": {
       "type": "project",
       "path": "../LoadVantage.Infrastructure/LoadVantage.Infrastructure.csproj",
@@ -8392,6 +8410,7 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "Azure.Identity >= 1.13.0",
+      "LoadVantage.Core >= 1.0.0",
       "LoadVantage.Infrastructure >= 1.0.0",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 8.0.10",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.10",
@@ -8437,6 +8456,9 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
+            "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Core\\LoadVantage.Core.csproj": {
+              "projectPath": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Core\\LoadVantage.Core.csproj"
+            },
             "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj": {
               "projectPath": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj"
             }

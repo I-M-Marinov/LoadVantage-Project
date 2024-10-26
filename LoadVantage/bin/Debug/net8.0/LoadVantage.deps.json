@@ -9,6 +9,7 @@
       "LoadVantage/1.0.0": {
         "dependencies": {
           "Azure.Identity": "1.13.0",
+          "LoadVantage.Core": "1.0.0",
           "LoadVantage.Infrastructure": "1.0.0",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "8.0.10",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.10",
@@ -2179,6 +2180,17 @@
           }
         }
       },
+      "LoadVantage.Core/1.0.0": {
+        "dependencies": {
+          "LoadVantage.Infrastructure": "1.0.0"
+        },
+        "runtime": {
+          "LoadVantage.Core.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "LoadVantage.Infrastructure/1.0.0": {
         "dependencies": {
           "LoadVantage.Common": "1.0.0",
@@ -3419,6 +3431,11 @@
       "hashPath": "system.windows.extensions.7.0.0.nupkg.sha512"
     },
     "LoadVantage.Common/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LoadVantage.Core/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

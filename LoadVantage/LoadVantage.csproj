@@ -21,11 +21,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LoadVantage.Core\LoadVantage.Core.csproj" />
     <ProjectReference Include="..\LoadVantage.Infrastructure\LoadVantage.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Extensions\" />
     <Folder Include="wwwroot\css\mystyle\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Account\Register.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

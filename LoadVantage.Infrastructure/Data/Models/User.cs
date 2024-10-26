@@ -15,7 +15,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 				Id = Guid.NewGuid();
 			} 
             
-            public virtual string Role { get; set; } = UserRoleName; // Default role name
+            public virtual string Role { get; set; } = null!; 
 
             public override string GetRoleName() => Role;
 

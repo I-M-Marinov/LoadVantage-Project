@@ -276,7 +276,9 @@ C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\r
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\LoadVantage.Common.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\LoadVantage.Core.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\LoadVantage.Infrastructure.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\LoadVantage.Core.pdb
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\LoadVantage.Infrastructure.pdb
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\LoadVantage.Common.pdb
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\LoadVantage.csproj.AssemblyReference.cache

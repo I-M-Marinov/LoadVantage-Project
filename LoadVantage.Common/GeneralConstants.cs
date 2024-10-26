@@ -10,8 +10,8 @@ namespace LoadVantage.Common
 			public const string DispatcherRoleName = "Dispatcher";
 			public const string BrokerRoleName = "Broker";
 			public const string DriverRoleName = "Driver";
-		}
 
-		
-	}
+            public static readonly string[] ValidRoles = new[] { AdminRoleName, DispatcherRoleName, BrokerRoleName };
+        }
+    }
 }
