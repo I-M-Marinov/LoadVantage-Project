@@ -142,6 +142,8 @@ namespace LoadVantage.Areas.Identity.Pages.Account
                 user.Email = Input.Email; 
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
+                user.CompanyName = Input.Company;
+                user.Role = Input.Position;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

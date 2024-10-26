@@ -26,7 +26,7 @@ builder.Services.AddIdentity<User, Role>(options =>
 		options.Password.RequireNonAlphanumeric = false;
 		options.Password.RequireUppercase = false;
 		options.Lockout.MaxFailedAccessAttempts = 5;
-		options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+		options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
 	})
 	.AddEntityFrameworkStores<LoadVantageDbContext>() 
 	.AddDefaultTokenProviders(); 
