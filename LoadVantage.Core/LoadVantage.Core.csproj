@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\LoadVantage.Infrastructure\LoadVantage.Infrastructure.csproj" />
   </ItemGroup>
 

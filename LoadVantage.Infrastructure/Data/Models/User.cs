@@ -10,10 +10,10 @@ namespace LoadVantage.Infrastructure.Data.Models
 		public class User : BaseUser
 		{
 
-			public User() 
-			{
-				Id = Guid.NewGuid();
-			} 
+			public User()
+            {
+                Id = Guid.NewGuid();
+            } 
             
 
             public Role Role { get; set; }
@@ -23,8 +23,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 
 			[Required]
             [StringLength(PositionMaxLength)]
-
-            public virtual string? Position { get; set; }
+            public string? Position { get; set; }
 
 			public override string GetRoleName() => Role.ToString();
 

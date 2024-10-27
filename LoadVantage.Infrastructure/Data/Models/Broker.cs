@@ -6,8 +6,8 @@ namespace LoadVantage.Infrastructure.Data.Models
 {
 	public class Broker : User
 	{
-        public override string Position => BrokerPositionName; // Sets role to Broker
+        public override string Position => BrokerPositionName; // Sets position to Broker
 
-		public ICollection<Load> Loads { get; set; } = new List<Load>();
+        public ICollection<Load> Loads { get; set; } = new List<Load>();
 	}
 }

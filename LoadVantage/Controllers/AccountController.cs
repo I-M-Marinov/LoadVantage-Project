@@ -11,23 +11,16 @@ using static LoadVantage.Common.ValidationConstants;
 
 namespace LoadVantage.Controllers
 {
-	public class AccountController : Controller
-	{
-		private readonly UserManager<User> userManager;
-		private readonly SignInManager<User> signInManager;
-		private readonly RoleManager<Role> roleManager;
-		private readonly LoadVantageDbContext context;
+	public class AccountController(
+        UserManager<User> userManager,
+        SignInManager<User> signInManager,
+        RoleManager<Role> roleManager,
+        LoadVantageDbContext context)
+        : Controller
+    {
+        private readonly LoadVantageDbContext context = context;
 
-		public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,
-			RoleManager<Role> roleManager, LoadVantageDbContext context)
-		{
-			this.userManager = userManager;
-			this.signInManager = signInManager;
-			this.roleManager = roleManager;
-			this.context = context;
-		}
-
-		[HttpGet]
+        [HttpGet]
 		[AllowAnonymous]
 		public IActionResult Register()
 		{
@@ -107,8 +100,24 @@ namespace LoadVantage.Controllers
 
 		        if (result.Succeeded)
 		        {
-			        return RedirectToAction("Index", "Home");
-		        }
+                    if (await userManager.IsInRoleAsync(user, AdminRoleName))
+                    {
+                        return RedirectToAction("AdminDashboard", "Admin", new { area = "Admin" }); // Redirect to admin dashboard
+                    }
+                    //else if (user is Dispatcher)
+                    //{
+                    //    return RedirectToAction("DispatcherDashboard", "Dispatcher"); // Redirect to Dispatcher dashboard
+                    //}
+                    //else if (user is Broker)
+                    //{
+                    //    return RedirectToAction("BrokerDashboard", "Broker"); // Redirect to Broker dashboard
+                    //}
+                    //else
+                    //{
+                    //    // Redirect to a general view if the role is unclear
+                    //    return RedirectToAction("Index", "Home");
+                    //}
+                }
 	        }
 
 	        ModelState.AddModelError(string.Empty, InvalidUserNameOrPassword);

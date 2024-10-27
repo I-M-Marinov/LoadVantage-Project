@@ -13,8 +13,8 @@ namespace LoadVantage.Common
 			public const string DriverPositionName = "Driver";
 			public const string AdminPositionName = "Administrator";
 
-            public static readonly string[] ValidPositions = new[] { DispatcherPositionName, BrokerPositionName, AdminPositionName };
-            public static readonly string[] ValidRoles = new[] { AdminRoleName, UserRoleName };
+            public static readonly string[] ValidPositions = [DispatcherPositionName, BrokerPositionName, AdminPositionName];
+            public static readonly string[] ValidRoles = [AdminRoleName, UserRoleName];
         }
 
 		public class TempMessages

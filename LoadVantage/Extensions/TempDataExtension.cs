@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
+#nullable disable
+
 namespace LoadVantage.Extensions
 {
 	public static class TempDataExtension
 	{
-		private const string TempDataMessageKey = "TempDataMessage";
+		private const string TempDataMessageKey = "";
 
 		public static void SetMessage(this ITempDataDictionary tempData, string message)
 		{

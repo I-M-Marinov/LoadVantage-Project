@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <!-- Ensure this layout exists or update as needed -->
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">Welcome to the Admin Dashboard</h1>
+    <hr />
+
+    <!-- Main Dashboard Panels -->
+    <div class="row mb-4">
+        <!-- User Management -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">User Management</h5>
+                    <p class="card-text">View, edit, or remove users in the system.</p>
+                    <a href="@Url.Action("", "Admin", new { area = "Admin" })" class="btn btn-primary">Manage Users</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Reports</h5>
+                    <p class="card-text">Generate and view system reports.</p>
+                    <a href="@Url.Action("", "Admin", new { area = "Admin" })" class="btn btn-primary">View Reports</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">System Settings</h5>
+                    <p class="card-text">Update system configurations and settings.</p>
+                    <a href="@Url.Action("", "Admin", new { area = "Admin" })" class="btn btn-primary">Manage Settings</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Latest Activity / Quick Links -->
+    <div class="row mt-5">
+        <div class="col-md-8">
+            <h4>Recent Activity</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">User JohnDoe created a new report.</li>
+                <li class="list-group-item">Settings updated by AdminUser.</li>
+                <li class="list-group-item">New user registered: JaneSmith.</li>
+                <!-- Add more items dynamically if possible -->
+            </ul>
+        </div>
+
+        <div class="col-md-4">
+            <h4>Quick Links</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="@Url.Action("", "Admin", new { area = "Admin" })">Add New User</a></li>
+                <li class="list-group-item"><a href="@Url.Action("", "Admin", new { area = "Admin" })">View Audit Logs</a></li>
+                <li class="list-group-item"><a href="@Url.Action("", "Admin", new { area = "Admin" })">Help & Support</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
