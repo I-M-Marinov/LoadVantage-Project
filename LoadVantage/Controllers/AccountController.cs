@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using static LoadVantage.Extensions.TempDataExtension;
+using static LoadVantage.Common.GeneralConstants.UserRoles;
 using static LoadVantage.Common.GeneralConstants.TempMessages;
+using static LoadVantage.Common.ValidationConstants;
 
 namespace LoadVantage.Controllers
 {
@@ -42,10 +44,16 @@ namespace LoadVantage.Controllers
                 return View(model);
             }
 
-            var existingUser = await userManager.FindByEmailAsync(model.Email);
+            if (!ValidRoles.Contains(model.Position))
+            {
+	            ModelState.AddModelError("Position", InvalidPositionSelected);
+	            return View(model);
+            }
+
+			var existingUser = await userManager.FindByEmailAsync(model.Email);
             if (existingUser != null)
             {
-	            ModelState.AddModelError("Email", "An account with this email already exists.");
+	            ModelState.AddModelError("Email", EmailAlreadyExists);
 	            return View(model);
             }
 
@@ -59,7 +67,7 @@ namespace LoadVantage.Controllers
                 UserName = model.UserName
             };
 
-            var result = await userManager.CreateAsync(user, model.Password);
+			var result = await userManager.CreateAsync(user, model.Password);
 
 
             if (result.Succeeded)
@@ -100,7 +108,7 @@ namespace LoadVantage.Controllers
 		        }
 	        }
 
-	        ModelState.AddModelError(string.Empty, "Invalid username or password");
+	        ModelState.AddModelError(string.Empty, InvalidUserNameOrPassword);
 	        return View(model);
         }
         public async Task<IActionResult> Logout()
