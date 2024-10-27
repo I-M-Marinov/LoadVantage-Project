@@ -40,5 +40,10 @@ namespace LoadVantage.Core.Models.Account
         [Required]
         [Display(Name = "Position")]
         public string Position { get; set; } = null!; // Stores either "Dispatcher" or "Broker"
-    }
+
+        [Required]
+        [Display(Name = "Role")]
+        public string Role { get; set; } = null!; // Stores either "Administrator" or "User"
+
+	}
 }

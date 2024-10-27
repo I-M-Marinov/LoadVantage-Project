@@ -5,7 +5,7 @@
 namespace LoadVantage.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ChangesOnUserEntity : Migration
+    public partial class UpdateUserEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -13,7 +13,8 @@ namespace LoadVantage.Infrastructure.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "Position",
                 table: "AspNetUsers",
-                type: "nvarchar(max)",
+                type: "nvarchar(20)",
+                maxLength: 20,
                 nullable: false,
                 defaultValue: "");
         }

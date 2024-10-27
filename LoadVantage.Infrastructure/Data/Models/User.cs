@@ -10,26 +10,31 @@ namespace LoadVantage.Infrastructure.Data.Models
 		{
 
 			public User() 
-				: base() 
 			{
 				Id = Guid.NewGuid();
 			} 
             
-            public virtual string Role { get; set; } = null!; 
 
-            public override string GetRoleName() => Role;
+            public  string Role { get; set; } = UserRoleName;
+
+            [Required]
+            [StringLength(PositionMaxLength)]
+
+            public virtual string? Position { get; set; }
+
+			public override string GetRoleName() => Role;
 
 
             [Required]
 			[StringLength(UserNameMaxLength)]
-			public override string UserName { get; set; } = null!;
+			public override string? UserName { get; set; } = null!;
 
 			[Required]
 			[StringLength(EmailMaxLength)]
-			public override string Email { get; set; } = null!;
+			public override string? Email { get; set; } = null!;
 
 			[Required]
-			public override string PasswordHash { get; set; } = null!; 
+			public override string? PasswordHash { get; set; } = null!; 
 
 	    }
 }

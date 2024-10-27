@@ -44,7 +44,7 @@ namespace LoadVantage.Controllers
                 return View(model);
             }
 
-            if (!ValidRoles.Contains(model.Position))
+            if (!ValidPositions.Contains(model.Position))
             {
 	            ModelState.AddModelError("Position", InvalidPositionSelected);
 	            return View(model);
@@ -62,7 +62,7 @@ namespace LoadVantage.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 CompanyName = model.Company,
-                Role = model.Position,
+                Position = model.Position,
                 Email = model.Email,
                 UserName = model.UserName
             };
@@ -72,7 +72,7 @@ namespace LoadVantage.Controllers
 
             if (result.Succeeded)
             {
-	            await userManager.AddToRoleAsync(user, model.Position);
+	            await userManager.AddToRoleAsync(user, model.Role);
 				TempData.SetMessage(LoginWithNewAccount);
 				return RedirectToAction(nameof(Login));
             }

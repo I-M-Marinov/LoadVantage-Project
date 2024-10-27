@@ -6,7 +6,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 {
 	public class Dispatcher : User
 	{
-        public override string Role => DispatcherRoleName; // Sets role to Dispatcher
+        public override string Position => DispatcherPositionName; // Sets role to Dispatcher
 
         [Required]
 		[StringLength(DispatcherCompanyMaxLength)]

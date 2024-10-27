@@ -7,11 +7,13 @@ namespace LoadVantage.Common
 		{
 			public const string UserRoleName = "User";
 			public const string AdminRoleName = "Administrator";
-			public const string DispatcherRoleName = "Dispatcher";
-			public const string BrokerRoleName = "Broker";
-			public const string DriverRoleName = "Driver";
 
-            public static readonly string[] ValidRoles = new[] { AdminRoleName, DispatcherRoleName, BrokerRoleName };
+			public const string DispatcherPositionName = "Dispatcher";
+			public const string BrokerPositionName = "Broker";
+			public const string DriverPositionName = "Driver";
+
+            public static readonly string[] ValidPositions = new[] { DispatcherPositionName, BrokerPositionName };
+            public static readonly string[] ValidRoles = new[] { AdminRoleName, UserRoleName };
         }
 
 		public class TempMessages

@@ -11,7 +11,10 @@ namespace LoadVantage.Common
 		// USER
 
 		public const byte UserNameMinLength = 4;
-		public const byte UserNameMaxLength = 100;
+		public const byte UserNameMaxLength = 30;
+
+		public const byte PositionMinLength = 6;
+		public const byte PositionMaxLength = 20;
 
 		public const byte EmailMinLength = 7;
 		public const byte EmailMaxLength = 50;

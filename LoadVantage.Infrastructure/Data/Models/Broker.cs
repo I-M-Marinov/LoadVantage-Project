@@ -6,7 +6,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 {
 	public class Broker : User
 	{
-        public override string Role => BrokerRoleName; // Sets role to Broker
+        public override string Position => BrokerPositionName; // Sets role to Broker
 
         [Required]
 		[StringLength(BrokerCompanyMaxLength)]
