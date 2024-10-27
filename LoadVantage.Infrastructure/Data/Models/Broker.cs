@@ -8,9 +8,6 @@ namespace LoadVantage.Infrastructure.Data.Models
 	{
         public override string Position => BrokerPositionName; // Sets role to Broker
 
-        [Required]
-		[StringLength(BrokerCompanyMaxLength)]
-		public string Company { get; set; } = null!;
 		public ICollection<Load> Loads { get; set; } = new List<Load>();
 	}
 }

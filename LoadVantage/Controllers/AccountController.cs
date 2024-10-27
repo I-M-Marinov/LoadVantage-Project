@@ -57,22 +57,25 @@ namespace LoadVantage.Controllers
 	            return View(model);
             }
 
-			User user = new User
+            Role? role = await roleManager.FindByNameAsync(model.Role);
+
+            User user = new User
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 CompanyName = model.Company,
                 Position = model.Position,
                 Email = model.Email,
-                UserName = model.UserName
+                UserName = model.UserName,
+                Role = role!
             };
+            
 
-			var result = await userManager.CreateAsync(user, model.Password);
-
+            var result = await userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-	            await userManager.AddToRoleAsync(user, model.Role);
+	            await userManager.AddToRoleAsync(user, UserRoleName);
 				TempData.SetMessage(LoginWithNewAccount);
 				return RedirectToAction(nameof(Login));
             }

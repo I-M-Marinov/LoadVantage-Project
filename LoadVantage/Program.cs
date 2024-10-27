@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static LoadVantage.Infrastructure.Data.SeedData.SeedData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,11 +52,15 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
+// Seed the Roles
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
-    await InitializeRoles.Initialize(services);
+	var services = scope.ServiceProvider;
+	await InitializeRoles(services);
 }
+// Seed the Administrator 
+
+await SeedAdminUser(app.Services, builder.Configuration);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

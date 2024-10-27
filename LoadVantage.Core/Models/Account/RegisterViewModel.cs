@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static LoadVantage.Common.GeneralConstants.UserRoles;
 
 namespace LoadVantage.Core.Models.Account
 {
@@ -41,9 +42,9 @@ namespace LoadVantage.Core.Models.Account
         [Display(Name = "Position")]
         public string Position { get; set; } = null!; // Stores either "Dispatcher" or "Broker"
 
-        [Required]
+        [Required] 
         [Display(Name = "Role")]
-        public string Role { get; set; } = null!; // Stores either "Administrator" or "User"
+        public string Role = UserRoleName; // default to "User"
 
-	}
+    }
 }

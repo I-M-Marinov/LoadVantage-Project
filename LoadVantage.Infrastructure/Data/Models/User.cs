@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 using static LoadVantage.Common.GeneralConstants.UserRoles;
 using static LoadVantage.Common.ValidationConstants;
@@ -15,14 +16,17 @@ namespace LoadVantage.Infrastructure.Data.Models
 			} 
             
 
-            public  string Role { get; set; } = UserRoleName;
+            public Role Role { get; set; }
 
-            [Required]
+            [ForeignKey(nameof(Role))]
+			public Guid RoleId { get; set; } 
+
+			[Required]
             [StringLength(PositionMaxLength)]
 
             public virtual string? Position { get; set; }
 
-			public override string GetRoleName() => Role;
+			public override string GetRoleName() => Role.ToString();
 
 
             [Required]

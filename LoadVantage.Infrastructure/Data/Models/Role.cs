@@ -6,13 +6,16 @@ namespace LoadVantage.Infrastructure.Data.Models
 	{
 		public Role() 
 		{
-
+			Name = "User";
 		}
 
 		public Role(string roleName) 
 			:base(roleName)
 		{
-
+			if (string.IsNullOrEmpty(roleName))
+			{
+				Name = "User";
+			}
 		}
 	}
 }
