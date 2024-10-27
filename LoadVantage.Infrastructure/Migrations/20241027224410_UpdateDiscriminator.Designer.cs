@@ -4,6 +4,7 @@ using LoadVantage.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoadVantage.Infrastructure.Migrations
 {
     [DbContext(typeof(LoadVantageDbContext))]
-    partial class LoadVantageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241027224410_UpdateDiscriminator")]
+    partial class UpdateDiscriminator
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -454,13 +457,6 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Administrator", b =>
-                {
-                    b.HasBaseType("LoadVantage.Infrastructure.Data.Models.User");
-
-                    b.HasDiscriminator().HasValue("Administrator");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Broker", b =>

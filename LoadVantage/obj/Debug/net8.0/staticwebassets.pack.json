@@ -1997,8 +1997,8 @@
       "PackagePath": "staticwebassets\\assets\\vendor\\tinymce\\tinymce.min.js"
     },
     {
-      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\mystyle\\mystyle.css",
-      "PackagePath": "staticwebassets\\css\\mystyle\\mystyle.css"
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\mystyle\\style.css",
+      "PackagePath": "staticwebassets\\css\\mystyle\\style.css"
     },
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\site.css",

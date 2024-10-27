@@ -42,7 +42,6 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 				Role? role = await roleManager.FindByNameAsync(AdminRoleName);
 				var adminUser = new User
 				{
-				
 					UserName = adminUserName,
 					Email = adminEmail,
 					FirstName = adminFirstName!,

@@ -16,14 +16,14 @@ namespace LoadVantage.Infrastructure.Data.Models
             } 
             
 
-            public Role Role { get; set; }
+            public required Role Role { get; set; }
 
             [ForeignKey(nameof(Role))]
 			public Guid RoleId { get; set; } 
 
 			[Required]
             [StringLength(PositionMaxLength)]
-            public string? Position { get; set; }
+            public virtual string? Position { get; set; }
 
 			public override string GetRoleName() => Role.ToString();
 
@@ -37,9 +37,9 @@ namespace LoadVantage.Infrastructure.Data.Models
 			public override string? Email { get; set; } = null!;
 
 			[Required]
-			public override string? PasswordHash { get; set; } = null!; 
+			public override string? PasswordHash { get; set; } = null!;
 
-	    }
+    }
 }
 
 

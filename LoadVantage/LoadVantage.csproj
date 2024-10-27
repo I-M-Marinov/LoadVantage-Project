@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Views\User\" />
-    <Folder Include="wwwroot\css\mystyle\" />
   </ItemGroup>
 
   <ItemGroup>

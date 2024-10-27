@@ -100,23 +100,18 @@ namespace LoadVantage.Controllers
 
 		        if (result.Succeeded)
 		        {
-                    if (await userManager.IsInRoleAsync(user, AdminRoleName))
+                    if (user is Administrator)
                     {
                         return RedirectToAction("AdminDashboard", "Admin", new { area = "Admin" }); // Redirect to admin dashboard
                     }
-                    //else if (user is Dispatcher)
-                    //{
-                    //    return RedirectToAction("DispatcherDashboard", "Dispatcher"); // Redirect to Dispatcher dashboard
-                    //}
-                    //else if (user is Broker)
-                    //{
-                    //    return RedirectToAction("BrokerDashboard", "Broker"); // Redirect to Broker dashboard
-                    //}
-                    //else
-                    //{
-                    //    // Redirect to a general view if the role is unclear
-                    //    return RedirectToAction("Index", "Home");
-                    //}
+                    else if (user is Dispatcher)
+                    {
+                        return RedirectToAction("Privacy", "Home"); // Redirect to Dispatcher dashboard
+                    }
+                    else if (user is Broker)
+                    {
+                        return RedirectToAction("Index", "Home"); // Redirect to Broker dashboard
+                    }
                 }
 	        }
 

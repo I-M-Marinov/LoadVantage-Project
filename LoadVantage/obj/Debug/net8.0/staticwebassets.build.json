@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "NkXlOhiRQcuECyL96E3HtgNhnHSUj7OyEBeGm4ipMAM=",
+  "Hash": "djOM2zIQSm6qhSTQZTnVTgRykFTo6V0paFFs4mLyG+w=",
   "Source": "LoadVantage",
   "BasePath": "_content/LoadVantage",
   "Mode": "Default",
@@ -10657,12 +10657,12 @@
       "OriginalItemSpec": "wwwroot\\assets\\vendor\\tinymce\\tinymce.min.js"
     },
     {
-      "Identity": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\mystyle\\mystyle.css",
+      "Identity": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\mystyle\\style.css",
       "SourceId": "LoadVantage",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\",
       "BasePath": "_content/LoadVantage",
-      "RelativePath": "css/mystyle/mystyle.css",
+      "RelativePath": "css/mystyle/style.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -10673,7 +10673,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\mystyle\\mystyle.css"
+      "OriginalItemSpec": "wwwroot\\css\\mystyle\\style.css"
     },
     {
       "Identity": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\site.css",

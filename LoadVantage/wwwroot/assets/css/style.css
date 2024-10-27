@@ -43,6 +43,7 @@ h6 {
 --------------------------------------------------------------*/
 #main {
   margin-top: 60px;
+  margin-left: 60px;
   padding: 20px 30px;
   transition: all 0.3s;
 }

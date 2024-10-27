@@ -29,8 +29,13 @@ namespace LoadVantage.Infrastructure.Data
 				.HasOne(d => d.Truck)
 				.WithOne(t => t.Driver)
 				.HasForeignKey<Driver>(d => d.TruckId);
-		}
 
-
-	}
+            modelBuilder.Entity<User>()
+                .HasDiscriminator<string>("Position")
+                .HasValue<Dispatcher>("Dispatcher")
+                .HasValue<Broker>("Broker")
+                .HasValue<Administrator>("Administrator");
+        }
+    }
 }
+
