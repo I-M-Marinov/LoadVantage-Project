@@ -4,6 +4,8 @@ using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static LoadVantage.Extensions.TempDataExtension;
+using static LoadVantage.Common.GeneralConstants.TempMessages;
 
 namespace LoadVantage.Controllers
 {
@@ -54,7 +56,6 @@ namespace LoadVantage.Controllers
                 CompanyName = model.Company,
                 Role = model.Position,
                 Email = model.Email,
-                PasswordHash = model.Password,
                 UserName = model.UserName
             };
 
@@ -64,7 +65,7 @@ namespace LoadVantage.Controllers
             if (result.Succeeded)
             {
 	            await userManager.AddToRoleAsync(user, model.Position);
-                TempData["NewAccount"] = "Login with your new account";
+				TempData.SetMessage(LoginWithNewAccount);
 				return RedirectToAction(nameof(Login));
             }
 
@@ -80,11 +81,6 @@ namespace LoadVantage.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
-            if (ViewData == null)
-            {
-                throw new Exception("ViewData is null before rendering the view.");
-            }
-
             var model = new LoginViewModel();
 			return View(model);
         }
@@ -110,7 +106,8 @@ namespace LoadVantage.Controllers
         public async Task<IActionResult> Logout()
         {
 	        await signInManager.SignOutAsync();
-	        return RedirectToAction(nameof(Login));
+	        TempData.SetMessage(LoggedOutOfAccount);
+			return RedirectToAction(nameof(Login));
         }
 	}
 }

@@ -3,52 +3,48 @@
   "WorkspaceRootPath": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|solutionrelative:loadvantage\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|solutionrelative:loadvantage\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|solutionrelative:loadvantage\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FCE7BBFD-E885-4BF3-AA19-D02042402E2E}|LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage.infrastructure\\data\\seeddata\\initializeroles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FCE7BBFD-E885-4BF3-AA19-D02042402E2E}|LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj|solutionrelative:loadvantage.infrastructure\\data\\seeddata\\initializeroles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2EF89354-99E8-49BE-839C-D1F0C757C6B5}|LoadVantage.Common\\LoadVantage.Common.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage.common\\generalconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2EF89354-99E8-49BE-839C-D1F0C757C6B5}|LoadVantage.Common\\LoadVantage.Common.csproj|solutionrelative:loadvantage.common\\generalconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2EF89354-99E8-49BE-839C-D1F0C757C6B5}|LoadVantage.Common\\LoadVantage.Common.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage.common\\validationconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2EF89354-99E8-49BE-839C-D1F0C757C6B5}|LoadVantage.Common\\LoadVantage.Common.csproj|solutionrelative:loadvantage.common\\validationconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|solutionrelative:loadvantage\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|solutionrelative:loadvantage\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage\\extensions\\tempdataextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|solutionrelative:loadvantage\\extensions\\tempdataextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|solutionrelative:loadvantage\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2EF89354-99E8-49BE-839C-D1F0C757C6B5}|LoadVantage.Common\\LoadVantage.Common.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage.common\\validationconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2EF89354-99E8-49BE-839C-D1F0C757C6B5}|LoadVantage.Common\\LoadVantage.Common.csproj|solutionrelative:loadvantage.common\\validationconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|solutionrelative:loadvantage\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|solutionrelative:loadvantage\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{FCE7BBFD-E885-4BF3-AA19-D02042402E2E}|LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage.infrastructure\\data\\models\\baseuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FCE7BBFD-E885-4BF3-AA19-D02042402E2E}|LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj|solutionrelative:loadvantage.infrastructure\\data\\models\\baseuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FCE7BBFD-E885-4BF3-AA19-D02042402E2E}|LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage.infrastructure\\data\\models\\billedload.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FCE7BBFD-E885-4BF3-AA19-D02042402E2E}|LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj|solutionrelative:loadvantage.infrastructure\\data\\models\\billedload.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2EF89354-99E8-49BE-839C-D1F0C757C6B5}|LoadVantage.Common\\LoadVantage.Common.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage.common\\loadvantage.common.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{2EF89354-99E8-49BE-839C-D1F0C757C6B5}|LoadVantage.Common\\LoadVantage.Common.csproj|solutionrelative:loadvantage.common\\loadvantage.common.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{FCE7BBFD-E885-4BF3-AA19-D02042402E2E}|LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage.infrastructure\\data\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FCE7BBFD-E885-4BF3-AA19-D02042402E2E}|LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj|solutionrelative:loadvantage.infrastructure\\data\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|solutionrelative:loadvantage\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{69845C6F-EBA2-41FD-8798-7F7059CB0D31}|LoadVantage.Core\\LoadVantage.Core.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage.core\\models\\account\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -61,10 +57,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|solutionrelative:loadvantage\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|solutionrelative:loadvantage\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{ED1CC29E-1BBA-4A9D-9E9A-358D869EB473}|LoadVantage\\LoadVantage.csproj|c:\\users\\marinov\\source\\repos\\loadvantage-project\\loadvantage\\areas\\identity\\pages\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -118,33 +110,76 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 22,
+          "SelectedChildIndex": 17,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Program.cs",
               "RelativeDocumentMoniker": "LoadVantage\\Program.cs",
               "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Program.cs",
               "RelativeToolTip": "LoadVantage\\Program.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAD4vzgAAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAC8AAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-25T07:50:04.941Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "ValidationConstants.cs",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\ValidationConstants.cs",
               "RelativeDocumentMoniker": "LoadVantage.Common\\ValidationConstants.cs",
               "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\ValidationConstants.cs",
               "RelativeToolTip": "LoadVantage.Common\\ValidationConstants.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAsAAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAxwCMAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-24T18:56:00.94Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GeneralConstants.cs",
+              "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\GeneralConstants.cs",
+              "RelativeDocumentMoniker": "LoadVantage.Common\\GeneralConstants.cs",
+              "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\GeneralConstants.cs",
+              "RelativeToolTip": "LoadVantage.Common\\GeneralConstants.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-27T09:07:49.351Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "LoadVantage\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "LoadVantage\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAEoAAAAAAAAAAAAwwG4AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-26T10:14:54.196Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TempDataExtension.cs",
+              "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Extensions\\TempDataExtension.cs",
+              "RelativeDocumentMoniker": "LoadVantage\\Extensions\\TempDataExtension.cs",
+              "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Extensions\\TempDataExtension.cs",
+              "RelativeToolTip": "LoadVantage\\Extensions\\TempDataExtension.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-27T09:04:45.211Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -176,67 +211,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "InitializeRoles.cs",
-              "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Infrastructure\\Data\\SeedData\\InitializeRoles.cs",
-              "RelativeDocumentMoniker": "LoadVantage.Infrastructure\\Data\\SeedData\\InitializeRoles.cs",
-              "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Infrastructure\\Data\\SeedData\\InitializeRoles.cs",
-              "RelativeToolTip": "LoadVantage.Infrastructure\\Data\\SeedData\\InitializeRoles.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T12:45:14.937Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "BilledLoad.cs",
-              "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Infrastructure\\Data\\Models\\BilledLoad.cs",
-              "RelativeDocumentMoniker": "LoadVantage.Infrastructure\\Data\\Models\\BilledLoad.cs",
-              "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Infrastructure\\Data\\Models\\BilledLoad.cs",
-              "RelativeToolTip": "LoadVantage.Infrastructure\\Data\\Models\\BilledLoad.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T12:39:14.049Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "GeneralConstants.cs",
-              "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\GeneralConstants.cs",
-              "RelativeDocumentMoniker": "LoadVantage.Common\\GeneralConstants.cs",
-              "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\GeneralConstants.cs",
-              "RelativeToolTip": "LoadVantage.Common\\GeneralConstants.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAB1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T12:36:01.521Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "LoadVantage.Common.csproj",
-              "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\LoadVantage.Common.csproj",
-              "RelativeDocumentMoniker": "LoadVantage.Common\\LoadVantage.Common.csproj",
-              "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\LoadVantage.Common.csproj",
-              "RelativeToolTip": "LoadVantage.Common\\LoadVantage.Common.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-10-26T12:35:59.442Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 5,
               "Title": "_LoginPartial.cshtml",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Views\\Shared\\_LoginPartial.cshtml",
               "RelativeDocumentMoniker": "LoadVantage\\Views\\Shared\\_LoginPartial.cshtml",
               "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Views\\Shared\\_LoginPartial.cshtml",
               "RelativeToolTip": "LoadVantage\\Views\\Shared\\_LoginPartial.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAABeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-10-26T11:56:18.867Z"
+              "WhenOpened": "2024-10-26T11:56:18.867Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 14,
               "Title": "_ViewStart.cshtml",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Areas\\Identity\\Pages\\_ViewStart.cshtml",
               "RelativeDocumentMoniker": "LoadVantage\\Areas\\Identity\\Pages\\_ViewStart.cshtml",
@@ -248,7 +236,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 15,
               "Title": "_ViewImports.cshtml",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Areas\\Identity\\Pages\\_ViewImports.cshtml",
               "RelativeDocumentMoniker": "LoadVantage\\Areas\\Identity\\Pages\\_ViewImports.cshtml",
@@ -260,7 +248,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 16,
               "Title": "_ViewImports.cshtml",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Areas\\Identity\\Pages\\Account\\_ViewImports.cshtml",
               "RelativeDocumentMoniker": "LoadVantage\\Areas\\Identity\\Pages\\Account\\_ViewImports.cshtml",
@@ -272,7 +260,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 11,
               "Title": "LoginViewModel.cs",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Core\\Models\\Account\\LoginViewModel.cs",
               "RelativeDocumentMoniker": "LoadVantage.Core\\Models\\Account\\LoginViewModel.cs",
@@ -284,19 +272,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": "Login.cshtml",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Views\\Account\\Login.cshtml",
               "RelativeDocumentMoniker": "LoadVantage\\Views\\Account\\Login.cshtml",
               "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Views\\Account\\Login.cshtml",
               "RelativeToolTip": "LoadVantage\\Views\\Account\\Login.cshtml",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAB8AAABeAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-10-26T11:01:40.053Z"
+              "WhenOpened": "2024-10-26T11:01:40.053Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 13,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "LoadVantage\\Controllers\\HomeController.cs",
@@ -308,7 +297,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 12,
               "Title": "RegisterViewModel.cs",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Core\\Models\\Account\\RegisterViewModel.cs",
               "RelativeDocumentMoniker": "LoadVantage.Core\\Models\\Account\\RegisterViewModel.cs",
@@ -320,32 +309,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Register.cshtml",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Views\\Account\\Register.cshtml",
               "RelativeDocumentMoniker": "LoadVantage\\Views\\Account\\Register.cshtml",
               "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Views\\Account\\Register.cshtml",
               "RelativeToolTip": "LoadVantage\\Views\\Account\\Register.cshtml",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAADsAAABeAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAACCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-10-26T10:16:14.742Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AccountController.cs",
-              "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Controllers\\AccountController.cs",
-              "RelativeDocumentMoniker": "LoadVantage\\Controllers\\AccountController.cs",
-              "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Controllers\\AccountController.cs",
-              "RelativeToolTip": "LoadVantage\\Controllers\\AccountController.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAowEMAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-26T10:14:54.196Z",
+              "WhenOpened": "2024-10-26T10:16:14.742Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "BaseUser.cs",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Infrastructure\\Data\\Models\\BaseUser.cs",
               "RelativeDocumentMoniker": "LoadVantage.Infrastructure\\Data\\Models\\BaseUser.cs",
@@ -369,7 +346,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 19,
               "Title": "bootstrap-reboot.css",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\vendor\\bootstrap\\css\\bootstrap-reboot.css",
               "RelativeDocumentMoniker": "LoadVantage\\wwwroot\\assets\\vendor\\bootstrap\\css\\bootstrap-reboot.css",
@@ -381,7 +358,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 20,
               "Title": "Readme.txt",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\scss\\Readme.txt",
               "RelativeDocumentMoniker": "LoadVantage\\wwwroot\\assets\\scss\\Readme.txt",
@@ -393,7 +370,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 22,
               "Title": "main.js",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\js\\main.js",
               "RelativeDocumentMoniker": "LoadVantage\\wwwroot\\assets\\js\\main.js",
@@ -405,7 +382,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 18,
               "Title": "style.css",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\css\\style.css",
               "RelativeDocumentMoniker": "LoadVantage\\wwwroot\\assets\\css\\style.css",
@@ -417,7 +394,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 21,
               "Title": "mystyle.css",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\mystyle\\mystyle.css",
               "RelativeDocumentMoniker": "LoadVantage\\wwwroot\\css\\mystyle\\mystyle.css",
@@ -429,19 +406,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 8,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "LoadVantage\\Views\\Shared\\_Layout.cshtml",
               "ToolTip": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "LoadVantage\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAABgAAAAAAAAAAAAAADgAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAADgAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-10-25T15:05:03.3Z"
+              "WhenOpened": "2024-10-25T15:05:03.3Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 17,
               "Title": "site.css",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\site.css",
               "RelativeDocumentMoniker": "LoadVantage\\wwwroot\\css\\site.css",
@@ -453,7 +431,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 24,
               "Title": "_ValidationScriptsPartial.cshtml",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\Areas\\Identity\\Pages\\_ValidationScriptsPartial.cshtml",
               "RelativeDocumentMoniker": "LoadVantage\\Areas\\Identity\\Pages\\_ValidationScriptsPartial.cshtml",
@@ -465,7 +443,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 23,
               "Title": "myjs.js",
               "DocumentMoniker": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\js\\myjs.js",
               "RelativeDocumentMoniker": "LoadVantage\\wwwroot\\js\\myjs.js",

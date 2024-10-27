@@ -13,5 +13,11 @@ namespace LoadVantage.Common
 
             public static readonly string[] ValidRoles = new[] { AdminRoleName, DispatcherRoleName, BrokerRoleName };
         }
+
+		public class TempMessages
+		{
+			public const string LoginWithNewAccount = "Login with your new account";
+			public const string LoggedOutOfAccount = "You have been logged out of your account";
+		}
     }
 }

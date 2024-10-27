@@ -50,11 +50,8 @@ namespace LoadVantage.Common
 
 		// DRIVER 
 
-
 		public const byte LicenseNumberMinLength = 5;
 		public const byte LicenseNumberMaxLength = 15;
-
-
 
 	}
 }
