@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using static LoadVantage.Common.GeneralConstants.UserRoles;
 
 
@@ -14,36 +15,33 @@ using static LoadVantage.Common.GeneralConstants.UserRoles;
 
 namespace LoadVantage.Core.Services
 {
+    [Authorize(Roles = nameof(Administrator))]
     public class UserService(UserManager<User> userManager, RoleManager<Role> roleManager) : IUserService
     {
-        private readonly UserManager<User> _userManager = userManager;
-        private readonly RoleManager<Role> _roleManager = roleManager;
-
         public async Task<User> GetUserByIdAsync(Guid userId)
         {
-            return await _userManager.FindByIdAsync(userId.ToString());
+            return await userManager.FindByIdAsync(userId.ToString());
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            return  await _userManager.Users
+            return  await userManager.Users
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<User>> GetDispatchersAsync()
         {
-            return await _userManager.Users
+            return await userManager.Users
                 .Where(u => u is Dispatcher)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<User>> GetBrokersAsync()
         {
-            return await _userManager.Users
+            return await userManager.Users
                 .Where(u => u is Broker)
                 .ToListAsync();
         }
-
         public async Task UpdateUserPositionAsync(Guid userId, string position)
         {
             var user = await GetUserByIdAsync(userId);
@@ -51,18 +49,18 @@ namespace LoadVantage.Core.Services
             if (user != null)
             {
                 user.Position = position;
-                await _userManager.UpdateAsync(user);
+                await userManager.UpdateAsync(user);
             }
         }
 
         public async Task AssignUserRoleAsync(Guid userId, string role)
         {
             var user = await GetUserByIdAsync(userId);
-            var isAlreadyInRole = await _userManager.IsInRoleAsync(user, role);
+            var isAlreadyInRole = await userManager.IsInRoleAsync(user, role);
 
             if (user != null && !isAlreadyInRole)
             {
-                await _userManager.AddToRoleAsync(user, role);
+                await userManager.AddToRoleAsync(user, role);
             }
         }
     }
