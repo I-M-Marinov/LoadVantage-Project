@@ -19,7 +19,6 @@ namespace LoadVantage.Controllers
         LoadVantageDbContext context)
         : Controller
     {
-        private readonly LoadVantageDbContext context = context;
 
         [HttpGet]
 		[AllowAnonymous]
@@ -98,25 +97,9 @@ namespace LoadVantage.Controllers
         {
 	        var user = await userManager.FindByNameAsync(model.UserName);
 	        if (user != null)
-	        {
-		        var result = await signInManager.PasswordSignInAsync(user, model.Password, false, false);
-
-		        if (result.Succeeded)
-		        {
-                    if (user is Administrator)
-                    {
-                        return RedirectToAction("AdminDashboard", "Admin", new { area = "Admin" }); // Redirect to admin dashboard
-                    }
-                    else if (user is Dispatcher)
-                    {
-                        return RedirectToAction("DispatcherDashboard", "Dispatcher", new { area = "Dispatcher" }); // Redirect to Dispatcher dashboard
-                    }
-                    else if (user is Broker)
-                    {
-                        return RedirectToAction("Index", "Home"); // Redirect to Broker dashboard
-                    }
-                }
-	        }
+            {
+                await RedirectUser(model);
+            }
 
 	        ModelState.AddModelError(string.Empty, InvalidUserNameOrPassword);
 	        return View(model);
@@ -126,6 +109,20 @@ namespace LoadVantage.Controllers
 	        await signInManager.SignOutAsync();
 	        TempData.SetMessage(LoggedOutOfAccount);
 			return RedirectToAction(nameof(Login));
+        }
+
+        private async Task<IActionResult> RedirectUser(LoginViewModel model)
+        {
+            var user = await userManager.FindByNameAsync(model.UserName);
+
+            if (user is Administrator)  return RedirectToAction("AdminDashboard", "Admin", new { area = "Admin" }); // Redirect to admin dashboard
+            
+            if (user is Dispatcher) return RedirectToAction("DispatcherDashboard", "Dispatcher", new { area = "Dispatcher" }); // Redirect to Dispatcher dashboard
+            
+            if (user is Broker) return RedirectToAction("Index", "Home"); // Redirect to Broker dashboard
+            
+            ModelState.AddModelError(string.Empty, InvalidPositionSelected);
+            return View(model);
         }
 	}
 }
