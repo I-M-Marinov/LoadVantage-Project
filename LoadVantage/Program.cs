@@ -64,11 +64,9 @@ using (var scope = app.Services.CreateScope())
 	await InitializeRoles(services);
 }
 // Seed the Administrator 
-
 await SeedAdminUser(app.Services, builder.Configuration);
 
 // Seed the Dispatchers
-
 await SeedDispatchers(app.Services, builder.Configuration);
 
 

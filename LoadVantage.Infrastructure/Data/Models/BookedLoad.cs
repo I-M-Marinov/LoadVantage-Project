@@ -8,13 +8,13 @@ namespace LoadVantage.Infrastructure.Data.Models
     public class BookedLoad
 	{
 		[Key]
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 
 		[Required]
-		public int LoadId { get; set; }
+		public Guid LoadId { get; set; }
 
 		[ForeignKey(nameof(LoadId))]
-		public virtual Load Load { get; set; } = null!;
+		public virtual PostedLoad PostedLoad { get; set; } = null!;
 
 		[Required]
 		public Guid DispatcherId { get; set; }
@@ -28,16 +28,19 @@ namespace LoadVantage.Infrastructure.Data.Models
 		[ForeignKey(nameof(BrokerId))] 
 		public virtual Broker Broker { get; set; } = null!;
 
-		[Required]
+        [Required]
+        public DateTime BookedDate { get; set; } = DateTime.UtcNow; 
+
+        [Required]
 		public Guid? DriverId { get; set; }
 
 		[ForeignKey(nameof(DriverId))]
 		public virtual Driver? Driver { get; set; }
 
-		public LoadStatus Status { get; set; } 
-		public DateTime BookedDate { get; set; }
+        public LoadStatus Status { get; set; } = LoadStatus.Booked;
 
-		
 
-	}
+
+
+    }
 }

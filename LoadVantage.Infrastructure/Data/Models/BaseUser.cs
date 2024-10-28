@@ -16,6 +16,10 @@ namespace LoadVantage.Infrastructure.Data.Models
         }
 
         [Required]
+        [StringLength(PositionMaxLength)]
+        public virtual string? Position { get; set; }
+
+        [Required]
 		[StringLength(FirstNameMaxLength)]
 		public string FirstName { get; set; } = null!;
 

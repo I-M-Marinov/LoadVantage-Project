@@ -65,6 +65,7 @@ namespace LoadVantage.Common
 		public const string EmailAlreadyExists = "An account with this email already exists.";
 		public const string InvalidUserNameOrPassword = "Invalid username or password";
 		public const string InvalidPositionSelected = "The selected position is invalid.";
+		
 
 	}
 }

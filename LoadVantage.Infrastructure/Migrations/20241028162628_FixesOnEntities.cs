@@ -5,7 +5,7 @@
 namespace LoadVantage.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateDiscriminator : Migration
+    public partial class FixesOnEntities : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

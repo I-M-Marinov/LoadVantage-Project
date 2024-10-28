@@ -8,7 +8,14 @@ namespace LoadVantage.Infrastructure.Data.Models
 {
     public class Administrator: User
     {
-        public override string Position => AdminPositionName; // Sets position to Administrator
+        public Administrator(string companyName) : base(companyName)
+        {
+            Position = AdminPositionName; // Assigns Broker position name
+        }
+        public Administrator()
+        {
+            Position = AdminPositionName; // Assigns Broker position name
+        }
 
     }
 }

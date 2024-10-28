@@ -2,13 +2,14 @@
 using System.ComponentModel.DataAnnotations;
 using static LoadVantage.Common.ValidationConstants;
 using Microsoft.EntityFrameworkCore;
+using LoadVantage.Common.Enums;
 
 namespace LoadVantage.Infrastructure.Data.Models
 {
-	public class Load
+	public class PostedLoad
 	{
 		[Key]
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 
 		[Required]
 		public DateTime PostedDate { get; set; } = DateTime.Now;
@@ -44,13 +45,17 @@ namespace LoadVantage.Infrastructure.Data.Models
 
 		[Required]
 		public double Weight { get; set; }
+        public LoadStatus Status { get; set; } = LoadStatus.Available;
 
-
-		[Required]
+        [Required]
 		public Guid BrokerId { get; set; }
 
 		[ForeignKey(nameof(BrokerId))] 
 		public virtual Broker Broker { get; set; } = null!;
 
-	}
+		[Required]
+        public bool IsBooked { get; set; } = false; 
+        public virtual BookedLoad? BookedLoad { get; set; } 
+
+    }
 }

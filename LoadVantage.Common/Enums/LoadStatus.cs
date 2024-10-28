@@ -8,9 +8,8 @@ namespace LoadVantage.Common.Enums
 {
     public enum LoadStatus
     {
-        Available,    // Load is available for booking
-        InTransit,    // Load is currently in transit
-        Delivered,    // Load has been delivered
-        Billed        // Load has been billed
+        Available,        // Load is available for booking
+        Booked,          // Load is booked with the dispatcher
+        Delivered    // Load has been delivered
     }
 }

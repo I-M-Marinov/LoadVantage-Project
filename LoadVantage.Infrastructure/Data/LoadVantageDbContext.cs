@@ -17,7 +17,7 @@ namespace LoadVantage.Infrastructure.Data
 		public DbSet<Dispatcher> Dispatchers { get; set; }
 		public DbSet<Truck> Trucks { get; set; }
 		public DbSet<Driver> Drivers { get; set; }
-		public DbSet<Load> Loads { get; set; }
+		public DbSet<PostedLoad> PostedLoads { get; set; }
 		public DbSet<BookedLoad> BookedLoads { get; set; }
 		public DbSet<BilledLoad> BilledLoads { get; set; }
 
@@ -30,12 +30,17 @@ namespace LoadVantage.Infrastructure.Data
 				.WithOne(t => t.Driver)
 				.HasForeignKey<Driver>(d => d.TruckId);
 
-            modelBuilder.Entity<User>()
-                .HasDiscriminator<string>("Position")
-                .HasValue<Dispatcher>("Dispatcher")
-                .HasValue<Broker>("Broker")
-                .HasValue<Administrator>("Administrator");
-        }
+			modelBuilder.Entity<User>()
+				.HasDiscriminator<string>("Position")
+				.HasValue<Dispatcher>("Dispatcher")
+				.HasValue<Broker>("Broker")
+				.HasValue<Administrator>("Administrator");
+
+			modelBuilder.Entity<PostedLoad>()
+				.HasOne(load => load.Broker)
+				.WithMany(broker => broker.PostedLoads)
+				.HasForeignKey(load => load.BrokerId);
+		}
     }
 }
 

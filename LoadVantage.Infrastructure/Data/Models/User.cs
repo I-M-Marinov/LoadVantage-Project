@@ -21,18 +21,12 @@ namespace LoadVantage.Infrastructure.Data.Models
                 Id = Guid.NewGuid();
             }
 
-
-        public required Role Role { get; set; }
+            public required Role Role { get; set; }
 
             [ForeignKey(nameof(Role))]
 			public Guid RoleId { get; set; } 
 
-			[Required]
-            [StringLength(PositionMaxLength)]
-            public virtual string? Position { get; set; }
-
 			public override string GetRoleName() => Role.ToString();
-
 
             [Required]
 			[StringLength(UserNameMaxLength)]
@@ -46,7 +40,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 			public override string? PasswordHash { get; set; } = null!;
             [Phone]
             [StringLength(UserPhoneNumberMaxLength)]
-            public new string PhoneNumber { get; set; } = null!;
+            public override string? PhoneNumber { get; set; } = null!;
 
         }
 }

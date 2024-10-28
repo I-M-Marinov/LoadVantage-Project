@@ -1,11 +1,6 @@
 ﻿using LoadVantage.Core.Contracts;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using static LoadVantage.Common.GeneralConstants.UserRoles;
