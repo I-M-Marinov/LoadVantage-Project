@@ -1,3 +1,5 @@
+using LoadVantage.Areas.Dispatcher.Contracts;
+using LoadVantage.Areas.Dispatcher.Services;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data.SeedData;
@@ -31,7 +33,10 @@ builder.Services.AddIdentity<User, Role>(options =>
 		options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
 	})
 	.AddEntityFrameworkStores<LoadVantageDbContext>() 
-	.AddDefaultTokenProviders(); 
+	.AddDefaultTokenProviders();
+
+builder.Services.AddScoped<IDispatcherService, DispatcherService>(); // Add the Dispatcher Service 
+
 
 builder.Services.AddControllersWithViews()
 	.AddMvcOptions(options =>
@@ -61,6 +66,11 @@ using (var scope = app.Services.CreateScope())
 // Seed the Administrator 
 
 await SeedAdminUser(app.Services, builder.Configuration);
+
+// Seed the Dispatchers
+
+await SeedDispatchers(app.Services, builder.Configuration);
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

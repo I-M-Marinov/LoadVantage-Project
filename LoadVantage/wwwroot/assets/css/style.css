@@ -42,10 +42,10 @@ h6 {
 # Main
 --------------------------------------------------------------*/
 #main {
-  margin-top: 60px;
-  margin-left: 60px;
-  padding: 20px 30px;
-  transition: all 0.3s;
+    margin-top: 40px !important;
+    margin-left: 20px !important;
+    padding: 20px 30px;
+    transition: all 0.3s;
 }
 
 @media (max-width: 1199px) {

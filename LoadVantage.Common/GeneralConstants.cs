@@ -22,5 +22,10 @@ namespace LoadVantage.Common
 			public const string LoginWithNewAccount = "Login with your new account";
 			public const string LoggedOutOfAccount = "You have been logged out of your account";
 		}
+
+        public class SecretString
+        {
+			public const string PasswordSecretWord = "password";
+        }
     }
 }

@@ -12,8 +12,8 @@ namespace LoadVantage.Infrastructure.Data
 
 		}
 
-
-		public DbSet<Broker> Brokers { get; set; }
+        public DbSet<Administrator> Administrators { get; set; }
+        public DbSet<Broker> Brokers { get; set; }
 		public DbSet<Dispatcher> Dispatchers { get; set; }
 		public DbSet<Truck> Trucks { get; set; }
 		public DbSet<Driver> Drivers { get; set; }

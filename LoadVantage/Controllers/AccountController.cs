@@ -8,6 +8,7 @@ using static LoadVantage.Extensions.TempDataExtension;
 using static LoadVantage.Common.GeneralConstants.UserRoles;
 using static LoadVantage.Common.GeneralConstants.TempMessages;
 using static LoadVantage.Common.ValidationConstants;
+using System.Security.Claims;
 
 namespace LoadVantage.Controllers
 {
@@ -69,7 +70,9 @@ namespace LoadVantage.Controllers
             if (result.Succeeded)
             {
 	            await userManager.AddToRoleAsync(user, UserRoleName);
-				TempData.SetMessage(LoginWithNewAccount);
+                await userManager.AddClaimAsync(user, new Claim("Position", user.Position ?? ""));
+
+                TempData.SetMessage(LoginWithNewAccount);
 				return RedirectToAction(nameof(Login));
             }
 
@@ -106,7 +109,7 @@ namespace LoadVantage.Controllers
                     }
                     else if (user is Dispatcher)
                     {
-                        return RedirectToAction("Privacy", "Home"); // Redirect to Dispatcher dashboard
+                        return RedirectToAction("DispatcherDashboard", "Dispatcher", new { area = "Dispatcher" }); // Redirect to Dispatcher dashboard
                     }
                     else if (user is Broker)
                     {

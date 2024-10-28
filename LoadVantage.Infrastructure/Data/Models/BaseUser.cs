@@ -6,7 +6,16 @@ namespace LoadVantage.Infrastructure.Data.Models
 {
 	public abstract class BaseUser : IdentityUser<Guid>
 	{
-		[Required]
+        public BaseUser(string companyName)
+        {
+            CompanyName = companyName; 
+        }
+
+        public BaseUser()
+        {
+        }
+
+        [Required]
 		[StringLength(FirstNameMaxLength)]
 		public string FirstName { get; set; } = null!;
 

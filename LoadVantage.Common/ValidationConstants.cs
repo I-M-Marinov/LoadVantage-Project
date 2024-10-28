@@ -28,8 +28,8 @@ namespace LoadVantage.Common
         public const byte CompanyNameMinLength = 3;
         public const byte CompanyNameMaxLength = 50;
 
-        public const byte UserTypeMinLength = 6;
-		public const byte UserTypeMaxLength = 10;
+        public const byte UserPhoneNumberMinLength = 7;
+		public const byte UserPhoneNumberMaxLength = 15;
 
 		// DISPATCHER 
 

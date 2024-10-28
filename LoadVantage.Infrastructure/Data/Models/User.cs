@@ -10,13 +10,19 @@ namespace LoadVantage.Infrastructure.Data.Models
 		public class User : BaseUser
 		{
 
-			public User()
+			public User(string companyName)
+                : base(companyName)
             {
                 Id = Guid.NewGuid();
-            } 
-            
+            }
 
-            public required Role Role { get; set; }
+            public User()
+            {
+                Id = Guid.NewGuid();
+            }
+
+
+        public required Role Role { get; set; }
 
             [ForeignKey(nameof(Role))]
 			public Guid RoleId { get; set; } 
@@ -38,8 +44,11 @@ namespace LoadVantage.Infrastructure.Data.Models
 
 			[Required]
 			public override string? PasswordHash { get; set; } = null!;
+            [Phone]
+            [StringLength(UserPhoneNumberMaxLength)]
+            public string PhoneNumber { get; set; } = null!;
 
-    }
+        }
 }
 
 
