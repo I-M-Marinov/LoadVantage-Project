@@ -17,11 +17,13 @@ namespace LoadVantage.Infrastructure.Data
 		public DbSet<Dispatcher> Dispatchers { get; set; }
 		public DbSet<Truck> Trucks { get; set; }
 		public DbSet<Driver> Drivers { get; set; }
-		public DbSet<PostedLoad> PostedLoads { get; set; }
-		public DbSet<BookedLoad> BookedLoads { get; set; }
-		public DbSet<BilledLoad> BilledLoads { get; set; }
+        public DbSet<Load> Loads { get; set; }
+        public DbSet<BookedLoad> BookedLoads { get; set; }
+        public DbSet<PostedLoad> PostedLoads { get; set; }
+        public DbSet<BilledLoad> BilledLoads { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
 
@@ -36,8 +38,21 @@ namespace LoadVantage.Infrastructure.Data
 				.HasValue<Broker>("Broker")
 				.HasValue<Administrator>("Administrator");
 
+            modelBuilder.Entity<Load>()
+                .HasOne(l => l.PostedLoad)
+                .WithOne(pl => pl.Load)
+                .HasForeignKey<PostedLoad>(pl => pl.LoadId);
 
-		}
+            modelBuilder.Entity<Load>()
+                .HasOne(l => l.BookedLoad)
+                .WithOne(bl => bl.Load)
+                .HasForeignKey<BookedLoad>(bl => bl.LoadId);
+
+            modelBuilder.Entity<Load>()
+                .HasOne(l => l.BilledLoad)
+                .WithOne(b => b.Load)
+                .HasForeignKey<BilledLoad>(b => b.LoadId);
+        }
     }
 }
 

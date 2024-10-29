@@ -10,9 +10,12 @@ namespace LoadVantage.Core.Contracts
 {
     public interface ILoadService
     {
-        //Task<Guid> PostLoadAsync(LoadViewModel loadViewModel, Guid brokerId);
-        //Task<bool> EditLoadAsync(Guid loadId, PostedLoad updatedLoad);
-        //Task<bool> DeleteLoadAsync(Guid loadId, Guid brokerId);
-        //Task<bool> CoverLoadAsync(Guid loadId, Guid dispatcherId);
+        Task<Guid> CreateLoadAsync(LoadViewModel loadViewModel, Guid brokerId);
+        Task<bool> PostLoadAsync(Guid loadId);
+        Task<bool> EditLoadAsync(Guid loadId, LoadViewModel updatedLoadViewModel);
+        Task<bool> DeleteLoadAsync(Guid loadId, Guid brokerId);
+        Task<bool> BookLoadAsync(Guid loadId, Guid dispatcherId);
+        Task<bool> LoadDeliveredAsync(Guid loadId);
+        Task<bool> CancelLoadAsync(Guid loadId);
     }
 }
