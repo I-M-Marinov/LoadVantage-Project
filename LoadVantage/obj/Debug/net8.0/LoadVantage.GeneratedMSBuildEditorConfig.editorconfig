@@ -30,8 +30,12 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cQWRtaW5EYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Dispatcher/Views/Dispatcher/DispatcherDashboard.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGlzcGF0Y2hlclxWaWV3c1xEaXNwYXRjaGVyXERpc3BhdGNoZXJEYXNoYm9hcmQuY3NodG1s
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Dispatcher/Views/Dispatcher/LoadBoard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGlzcGF0Y2hlclxWaWV3c1xEaXNwYXRjaGVyXExvYWRCb2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Dispatcher/Views/Dispatcher/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGlzcGF0Y2hlclxWaWV3c1xEaXNwYXRjaGVyXFByb2ZpbGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Identity/Pages/Account/_ViewImports.cshtml]

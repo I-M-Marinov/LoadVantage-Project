@@ -94,7 +94,12 @@ namespace LoadVantage.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-	        var user = await userManager.FindByNameAsync(model.UserName);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userManager.FindByNameAsync(model.UserName);
 	        if (user != null)
             {
 
@@ -107,7 +112,7 @@ namespace LoadVantage.Controllers
                     if (user is Administrator)
                         return RedirectToAction("AdminDashboard", "Admin", new { area = "Admin" }); // Redirect to admin dashboard
                     if (user is Dispatcher)
-                        return RedirectToAction("DispatcherDashboard", "Dispatcher", new { area = "Dispatcher" }); // Redirect to Dispatcher dashboard
+                        return RedirectToAction("Profile", "Dispatcher", new { area = "Dispatcher" }); // Redirect to Dispatcher dashboard
                     if (user is Broker)
                         return RedirectToAction("Index", "Home"); // Redirect to Broker dashboard
                 }
@@ -120,12 +125,12 @@ namespace LoadVantage.Controllers
             ModelState.AddModelError(string.Empty, InvalidUserNameOrPassword);
             return View(model);
         }
-        [Authorize]
+
         public async Task<IActionResult> Logout()
         {
 	        await signInManager.SignOutAsync();
 	        TempData.SetMessage(LoggedOutOfAccount);
-			return RedirectToAction(nameof(Login));
+	        return RedirectToAction("Login", "Account", new { area = "" });
         }
 
 	}

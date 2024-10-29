@@ -18,11 +18,13 @@ C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\L
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Azure.Identity.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Humanizer.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.UI.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.AspNetCore.Razor.Language.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.Build.dll
@@ -307,5 +309,3 @@ C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\r
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\LoadVantage.pdb
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\LoadVantage.genruntimeconfig.cache
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\ref\LoadVantage.dll
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.AspNetCore.Metadata.dll

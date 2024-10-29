@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LoadVantage.Core.Models
+﻿namespace LoadVantage.Core.Models.Load
 {
     public class LoadViewModel
     {
@@ -12,7 +6,7 @@ namespace LoadVantage.Core.Models
         public string OriginCity { get; set; } = null!;
         public string OriginState { get; set; } = null!;
         public string DestinationCity { get; set; } = null!;
-        public string DestinationState { get; set; } = null!;      
+        public string DestinationState { get; set; } = null!;
         public DateTime PickupTime { get; set; }
         public DateTime DeliveryTime { get; set; }
         public decimal PostedPrice { get; set; }

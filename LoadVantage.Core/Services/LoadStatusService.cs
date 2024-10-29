@@ -2,13 +2,13 @@
 using LoadVantage.Core.Contracts;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
-using LoadVantage.Core.Models;
 using LoadVantage.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using LoadVantage.Core.Models.Load;
 
 namespace LoadVantage.Core.Services
 {
-    public class LoadService(LoadVantageDbContext context, UserManager<User> userManager) : ILoadService
+    public class LoadStatusService(LoadVantageDbContext context, UserManager<User> userManager) : ILoadStatusService
     {
         public async Task<Guid> CreateLoadAsync(LoadViewModel loadViewModel, Guid brokerId)
         {
@@ -81,26 +81,6 @@ namespace LoadVantage.Core.Services
             return true;
         }
 
-        public async Task<bool> DeleteLoadAsync(Guid loadId, Guid brokerId)
-        {
-            var load = await context.Loads
-                .Include(l => l.BookedLoad)
-                .Include(l => l.PostedLoad)
-                .FirstOrDefaultAsync(l => l.Id == loadId && l.BrokerId == brokerId);
-
-            if (load == null)
-            {
-                return false; // Load not found or not owned by broker
-            }
-
-            // Soft delete by setting status to Cancelled
-            load.Status = LoadStatus.Cancelled;
-            context.Loads.Update(load);
-            await context.SaveChangesAsync();
-
-            return true;
-        }
-
         public async Task<bool> BookLoadAsync(Guid loadId, Guid dispatcherId)
         {
             var load = await context.Loads
@@ -164,7 +144,7 @@ namespace LoadVantage.Core.Services
 
             if (load == null)
             {
-                return false; // Load not found
+                return false; // Load not found or not owned by broker
             }
 
             // Update status to cancelled (soft delete)

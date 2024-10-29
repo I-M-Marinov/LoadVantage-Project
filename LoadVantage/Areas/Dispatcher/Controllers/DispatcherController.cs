@@ -4,6 +4,7 @@ using LoadVantage.Areas.Dispatcher.Services;
 using LoadVantage.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using LoadVantage.Core.Contracts;
 using static LoadVantage.Common.GeneralConstants.UserRoles;
 
 
@@ -12,12 +13,12 @@ namespace LoadVantage.Areas.Dispatcher.Controllers
     [DispatcherOnly]
     [Area("Dispatcher")]
     [Route("Dispatcher")]
-    public class DispatcherController(IDispatcherService dispatcherService) : Controller
+    public class DispatcherController(IDispatcherService dispatcherService, IDispatcherLoadBoardService dispatcherLoadBoardService) : Controller
     {
 
         [HttpGet]
-        [Route("Dashboard")]
-        public async Task<IActionResult> DispatcherDashboard()
+        [Route("Profile")]
+        public async Task<IActionResult> Profile()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -34,6 +35,16 @@ namespace LoadVantage.Areas.Dispatcher.Controllers
             }
 
             return View(dispatcher); // Pass the dispatcher info to the view
+        }
+
+        [HttpGet]
+        [Route("LoadBoard")]
+        public async Task<IActionResult> LoadBoard(Guid dispatcherId)
+        {
+            var loadBoardData = await dispatcherLoadBoardService.GetDispatcherLoadBoardAsync(dispatcherId);
+
+            return View(loadBoardData);
+
         }
     }
 }

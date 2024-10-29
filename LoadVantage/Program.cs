@@ -1,5 +1,7 @@
 using LoadVantage.Areas.Dispatcher.Contracts;
 using LoadVantage.Areas.Dispatcher.Services;
+using LoadVantage.Core.Contracts;
+using LoadVantage.Core.Services;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data.SeedData;
@@ -35,7 +37,9 @@ builder.Services.AddIdentity<User, Role>(options =>
 	.AddEntityFrameworkStores<LoadVantageDbContext>() 
 	.AddDefaultTokenProviders();
 
+builder.Services.AddScoped<ILoadStatusService, LoadStatusService>(); // Add the Load Status Service 
 builder.Services.AddScoped<IDispatcherService, DispatcherService>(); // Add the Dispatcher Service 
+builder.Services.AddScoped<IDispatcherLoadBoardService, DispatcherLoadBoardService>(); // Add the Dispatcher's LoadBoard Service 
 
 
 builder.Services.AddControllersWithViews()
@@ -90,14 +94,25 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapAreaControllerRoute(
-    name: "admin",
-    areaName: "Admin",
-    pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
+//app.MapAreaControllerRoute(
+//	name: "admin",
+//	areaName: "Admin",
+//	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
+//app.MapAreaControllerRoute(
+//	name: "dispatcher",
+//	areaName: "Dispatcher",
+//	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+//app.MapAreaControllerRoute(
+//	name: "broker",
+//	areaName: "Broker",
+//	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+// Default route for controllers without area
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+	name: "default",
+	pattern: "{controller=Home}/{action=Index}/{id?}");
 
 //app.MapRazorPages();
 

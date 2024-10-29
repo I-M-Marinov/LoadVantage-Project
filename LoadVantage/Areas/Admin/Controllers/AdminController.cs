@@ -12,7 +12,7 @@ namespace LoadVantage.Areas.Admin.Controllers
     public class AdminController : Controller
     {
         [HttpGet]
-        [Route("Dashboard")]
+        [Route("Profile")]
         public IActionResult AdminDashboard()
         {
             return View();

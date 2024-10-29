@@ -2,7 +2,7 @@
 @model DispatcherViewModel
 
 @{
-	ViewData["Title"] = "Dispatcher Dashboard";
+	ViewData["Title"] = "Dispatcher Profile";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -126,7 +126,7 @@
 
                     <li class="message-item">
                         <a href="#">
-                            <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                            <img src="~/assets/img/messages-1.jpg" alt="" class="rounded-circle">
                             <div>
                                 <h4>Maria Hudson</h4>
                                 <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -140,7 +140,7 @@
 
                     <li class="message-item">
                         <a href="#">
-                            <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                            <img src="~/assets/img/messages-2.jpg" alt="" class="rounded-circle">
                             <div>
                                 <h4>Anna Nelson</h4>
                                 <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -154,7 +154,7 @@
 
                     <li class="message-item">
                         <a href="#">
-                            <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                            <img src="~/assets/img/messages-3.jpg" alt="" class="rounded-circle">
                             <div>
                                 <h4>David Muldon</h4>
                                 <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -177,7 +177,7 @@
             <li class="nav-item dropdown pe-3">
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                    <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
                 </a><!-- End Profile Iamge Icon -->
 
@@ -235,16 +235,27 @@
 
 </header><!-- End Header -->
 <!-- ======= Sidebar ======= -->
+
+
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
+		<li class="nav-item">
+            <a class="nav-link collapsed" href="/Dispatcher/LoadBoard">
+		    <i class="bi bi-grid"></i>
+		    <span>LoadBoard</span>
+	    </a>
+        </li><!-- End LoadBoard Nav -->
+
         <li class="nav-item">
-            <a class="nav-link collapsed" href="index.html">
-                <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
-            </a>
-        </li><!-- End Dashboard Nav -->
+            <a class="nav-link" href="/Dispatcher/Profile">
+                <i class="bi bi-person"></i>
+			    <span>Profile</span>
+		    </a>
+	    </li><!-- End Profile Page Nav -->
+
+
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
@@ -419,13 +430,6 @@
         <li class="nav-heading">Pages</li>
 
         <li class="nav-item">
-            <a class="nav-link " href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>Profile</span>
-            </a>
-        </li><!-- End Profile Page Nav -->
-
-        <li class="nav-item">
             <a class="nav-link collapsed" href="pages-faq.html">
                 <i class="bi bi-question-circle"></i>
                 <span>F.A.Q</span>
@@ -491,7 +495,7 @@
                 <div class="card">
                     <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                        <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
                         <h2>@Model.FullName</h2>
                         <h3>@Model.Position at @Model.CompanyName</h3>
                         <div class="social-links mt-2">
@@ -562,7 +566,7 @@
                                     <div class="row mb-3">
                                         <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <img src="assets/img/profile-img.jpg" alt="Profile">
+                                            <img src="~/assets/img/profile-img.jpg" alt="Profile">
                                             <div class="pt-2">
                                                 <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
                                                 <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
