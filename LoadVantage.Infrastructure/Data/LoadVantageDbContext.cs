@@ -36,10 +36,7 @@ namespace LoadVantage.Infrastructure.Data
 				.HasValue<Broker>("Broker")
 				.HasValue<Administrator>("Administrator");
 
-			modelBuilder.Entity<PostedLoad>()
-				.HasOne(load => load.Broker)
-				.WithMany(broker => broker.PostedLoads)
-				.HasForeignKey(load => load.BrokerId);
+
 		}
     }
 }

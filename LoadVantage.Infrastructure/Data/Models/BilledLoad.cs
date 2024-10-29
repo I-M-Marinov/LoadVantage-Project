@@ -13,24 +13,19 @@ namespace LoadVantage.Infrastructure.Data.Models
 {
 	public class BilledLoad
 	{
+		[Key]
 		public Guid Id { get; set; }
 
 		[Required]
 		public Guid LoadId { get; set; }
 		[ForeignKey(nameof(LoadId))]
-		public PostedLoad PostedLoad { get; set; } = null!;
-
-		[Required]
-		public Guid BookedLoadId { get; set; }
-		[ForeignKey(nameof(BookedLoadId))]
-		public BookedLoad BookedLoad { get; set; } = null!; 
+		public Load Load { get; set; } = null!;
 
 		[Required]
 		[Precision(18,2)]
 		public decimal BilledAmount { get; set; }
-		// Date the load was billed
+
 		public DateTime BilledDate { get; set; } = DateTime.Now;
-        public LoadStatus Status { get; set; } = LoadStatus.Delivered;
 
     }
 }

@@ -8,8 +8,10 @@ namespace LoadVantage.Common.Enums
 {
     public enum LoadStatus
     {
-        Available,        // Load is available for booking
-        Booked,          // Load is booked with the dispatcher
-        Delivered    // Load has been delivered
+        Cancelled = 0,          // Load is cancelled 
+        Created = 1,           // Load is created
+        Available = 2,        // Load is posted 
+        Booked = 3,          // Load is booked with a dispatcher
+        Delivered = 4       // Load has been delivered
     }
 }

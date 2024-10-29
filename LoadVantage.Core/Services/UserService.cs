@@ -2,16 +2,13 @@
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using static LoadVantage.Common.GeneralConstants.UserRoles;
 
 
 #nullable disable
 
 namespace LoadVantage.Core.Services
 {
-    [Authorize(Roles = nameof(Administrator))]
-    public class UserService(UserManager<User> userManager, RoleManager<Role> roleManager) : IUserService
+    public class UserService(UserManager<User> userManager) : IUserService
     {
         public async Task<User> GetUserByIdAsync(Guid userId)
         {

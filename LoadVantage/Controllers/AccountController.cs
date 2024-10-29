@@ -117,8 +117,10 @@ namespace LoadVantage.Controllers
 
             }
 
-            return NotFound(); // Dispatcher not found
+            ModelState.AddModelError(string.Empty, InvalidUserNameOrPassword);
+            return View(model);
         }
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
 	        await signInManager.SignOutAsync();
