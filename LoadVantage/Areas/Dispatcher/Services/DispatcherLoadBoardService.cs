@@ -1,7 +1,6 @@
 ﻿using LoadVantage.Areas.Dispatcher.Contracts;
 using LoadVantage.Areas.Dispatcher.Models;
 using LoadVantage.Common.Enums;
-using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +25,7 @@ namespace LoadVantage.Areas.Dispatcher.Services
                 DeliveryTime = load.DeliveryTime,
                 PostedPrice = load.Price,
                 Weight = load.Weight,
-                Status = load.Status.ToString(), // or however you want to display status
+                Status = load.Status.ToString(), 
                 BrokerId = load.BrokerId
             });
         }
@@ -50,8 +49,8 @@ namespace LoadVantage.Areas.Dispatcher.Services
                 Weight = load.Weight,
                 Status = load.Status.ToString(),
                 BrokerId = load.BrokerId,
-                DispatcherId = dispatcherId, // Include dispatcherId for clarity
-                                             // Map other necessary properties from booked load if needed
+                DispatcherId = dispatcherId, 
+                                             
             });
         }
 
@@ -74,7 +73,6 @@ namespace LoadVantage.Areas.Dispatcher.Services
                 Weight = load.Weight,
                 Status = load.Status.ToString(),
                 BrokerId = load.BrokerId,
-                // Map additional properties from billed load if needed
             });
         }
 
