@@ -39,6 +39,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 			var adminFirstName = configuration["AdminCredentials:AdminFirstName"];
 			var adminLastName = configuration["AdminCredentials:AdminLastName"];
 			var adminPhoneNumber = configuration["AdminCredentials:AdminPhoneNumber"];
+			var adminCompany = configuration["AdminCredentials:AdminCompany"];
 
 			if (await userManager.FindByNameAsync(adminUserName!) == null)
 			{
@@ -51,6 +52,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 					LastName = adminLastName!,
 					Position = AdminPositionName,
                     PhoneNumber = adminPhoneNumber!,
+                    CompanyName = adminCompany,
                     Role = role!
 				};
 
