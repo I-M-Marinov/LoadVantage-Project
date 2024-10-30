@@ -10,10 +10,10 @@ namespace LoadVantage.Areas.Broker.Services
 {
     public class BrokerLoadBoardService(LoadVantageDbContext context) : IBrokerLoadBoardService
     {
-        public async Task<IEnumerable<BrokerLoadViewModel>> GetAllCreatedLoadsAsync()
+        public async Task<IEnumerable<BrokerLoadViewModel>> GetAllCreatedLoadsForBrokerAsync(Guid brokerId)
         {
             var createdLoads = await context.Loads
-                .Where(load => load.Status == LoadStatus.Available)
+                .Where(load => load.Status == LoadStatus.Available && load.BrokerId == brokerId)
                 .ToListAsync();
 
             return createdLoads.Select(load => new BrokerLoadViewModel()
@@ -101,7 +101,7 @@ namespace LoadVantage.Areas.Broker.Services
 
         public async Task<BrokerLoadBoardViewModel> GetBrokerLoadBoardAsync(Guid brokerId)
         {
-            var createdLoads = await GetAllCreatedLoadsAsync();
+            var createdLoads = await GetAllCreatedLoadsForBrokerAsync(brokerId);
             var postedLoads = await GetAllPostedLoadsForBrokerAsync(brokerId);
             var bookedLoads = await GetAllBookedLoadsForBrokerAsync(brokerId);
             var billedLoads = await GetAllBilledLoadsForBrokerAsync(brokerId);

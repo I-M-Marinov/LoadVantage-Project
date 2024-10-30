@@ -1,3 +1,5 @@
+using LoadVantage.Areas.Broker.Contracts;
+using LoadVantage.Areas.Broker.Services;
 using LoadVantage.Areas.Dispatcher.Contracts;
 using LoadVantage.Areas.Dispatcher.Services;
 using LoadVantage.Core.Contracts;
@@ -46,7 +48,9 @@ builder.Services.AddScoped<IGeocodeService, GeocodeService>(); // Add the Geocod
 builder.Services.AddScoped<IDistanceCalculatorService, DistanceCalculatorService>(); // Add the Distance Calculator Service 
 builder.Services.AddScoped<ILoadStatusService, LoadStatusService>(); // Add the Load Status Service 
 builder.Services.AddScoped<IDispatcherService, DispatcherService>(); // Add the Dispatcher Service 
+builder.Services.AddScoped<IBrokerService, BrokerService>(); // Add the Broker Service 
 builder.Services.AddScoped<IDispatcherLoadBoardService, DispatcherLoadBoardService>(); // Add the Dispatcher's LoadBoard Service 
+builder.Services.AddScoped<IBrokerLoadBoardService, BrokerLoadBoardService>(); // Add the Broker's LoadBoard Service 
 
 
 

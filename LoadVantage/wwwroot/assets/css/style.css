@@ -652,7 +652,7 @@ h6 {
   }
 
   .toggle-sidebar .sidebar {
-    left: -300px;
+    left: -200px;
   }
 }
 
@@ -693,9 +693,9 @@ h6 {
 }
 
 .sidebar-nav .nav-link i {
-  font-size: 16px;
-  margin-right: 10px;
-  color: #4154f1;
+    font-size: 27px;
+    margin-right: 10px;
+    color: #4154f1;
 }
 
 .sidebar-nav .nav-link.collapsed {
@@ -717,18 +717,32 @@ h6 {
 }
 
 .sidebar-nav .nav-link .bi-chevron-down {
-  margin-right: 0;
-  transition: transform 0.2s ease-in-out;
+    font-size: 20px;
+    margin-right: 0;
+    transition: transform 0.2s ease-in-out;
 }
 
 .sidebar-nav .nav-link:not(.collapsed) .bi-chevron-down {
   transform: rotate(180deg);
 }
 
+.nav-link{
+    display: flex;
+    align-content: space-between;
+}
+
+.ri-truck-fill {
+    padding-left: 4.5em;
+}
+
+.ri-account-pin-box-fill {
+    padding-left: 5.5em;
+}
+
 .sidebar-nav .nav-content {
-  padding: 5px 0 0 0;
-  margin: 0;
-  list-style: none;
+    padding: 5px 0 0 0;
+    margin: 0;
+    list-style: none;
 }
 
 .sidebar-nav .nav-content a {

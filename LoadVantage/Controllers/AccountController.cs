@@ -114,7 +114,7 @@ namespace LoadVantage.Controllers
                     if (user is Dispatcher)
                         return RedirectToAction("Profile", "Dispatcher", new { area = "Dispatcher" }); // Redirect to Dispatcher dashboard
                     if (user is Broker)
-                        return RedirectToAction("Index", "Home"); // Redirect to Broker dashboard
+                        return RedirectToAction("Profile", "Broker", new { area = "Broker" }); // Redirect to Broker dashboard
                 }
 
                 ModelState.AddModelError(string.Empty, InvalidUserNameOrPassword);
