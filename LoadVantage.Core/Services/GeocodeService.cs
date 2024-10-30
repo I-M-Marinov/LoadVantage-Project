@@ -1,12 +1,10 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using LoadVantage.Core.Contracts;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 
 namespace LoadVantage.Core.Services
 {
-    public class GeocodeService
+    public class GeocodeService:IGeocodeService
     {
         private readonly string _geocodeApiKey;
         private readonly HttpClient _httpClient;
@@ -17,7 +15,6 @@ namespace LoadVantage.Core.Services
             _httpClient = new HttpClient();
         }
 
-        // Method to get coordinates from city and state using OpenCage API
         public async Task<(double Latitude, double Longitude)> GetCoordinatesAsync(string city, string state)
         {
             if (string.IsNullOrWhiteSpace(city) || string.IsNullOrWhiteSpace(state))

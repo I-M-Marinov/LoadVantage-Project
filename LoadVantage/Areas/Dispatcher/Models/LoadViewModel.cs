@@ -9,6 +9,7 @@
         public string DestinationState { get; set; } = null!;
         public DateTime PickupTime { get; set; }
         public DateTime DeliveryTime { get; set; }
+        public double Distance  { get; set; }
         public decimal? PostedPrice { get; set; } // Nullable for booked/billed
         public decimal? BilledAmount { get; set; } // Nullable for posted/booked
         public double Weight { get; set; }

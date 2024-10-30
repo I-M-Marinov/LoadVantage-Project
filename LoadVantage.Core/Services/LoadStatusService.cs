@@ -8,7 +8,7 @@ using LoadVantage.Core.Models.Load;
 
 namespace LoadVantage.Core.Services
 {
-    public class LoadStatusService(LoadVantageDbContext context, DistanceCalculatorService distanceCalculatorService,UserManager<User> userManager) : ILoadStatusService
+    public class LoadStatusService(LoadVantageDbContext context, IDistanceCalculatorService distanceCalculatorService,UserManager<User> userManager) : ILoadStatusService
     {
         public async Task<Guid> CreateLoadAsync(LoadViewModel loadViewModel, Guid brokerId)
         {

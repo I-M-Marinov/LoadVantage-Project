@@ -2244,7 +2244,9 @@
       "LoadVantage.Core/1.0.0": {
         "dependencies": {
           "LoadVantage.Infrastructure": "1.0.0",
-          "Microsoft.AspNetCore.Authorization": "8.0.10"
+          "Microsoft.AspNetCore.Authorization": "8.0.10",
+          "Microsoft.Extensions.Configuration.UserSecrets": "6.0.1",
+          "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
           "LoadVantage.Core.dll": {

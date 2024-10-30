@@ -1,19 +1,21 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using LoadVantage.Core.Contracts;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
+using static LoadVantage.Common.GeneralConstants.Conversion;
 
 
 namespace LoadVantage.Core.Services
 {
-    public class DistanceCalculatorService
+    public class DistanceCalculatorService : IDistanceCalculatorService
     {
 
         private readonly string _apiKey;
         private readonly HttpClient client = new HttpClient();
-        private readonly GeocodeService geocodeService;
+        private readonly IGeocodeService geocodeService;
 
-        public DistanceCalculatorService(IConfiguration configuration, GeocodeService geocodeService)
+        public DistanceCalculatorService(IConfiguration configuration, IGeocodeService geocodeService)
         {
             _apiKey = configuration["ApiKeys:OpenRouteService"];
             this.geocodeService = geocodeService;
@@ -28,7 +30,7 @@ namespace LoadVantage.Core.Services
 
             // Extract distance in meters
             double distanceInMeters = data["routes"][0]["summary"]["distance"].Value<double>();
-            return distanceInMeters / 1609.34; // Convert to miles
+            return distanceInMeters / OneMileInMeters; // Convert to miles
         }
 
         public async Task<double> GetDistanceBetweenCitiesAsync(string originCity, string originState, string destCity, string destState)
