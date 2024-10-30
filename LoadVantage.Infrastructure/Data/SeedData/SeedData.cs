@@ -1,11 +1,16 @@
 ﻿using System.Security.Claims;
+using LoadVantage.Common.Enums;
 using LoadVantage.Infrastructure.Data.Models;
+using LoadVantage.Infrastructure.Data.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using static LoadVantage.Common.GeneralConstants;
 using static LoadVantage.Common.GeneralConstants.UserRoles;
 using static LoadVantage.Common.GeneralConstants.SecretString;
+using Microsoft.EntityFrameworkCore;
+using System;
+using LoadVantage.Infrastructure.Data.Contracts;
 
 namespace LoadVantage.Infrastructure.Data.SeedData
 {
@@ -198,6 +203,95 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                 }
 
             }
+        }
+
+        public static async Task SeedCreatedLoads(IServiceProvider serviceProvider, IConfiguration configuration, UserManager<User> userManager)
+        {
+            // Get the DbContext
+            await using var context = serviceProvider.GetRequiredService<LoadVantageDbContext>();
+
+            var distanceCalculatorService = serviceProvider.GetRequiredService<IDistanceCalculatorService>();
+
+            // Check if any loads already exist
+            if (context.Loads.Any())
+            {
+                return; // Database has already been seeded
+            }
+            var random = new Random();
+
+            var locations = new List<(string City, string State)>
+            {
+                ("Chicago", "IL"),
+                ("New York", "NY"),
+                ("Atlanta", "GA"),
+                ("Houston", "TX"),
+                ("Los Angeles", "CA"),
+                ("Denver", "CO"),
+                ("Miami", "FL"),
+                ("Seattle", "WA"),
+                ("Phoenix", "AZ"),
+                ("Reno", "NV"),
+                ("Indianapolis", "IN")
+            };
+
+            List<Load> GenerateRandomLoads()
+            {
+                var loads = new List<Load>();
+
+                for (int i = 0; i < 6; i++) // Generate six random loads
+                {
+                    // Pick random origin and destination that are not the same
+                    var origin = locations[random.Next(locations.Count)];
+                    (string City, string State) destination;
+                    do
+                    {
+                        destination = locations[random.Next(locations.Count)];
+                    } while (origin == destination); // Ensure origin and destination are different
+
+                    loads.Add(new Load
+                    {
+                        OriginCity = origin.City,
+                        OriginState = origin.State,
+                        DestinationCity = destination.City,
+                        DestinationState = destination.State,
+                        PickupTime = DateTime.Now.AddDays(random.Next(1, 10)), // Pickup date 1 to 10 days from now
+                        DeliveryTime = DateTime.Now.AddDays(random.Next(11, 20)), // Delivery date 11 to 20 days from now
+                        Distance = 0,
+                        Price = random.Next(1000, 6000), // Random price 
+                        Weight = random.Next(10000, 45000), // Random weight 
+                        Status = LoadStatus.Created
+                    });
+                }
+                return loads;
+            }
+
+
+            var brokersList = await userManager.Users.Where(u => u is Broker).ToListAsync(); // get all Users that are Brokers 
+            var brokerIds = brokersList.Select(u => u.Id).ToList();
+
+            var brokersWithLoadList = await context.Brokers
+                .Include(b => b.Loads) // Include the Loads collection
+                .Where(b => brokerIds.Contains(b.Id))
+                .ToListAsync(); // Get the list of brokers
+
+
+            foreach (var broker in brokersWithLoadList)
+            {
+                var randomLoads = GenerateRandomLoads();
+
+                foreach (var load in randomLoads)
+                {
+                    // Calculate the distance for the load
+                    load.Distance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(
+                        load.OriginCity, load.OriginState,
+                        load.DestinationCity, load.DestinationState
+                    );
+
+                    // Add the load to the broker's collection
+                    broker.Loads.Add(load);
+                }
+            }
+            await context.SaveChangesAsync();
         }
     }
 }

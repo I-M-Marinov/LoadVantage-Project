@@ -1,10 +1,15 @@
-﻿using LoadVantage.Common.Enums;
-using LoadVantage.Core.Contracts;
-using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using LoadVantage.Infrastructure.Data;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+using LoadVantage.Common.Enums;
+using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Load;
+using LoadVantage.Infrastructure.Data;
+using LoadVantage.Infrastructure.Data.Models;
+using LoadVantage.Infrastructure.Data.Contracts;
+
+
+
 
 namespace LoadVantage.Core.Services
 {

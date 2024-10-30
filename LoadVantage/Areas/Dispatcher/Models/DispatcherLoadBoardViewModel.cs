@@ -5,8 +5,8 @@ namespace LoadVantage.Areas.Dispatcher.Models
 {
     public class DispatcherLoadBoardViewModel
     {
-        public IEnumerable<LoadViewModel> PostedLoads { get; set; }
-        public IEnumerable<LoadViewModel> BookedLoads { get; set; }
-        public IEnumerable<LoadViewModel> BilledLoads { get; set; }
+        public IEnumerable<DispatcherLoadViewModel> PostedLoads { get; set; }
+        public IEnumerable<DispatcherLoadViewModel> BookedLoads { get; set; }
+        public IEnumerable<DispatcherLoadViewModel> BilledLoads { get; set; }
     }
 }

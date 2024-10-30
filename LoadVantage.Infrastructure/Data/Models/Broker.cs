@@ -15,6 +15,6 @@ namespace LoadVantage.Infrastructure.Data.Models
             Position = BrokerPositionName; // Assigns Broker position name
         }
 
-        public ICollection<Load> Loads { get; set; } = new List<Load>();
+        public IList<Load> Loads { get; set; } = new List<Load>();
 	}
 }

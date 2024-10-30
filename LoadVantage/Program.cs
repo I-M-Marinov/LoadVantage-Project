@@ -3,10 +3,10 @@ using LoadVantage.Areas.Dispatcher.Services;
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Services;
 using LoadVantage.Infrastructure.Data;
+using LoadVantage.Infrastructure.Data.Contracts;
 using LoadVantage.Infrastructure.Data.Models;
-using LoadVantage.Infrastructure.Data.SeedData;
+using LoadVantage.Infrastructure.Data.Services;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static LoadVantage.Infrastructure.Data.SeedData.SeedData;
@@ -37,6 +37,10 @@ builder.Services.AddIdentity<User, Role>(options =>
 	.AddEntityFrameworkStores<LoadVantageDbContext>() 
 	.AddDefaultTokenProviders();
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
 
 builder.Services.AddScoped<IGeocodeService, GeocodeService>(); // Add the Geocode Retrieval Service 
 builder.Services.AddScoped<IDistanceCalculatorService, DistanceCalculatorService>(); // Add the Distance Calculator Service 
@@ -65,26 +69,26 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
-// Seed the Roles
+
 using (var scope = app.Services.CreateScope())
 {
 	var services = scope.ServiceProvider;
-	await InitializeRoles(services);
+    var userManager = services.GetRequiredService<UserManager<User>>();
+    var configuration = services.GetRequiredService<IConfiguration>();
+
+    await InitializeRoles(services); // Seed the roles
+    await SeedAdminUser(services, configuration); // Seed the Administrator 
+    await SeedDispatchers(services, configuration); // Seed the Dispatchers
+    await SeedBrokers(services, configuration); // Seed the Brokers
+    await SeedCreatedLoads(services, configuration, userManager); // Seed the Created loads ( 3 random loads each per broker )
 }
-// Seed the Administrator 
-await SeedAdminUser(app.Services, builder.Configuration);
-
-// Seed the Dispatchers
-await SeedDispatchers(app.Services, builder.Configuration);
-
-// Seed the Brokers
-await SeedBrokers(app.Services, builder.Configuration);
 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 	app.UseMigrationsEndPoint();
+    builder.Configuration.AddUserSecrets<Program>(); 
 }
 else
 {
