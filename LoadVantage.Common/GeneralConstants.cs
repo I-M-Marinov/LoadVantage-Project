@@ -27,5 +27,10 @@ namespace LoadVantage.Common
         {
 			public const string PasswordSecretWord = "password";
         }
+
+        public class Conversion
+        {
+            public const double OneMileInMeters = 1609.34;
+        }
     }
 }

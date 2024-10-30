@@ -8,10 +8,12 @@ using LoadVantage.Core.Models.Load;
 
 namespace LoadVantage.Core.Services
 {
-    public class LoadStatusService(LoadVantageDbContext context, UserManager<User> userManager) : ILoadStatusService
+    public class LoadStatusService(LoadVantageDbContext context, DistanceCalculatorService distanceCalculatorService,UserManager<User> userManager) : ILoadStatusService
     {
         public async Task<Guid> CreateLoadAsync(LoadViewModel loadViewModel, Guid brokerId)
         {
+            var calculatedDistance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(loadViewModel.OriginCity, loadViewModel.OriginState, loadViewModel.DestinationCity, loadViewModel.DestinationState);
+
             var load = new Load
             {
                 Id = Guid.NewGuid(),
@@ -21,6 +23,7 @@ namespace LoadVantage.Core.Services
                 DestinationState = loadViewModel.DestinationState,
                 PickupTime = loadViewModel.PickupTime,
                 DeliveryTime = loadViewModel.DeliveryTime,
+                Distance = calculatedDistance,
                 Price = loadViewModel.PostedPrice,
                 Weight = loadViewModel.Weight,
                 BrokerId = brokerId,
@@ -64,6 +67,10 @@ namespace LoadVantage.Core.Services
             {
                 return false; // Load not found
             }
+            // If any changes in the Origin City or State
+            bool originChanged = load.OriginCity != updatedLoadViewModel.OriginCity || load.OriginState != updatedLoadViewModel.OriginState;
+            // If any changes in the Destination City or State
+            bool destinationChanged = load.DestinationCity != updatedLoadViewModel.DestinationCity || load.DestinationState != updatedLoadViewModel.DestinationState; 
 
             // Update properties
             load.OriginCity = updatedLoadViewModel.OriginCity;
@@ -74,6 +81,18 @@ namespace LoadVantage.Core.Services
             load.DeliveryTime = updatedLoadViewModel.DeliveryTime;
             load.Price = updatedLoadViewModel.PostedPrice;
             load.Weight = updatedLoadViewModel.Weight;
+
+            if (originChanged || destinationChanged) // if either of the two is TRUE ----> Recalculate the distance 
+            {
+                var distance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(
+                    updatedLoadViewModel.OriginCity,
+                    updatedLoadViewModel.OriginState,
+                    updatedLoadViewModel.DestinationCity,
+                    updatedLoadViewModel.DestinationState
+                );
+
+                load.Distance = distance;
+            }
 
             context.Loads.Update(load);
             await context.SaveChangesAsync();
