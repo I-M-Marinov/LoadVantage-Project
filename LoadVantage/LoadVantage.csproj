@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Broker\Controllers\" />
-    <Folder Include="Areas\Broker\Services\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
 
