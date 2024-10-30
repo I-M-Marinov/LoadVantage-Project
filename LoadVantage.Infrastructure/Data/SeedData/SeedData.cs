@@ -132,9 +132,70 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                 }
 
             }
+        }
 
-        
+        public static async Task SeedBrokers(IServiceProvider serviceProvider, IConfiguration configuration)
+        {
+            using var scope = serviceProvider.CreateScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
 
+            Role? userRole = await roleManager.FindByNameAsync(UserRoleName);
+
+            var brokers = new List<User>
+            {
+                new User()
+                {
+                    UserName = "broker1",
+                    Email = "broker1@gmail.com",
+                    FirstName = "Richard",
+                    LastName = "Richardson",
+                    CompanyName = "Echo Global Logistics",
+                    PhoneNumber = "+1-708-953-7412",
+                    Position = BrokerPositionName,
+                    Role = userRole!
+                },
+                new User()
+                {
+                    UserName = "broker2",
+                    Email = "broker2@gmail.com",
+                    FirstName = "Donald",
+                    LastName = "Gardner",
+                    CompanyName = "Pitbull Freight Co.",
+                    PhoneNumber = "+1-300-852-7391",
+                    Position = BrokerPositionName,
+                    Role = userRole!
+                }
+            };
+
+            var counter = 1;
+            foreach (var broker in brokers)
+            {
+
+                var userExists = await userManager.FindByNameAsync(broker.UserName)
+                                   ?? await userManager.FindByEmailAsync(broker.Email);
+
+                if (userExists != null)
+                {
+                    continue;
+                }
+                string password = PasswordSecretWord + counter;
+                counter++;
+
+                var result = await userManager.CreateAsync(broker, password);
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(broker, UserRoleName);
+                    await userManager.AddClaimAsync(broker, new Claim("Position", broker.Position ?? ""));
+                }
+                else
+                {
+                    var errorMessages = string.Join(", ", result.Errors.Select(e => e.Description));
+                    throw new Exception($"Failed to create broker {broker.UserName}: {errorMessages}");
+                }
+
+            }
         }
     }
 }

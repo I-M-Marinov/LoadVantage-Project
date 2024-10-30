@@ -1,9 +1,13 @@
-﻿@using LoadVantage.Areas.Dispatcher.Models
+﻿@using System.Security.Claims
+@using LoadVantage.Areas.Dispatcher.Models
+@using LoadVantage.Common.Enums
 @model DispatcherLoadBoardViewModel
 
 @{
     ViewData["Title"] = "Dispatcher Profile";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
 }
 
 
@@ -489,46 +493,120 @@
 						
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Home</button>
+                                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Posted Loads</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Profile</button>
+                                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Booked Loads</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
+                                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Billed Loads</button>
                             </li>
                         </ul>
-                        <div class="tab-content pt-2" id="myTabContent">
-                            
-                        </div><!-- End Pills Tabs -->
+	                    <div class="tab-content pt-2" id="myTabContent">
+							
+		                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="home-tab">
+			                    <table class="table datatable">
+				                    <thead>
+				                    <tr>
+					                    <th>Origin City</th>
+					                    <th>State</th>
+					                    <th>Destination City</th>
+					                    <th>State</th>
+					                    <th>Pickup Time</th>
+					                    <th>Delivery Time</th>
+					                    <th>Distance</th>
+					                    <th>Price</th>
+					                    <th>RPM</th>
+				                    </tr>
+				                    </thead>
+				                    <tbody>
+				                    @foreach (var load in Model.PostedLoads)
+				                    {
+					                    <tr>
+						                    <td>@load.OriginCity</td>
+						                    <td>@load.OriginState</td>
+						                    <td>@load.DestinationCity</td>
+						                    <td>@load.DestinationState</td>
+						                    <td>@load.PickupTime</td>
+						                    <td>@load.DeliveryTime</td>
+						                    <td>@load.Distance</td>
+						                    <td>@load.PostedPrice</td>
+						                    <td>@(load.PostedPrice / (decimal)load.Distance)</td>
+					                    </tr>
+				                    }
+
+				                    </tbody>
+			                    </table>
+		                    </div>
+							
+		                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="profile-tab">
+			                    <table class="table datatable">
+				                    <thead>
+				                    <tr>
+					                    <th>Origin City</th>
+					                    <th>State</th>
+					                    <th>Destination City</th>
+					                    <th>State</th>
+					                    <th>Pickup Time</th>
+					                    <th>Delivery Time</th>
+					                    <th>Distance</th>
+					                    <th>Status</th>
+				                    </tr>
+				                    </thead>
+				                    <tbody>
+                                        @foreach (var load in Model.BookedLoads.Where(bl => bl.DispatcherId == Guid.Parse(userId!) && bl.Status == LoadStatus.Booked.ToString()))
+				                    {
+					                    <tr>
+						                    <td>@load.OriginCity</td>
+						                    <td>@load.OriginState</td>
+						                    <td>@load.DestinationCity</td>
+						                    <td>@load.DestinationState</td>
+						                    <td>@load.PickupTime</td>
+						                    <td>@load.DeliveryTime</td>
+						                    <td>@load.Distance</td>
+						                    <td>@load.Status</td>
+					                    </tr>
+				                    }
+
+				                    </tbody>
+			                    </table>
+
+		                    </div>
+		                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="contact-tab">
+			                    <table class="table datatable">
+				                    <thead>
+				                    <tr>
+					                    <th>Origin City</th>
+					                    <th>State</th>
+					                    <th>Destination City</th>
+					                    <th>State</th>
+					                    <th>Distance</th>
+					                    <th>Price</th>
+					                    <th>Billed On</th>
+				                    </tr>
+				                    </thead>
+				                    <tbody>
+                                        @foreach (var load in Model.BilledLoads.Where(bl => bl.DispatcherId == Guid.Parse(userId!) && bl.Status == LoadStatus.Delivered.ToString()))
+				                    {
+					                    <tr>
+						                    <td>@load.OriginCity</td>
+						                    <td>@load.OriginState</td>
+						                    <td>@load.DestinationCity</td>
+						                    <td>@load.DestinationState</td>
+						                    <td>@load.Distance</td>
+						                    <td>@load.BilledAmount</td>
+						                    <td>@load.BilledDate</td>
+					                    </tr>
+				                    }
+
+				                    </tbody>
+			                    </table>
+		                    </div>
+		                    
+	                    </div><!-- End Pills Tabs -->
 
 	                    <!-- Table with stripped rows -->
-                        <table class="table datatable">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        Origin City
-                                    </th>
-                                    <th>Origin State</th>
-                                    <th>Destination City</th>
-                                    <th>Destination State</th>
-                                    <th>Distance</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var load in Model.PostedLoads)
-                                 {
-	                                 <tr>
-		                                 <td>@load.OriginCity</td>
-		                                 <td>@load.OriginState</td>
-		                                 <td>@load.DestinationCity</td>
-		                                 <td>@load.DestinationState</td>
-		                                 <td>@load.Distance</td>
-	                                 </tr>
-                                 }
-                                
-                            </tbody>
-                        </table>
+                       
                         <!-- End Table with stripped rows -->
 
                     </div>

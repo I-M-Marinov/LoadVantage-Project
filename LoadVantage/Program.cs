@@ -77,6 +77,9 @@ await SeedAdminUser(app.Services, builder.Configuration);
 // Seed the Dispatchers
 await SeedDispatchers(app.Services, builder.Configuration);
 
+// Seed the Brokers
+await SeedBrokers(app.Services, builder.Configuration);
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
