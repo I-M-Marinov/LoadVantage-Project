@@ -4,21 +4,22 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - LoadVantage</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    @* 	<link rel="stylesheet" href="~/LoadVantage.styles.css" asp-append-version="true" />  *@
+    <link rel="stylesheet" href="~/LoadVantage.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/assets/css/style.css" asp-append-version="true" />
-	<!-- Vendor CSS Files -->
-	<link rel="stylesheet" href="~/assets/vendor/bootstrap/css/bootstrap.min.css" asp-append-version="true">
-	<link rel="stylesheet" href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" asp-append-version="true">
-	<link rel="stylesheet" href="~/assets/vendor/boxicons/css/boxicons.min.css" asp-append-version="true">
-	<link rel="stylesheet" href="~/assets/vendor/quill/quill.snow.css" asp-append-version="true">
-	<link rel="stylesheet" href="~/assets/vendor/quill/quill.bubble.css" asp-append-version="true">
-	<link rel="stylesheet" href="~/assets/vendor/remixicon/remixicon.css" asp-append-version="true">
-	<link rel="stylesheet" href="~/assets/vendor/simple-datatables/style.css" asp-append-version="true">
-	<link rel="stylesheet" href="~/assets/css/style.css" asp-append-version="true">
 
-	<!-- Favicons -->
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="~/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Favicons -->
     <link href="~/assets/img/favicon.png" rel="icon">
     <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
@@ -26,63 +27,61 @@
     <link href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-
     <!-- Template Main CSS File -->
     <link href="/assets/css/style.css" rel="stylesheet">
 </head>
 <body style="background: rgb(131,58,180);background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(29,255,253,1) 100%, rgba(252,176,69,1) 100%);">
-<header>
-	<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-		<div class="container-fluid">
-			<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LoadVantage</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-			        aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-				<ul class="navbar-nav flex-grow-1">
-					<li class="nav-item">
-						<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-					</li>
-				</ul>
-				<partial name="_LoginPartial" />
-			</div>
-		</div>
-	</nav>
 
-</header>
-<div class="container">
-	<main role="main" class="pb-3">
-		@RenderBody()
-	</main>
-</div>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LoadVantage</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
 
-<footer class="border-top footer text-muted">
-	<div class="container" style="color: black;">
-		&copy; 2024 - LoadVantage - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-	</div>
-</footer>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
 
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <footer class="border-top footer text-muted">
+        <div class="container" style="color: black;">
+            &copy; 2024 - LoadVantage - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
 
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-@await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- Vendor JS Files -->
+    <script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendor/chart.js/chart.umd.js"></script>
+    <script src="~/assets/vendor/echarts/echarts.min.js"></script>
+    <script src="~/assets/vendor/quill/quill.js"></script>
+    <script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="~/assets/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="~/assets/js/main.js"></script>
 </body>
-
-<!-- Vendor JS Files -->
-<script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="~/assets/vendor/chart.js/chart.umd.js"></script>
-<script src="~/assets/vendor/echarts/echarts.min.js"></script>
-<script src="~/assets/vendor/quill/quill.js"></script>
-<script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
-<script src="~/assets/vendor/php-email-form/validate.js"></script>
-<!-- Template Main JS File -->
-<script src="~/assets/js/main.js"></script>
-
 </html>
-
-

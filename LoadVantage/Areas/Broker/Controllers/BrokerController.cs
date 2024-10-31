@@ -26,17 +26,19 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             if (broker == null)
             {
-                return NotFound(); // Dispatcher not found
+
+                return View(); // Broker was not found
             }
 
-            return View(broker); // Pass the dispatcher info to the view
+            return View(broker); // Pass the broker info to the view
         }
 
         [HttpGet]
         [Route("LoadBoard")]
-        public async Task<IActionResult> LoadBoard(Guid brokerId)
+        public async Task<IActionResult> LoadBoard()
         {
-            var loadBoardInfo = await brokerLoadBoardService.GetBrokerLoadBoardAsync(brokerId);
+            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+            var loadBoardInfo = await brokerLoadBoardService.GetBrokerLoadBoardAsync(userId);
 
             return View(loadBoardInfo);
 

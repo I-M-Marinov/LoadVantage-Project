@@ -105,6 +105,42 @@
       "PackagePath": "staticwebassets\\assets\\scss\\Readme.txt"
     },
     {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\scss\\_dashboard.scss",
+      "PackagePath": "staticwebassets\\assets\\scss\\_dashboard.scss"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\scss\\_footer.scss",
+      "PackagePath": "staticwebassets\\assets\\scss\\_footer.scss"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\scss\\_general.scss",
+      "PackagePath": "staticwebassets\\assets\\scss\\_general.scss"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\scss\\_header.scss",
+      "PackagePath": "staticwebassets\\assets\\scss\\_header.scss"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\scss\\_override.scss",
+      "PackagePath": "staticwebassets\\assets\\scss\\_override.scss"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\scss\\_pages.scss",
+      "PackagePath": "staticwebassets\\assets\\scss\\_pages.scss"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\scss\\_sidebar.scss",
+      "PackagePath": "staticwebassets\\assets\\scss\\_sidebar.scss"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\scss\\_variables.scss",
+      "PackagePath": "staticwebassets\\assets\\scss\\_variables.scss"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\scss\\style.scss",
+      "PackagePath": "staticwebassets\\assets\\scss\\style.scss"
+    },
+    {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\vendor\\apexcharts\\apexcharts.amd.js",
       "PackagePath": "staticwebassets\\assets\\vendor\\apexcharts\\apexcharts.amd.js"
     },
@@ -1045,6 +1081,10 @@
       "PackagePath": "staticwebassets\\assets\\vendor\\echarts\\package.json"
     },
     {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\vendor\\php-email-form\\php-email-form.php",
+      "PackagePath": "staticwebassets\\assets\\vendor\\php-email-form\\php-email-form.php"
+    },
+    {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\vendor\\php-email-form\\validate.js",
       "PackagePath": "staticwebassets\\assets\\vendor\\php-email-form\\validate.js"
     },
@@ -1183,6 +1223,10 @@
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\vendor\\tinymce\\models\\dom\\model.min.js",
       "PackagePath": "staticwebassets\\assets\\vendor\\tinymce\\models\\dom\\model.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\vendor\\tinymce\\package-lock.json",
+      "PackagePath": "staticwebassets\\assets\\vendor\\tinymce\\package-lock.json"
     },
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\vendor\\tinymce\\package.json",
@@ -2003,10 +2047,6 @@
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
-    },
-    {
-      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\js\\myjs.js",
-      "PackagePath": "staticwebassets\\js\\myjs.js"
     },
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\js\\site.js",

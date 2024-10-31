@@ -6,26 +6,24 @@
 @{
     ViewData["Title"] = "Broker LoadBoard";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
 }
 
-
 <header id="header" class="header fixed-top d-flex align-items-center">
-	
-	<div class="d-flex align-items-center justify-content-between">
-		<a href="index.html" class="logo d-flex align-items-center">
-			<img src="assets/img/logo.png" alt="">
-			<span class="d-none d-lg-block">LoadVantage</span>
-		</a>
-		<i class="bi bi-list toggle-sidebar-btn"></i>
-	</div><!-- End Logo -->
-	<div class="search-bar">
-	        <form class="search-form d-flex align-items-center" method="POST" action="#">
-	            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-	            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-	        </form>
-	</div><!-- End Search Bar -->
+
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="index.html" class="logo d-flex align-items-center">
+            <img src="assets/img/logo.png" alt="">
+            <span class="d-none d-lg-block">LoadVantage</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+        <form class="search-form d-flex align-items-center" method="POST" action="#">
+            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        </form>
+    </div><!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
@@ -129,7 +127,7 @@
 
                     <li class="message-item">
                         <a href="#">
-                            <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                            <img src="~/assets/img/messages-1.jpg" alt="" class="rounded-circle">
                             <div>
                                 <h4>Maria Hudson</h4>
                                 <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -143,7 +141,7 @@
 
                     <li class="message-item">
                         <a href="#">
-                            <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                            <img src="~/assets/img/messages-2.jpg" alt="" class="rounded-circle">
                             <div>
                                 <h4>Anna Nelson</h4>
                                 <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -157,7 +155,7 @@
 
                     <li class="message-item">
                         <a href="#">
-                            <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                            <img src="~/assets/img/messages-3.jpg" alt="" class="rounded-circle">
                             <div>
                                 <h4>David Muldon</h4>
                                 <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -180,7 +178,7 @@
             <li class="nav-item dropdown pe-3">
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                    <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
                 </a><!-- End Profile Iamge Icon -->
 
@@ -237,6 +235,7 @@
     </nav><!-- End Icons Navigation -->
 
 </header><!-- End Header -->
+
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
 
@@ -248,7 +247,7 @@
 		        <span>LoadBoard</span>
                 <i class="ri-truck-fill"></i>
 	        </a>
-        </li><!-- End Dashboard Nav -->
+        </li><!-- End LoadBoard Nav -->
 	
     
 	    <li class="nav-item">
@@ -258,220 +257,6 @@
 		    </a>
 	    </li><!-- End Profile Page Nav -->
 
-    <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="components-alerts.html">
-                        <i class="bi bi-circle"></i><span>Alerts</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="components-accordion.html">
-                        <i class="bi bi-circle"></i><span>Accordion</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="components-badges.html">
-                        <i class="bi bi-circle"></i><span>Badges</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="components-breadcrumbs.html">
-                        <i class="bi bi-circle"></i><span>Breadcrumbs</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="components-buttons.html">
-                        <i class="bi bi-circle"></i><span>Buttons</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="components-cards.html">
-                        <i class="bi bi-circle"></i><span>Cards</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="components-carousel.html">
-                        <i class="bi bi-circle"></i><span>Carousel</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="components-list-group.html">
-                        <i class="bi bi-circle"></i><span>List group</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="components-modal.html">
-                        <i class="bi bi-circle"></i><span>Modal</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="components-tabs.html">
-                        <i class="bi bi-circle"></i><span>Tabs</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="components-pagination.html">
-                        <i class="bi bi-circle"></i><span>Pagination</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="components-progress.html">
-                        <i class="bi bi-circle"></i><span>Progress</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="components-spinners.html">
-                        <i class="bi bi-circle"></i><span>Spinners</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="components-tooltips.html">
-                        <i class="bi bi-circle"></i><span>Tooltips</span>
-                    </a>
-                </li>
-            </ul>
-        </li><!-- End Components Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="forms-elements.html">
-                        <i class="bi bi-circle"></i><span>Form Elements</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="forms-layouts.html">
-                        <i class="bi bi-circle"></i><span>Form Layouts</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="forms-editors.html">
-                        <i class="bi bi-circle"></i><span>Form Editors</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="forms-validation.html">
-                        <i class="bi bi-circle"></i><span>Form Validation</span>
-                    </a>
-                </li>
-            </ul>
-        </li><!-- End Forms Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="tables-general.html">
-                        <i class="bi bi-circle"></i><span>General Tables</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="tables-data.html">
-                        <i class="bi bi-circle"></i><span>Data Tables</span>
-                    </a>
-                </li>
-            </ul>
-        </li><!-- End Tables Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-bar-chart"></i><span>Charts</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="charts-chartjs.html">
-                        <i class="bi bi-circle"></i><span>Chart.js</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="charts-apexcharts.html">
-                        <i class="bi bi-circle"></i><span>ApexCharts</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="charts-echarts.html">
-                        <i class="bi bi-circle"></i><span>ECharts</span>
-                    </a>
-                </li>
-            </ul>
-        </li><!-- End Charts Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-gem"></i><span>Icons</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="icons-bootstrap.html">
-                        <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="icons-remix.html">
-                        <i class="bi bi-circle"></i><span>Remix Icons</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="icons-boxicons.html">
-                        <i class="bi bi-circle"></i><span>Boxicons</span>
-                    </a>
-                </li>
-            </ul>
-        </li><!-- End Icons Nav -->
-
-        <li class="nav-heading">Pages</li>
-
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>F.A.Q</span>
-            </a>
-        </li><!-- End F.A.Q Page Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-contact.html">
-                <i class="bi bi-envelope"></i>
-                <span>Contact</span>
-            </a>
-        </li><!-- End Contact Page Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-register.html">
-                <i class="bi bi-card-list"></i>
-                <span>Register</span>
-            </a>
-        </li><!-- End Register Page Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-login.html">
-                <i class="bi bi-box-arrow-in-right"></i>
-                <span>Login</span>
-            </a>
-        </li><!-- End Login Page Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-error-404.html">
-                <i class="bi bi-dash-circle"></i>
-                <span>Error 404</span>
-            </a>
-        </li><!-- End Error 404 Page Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-blank.html">
-                <i class="bi bi-file-earmark"></i>
-                <span>Blank</span>
-            </a>
-        </li><!-- End Blank Page Nav -->
 
     </ul>
 
@@ -489,7 +274,9 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
-
+	
+	
+    <!-- LOAD BOARD START -->
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
@@ -500,163 +287,166 @@
 						
 	                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 		                    <li class="nav-item" role="presentation">
-			                    <button class="nav-link active" id="pills-home-tab1" data-bs-toggle="pill" data-bs-target="#pills-home1" type="button" role="tab" aria-controls="pills-home1" aria-selected="true">Created Loads</button>
+			                    <button class="nav-link active" id="pills-created-tab" data-bs-toggle="pill" data-bs-target="#pills-created" type="button" role="tab" aria-controls="pills-created" aria-selected="true">Created Loads</button>
 		                    </li>
 		                    <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="pills-home-tab2" data-bs-toggle="pill" data-bs-target="#pills-home2" type="button" role="tab" aria-controls="pills-home" aria-selected="false">Posted Loads</button>
+			                    <button class="nav-link" id="pills-posted-tab" data-bs-toggle="pill" data-bs-target="#pills-posted" type="button" role="tab" aria-controls="pills-posted" aria-selected="false">Posted Loads</button>
 		                    </li>
 		                    <li class="nav-item" role="presentation">
-			                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Booked Loads</button>
+			                    <button class="nav-link" id="pills-booked-tab" data-bs-toggle="pill" data-bs-target="#pills-booked" type="button" role="tab" aria-controls="pills-booked" aria-selected="false">Booked Loads</button>
 		                    </li>
 		                    <li class="nav-item" role="presentation">
-			                    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Billed Loads</button>
+			                    <button class="nav-link" id="pills-billed-tab" data-bs-toggle="pill" data-bs-target="#pills-billed" type="button" role="tab" aria-controls="pills-billed" aria-selected="false">Billed Loads</button>
 		                    </li>
 	                    </ul>
-	                    <div class="tab-content pt-2" id="myTabContent">
+	                    <div class="tab-content " id="myTabContent">
 							
-		                    <div class="tab-pane fade show active" id="pills-home1" role="tabpanel" aria-labelledby="home-tab1">
-			                    <table class="table datatable">
-				                    <thead>
-				                    <tr>
-					                    <th>Origin City</th>
-					                    <th>State</th>
-					                    <th>Destination City</th>
-					                    <th>State</th>
-					                    <th>Pickup Time</th>
-					                    <th>Delivery Time</th>
-					                    <th>Distance</th>
-					                    <th>Price</th>
-					                    <th>RPM</th>
-				                    </tr>
-				                    </thead>
-				                    <tbody>
-				                    @foreach (var load in Model.CreatedLoads)
-				                    {
+		                    <div class="tab-pane fade show active" id="pills-created" role="tabpanel" aria-labelledby="pills-created-tab">
+			                    <div class="table-responsive">
+				                    <table class="table datatable">
+					                    <thead>
 					                    <tr>
-						                    <td>@load.OriginCity</td>
-						                    <td>@load.OriginState</td>
-						                    <td>@load.DestinationCity</td>
-						                    <td>@load.DestinationState</td>
-						                    <td>@load.PickupTime</td>
-						                    <td>@load.DeliveryTime</td>
-						                    <td>@load.Distance</td>
-						                    <td>@load.PostedPrice</td>
-						                    <td>@(load.PostedPrice / (decimal)load.Distance)</td>
+						                    <th>Origin</th>
+						                    <th>State</th>
+						                    <th>Destination</th>
+						                    <th>State</th>
+						                    <th>Pickup Time</th>
+						                    <th>Delivery Time</th>
+						                    <th>Distance</th>
+						                    <th>Price</th>
+						                    <th>RPM</th>
 					                    </tr>
-				                    }
+					                    </thead>
+					                    <tbody>
+					                    @foreach (var load in Model.CreatedLoads)
+					                    {
+						                    <tr class="clickable-row">
+							                    <td>@load.OriginCity</td>
+							                    <td>@load.OriginState</td>
+							                    <td>@load.DestinationCity</td>
+							                    <td>@load.DestinationState</td>
+							                    <td>@load.PickupTime.ToString("dd/MM/yyyy HH:mm")</td>
+							                    <td>@load.DeliveryTime.ToString("dd/MM/yyyy HH:mm")</td>
+							                    <td>@(load.Distance.HasValue ? Math.Round(load.Distance.Value) : 0)</td>
+							                    <td>$@load.PostedPrice</td>
+							                    <td>@($"${(load.PostedPrice / (decimal)load.Distance):F2}/mile")</td>
+						                    </tr>
+					                    }
 
-				                    </tbody>
-			                    </table>
+					                    </tbody>
+				                    </table>
+			                    </div>
 		                    </div>
-		                    <div class="tab-pane fade" id="pills-home2" role="tabpanel" aria-labelledby="home-tab1">
-			                    <table class="table datatable">
-				                    <thead>
-				                    <tr>
-					                    <th>Origin City</th>
-					                    <th>State</th>
-					                    <th>Destination City</th>
-					                    <th>State</th>
-					                    <th>Pickup Time</th>
-					                    <th>Delivery Time</th>
-					                    <th>Distance</th>
-					                    <th>Price</th>
-					                    <th>RPM</th>
-				                    </tr>
-				                    </thead>
-				                    <tbody>
-				                    @foreach (var load in Model.PostedLoads)
-				                    {
+		                    <div class="tab-pane fade" id="pills-posted" role="tabpanel" aria-labelledby="pills-posted-tab">
+			                    <div class="table-responsive">
+				                    <table class="table datatable">
+					                    <thead>
 					                    <tr>
-						                    <td>@load.OriginCity</td>
-						                    <td>@load.OriginState</td>
-						                    <td>@load.DestinationCity</td>
-						                    <td>@load.DestinationState</td>
-						                    <td>@load.PickupTime</td>
-						                    <td>@load.DeliveryTime</td>
-						                    <td>@load.Distance</td>
-						                    <td>@load.PostedPrice</td>
-						                    <td>@(load.PostedPrice / (decimal)load.Distance)</td>
+						                    <th>Origin</th>
+						                    <th>State</th>
+						                    <th>Destination</th>
+						                    <th>State</th>
+						                    <th>Pickup Time</th>
+						                    <th>Delivery Time</th>
+						                    <th>Distance</th>
+						                    <th>Price</th>
+						                    <th>RPM</th>
 					                    </tr>
-				                    }
+					                    </thead>
+					                    <tbody>
+					                    @foreach (var load in Model.PostedLoads)
+					                    {
+						                    <tr>
+							                    <td>@load.OriginCity</td>
+							                    <td>@load.OriginState</td>
+							                    <td>@load.DestinationCity</td>
+							                    <td>@load.DestinationState</td>
+							                    <td>@load.PickupTime.ToString("dd/MM/yyyy HH:mm")</td>
+							                    <td>@load.DeliveryTime.ToString("dd/MM/yyyy HH:mm")</td>
+							                    <td>@(load.Distance.HasValue ? Math.Round(load.Distance.Value) : 0)</td>
+							                    <td>@load.PostedPrice</td>
+							                    <td>@($"${(load.PostedPrice / (decimal)load.Distance):F2}/mile")</td>
+						                    </tr>
+					                    }
 
-				                    </tbody>
-			                    </table>
+					                    </tbody>
+				                    </table>
+			                    </div>
 		                    </div>
-		                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="profile-tab">
-			                    <table class="table datatable">
-				                    <thead>
-				                    <tr>
-					                    <th>Origin City</th>
-					                    <th>State</th>
-					                    <th>Destination City</th>
-					                    <th>State</th>
-					                    <th>Pickup Time</th>
-					                    <th>Delivery Time</th>
-					                    <th>Distance</th>
-					                    <th>Status</th>
-				                    </tr>
-				                    </thead>
-				                    <tbody>
-				                    @foreach (var load in Model.BookedLoads.Where(bl => bl.DispatcherId == Guid.Parse(userId!) && bl.Status == LoadStatus.Booked.ToString()))
-				                    {
+		                    <div class="tab-pane fade" id="pills-booked" role="tabpanel" aria-labelledby="pills-booked-tab">
+			                    <div class="table-responsive">
+				                    <table class="table datatable">
+					                    <thead>
 					                    <tr>
-						                    <td>@load.OriginCity</td>
-						                    <td>@load.OriginState</td>
-						                    <td>@load.DestinationCity</td>
-						                    <td>@load.DestinationState</td>
-						                    <td>@load.PickupTime</td>
-						                    <td>@load.DeliveryTime</td>
-						                    <td>@load.Distance</td>
-						                    <td>@load.Status</td>
+						                    <th>Origin</th>
+						                    <th>State</th>
+						                    <th>Destination</th>
+						                    <th>State</th>
+						                    <th>Pickup Time</th>
+						                    <th>Delivery Time</th>
+						                    <th>Distance</th>
+						                    <th>Status</th>
 					                    </tr>
-				                    }
+					                    </thead>
+					                    <tbody>
+					                    @foreach (var load in Model.BookedLoads)
+					                    {
+						                    <tr>
+							                    <td>@load.OriginCity</td>
+							                    <td>@load.OriginState</td>
+							                    <td>@load.DestinationCity</td>
+							                    <td>@load.DestinationState</td>
+							                    <td>@load.PickupTime.ToString("dd/MM/yyyy HH:mm")</td>
+							                    <td>@load.DeliveryTime.ToString("dd/MM/yyyy HH:mm")</td>
+							                    <td>@($"${(load.PostedPrice / (decimal)load.Distance):F2}/mile")</td>
+							                    <td>@load.Status</td>
+						                    </tr>
+					                    }
 
-				                    </tbody>
-			                    </table>
-
+					                    </tbody>
+				                    </table>
+			                    </div>
 		                    </div>
-		                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="contact-tab">
-			                    <table class="table datatable">
-				                    <thead>
-				                    <tr>
-					                    <th>Origin City</th>
-					                    <th>State</th>
-					                    <th>Destination City</th>
-					                    <th>State</th>
-					                    <th>Distance</th>
-					                    <th>Price</th>
-					                    <th>Billed On</th>
-				                    </tr>
-				                    </thead>
-				                    <tbody>
-				                    @foreach (var load in Model.BilledLoads.Where(bl => bl.DispatcherId == Guid.Parse(userId!) && bl.Status == LoadStatus.Delivered.ToString()))
-				                    {
+		                    <div class="tab-pane fade" id="pills-billed" role="tabpanel" aria-labelledby="pills-billed-tab">
+			                    <div class="table-responsive">
+				                    <table class="table datatable">
+					                    <thead>
 					                    <tr>
-						                    <td>@load.OriginCity</td>
-						                    <td>@load.OriginState</td>
-						                    <td>@load.DestinationCity</td>
-						                    <td>@load.DestinationState</td>
-						                    <td>@load.Distance</td>
-						                    <td>@load.BilledAmount</td>
-						                    <td>@load.BilledDate</td>
+						                    <th>Origin</th>
+						                    <th>State</th>
+						                    <th>Destination</th>
+						                    <th>State</th>
+						                    <th>Distance</th>
+						                    <th>Price</th>
+						                    <th>Billed On</th>
 					                    </tr>
-				                    }
+					                    </thead>
+					                    <tbody>
+					                    @foreach (var load in Model.BilledLoads)
+					                    {
+						                    <tr>
+							                    <td>@load.OriginCity</td>
+							                    <td>@load.OriginState</td>
+							                    <td>@load.DestinationCity</td>
+							                    <td>@load.DestinationState</td>
+							                    <td>@($"${(load.PostedPrice / (decimal)load.Distance):F2}/mile")</td>
+							                    <td>@load.BilledAmount</td>
+							                    <td>@load.BilledDate</td>
+						                    </tr>
+					                    }
 
-				                    </tbody>
-			                    </table>
+					                    </tbody>
+				                    </table>
+			                    </div>
 		                    </div>
 
 	                    </div><!-- End Pills Tabs -->
-
-	                    <!-- Table with stripped rows -->
-                       
-                        <!-- End Table with stripped rows -->
 
                     </div>
                 </div>
 
             </div>
         </div>
-    </section>
+	</section>    <!-- LOAD BOARD START -->
 
 </main><!-- End #main -->

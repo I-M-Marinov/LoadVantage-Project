@@ -1,9 +1,7 @@
 ﻿using LoadVantage.Areas.Broker.Contracts;
 using LoadVantage.Areas.Broker.Models;
-using LoadVantage.Areas.Dispatcher.Models;
 using LoadVantage.Common.Enums;
 using LoadVantage.Infrastructure.Data;
-using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LoadVantage.Areas.Broker.Services
@@ -13,7 +11,7 @@ namespace LoadVantage.Areas.Broker.Services
         public async Task<IEnumerable<BrokerLoadViewModel>> GetAllCreatedLoadsForBrokerAsync(Guid brokerId)
         {
             var createdLoads = await context.Loads
-                .Where(load => load.Status == LoadStatus.Available && load.BrokerId == brokerId)
+                .Where(load => load.Status == LoadStatus.Created && load.BrokerId == brokerId)
                 .ToListAsync();
 
             return createdLoads.Select(load => new BrokerLoadViewModel()
@@ -26,6 +24,7 @@ namespace LoadVantage.Areas.Broker.Services
                 PickupTime = load.PickupTime,
                 DeliveryTime = load.DeliveryTime,
                 PostedPrice = load.Price,
+                Distance = load.Distance,
                 Weight = load.Weight,
                 Status = load.Status.ToString(), 
                 BrokerId = load.BrokerId
@@ -48,6 +47,7 @@ namespace LoadVantage.Areas.Broker.Services
                 PickupTime = load.PickupTime,
                 DeliveryTime = load.DeliveryTime,
                 PostedPrice = load.Price,
+                Distance = load.Distance,
                 Weight = load.Weight,
                 Status = load.Status.ToString(),
                 BrokerId = load.BrokerId
@@ -70,6 +70,7 @@ namespace LoadVantage.Areas.Broker.Services
                 PickupTime = load.PickupTime,
                 DeliveryTime = load.DeliveryTime,
                 PostedPrice = load.Price,
+                Distance = load.Distance,
                 Weight = load.Weight,
                 Status = load.Status.ToString(),
                 BrokerId = load.BrokerId,
@@ -93,6 +94,7 @@ namespace LoadVantage.Areas.Broker.Services
                 PickupTime = load.PickupTime,
                 DeliveryTime = load.DeliveryTime,
                 PostedPrice = load.Price,
+                Distance = load.Distance,
                 Weight = load.Weight,
                 Status = load.Status.ToString(),
                 BrokerId = load.BrokerId,
@@ -105,9 +107,10 @@ namespace LoadVantage.Areas.Broker.Services
             var postedLoads = await GetAllPostedLoadsForBrokerAsync(brokerId);
             var bookedLoads = await GetAllBookedLoadsForBrokerAsync(brokerId);
             var billedLoads = await GetAllBilledLoadsForBrokerAsync(brokerId);
-
+            
             return new BrokerLoadBoardViewModel
             {
+                BrokerId = brokerId,
                 CreatedLoads = createdLoads.ToList(),
                 PostedLoads = postedLoads.ToList(),
                 BookedLoads = bookedLoads.ToList(),

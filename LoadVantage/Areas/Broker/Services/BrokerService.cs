@@ -1,6 +1,5 @@
 ﻿using LoadVantage.Areas.Broker.Contracts;
 using LoadVantage.Areas.Broker.Models;
-using LoadVantage.Areas.Dispatcher.Models;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +18,9 @@ namespace LoadVantage.Areas.Broker.Services
                 return null; // Or throw an exception
             }
 
-            var foundDispatcher = new BrokerViewModel()
+            var foundBroker = new BrokerViewModel()
             {
+                Id = broker.Id.ToString(),
                 Username = broker.UserName,
                 Email = broker.Email,
                 FirstName = broker.FirstName,
@@ -30,7 +30,7 @@ namespace LoadVantage.Areas.Broker.Services
                 Position = broker.Position
             };
 
-            return foundDispatcher;
+            return foundBroker;
         }
     }
 }
