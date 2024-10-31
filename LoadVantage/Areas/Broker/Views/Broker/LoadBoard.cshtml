@@ -1,11 +1,20 @@
 ﻿@using System.Security.Claims
 @using LoadVantage.Areas.Broker.Models
 @using LoadVantage.Common.Enums
+@using LoadVantage.Infrastructure.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+
 @model BrokerLoadBoardViewModel
 
 @{
     ViewData["Title"] = "Broker LoadBoard";
     Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+
+    var user = await UserManager.FindByIdAsync(Model.BrokerId.ToString());
+    var firstName = user.FirstName;
+    var lastName = user.LastName;
+    var position = user.Position;
 }
 
 <header id="header" class="header fixed-top d-flex align-items-center">
@@ -175,21 +184,21 @@
 
             </li><!-- End Messages Nav -->
 
-            <li class="nav-item dropdown pe-3">
+	        <li class="nav-item dropdown pe-3">
 
-                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
-                </a><!-- End Profile Iamge Icon -->
+		        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+			        <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+			        <span class="d-none d-md-block dropdown-toggle ps-2">@firstName[0].@lastName</span>
+		        </a><!-- End Profile Iamge Icon -->
 
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                    <li class="dropdown-header">
-                        <h6>Kevin Anderson</h6>
-                        <span>Web Designer</span>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
+		        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+			        <li class="dropdown-header">
+				        <h6>@firstName @lastName</h6>
+				        <span>@position</span>
+			        </li>
+			        <li>
+				        <hr class="dropdown-divider">
+			        </li>
 
                     <li>
 	                    <form method="get" action="@Url.Action("Profile", "Broker")">
