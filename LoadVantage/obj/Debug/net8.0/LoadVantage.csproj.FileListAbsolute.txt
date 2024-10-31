@@ -309,3 +309,6 @@ C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\r
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\LoadVantage.pdb
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\LoadVantage.genruntimeconfig.cache
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\ref\LoadVantage.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Json.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\Microsoft.Extensions.Configuration.UserSecrets.dll

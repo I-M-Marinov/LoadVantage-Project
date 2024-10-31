@@ -1,11 +1,41 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "jQuery/3.7.1": {
+        "type": "package"
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "jQuery/3.7.1": {
+      "sha512": "rF8hnQxmBMlIspf8VN72bALtmIpKx6hKRpUdTOkp/8JzfF8KgNqHut5lOy9kFGvFIStumCqJ+PBxpI9gxpRYfQ==",
+      "type": "package",
+      "path": "jquery/3.7.1",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Content/Scripts/jquery-3.7.1-vsdoc.js",
+        "Content/Scripts/jquery-3.7.1.js",
+        "Content/Scripts/jquery-3.7.1.min.js",
+        "Content/Scripts/jquery-3.7.1.min.map",
+        "Content/Scripts/jquery-3.7.1.slim.js",
+        "Content/Scripts/jquery-3.7.1.slim.min.js",
+        "Content/Scripts/jquery-3.7.1.slim.min.map",
+        "Tools/common.ps1",
+        "Tools/install.ps1",
+        "Tools/jquery-3.7.1.intellisense.js",
+        "Tools/uninstall.ps1",
+        "jquery.3.7.1.nupkg.sha512",
+        "jquery.nuspec"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "jQuery >= 3.7.1"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Marinov\\.nuget\\packages\\": {},
@@ -56,6 +86,12 @@
     "frameworks": {
       "net8.0": {
         "targetAlias": "net8.0",
+        "dependencies": {
+          "jQuery": {
+            "target": "Package",
+            "version": "[3.7.1, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "P9xCaVpheeU=",
+  "dgSpecHash": "4jBs6qet/VQ=",
   "success": true,
   "projectFilePath": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\LoadVantage.Common.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Marinov\\.nuget\\packages\\jquery\\3.7.1\\jquery.3.7.1.nupkg.sha512"
+  ],
   "logs": []
 }

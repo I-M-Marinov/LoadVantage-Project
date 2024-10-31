@@ -7,8 +7,7 @@ using LoadVantage.Core.Models.Load;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data.Contracts;
-
-
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace LoadVantage.Core.Services
@@ -178,6 +177,46 @@ namespace LoadVantage.Core.Services
             await context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<LoadViewModel> SeeLoadDetails(Guid loadId)
+        {
+            var load = await context.Loads
+                .Include(l => l.PostedLoad)
+                .Include(l => l.BookedLoad)
+                .Include(l => l.BilledLoad)
+                .FirstOrDefaultAsync(l => l.Id == loadId);
+
+            if (load == null)
+            {
+                return null; 
+            }
+
+            Guid? dispatcherId = null;
+
+            if (load.Status == LoadStatus.Booked && load.BookedLoad != null)
+            {
+                dispatcherId = load.BookedLoad.DispatcherId;
+            }
+
+            var loadViewModel = new LoadViewModel
+            {
+                Id = load.Id,
+                OriginCity = load.OriginCity,
+                OriginState = load.OriginState,
+                DestinationCity = load.DestinationCity,
+                DestinationState = load.DestinationState,
+                PickupTime = load.PickupTime,
+                DeliveryTime = load.PickupTime,
+                PostedPrice = load.Price,
+                Weight = load.Weight,
+                Status = load.Status.ToString(),
+                BrokerId = load.BrokerId,
+                DispatcherId = dispatcherId
+            };
+
+            return loadViewModel;
+
         }
     }
 }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "p1xpxuIDC6G0Ej4lRS3mCpRlVHSGYhYfNQySRlhAXIY=",
+  "Hash": "5sJRlRaScYvWIxpeGPyPbacXCt5ARDRkmFYqUHJsKhM=",
   "Source": "LoadVantage",
   "BasePath": "_content/LoadVantage",
   "Mode": "Default",
@@ -6304,6 +6304,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\vendor\\echarts\\package.json"
+    },
+    {
+      "Identity": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\vendor\\echarts\\package-lock.json",
+      "SourceId": "LoadVantage",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\",
+      "BasePath": "_content/LoadVantage",
+      "RelativePath": "assets/vendor/echarts/package-lock.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\vendor\\echarts\\package-lock.json"
     },
     {
       "Identity": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\vendor\\php-email-form\\php-email-form.php",

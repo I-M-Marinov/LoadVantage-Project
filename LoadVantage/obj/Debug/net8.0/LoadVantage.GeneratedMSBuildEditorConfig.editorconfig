@@ -34,6 +34,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQnJva2VyXFZpZXdzXEJyb2tlclxMb2FkQm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Broker/Views/Broker/LoadDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQnJva2VyXFZpZXdzXEJyb2tlclxMb2FkRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Broker/Views/Broker/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQnJva2VyXFZpZXdzXEJyb2tlclxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

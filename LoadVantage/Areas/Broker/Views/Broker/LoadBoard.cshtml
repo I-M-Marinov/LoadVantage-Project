@@ -330,12 +330,13 @@
 						                    <th>Distance</th>
 						                    <th>Price</th>
 						                    <th>RPM</th>
+						                    <th class="hidden-th">hidden</th>
 					                    </tr>
 					                    </thead>
 					                    <tbody>
 					                    @foreach (var load in Model.CreatedLoads)
 					                    {
-						                    <tr class="clickable-row">
+                                                <tr class="clickable-row">
 							                    <td>@load.OriginCity</td>
 							                    <td>@load.OriginState</td>
 							                    <td>@load.DestinationCity</td>
@@ -345,6 +346,21 @@
 							                    <td>@(load.Distance.HasValue ? Math.Round(load.Distance.Value) : 0)</td>
 							                    <td>$@load.PostedPrice</td>
 							                    <td>@($"${(load.PostedPrice / (decimal)load.Distance):F2}/mile")</td>
+ 							                    <td>
+								                    <!-- Hidden field to store the URL -->
+								                    <form method="get" action="@Url.Action("LoadDetails", "Broker")">
+									                    <input type="hidden" name="loadId" value="@load.Id" />
+									                    <button>
+										                    <i class="bi bi-card-text"></i>
+										                    <span>View</span>
+									                    </button>
+								                    </form>
+													
+								               @*      <form method="get" action="/Broker/LoadDetails">
+									                    <input type="hidden" name="loadId" value="@load.Id" />
+									                    <button type="submit"><i class="bi bi-card-text"></i>View</button>
+								                    </form> *@
+						                        </td> 
 						                    </tr>
 					                    }
 
@@ -366,6 +382,7 @@
 						                    <th>Distance</th>
 						                    <th>Price</th>
 						                    <th>RPM</th>
+
 					                    </tr>
 					                    </thead>
 					                    <tbody>
@@ -462,6 +479,20 @@
 
             </div>
         </div>
-	</section>    <!-- LOAD BOARD START -->
+    </section>    <!-- LOAD BOARD START -->
+	
+@*     <script>
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".clickable-row").forEach(function (row) {
+                row.addEventListener("click", function () {
+                    const url = row.querySelector(".load-url").value; // Get the hidden URL value
+                    window.location.href = url; // Redirect to the URL
+                });
+            });
+        });
+
+    </script> *@
 
 </main><!-- End #main -->

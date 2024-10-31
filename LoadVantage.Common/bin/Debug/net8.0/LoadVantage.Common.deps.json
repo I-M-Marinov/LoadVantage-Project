@@ -7,10 +7,14 @@
   "targets": {
     ".NETCoreApp,Version=v8.0": {
       "LoadVantage.Common/1.0.0": {
+        "dependencies": {
+          "jQuery": "3.7.1"
+        },
         "runtime": {
           "LoadVantage.Common.dll": {}
         }
-      }
+      },
+      "jQuery/3.7.1": {}
     }
   },
   "libraries": {
@@ -18,6 +22,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "jQuery/3.7.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rF8hnQxmBMlIspf8VN72bALtmIpKx6hKRpUdTOkp/8JzfF8KgNqHut5lOy9kFGvFIStumCqJ+PBxpI9gxpRYfQ==",
+      "path": "jquery/3.7.1",
+      "hashPath": "jquery.3.7.1.nupkg.sha512"
     }
   }
 }

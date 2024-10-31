@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="jQuery" Version="3.7.1" />
+  </ItemGroup>
+
 </Project>

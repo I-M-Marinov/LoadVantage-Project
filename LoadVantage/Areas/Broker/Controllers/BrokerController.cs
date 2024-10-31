@@ -1,7 +1,7 @@
-﻿using LoadVantage.Areas.Dispatcher.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using LoadVantage.Areas.Broker.Contracts;
+using LoadVantage.Core.Contracts;
 using LoadVantage.Filters;
 
 namespace LoadVantage.Areas.Broker.Controllers
@@ -9,7 +9,7 @@ namespace LoadVantage.Areas.Broker.Controllers
     [BrokerOnly]
     [Area("Broker")]
     [Route("Broker")]
-    public class BrokerController(IBrokerService brokerService, IBrokerLoadBoardService brokerLoadBoardService) : Controller
+    public class BrokerController(IBrokerService brokerService, IBrokerLoadBoardService brokerLoadBoardService, ILoadStatusService loadService) : Controller
     {
         [HttpGet]
         [Route("Profile")]
@@ -42,6 +42,21 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             return View(loadBoardInfo);
 
+        }
+
+
+        [HttpGet]
+        [Route("Load")]
+        public async Task<IActionResult> LoadDetails(Guid loadId)
+        {
+            var loadToShow = await loadService.SeeLoadDetails(loadId);
+
+            if (loadToShow == null)
+            {
+                return null;
+            }
+
+            return View(loadToShow); // Specify the view name if needed
         }
     }
 }
