@@ -4,7 +4,7 @@
 
 @{
 	ViewData["Title"] = "Broker Profile";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 }
 
 
@@ -192,16 +192,12 @@
                     </li>
 
                     <li>
-	                    @* <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-		                    <i class="bi bi-person"></i>
-		                    <span>My Profile</span>
-	                    </a> *@
-						
+
 	                    <form method="get" action="@Url.Action("Profile", "Broker")">
-		                    <input type="hidden" name="brokerId" value="@Model.Id" />
-                            <button type="submit" class="dropdown-item d-flex align-items-center">
-	                            <i class="bi bi-person"></i>
-	                            <span>My Profile</span>
+		                    <input type="hidden" name="brokerId" value="@Model.Id"/>
+		                    <button type="submit" class="dropdown-item d-flex align-items-center">
+			                    <i class="bi bi-person"></i>
+			                    <span>My Profile</span>
 		                    </button>
 	                    </form>
                     </li>

@@ -5,7 +5,7 @@
 
 @{
     ViewData["Title"] = "Dispatcher Profile";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
     var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
 }

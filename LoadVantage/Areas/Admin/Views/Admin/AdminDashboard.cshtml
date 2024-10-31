@@ -1,9 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Admin Profile";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 }
-
-
 
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top d-flex align-items-center">
@@ -190,11 +188,16 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                <i class="bi bi-person"></i>
-                                <span>My Profile</span>
-                            </a>
+
+	                        <form method="get" action="@Url.Action("AdminDashboard", "Admin")">
+		                        <button type="submit" class="dropdown-item d-flex align-items-center">
+			                        <i class="bi bi-person"></i>
+			                        <span>My Profile</span>
+		                        </button>
+	                        </form>
+
                         </li>
+
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -218,12 +221,13 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <i class="bi bi-box-arrow-right"></i>
-                                <span>Sign Out</span>
-                            </a>
+	                        <form method="get" action="@Url.Action("Logout", "Account")">
+		                        <button type="submit" class="dropdown-item d-flex align-items-center">
+			                        <i class="bi bi-box-arrow-right"></i>
+			                        <span>Sign Out</span>
+		                        </button>
+	                        </form>
                         </li>
 
                     </ul><!-- End Profile Dropdown Items -->
@@ -1112,16 +1116,4 @@
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-    <!-- Vendor JS Files -->
-    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/chart.js/chart.umd.js"></script>
-    <script src="assets/vendor/echarts/echarts.min.js"></script>
-    <script src="assets/vendor/quill/quill.js"></script>
-    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
-
-    <!-- Template Main JS File -->
-    <script src="assets/js/main.js"></script>
 

@@ -372,6 +372,7 @@ h6 {
 }
 
 .logo span {
+  margin-top: 0.7em;
   font-size: 26px;
   font-weight: 700;
   color: #012970;
@@ -385,6 +386,8 @@ h6 {
   box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
   background-color: #fff;
   padding-left: 20px;
+  flex-direction: row;
+  justify-content: center;
   /* Toggle Sidebar Button */
   /* Search Bar */
 }
@@ -456,12 +459,20 @@ h6 {
   color: #012970;
 }
 
+#links-area-layout {
+    gap: 2.5em;
+    flex-direction: row;
+    flex-shrink: 1;
+    margin-top: -4.90em;
+}
+
+
 /*--------------------------------------------------------------
 # Header Nav
 --------------------------------------------------------------*/
-.header-nav ul {
-  list-style: none;
-}
+    .header-nav ul {
+        list-style: none;
+    }
 
 .header-nav>ul {
   margin: 0;
@@ -635,7 +646,7 @@ h6 {
 
   #main,
   #footer {
-    margin-left: 300px;
+    margin-left: 100px;
   }
 }
 
@@ -688,7 +699,7 @@ h6 {
   font-size: 15px;
   font-weight: 400;
   color: #4154f1;
-  transition: 0.3;
+  transition: 0.3s;
   background: #f6f9ff;
   padding: 10px 15px;
   border-radius: 4px;
@@ -740,7 +751,7 @@ h6 {
   font-size: 14px;
   font-weight: 600;
   color: #012970;
-  transition: 0.3;
+  transition: 0.3s;
   padding: 10px 0 10px 40px;
   transition: 0.3s;
 }
@@ -1257,4 +1268,167 @@ h6 {
   text-align: center;
   font-size: 13px;
   color: #012970;
+}
+/*--------------------------------------------------------------
+# FANCY BUTTON 
+--------------------------------------------------------------*/
+.fancy-project-button {
+    --color: #560bad;
+    font-family: inherit;
+    display: inline-block;
+    width: 8em;
+    height: 2.8em;
+    line-height: 2em;
+    margin: 20px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border: none;
+    transition: color 0.9s;
+    z-index: 1;
+    border-radius: 6px;
+    font-weight: 600;
+    color: var(--color);
+    font-size: 13px;
+}
+
+.fancy-project-button:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    background: var(--color);
+    height: 130px;
+    width: 180px;
+    border-radius: 50%;
+}
+
+.fancy-project-button:hover {
+    color: #fff;
+}
+
+.fancy-project-button:before {
+    bottom: 100%;
+    right: 100%;
+    transition: all 0.8s;
+}
+
+.fancy-project-button:hover:before {
+    bottom: -30px;
+    right: -30px;
+}
+
+.fancy-project-button:active:before {
+    background: #3a0ca3;
+    transition: background 0s;
+}
+
+
+/*--------------------------------------------------------------
+# LOAD VANTAGE LOGO
+--------------------------------------------------------------*/
+
+.cls-1 {
+    fill: #4ddcf0; 
+    animation: cls1 3s ease infinite both;
+}
+
+@keyframes cls1 {
+    0% {
+        fill: #8c1db8;
+    }
+
+    34% {
+        fill: #9e3dc4;
+    }
+
+    66% {
+        fill: #be56e8;
+    }
+
+    100% {
+        fill: #8c1db8;
+    }
+}
+
+.cls-1,
+.cls-2,
+.cls-3 {
+    stroke-width: 0px;
+}
+
+.cls-2 {
+    fill: #f7931e;
+    animation: cls2 3s ease infinite both;
+}
+
+@keyframes cls2 {
+    0% {
+        fill: #be56e8;
+    }
+
+    34% {
+        fill: #8c1db8;
+    }
+
+    66% {
+        fill: #9e3dc4;
+    }
+
+    100% {
+        fill: #be56e8;
+    }
+}
+
+.cls-3 {
+    fill: #ed1c24;
+    animation: cls3 3s ease infinite both;
+}
+
+@keyframes cls3 {
+    0% {
+        fill: #9e3dc4;
+    }
+
+    34% {
+        fill: #be56e8;
+    }
+
+    66% {
+        fill: #8c1db8;
+    }
+
+    100% {
+        fill: #9e3dc4;
+    }
+}
+
+.cls-4 {
+    display: none;
+}
+
+#triangle {
+    height: 400px;
+    width: 400px;
+    padding-top: 30px;
+    animation: triangle 3s both infinite;
+}
+
+@keyframes triangle {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(20px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+#triangle{
+    width: 100px;
+    height: auto;
+    margin-top: -4.25em;
 }
