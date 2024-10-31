@@ -192,10 +192,13 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                            <i class="bi bi-person"></i>
-                            <span>My Profile</span>
-                        </a>
+	                    <form method="get" action="@Url.Action("Profile", "Broker")">
+		                    <input type="hidden" name="brokerId" value="@Model.BrokerId" />
+		                    <button type="submit" class="dropdown-item d-flex align-items-center">
+			                    <i class="bi bi-person"></i>
+			                    <span>My Profile</span>
+		                    </button>
+	                    </form>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -222,10 +225,13 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>Sign Out</span>
-                        </a>
+	                    <form method="get" action="@Url.Action("Logout", "Account")">
+		                    <input type="hidden" name="brokerId" value="@Model.BrokerId" />
+		                    <button type="submit" class="dropdown-item d-flex align-items-center">
+			                    <i class="bi bi-box-arrow-right"></i>
+			                    <span>Sign Out</span>
+		                    </button>
+	                    </form>
                     </li>
 
                 </ul><!-- End Profile Dropdown Items -->
@@ -241,22 +247,31 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-
-        <li class="nav-item">
-	        <a class="nav-link" href="/Broker/LoadBoard">
-		        <span>LoadBoard</span>
-                <i class="ri-truck-fill"></i>
-	        </a>
-        </li><!-- End LoadBoard Nav -->
-	
-    
 	    <li class="nav-item">
-            <a class="nav-link collapsed" href="/Broker/Profile">
-	            <span>Profile</span>
-                <i class="ri-account-pin-box-fill"></i>
-		    </a>
-	    </li><!-- End Profile Page Nav -->
 
+		    <form method="get" action="@Url.Action("LoadBoard", "Broker")">
+                <input type="hidden" name="brokerId" value="@Model.BrokerId" />
+			    <button type="submit" class="nav-link" id="loadboard-nav">
+				    <i class="ri-truck-line"></i>
+				    <span>LoadBoard</span>
+			    </button>
+		    </form>
+
+
+	    </li><!-- End Dashboard Nav -->
+
+	    <li class="nav-item">
+	 
+
+		    <form method="get" action="@Url.Action("Profile", "Broker")">
+			    <input type="hidden" name="brokerId" value="@Model.BrokerId" />
+			    <button type="submit" class="nav-link collapsed" id="profile-nav">
+				    <i class="ri-account-pin-box-line"></i>
+				    <span>Profile</span>
+			    </button>
+		    </form>
+
+	    </li><!-- End Profile Page Nav -->
 
     </ul>
 

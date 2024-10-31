@@ -5,8 +5,6 @@
 @{
 	ViewData["Title"] = "Broker Profile";
 	Layout = "~/Views/Shared/_Layout.cshtml";
-	Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
-
 }
 
 
@@ -194,10 +192,18 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                            <i class="bi bi-person"></i>
-                            <span>My Profile</span>
-                        </a>
+	                    @* <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+		                    <i class="bi bi-person"></i>
+		                    <span>My Profile</span>
+	                    </a> *@
+						
+	                    <form method="get" action="@Url.Action("Profile", "Broker")">
+		                    <input type="hidden" name="brokerId" value="@Model.Id" />
+                            <button type="submit" class="dropdown-item d-flex align-items-center">
+	                            <i class="bi bi-person"></i>
+	                            <span>My Profile</span>
+		                    </button>
+	                    </form>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -224,10 +230,13 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>Sign Out</span>
-                        </a>
+	                    <form method="get" action="@Url.Action("Logout", "Account")">
+		                    <input type="hidden" name="brokerId" value="@Model.Id" />
+		                    <button type="submit" class="dropdown-item d-flex align-items-center">
+			                    <i class="bi bi-box-arrow-right"></i>
+			                    <span>Sign Out</span>
+		                    </button>
+	                    </form>
                     </li>
 
                 </ul><!-- End Profile Dropdown Items -->
@@ -249,9 +258,9 @@
 
         <form method="get" action="@Url.Action("LoadBoard", "Broker")">
 		    <input type="hidden" name="brokerId" value="@Model.Id" />
-		    <button type="submit" class="nav-link collapsed">
+		    <button type="submit" class="nav-link collapsed" id="loadboard-nav">
+			    <i class="ri-truck-line"></i>
 			    <span>LoadBoard</span>
-			    <i class="ri-truck-fill"></i>
 		    </button>
 	    </form>
 
@@ -263,9 +272,9 @@
 
 	   <form method="get" action="@Url.Action("Profile", "Broker")">
 		   <input type="hidden" name="brokerId" value="@Model.Id" />
-		   <button type="submit" class="nav-link">
+		   <button type="submit" class="nav-link" id="profile-nav">
+			   <i class="ri-account-pin-box-line"></i>
 			   <span>Profile</span>
-			   <i class="ri-account-pin-box-fill"></i>
 		   </button>
 	   </form>
 
