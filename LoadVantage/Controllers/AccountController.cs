@@ -111,7 +111,7 @@ namespace LoadVantage.Controllers
                     {
                         new Claim("FirstName", user.FirstName),
                         new Claim("LastName", user.LastName),
-                        new Claim("Position", user.Position!)
+                        new Claim("UserName", user.UserName)
                     };
 
                     await userManager.AddClaimsAsync(user, claims);

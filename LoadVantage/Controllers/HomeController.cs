@@ -1,25 +1,49 @@
 using LoadVantage.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
+using LoadVantage.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace LoadVantage.Controllers
 {
-	public class HomeController(ILogger<HomeController> logger) : Controller
+	public class HomeController(ILogger<HomeController> logger, UserManager<User> userManager) : Controller
 	{
 		private readonly ILogger<HomeController> _logger = logger;
 
-        public IActionResult Index()
+		[AllowAnonymous]
+        public async Task<IActionResult> Index()
 		{
+            var username = User.FindFirst("UserName")?.Value;
+
+            if (username != null)
+            {
+                var user = await userManager.FindByNameAsync(username);
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (user is Administrator)
+                        return RedirectToAction("AdminDashboard", "Admin", new { area = "Admin" }); // Redirect to admin dashboard
+                    if (user is Dispatcher)
+                        return RedirectToAction("Profile", "Dispatcher", new { area = "Dispatcher" }); // Redirect to Dispatcher dashboard
+                    if (user is Broker)
+                        return RedirectToAction("Profile", "Broker", new { area = "Broker" }); // Redirect to Broker dashboard
+                }
+            }
+
 			return View();
 		}
 
-		public IActionResult Privacy()
+        [AllowAnonymous]
+
+        public IActionResult Privacy()
 		{
 			return View();
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		public IActionResult Error()
+        [AllowAnonymous]
+        public IActionResult Error()
 		{
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 		}
