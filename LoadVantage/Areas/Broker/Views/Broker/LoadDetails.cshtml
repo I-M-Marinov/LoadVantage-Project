@@ -11,10 +11,9 @@
     ViewData["Title"] = "Broker LoadBoard";
     Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 
-    var user = await UserManager.FindByIdAsync(Model.BrokerId.ToString());
-    var firstName = user.FirstName;
-    var lastName = user.LastName;
-    var position = user.Position;
+    var firstName = User.FindFirst("FirstName")?.Value;
+    var lastName = User.FindFirst("LastName")?.Value;
+    var position = User.FindFirst("Position")?.Value;
 }
 
 <header id="header" class="header fixed-top d-flex align-items-center">
@@ -188,7 +187,7 @@
 
 	            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
 		            <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">@firstName[0].@lastName</span>
+                    <span class="d-none d-md-block dropdown-toggle ps-2">@firstName![0].@lastName</span>
 	            </a><!-- End Profile Iamge Icon -->
 
 	            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">

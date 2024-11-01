@@ -107,6 +107,14 @@ namespace LoadVantage.Controllers
 
                 if (result.Succeeded)
                 {
+                    var claims = new List<Claim>
+                    {
+                        new Claim("FirstName", user.FirstName),
+                        new Claim("LastName", user.LastName),
+                        new Claim("Position", user.Position!)
+                    };
+
+                    await userManager.AddClaimsAsync(user, claims);
                     await signInManager.SignInAsync(user, isPersistent: false);
 
                     if (user is Administrator)
