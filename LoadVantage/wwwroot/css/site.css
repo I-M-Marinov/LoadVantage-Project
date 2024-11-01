@@ -84,59 +84,73 @@ body {
 #login-submit {
     background: linear-gradient(to left, #8360c3, #4cddf1);
     color: #ffffff;
-    border: 2px solid #000000;
+    border: 2px solid #8c1db8;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    animation: upDown 2s infinite ease;
+    box-shadow: 7px 7px 4px #121112;
 }
 
 #login-submit:hover {
-    animation: leftRight infinite 1s ease;
-    animation: upDown infinite 1s ease-in;
-}
-
-#login-submit:active {
-    animation: leftRight infinite 1s ease;
-}
-
-@keyframes leftRight {
-    0% {
-        transform: translateX(0.20em);
-        background: linear-gradient(to left, #7987d2, #64bde5);    
-    }
-
-    50% {
-        transform: translateX(0.40em);
-    }
-
-    100% {
-        transform: translateX(0.20em);
-    }
+    animation: upDown 2s infinite ease;
 }
 
 @keyframes upDown {
-    0% {
-        transform: translateY(0.20em);
+    5% {
+        transform: translateY(0.00em);
+        box-shadow: 7px 7px 4px #121112;
+    }
+    10% {
+        transform: translateY(0.05em);
+        box-shadow: 6px 6px 4px #121112;
+    }
+    15% {
+        transform: translateY(0.10em);
+        box-shadow: 6px 6px 4px #121112;
     }
 
-    50% {
+    20% {
+        transform: translateY(0.15em);
+        box-shadow: 5px 5px 4px #121112;
+    }
+
+    25% {
+        transform: translateY(0.20em);
+        box-shadow: 4px 4px 4px #121112;
+    }
+
+    30% {
+        transform: translateY(0.25em);
+        box-shadow: 3px 3px 4px #121112;
+    }
+
+    35% {
+        transform: translateY(0.30em);
+        box-shadow: 2px 2px 4px #121112;
+    }
+
+    40% {
+        transform: translateY(0.35em);
+        box-shadow: 1px 1px 4px #121112;
+    }
+
+
+    45% {
         transform: translateY(0.40em);
-    }
-
-    100% {
-        transform: translateY(0.20em);
+        box-shadow: 0px 0px 0px #6b9ad6;
     }
 }
 
-
-/*--------------------------------------------------------------
+    /*--------------------------------------------------------------
 # LOAD VANTAGE LOGO
 --------------------------------------------------------------*/
 
-.cls-1 {
-    fill: #4ddcf0;
-    animation: cls1 3s ease infinite both;
-}
+    .cls-1 {
+        fill: #4ddcf0;
+        animation: cls1 3s ease infinite both;
+    }
 
-@keyframes cls1 {
-    0% {
+    @keyframes cls1 {
+        0% {
         fill: #8c1db8;
     }
 
