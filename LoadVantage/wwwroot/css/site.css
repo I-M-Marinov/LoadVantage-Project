@@ -190,3 +190,7 @@ body {
 .hidden-th {
     visibility: hidden;
 }
+
+.centered-row {
+    gap: 1rem; /* Adjust as needed to reduce or increase space */
+}

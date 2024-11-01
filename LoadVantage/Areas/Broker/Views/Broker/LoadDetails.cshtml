@@ -286,48 +286,86 @@
 
 <main id="main" class="main">
 
-    <div class="pagetitle">
-        <h1>Data Tables</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item">Tables</li>
-                <li class="breadcrumb-item active">Data</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
+	<div class="pagetitle">
+		<h1>LoadBoard</h1>
+		<nav>
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="Profile">Broker</a></li>
+                <li class="breadcrumb-item"><a href="LoadBoard">LoadBoard</a></li>
+				<li class="breadcrumb-item active">Load</li>
+			</ol>
+		</nav>
+	</div><!-- End Page Title -->
 	
 	
     <div class="card">
-	    <div class="card-body">
-		    <h5 class="card-title">No Labels / Placeholders as labels Form</h5>
+        <div class="card-body justify-content-center">
+		    <h5 class="card-title">Viewing a load</h5>
 
-		    <!-- No Labels Form -->
-		    <form class="row g-3">
-			    <div class="col-md-12">
-				    <input type="text" class="form-control" placeholder="Your Name">
-			    </div>
-			    <div class="col-md-6">
-				    <input type="email" class="form-control" placeholder="Email">
-			    </div>
-			    <div class="col-md-6">
-				    <input type="password" class="form-control" placeholder="Password">
-			    </div>
-			    <div class="col-12">
-				    <input type="text" class="form-control" placeholder="Address">
-			    </div>
-			    <div class="col-md-6">
-				    <input type="text" class="form-control" placeholder="City">
-			    </div>
-			    <div class="col-md-4">
-				    <select id="inputState" class="form-select">
-					    <option selected>Choose...</option>
-					    <option>...</option>
-				    </select>
-			    </div>
-			    <div class="col-md-2">
-				    <input type="text" class="form-control" placeholder="Zip">
-			    </div>
+            <form class="row g-3">
+	            <div class="col-12 d-flex justify-content-center mb-2">
+		            <div class="d-flex centered-row flex-wrap justify-content-center">
+			            <div class="col-md-3">
+				            <div class="form-floating">
+					            <input type="text" class="form-control" id="originCity" placeholder="Origin City" value="@Model.OriginCity" disabled>
+					            <label for="originCity">Origin City</label>
+				            </div>
+			            </div>
+			            <div class="col-md-1">
+				            <div class="form-floating">
+					            <input type="text" class="form-control" id="originState" placeholder="State" value="@Model.OriginState" disabled>
+					            <label for="originState">State</label>
+				            </div>
+			            </div>
+			            <div class="col-md-3">
+				            <div class="form-floating">
+					            <input type="text" class="form-control" id="destinationCity" placeholder="Origin City" value="@Model.DestinationCity" disabled>
+					            <label for="destinationCity">Destination City</label>
+				            </div>
+			            </div>
+			            <div class="col-md-1">
+				            <div class="form-floating">
+					            <input type="text" class="form-control" id="destinationState" placeholder="State" value="@Model.DestinationState" disabled>
+					            <label for="destinationState">State</label>
+				            </div>
+			            </div>
+		            </div>
+	            </div>
+				
+	            <div class="col-12 d-flex justify-content-center mb-2">
+		            <div class="d-flex centered-row flex-wrap justify-content-center">
+			            <div class="col-md-5">
+				            <div class="form-floating">
+                                <input type="text" class="form-control" id="pickupTime" placeholder="Pickup Time" value="@Model.PickupTime.ToString("dd/MM/yyyy HH:mm")" disabled>
+					            <label for="pickupTime">Pickup Time</label>
+				            </div>
+			            </div>
+			            <div class="col-md-5">
+				            <div class="form-floating">
+                                <input type="text" class="form-control" id="deliveryTime" placeholder="Delivery Time" value="@Model.DeliveryTime.ToString("dd/MM/yyyy HH:mm")" disabled>
+					            <label for="deliveryTime">Delivery Time</label>
+				            </div>
+			            </div>
+		            </div>
+	            </div>
+				
+	            <div class="col-12 d-flex justify-content-center mb-2">
+		            <div class="d-flex centered-row flex-wrap justify-content-center">
+			            <div class="col-md-3">
+				            <div class="form-floating">
+                                <input type="text" class="form-control" id="price" placeholder="Price" value="$@Model.PostedPrice" disabled>
+                                <label for="price">Price</label>
+				            </div>
+			            </div>
+			            <div class="col-md-3">
+				            <div class="form-floating">
+                                <input type="text" class="form-control" id="weight" placeholder="Weight" value="@Model.Weight" disabled>
+                                <label for="weight">Weight in lbs</label>
+				            </div>
+			            </div>
+		            </div>
+	            </div>
+
 			    <div class="text-center">
 				    <button type="submit" class="btn btn-primary">Submit</button>
 				    <button type="reset" class="btn btn-secondary">Reset</button>
@@ -339,3 +377,16 @@
 
 
 </main><!-- End #main -->
+
+@* public Guid Id { get; set; }
+public string OriginCity { get; set; } = null!;
+public string OriginState { get; set; } = null!;
+public string DestinationCity { get; set; } = null!;
+public string DestinationState { get; set; } = null!;
+public DateTime PickupTime { get; set; }
+public DateTime DeliveryTime { get; set; }
+public decimal PostedPrice { get; set; }
+public double Weight { get; set; }
+public string Status { get; set; } = null!;
+public Guid BrokerId { get; set; }
+public Guid? DispatcherId { get; set; } *@
