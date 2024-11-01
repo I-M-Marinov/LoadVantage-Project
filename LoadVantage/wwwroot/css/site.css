@@ -39,7 +39,7 @@ body {
     transition: color 0.9s;
     z-index: 1;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 20px;
     font-weight: 750;
     color: var(--color);
     font-size: 14px;
@@ -86,7 +86,6 @@ body {
     color: #ffffff;
     border: 2px solid #8c1db8;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
-    animation: upDown 2s infinite ease;
     box-shadow: 7px 7px 4px #121112;
 }
 
@@ -120,27 +119,27 @@ body {
 
     30% {
         transform: translateY(0.25em);
-        box-shadow: 3px 3px 4px #121112;
+        box-shadow: 3px 3px 3px #121112;
     }
 
     35% {
         transform: translateY(0.30em);
-        box-shadow: 2px 2px 4px #121112;
+        box-shadow: 2px 2px 2px #121112;
     }
 
     40% {
         transform: translateY(0.35em);
-        box-shadow: 1px 1px 4px #121112;
+        box-shadow: 1px 1px 1px #121112;
     }
 
 
     45% {
         transform: translateY(0.40em);
-        box-shadow: 0px 0px 0px #6b9ad6;
+        box-shadow: 0px 0px 0px #121112;
     }
 }
 
-    /*--------------------------------------------------------------
+/*--------------------------------------------------------------
 # LOAD VANTAGE LOGO
 --------------------------------------------------------------*/
 
@@ -267,6 +266,10 @@ body {
 .hidden-th {
     visibility: hidden;
 }
+
+/*--------------------------------------------------------------
+# LOADBOARD LOAD VIEW 
+--------------------------------------------------------------*/
 
 .centered-row {
     gap: 1rem; /* Adjust as needed to reduce or increase space */

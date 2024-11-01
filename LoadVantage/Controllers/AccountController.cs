@@ -100,6 +100,7 @@ namespace LoadVantage.Controllers
             }
 
             var user = await userManager.FindByNameAsync(model.UserName);
+
 	        if (user != null)
             {
 
@@ -107,15 +108,14 @@ namespace LoadVantage.Controllers
 
                 if (result.Succeeded)
                 {
-                    var claims = new List<Claim>
-                    {
-                        new Claim("FirstName", user.FirstName),
-                        new Claim("LastName", user.LastName),
-                        new Claim("UserName", user.UserName)
-                    };
+	               var claims =  GetOrAddClaims(User.Claims, user.FirstName, user.LastName, user.UserName, user.Position);
 
-                    await userManager.AddClaimsAsync(user, claims);
-                    await signInManager.SignInAsync(user, isPersistent: false);
+	               if (claims.Count != 0)
+	               {
+		               await userManager.AddClaimsAsync(user, claims);
+	               }
+
+	               await signInManager.SignInAsync(user, isPersistent: false);
 
                     if (user is Administrator)
                         return RedirectToAction("AdminDashboard", "Admin", new { area = "Admin" }); // Redirect to admin dashboard
@@ -141,5 +141,21 @@ namespace LoadVantage.Controllers
 	        return RedirectToAction("Login", "Account", new { area = "" });
         }
 
+        private List<Claim> GetOrAddClaims(IEnumerable<Claim> existingClaims, string firstName, string lastName, string userName, string userPosition)
+        {
+			var claims = new List<Claim>
+			{
+				new Claim("FirstName", firstName),
+				new Claim("LastName", lastName),
+				new Claim("UserName", userName),
+				new Claim("Position", userPosition),
+			};
+
+			var missingClaims = claims.Where(claim =>
+				!existingClaims.Any(c => c.Type == claim.Type && c.Value == claim.Value)
+			).ToList();
+
+			return missingClaims; 
+		}
 	}
 }
