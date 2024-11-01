@@ -29,51 +29,101 @@ body {
     --color: #560bad;
     font-family: inherit;
     display: inline-block;
-    width: 8em;
+    width: 9em;
     height: 2.8em;
     line-height: 2em;
-    margin: 20px;
+    margin: 1.3em;
     position: relative;
     cursor: pointer;
-    overflow: hidden;
     border: none;
     transition: color 0.9s;
     z-index: 1;
-    border-radius: 6px;
-    font-weight: 600;
+    overflow: hidden;
+    border-radius: 10px;
+    font-weight: 750;
     color: var(--color);
-    font-size: 13px;
+    font-size: 14px;
+    box-shadow: 0 2px 1px rgba(0,0,0,0.09), 0 4px 2px rgba(0,0,0,0.09), 0 8px 4px rgba(0,0,0,0.09), 0 16px 8px rgba(0,0,0,0.09), 0 32px 16px rgba(0,0,0,0.09);
 }
 
-    .fancy-project-button:before {
-        content: "";
-        position: absolute;
-        z-index: -1;
-        background: var(--color);
-        height: 130px;
-        width: 180px;
-        border-radius: 50%;
+.fancy-project-button:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    background: var(--color);
+    height: 11em;
+    width: 14em;
+    border-radius: 50%;
+}
+
+.fancy-project-button:hover {
+    color: #fff;
+    box-shadow: 0 26px 58px 0 rgba(0, 0, 0, .22), 0 5px 14px 0 rgba(0, 0, 0, .18);
+}
+
+.fancy-project-button:before {
+    bottom: 100%;
+    right: 100%;
+    transition: all 0.8s;
+}
+
+.fancy-project-button:hover:before {
+    bottom: -30px;
+    right: -30px;
+}
+
+.fancy-project-button:active:before {
+    background: #3a0ca3;
+    transition: background 0.3s;
+}
+
+/*--------------------------------------------------------------
+# LOGIN BUTTON 
+--------------------------------------------------------------*/
+
+#login-submit {
+    background: linear-gradient(to left, #8360c3, #4cddf1);
+    color: #ffffff;
+    border: 2px solid #000000;
+}
+
+#login-submit:hover {
+    animation: leftRight infinite 1s ease;
+    animation: upDown infinite 1s ease-in;
+}
+
+#login-submit:active {
+    animation: leftRight infinite 1s ease;
+}
+
+@keyframes leftRight {
+    0% {
+        transform: translateX(0.20em);
+        background: linear-gradient(to left, #7987d2, #64bde5);    
     }
 
-    .fancy-project-button:hover {
-        color: #fff;
+    50% {
+        transform: translateX(0.40em);
     }
 
-    .fancy-project-button:before {
-        bottom: 100%;
-        right: 100%;
-        transition: all 0.8s;
+    100% {
+        transform: translateX(0.20em);
+    }
+}
+
+@keyframes upDown {
+    0% {
+        transform: translateY(0.20em);
     }
 
-    .fancy-project-button:hover:before {
-        bottom: -30px;
-        right: -30px;
+    50% {
+        transform: translateY(0.40em);
     }
 
-    .fancy-project-button:active:before {
-        background: #3a0ca3;
-        transition: background 0s;
+    100% {
+        transform: translateY(0.20em);
     }
+}
 
 
 /*--------------------------------------------------------------
@@ -166,6 +216,13 @@ body {
     animation: triangle 3s both infinite;
 }
 
+#triangle2 {
+    height: 400px;
+    width: 400px;
+    padding-top: 30px;
+
+}
+
 @keyframes triangle {
     0% {
         transform: translateY(0px);
@@ -184,6 +241,12 @@ body {
     width: 100px;
     height: auto;
     margin-top: -4.25em;
+}
+
+#triangle2 {
+    width: 100px;
+    height: auto;
+    margin-top: -3.25em;
 }
 
 

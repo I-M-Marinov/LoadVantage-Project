@@ -219,9 +219,9 @@ h6 {
 /* Card */
 .card {
   margin-bottom: 30px;
-  border: none;
+  border: 2px solid black;
   border-radius: 5px;
-  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+  box-shadow: 0px 0 35px rgba(1, 50, 112, 0.1);
 }
 
 .card-header,
