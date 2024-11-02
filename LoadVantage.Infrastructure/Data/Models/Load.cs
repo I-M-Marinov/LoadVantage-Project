@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using LoadVantage.Common.Enums;
 using Microsoft.EntityFrameworkCore;
-using static LoadVantage.Common.ValidationConstants;
+using static LoadVantage.Common.ValidationConstants.LoadValidations;
 
 
 namespace LoadVantage.Infrastructure.Data.Models
@@ -46,6 +46,7 @@ namespace LoadVantage.Infrastructure.Data.Models
         public decimal Price { get; set; }
 
         [Required]
+        [Range(WeightMinValue,WeightMaxValue)]
         public double Weight { get; set; }
 
         // Track current load status
