@@ -1,19 +1,18 @@
-﻿@using System.Security.Claims
-@using LoadVantage.Areas.Broker.Models
-@using LoadVantage.Common.Enums
-@using LoadVantage.Core.Models.Load;
+﻿@using LoadVantage.Core.Models.Load;
 @using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
+@using static LoadVantage.Common.GeneralConstants.UserRoles
 @inject UserManager<User> UserManager
 @model LoadViewModel
 
 @{
-    ViewData["Title"] = "Broker LoadBoard";
+    ViewData["Title"] = "Create a Load";
     Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+
 
     var firstName = User.FindFirst("FirstName")?.Value;
     var lastName = User.FindFirst("LastName")?.Value;
-    var position = User.FindFirst("Position")?.Value;
+    var position = BrokerPositionName;
 }
 
 <header id="header" class="header fixed-top d-flex align-items-center">
@@ -185,19 +184,19 @@
 
             <li class="nav-item dropdown pe-3">
 
-	            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-		            <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2">@firstName![0].@lastName</span>
-	            </a><!-- End Profile Iamge Icon -->
+                </a><!-- End Profile Iamge Icon -->
 
-	            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-		            <li class="dropdown-header">
-			            <h6>@firstName @lastName</h6>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6>@firstName @lastName</h6>
                         <span>@position</span>
-		            </li>
-		            <li>
-			            <hr class="dropdown-divider">
-		            </li>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
                     <li>
                         <form method="get" action="@Url.Action("Profile", "Broker")">
@@ -255,21 +254,15 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-
             <form method="get" action="@Url.Action("LoadBoard", "Broker")">
                 <input type="hidden" name="brokerId" value="@Model.BrokerId" />
-                <button type="submit" class="nav-link" id="loadboard-nav">
+                <button type="submit" class="nav-link collapsed" id="loadboard-nav">
                     <i class="ri-truck-line"></i>
                     <span>LoadBoard</span>
                 </button>
             </form>
-
-
-        </li><!-- End Dashboard Nav -->
-
+        </li>
         <li class="nav-item">
-
-
 	        <form method="get" action="@Url.Action("Profile", "Broker")">
 		        <input type="hidden" name="brokerId" value="@Model.BrokerId" />
 		        <button type="submit" class="nav-link collapsed" id="profile-nav">
@@ -277,20 +270,15 @@
 			        <span>Profile</span>
 		        </button>
 	        </form>
-
         </li>
-
         <li class="nav-item">
-	 
-
-	        <form method="get" action="@Url.Action("CreateLoad", "Broker")">
-		        <input type="hidden" name="brokerId" value="@Model.BrokerId" />
-                <button type="submit" class="nav-link" id="create-load-nav">
-	                <i class="ri-treasure-map-line"></i>
+            <form method="get" action="@Url.Action("CreateLoad", "Broker")">
+		        <input type="hidden" name="brokerId" value="@Model.BrokerId"/>
+		        <button type="submit" class="nav-link" id="create-load-nav">
+			        <i class="ri-treasure-map-line"></i>
 			        <span>Create a load</span>
 		        </button>
 	        </form>
-
         </li>
         <!-- End Profile Page Nav -->
 
@@ -300,97 +288,98 @@
 
 <main id="main" class="main">
 
-	<div class="pagetitle">
-		<h1>Load</h1>
-		<nav>
-			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="Profile">Broker</a></li>
-                <li class="breadcrumb-item"><a href="LoadBoard">LoadBoard</a></li>
-				<li class="breadcrumb-item active">Load</li>
-			</ol>
-		</nav>
-	</div><!-- End Page Title -->
-	
-	
+    <div class="pagetitle">
+        <h1>Create a load</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="Profile">Broker</a></li>
+                <li class="breadcrumb-item active">Add Load</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+
     <div class="card">
         <div class="card-body justify-content-center">
-		    <h5 class="card-title">Viewing a load</h5>
+            <h5 class="card-title">Adding a load</h5>
 
-            <form class="row g-3">
+            <form class="row g-3" asp-action="CreateLoad" asp-controller="Broker" method="post">
+	            <input type="hidden" name="brokerId" value="@Model.BrokerId" />
 	            <div class="col-12 d-flex justify-content-center mb-2">
 		            <div class="d-flex centered-row flex-wrap justify-content-center">
 			            <div class="col-md-3">
 				            <div class="form-floating">
-					            <input type="text" class="form-control" id="originCity" placeholder="Origin City" value="@Model.OriginCity" disabled>
+					            <input type="text" asp-for="OriginCity" class="form-control" id="originCity" placeholder="Origin City">
 					            <label for="originCity">Origin City</label>
 				            </div>
 			            </div>
 			            <div class="col-md-1">
 				            <div class="form-floating">
-					            <input type="text" class="form-control" id="originState" placeholder="State" value="@Model.OriginState" disabled>
+					            <input type="text" asp-for="OriginState" class="form-control" id="originState" placeholder="State">
 					            <label for="originState">State</label>
 				            </div>
 			            </div>
 			            <div class="col-md-3">
 				            <div class="form-floating">
-					            <input type="text" class="form-control" id="destinationCity" placeholder="Origin City" value="@Model.DestinationCity" disabled>
+					            <input type="text" asp-for="DestinationCity" class="form-control" id="destinationCity" placeholder="Origin City">
 					            <label for="destinationCity">Destination City</label>
 				            </div>
 			            </div>
 			            <div class="col-md-1">
 				            <div class="form-floating">
-					            <input type="text" class="form-control" id="destinationState" placeholder="State" value="@Model.DestinationState" disabled>
+					            <input type="text" asp-for="DestinationState" class="form-control" id="destinationState" placeholder="State">
 					            <label for="destinationState">State</label>
 				            </div>
 			            </div>
 		            </div>
 	            </div>
-				
+
 	            <div class="col-12 d-flex justify-content-center mb-2">
 		            <div class="d-flex centered-row flex-wrap justify-content-center">
 			            <div class="col-md-5">
 				            <div class="form-floating">
-                                <input type="text" class="form-control" id="pickupTime" placeholder="Pickup Time" value="@Model.PickupTime.ToString("dd/MM/yyyy HH:mm")" disabled>
+					            <input type="datetime-local" asp-for="PickupTime" class="form-control" id="pickupTime" placeholder="Pickup Time">
 					            <label for="pickupTime">Pickup Time</label>
 				            </div>
 			            </div>
 			            <div class="col-md-5">
 				            <div class="form-floating">
-                                <input type="text" class="form-control" id="deliveryTime" placeholder="Delivery Time" value="@Model.DeliveryTime.ToString("dd/MM/yyyy HH:mm")" disabled>
+					            <input type="datetime-local" asp-for="DeliveryTime" class="form-control" id="deliveryTime" placeholder="Delivery Time">
 					            <label for="deliveryTime">Delivery Time</label>
 				            </div>
 			            </div>
 		            </div>
 	            </div>
-				
+
 	            <div class="col-12 d-flex justify-content-center mb-2">
 		            <div class="d-flex centered-row flex-wrap justify-content-center">
 			            <div class="col-md-3">
 				            <div class="form-floating">
-                                <input type="text" class="form-control" id="price" placeholder="Price" value="$@Model.PostedPrice" disabled>
-                                <label for="price">Price</label>
+					            <input type="text" asp-for="PostedPrice" class="form-control" id="price" placeholder="Price">
+					            <label for="price">Price</label>
 				            </div>
 			            </div>
 			            <div class="col-md-3">
 				            <div class="form-floating">
-                                <input type="text" class="form-control" id="weight" placeholder="Weight" value="@Model.Weight" disabled>
-                                <label for="weight">Weight in lbs</label>
+					            <input type="text" asp-for="Weight" class="form-control" id="weight" placeholder="Weight">
+					            <label for="weight">Weight in lbs</label>
 				            </div>
 			            </div>
 		            </div>
 	            </div>
 
-			    <div class="text-center">
-				    <button type="submit" class="btn btn-primary">Submit</button>
-				    <button type="reset" class="btn btn-secondary">Reset</button>
-			    </div>
-		    </form><!-- End No Labels Form -->
+	            <div class="text-center">
+		            <button type="submit" class="btn btn-primary">Create Load</button>
+		            <button type="reset" class="btn btn-secondary">Reset</button>
+	            </div>
+            </form><!-- End No Labels Form -->
 
-	    </div>
+        </div>
     </div>
 
 
 </main><!-- End #main -->
+
 
 @* public Guid Id { get; set; }
 public string OriginCity { get; set; } = null!;

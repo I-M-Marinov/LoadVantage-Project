@@ -30,6 +30,10 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cQWRtaW5EYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Broker/Views/Broker/CreateLoad.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQnJva2VyXFZpZXdzXEJyb2tlclxDcmVhdGVMb2FkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Broker/Views/Broker/LoadBoard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQnJva2VyXFZpZXdzXEJyb2tlclxMb2FkQm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

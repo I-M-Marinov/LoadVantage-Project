@@ -279,7 +279,22 @@
 			    </button>
 		    </form>
 
-	    </li><!-- End Profile Page Nav -->
+	    </li>
+	    
+	    <li class="nav-item">
+	 
+
+		    <form method="get" action="@Url.Action("CreateLoad", "Broker")">
+			    <input type="hidden" name="brokerId" value="@Model.BrokerId" />
+				<button type="submit" class="nav-link collapsed" id="create-load-nav">
+					<i class="ri-treasure-map-line"></i>
+				    <span>Create a load</span>
+			    </button>
+		    </form>
+
+	    </li>
+
+	    <!-- End Profile Page Nav -->
 
     </ul>
 

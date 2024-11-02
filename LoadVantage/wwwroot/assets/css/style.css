@@ -676,9 +676,9 @@ h6 {
 }
 
 .sidebar-nav li {
-  padding: 0;
-  margin: 0;
-  list-style: none;
+    padding: 0;
+    margin: 0;
+    list-style: none;
 }
 
 .sidebar-nav .nav-item {
@@ -694,15 +694,16 @@ h6 {
 }
 
 .sidebar-nav .nav-link {
-  display: flex;
-  align-items: center;
-  font-size: 15px;
-  font-weight: 400;
-  color: #4154f1;
-  transition: 0.3s;
-  background: #f6f9ff;
-  padding: 10px 15px;
-  border-radius: 4px;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 400;
+    color: #4154f1;
+    transition: 0.3s;
+    background: #f6f9ff;
+    padding: 10px 15px;
+    border-radius: 4px;
+    width: 100% !important;
 }
 
 .sidebar-nav .nav-link i {
@@ -772,27 +773,46 @@ h6 {
   background-color: #4154f1;
 }
 
-#loadboard-nav,
-#profile-nav {
+
+/*.nav-item form{
     width: 100%;
-    display: flex;
-    align-content: center;
-    align-items: center;
+}*/
+
+#loadboard-nav,
+#profile-nav,
+#create-load-nav {
+    display: flex !important;
+    align-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+#loadboard-nav:hover,
+#profile-nav:hover,
+#create-load-nav:hover {
+    width: 100% !important;
 }
 
 #loadboard-nav span,
-#profile-nav span {
-    font-weight: 700;
+#profile-nav span,
+#create-load-nav span {
+    font-weight: 700 !important;
 }
 
 #loadboard-nav:active,
-#profile-nav:active {
-    width: 100%;
+#profile-nav:active,
+#create-load-nav:active {
+    width: 100% !important;
 }
 
 .ri-account-pin-box-fill,
-.ri-truck-fill {
-    margin-right: 3em;
+.ri-truck-fill,
+.ri-treasure-map-line {
+    margin-right: 3em !important;
+}
+
+.ri-treasure-map-line {
+    margin-right: 2em !important;
 }
 
 /*--------------------------------------------------------------

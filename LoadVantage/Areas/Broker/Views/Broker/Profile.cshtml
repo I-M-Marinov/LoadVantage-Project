@@ -266,15 +266,29 @@
     <li class="nav-item">
 	 
 
-	   <form method="get" action="@Url.Action("Profile", "Broker")">
-		   <input type="hidden" name="brokerId" value="@Model.Id" />
-		   <button type="submit" class="nav-link" id="profile-nav">
-			   <i class="ri-account-pin-box-line"></i>
-			   <span>Profile</span>
-		   </button>
-	   </form>
+	    <form method="get" action="@Url.Action("Profile", "Broker")">
+		    <input type="hidden" name="brokerId" value="@Model.Id" />
+		    <button type="submit" class="nav-link" id="profile-nav">
+			    <i class="ri-account-pin-box-line"></i>
+			    <span>Profile</span>
+		    </button>
+	    </form>
 
-    </li><!-- End Profile Page Nav -->
+    </li>
+    
+    <li class="nav-item">
+	 
+
+	    <form method="get" action="@Url.Action("CreateLoad", "Broker")">
+		    <input type="hidden" name="brokerId" value="@Model.Id" />
+                <button type="submit" class="nav-link collapsed" id="create-load-nav">
+	                <i class="ri-treasure-map-line"></i>
+			    <span>Create a load</span>
+		    </button>
+	    </form>
+
+    </li>
+    <!-- End Profile Page Nav -->
 
 
     </ul>
@@ -287,7 +301,7 @@
         <h1>Profile</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item">Brokers</li>
+                <li class="breadcrumb-item">Broker</li>
                 <li class="breadcrumb-item active">Profile</li>
             </ol>
         </nav>

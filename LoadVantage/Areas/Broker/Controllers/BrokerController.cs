@@ -2,7 +2,9 @@
 using System.Security.Claims;
 using LoadVantage.Areas.Broker.Contracts;
 using LoadVantage.Core.Contracts;
+using LoadVantage.Core.Models.Load;
 using LoadVantage.Filters;
+using LoadVantage.Areas.Broker.Services;
 
 namespace LoadVantage.Areas.Broker.Controllers
 {
@@ -58,5 +60,32 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             return View(loadToShow); // Specify the view name if needed
         }
+
+        [HttpGet]
+        [Route("Load/Create")]
+        public async Task<IActionResult> CreateLoad(LoadViewModel model)
+        {
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Route("Load/Create")]
+        public async Task<IActionResult> CreateLoad(LoadViewModel model, Guid brokerId)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                // Return the same view with the current model if validation fails
+                return View(model);
+            }
+
+            var loadId = await loadService.CreateLoadAsync(model, brokerId);
+
+            // Redirect to a success or details page, or to a list of loads, using the new load ID
+            return RedirectToAction("LoadDetails", new { loadId });
+
+        }
+
     }
 }
