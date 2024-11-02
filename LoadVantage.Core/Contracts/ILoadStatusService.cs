@@ -4,7 +4,7 @@ namespace LoadVantage.Core.Contracts
 {
     public interface ILoadStatusService
     {
-        Task<Guid> CreateLoadAsync(LoadViewModel loadViewModel, Guid brokerId);
+        Task<Guid> CreateLoadAsync(LoadViewModel model, Guid brokerId);
         Task<bool> PostLoadAsync(Guid loadId);
         Task<bool> EditLoadAsync(Guid loadId, LoadViewModel updatedLoadViewModel);
         Task<bool> BookLoadAsync(Guid loadId, Guid dispatcherId);

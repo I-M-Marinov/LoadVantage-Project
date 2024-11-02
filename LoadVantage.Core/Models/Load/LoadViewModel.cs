@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using LoadVantage.Common.Enums;
 using LoadVantage.Core.ValidationAttributes;
 using static LoadVantage.Common.ValidationConstants.LoadValidations;
@@ -7,7 +8,7 @@ namespace LoadVantage.Core.Models.Load
 {
     public class LoadViewModel
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; } 
 
         [Required(ErrorMessage = OriginCityRequired)]
         [StringLength(LoadOriginCityMaxLength, MinimumLength = LoadOriginCityMinLength, ErrorMessage = OriginCityLengthNotValid)]
@@ -45,7 +46,7 @@ namespace LoadVantage.Core.Models.Load
         [Range(WeightMinValue, WeightMaxValue, ErrorMessage = WeightRangeInvalid)]
         public double Weight { get; set; }
 
-        public string Status { get; set; } = LoadStatus.Created.ToString();
+        public string? Status { get; set; } 
         public Guid BrokerId { get; set; }
         public Guid? DispatcherId { get; set; }
     }

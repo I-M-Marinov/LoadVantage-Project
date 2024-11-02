@@ -8,28 +8,47 @@ using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data.Contracts;
 using Microsoft.AspNetCore.Authorization;
+using System.Globalization;
 
 
 namespace LoadVantage.Core.Services
 {
     public class LoadStatusService(LoadVantageDbContext context, IDistanceCalculatorService distanceCalculatorService,UserManager<User> userManager) : ILoadStatusService
     {
-        public async Task<Guid> CreateLoadAsync(LoadViewModel loadViewModel, Guid brokerId)
+        public async Task<Guid> CreateLoadAsync(LoadViewModel model, Guid brokerId)
         {
-            var calculatedDistance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(loadViewModel.OriginCity, loadViewModel.OriginState, loadViewModel.DestinationCity, loadViewModel.DestinationState);
+            double calculatedDistance = 0;
+
+            if (model != null)
+            {
+                try
+                {
+                    calculatedDistance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(model.OriginCity, model.OriginState, model.DestinationCity, model.DestinationState);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+
+            var (originFormattedCity, originFormattedState) = FormatLocation(model.OriginCity, model.OriginState);
+            var (destinationFormattedCity, destinationFormattedState) = FormatLocation(model.DestinationCity, model.DestinationState);
+
 
             var load = new Load
             {
                 Id = Guid.NewGuid(),
-                OriginCity = loadViewModel.OriginCity,
-                OriginState = loadViewModel.OriginState,
-                DestinationCity = loadViewModel.DestinationCity,
-                DestinationState = loadViewModel.DestinationState,
-                PickupTime = loadViewModel.PickupTime,
-                DeliveryTime = loadViewModel.DeliveryTime,
+                CreatedDate = DateTime.Now, 
+                OriginCity = originFormattedCity,
+                OriginState = originFormattedState,
+                DestinationCity = destinationFormattedCity,
+                DestinationState = destinationFormattedState,
+                PickupTime = model.PickupTime,
+                DeliveryTime = model.DeliveryTime,
                 Distance = calculatedDistance,
-                Price = loadViewModel.PostedPrice,
-                Weight = loadViewModel.Weight,
+                Price = model.PostedPrice,
+                Weight = model.Weight,
                 BrokerId = brokerId,
                 Status = LoadStatus.Created
             };
@@ -218,5 +237,14 @@ namespace LoadVantage.Core.Services
             return loadViewModel;
 
         }
+
+        private (string FormattedCity, string FormattedState) FormatLocation(string city, string state)
+        {
+            string formattedCity = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(city.Trim().ToLower());
+            string formattedState = state.Trim().ToUpper();
+
+            return (formattedCity, formattedState);
+        }
     }
+
 }
