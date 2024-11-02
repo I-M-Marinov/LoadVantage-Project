@@ -1,9 +1,12 @@
-﻿@using LoadVantage.Core.Models.Load;
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Core.Models.Load;
 @using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
-@using static LoadVantage.Common.GeneralConstants.UserRoles
 @inject UserManager<User> UserManager
 @model LoadViewModel
+
+
+
 
 @{
     ViewData["Title"] = "Create a Load";
@@ -12,7 +15,11 @@
 
     var firstName = User.FindFirst("FirstName")?.Value;
     var lastName = User.FindFirst("LastName")?.Value;
-    var position = BrokerPositionName;
+    var position = User.FindFirst("Position")?.Value; 
+
+    var broker = await UserManager.GetUserAsync(User);
+    Guid brokerId = broker.Id;
+
 }
 
 <header id="header" class="header fixed-top d-flex align-items-center">
@@ -280,7 +287,6 @@
 		        </button>
 	        </form>
         </li>
-        <!-- End Profile Page Nav -->
 
     </ul>
 
@@ -300,96 +306,107 @@
 
 
     <div class="card">
-        <div class="card-body justify-content-center">
-            <h5 class="card-title">Adding a load</h5>
+	    <div class="card-body justify-content-center">
+		    <h5 class="card-title">Adding a load</h5>
+			
+		    <form asp-action="CreateLoad" asp-controller="Broker" method="post" class="row g-3">
+			    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
-            <form class="row g-3" asp-action="CreateLoad" asp-controller="Broker" method="post">
-	            <input type="hidden" name="brokerId" value="@Model.BrokerId" />
-	            <div class="col-12 d-flex justify-content-center mb-2">
-		            <div class="d-flex centered-row flex-wrap justify-content-center">
-			            <div class="col-md-3">
-				            <div class="form-floating">
-					            <input type="text" asp-for="OriginCity" class="form-control" id="originCity" placeholder="Origin City">
-					            <label for="originCity">Origin City</label>
-				            </div>
-			            </div>
-			            <div class="col-md-1">
-				            <div class="form-floating">
-					            <input type="text" asp-for="OriginState" class="form-control" id="originState" placeholder="State">
-					            <label for="originState">State</label>
-				            </div>
-			            </div>
-			            <div class="col-md-3">
-				            <div class="form-floating">
-					            <input type="text" asp-for="DestinationCity" class="form-control" id="destinationCity" placeholder="Origin City">
-					            <label for="destinationCity">Destination City</label>
-				            </div>
-			            </div>
-			            <div class="col-md-1">
-				            <div class="form-floating">
-					            <input type="text" asp-for="DestinationState" class="form-control" id="destinationState" placeholder="State">
-					            <label for="destinationState">State</label>
-				            </div>
-			            </div>
-		            </div>
-	            </div>
+			    <div class="col-12 d-flex justify-content-center mb-2" style="margin-bottom: -0.5rem !important;">
+				    <span asp-validation-for="OriginState" class="badge badge-danger mb-1" style="margin-right: 15em;"></span> <!-- Validation message above the input -->
 
-	            <div class="col-12 d-flex justify-content-center mb-2">
-		            <div class="d-flex centered-row flex-wrap justify-content-center">
-			            <div class="col-md-5">
-				            <div class="form-floating">
-					            <input type="datetime-local" asp-for="PickupTime" class="form-control" id="pickupTime" placeholder="Pickup Time">
-					            <label for="pickupTime">Pickup Time</label>
-				            </div>
-			            </div>
-			            <div class="col-md-5">
-				            <div class="form-floating">
-					            <input type="datetime-local" asp-for="DeliveryTime" class="form-control" id="deliveryTime" placeholder="Delivery Time">
-					            <label for="deliveryTime">Delivery Time</label>
-				            </div>
-			            </div>
-		            </div>
-	            </div>
+				    <span asp-validation-for="DestinationState" class="badge badge-danger mb-1" style="margin-right: -17em;"></span> <!-- Validation message above the input -->
+			    </div>
 
-	            <div class="col-12 d-flex justify-content-center mb-2">
-		            <div class="d-flex centered-row flex-wrap justify-content-center">
-			            <div class="col-md-3">
-				            <div class="form-floating">
-					            <input type="text" asp-for="PostedPrice" class="form-control" id="price" placeholder="Price">
-					            <label for="price">Price</label>
-				            </div>
-			            </div>
-			            <div class="col-md-3">
-				            <div class="form-floating">
-					            <input type="text" asp-for="Weight" class="form-control" id="weight" placeholder="Weight">
-					            <label for="weight">Weight in lbs</label>
-				            </div>
-			            </div>
-		            </div>
-	            </div>
+			    <div class="col-12 d-flex justify-content-center mb-2">
+				    <div class="d-flex centered-row flex-wrap justify-content-center">
+					    <div class="col-md-3">
+						    @Html.AntiForgeryToken()
+						    <input type="hidden" name="brokerId" value="@brokerId" />
+						    <div class="form-floating">
+							    <input type="text" asp-for="OriginCity" class="form-control" id="originCity" aria-required="true" placeholder="Origin City" required>
+							    <label for="originCity">Origin City</label>
+                                <span asp-validation-for="OriginCity" class="badge badge-danger mt-1"></span>
+						    </div>
+					    </div>
+					    <div class="col-md-1">
+						    <div class="form-floating">
+							    <input type="text" asp-for="OriginState" class="form-control" id="originState" placeholder="State" required>
+							    <label for="originState">State</label>
+						    </div>
+					    </div>
+					    <div class="col-md-3">
+						    <div class="form-floating">
+							    <input type="text" asp-for="DestinationCity" class="form-control" id="destinationCity" placeholder="Origin City" required>
+							    <label for="destinationCity">Destination City</label>
+                                <span asp-validation-for="DestinationCity" class="badge badge-danger mt-1"></span>
 
-	            <div class="text-center">
-		            <button type="submit" class="btn btn-primary">Create Load</button>
-		            <button type="reset" class="btn btn-secondary">Reset</button>
-	            </div>
-            </form><!-- End No Labels Form -->
+						    </div>
+					    </div>
+					    <div class="col-md-1">
+						    <div class="form-floating">
+							    <input type="text" asp-for="DestinationState" class="form-control" id="destinationState" placeholder="State" required>
+							    <label for="destinationState">State</label>
+						    </div>
+					    </div>
+				    </div>
+				    
+			    </div>
 
-        </div>
+			    <div class="col-12 d-flex justify-content-center mb-2">
+				    <div class="d-flex centered-row flex-wrap justify-content-center">
+					    <div class="col-md-5">
+						    <div class="form-floating">
+                                <input type="datetime-local" asp-for="PickupTime" class="form-control" id="pickupTime" placeholder="Pickup Time" value="@DateTime.Today.ToString("yyyy-MM-ddTHH:mm")" required>
+							    <label for="pickupTime">Pickup Time</label>
+                                <span asp-validation-for="PickupTime" class="badge badge-danger mt-1"></span>
+
+						    </div>
+					    </div>
+					    <div class="col-md-5">
+						    <div class="form-floating">
+                                <input type="datetime-local" asp-for="DeliveryTime" class="form-control" id="deliveryTime" placeholder="Delivery Time" value="@DateTime.Today.ToString("yyyy-MM-ddTHH:mm")" required>
+							    <label for="deliveryTime">Delivery Time</label>
+                                <span asp-validation-for="DeliveryTime" class="badge badge-danger mt-1"></span>
+
+						    </div>
+					    </div>
+				    </div>
+			    </div>
+
+			    <div class="col-12 d-flex justify-content-center mb-2">
+				    <div class="d-flex centered-row flex-wrap justify-content-center">
+					    <div class="col-md-3">
+						    <div class="form-floating">
+                                <input type="number" step="0.01" asp-for="PostedPrice" class="form-control" id="postedPrice" placeholder="Price" value="1" required>
+                                <label for="postedPrice">Price</label>
+                                <span asp-validation-for="PostedPrice" class="badge badge-danger mt-1"></span>
+						    </div>
+					    </div>
+					    <div class="col-md-3">
+						    <div class="form-floating">
+                                <input type="number" step="0.01" asp-for="Weight" class="form-control" id="weight" placeholder="Weight" value="1" required>
+							    <label for="weight">Weight in lbs</label>
+                                <span asp-validation-for="Weight" class="badge badge-danger mt-1"></span>
+
+						    </div>
+					    </div>
+				    </div>
+			    </div>
+
+			    <div class="text-center">
+				    <button type="submit" class="btn btn-primary">Create Load</button>
+				    <button type="reset" class="btn btn-secondary">Reset</button>
+			    </div>
+		    </form><!-- End Form -->
+
+	    </div>
     </div>
-
 
 </main><!-- End #main -->
 
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}
 
-@* public Guid Id { get; set; }
-public string OriginCity { get; set; } = null!;
-public string OriginState { get; set; } = null!;
-public string DestinationCity { get; set; } = null!;
-public string DestinationState { get; set; } = null!;
-public DateTime PickupTime { get; set; }
-public DateTime DeliveryTime { get; set; }
-public decimal PostedPrice { get; set; }
-public double Weight { get; set; }
-public string Status { get; set; } = null!;
-public Guid BrokerId { get; set; }
-public Guid? DispatcherId { get; set; } *@
+

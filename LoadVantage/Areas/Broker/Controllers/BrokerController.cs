@@ -5,6 +5,8 @@ using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Load;
 using LoadVantage.Filters;
 using LoadVantage.Areas.Broker.Services;
+using LoadVantage.Common.Enums;
+using LoadVantage.Infrastructure.Data.Models;
 
 namespace LoadVantage.Areas.Broker.Controllers
 {
@@ -62,27 +64,38 @@ namespace LoadVantage.Areas.Broker.Controllers
         }
 
         [HttpGet]
-        [Route("Load/Create")]
-        public async Task<IActionResult> CreateLoad(LoadViewModel model)
+        [Route("Create")]
+
+        public async Task<IActionResult> CreateLoad()
         {
+            var model = new LoadViewModel();
 
             return View(model);
         }
 
         [HttpPost]
-        [Route("Load/Create")]
+        [ValidateAntiForgeryToken]
+        [Route("Create")]
+
         public async Task<IActionResult> CreateLoad(LoadViewModel model, Guid brokerId)
         {
 
+            model.Status = LoadStatus.Created.ToString();
+
             if (!ModelState.IsValid)
             {
-                // Return the same view with the current model if validation fails
+                // debugging purposes only
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(error.ErrorMessage); 
+                }
+
                 return View(model);
             }
 
             var loadId = await loadService.CreateLoadAsync(model, brokerId);
 
-            // Redirect to a success or details page, or to a list of loads, using the new load ID
+            // Redirect to the details page ( which is exactly the same, but user not allowed to edit )
             return RedirectToAction("LoadDetails", new { loadId });
 
         }

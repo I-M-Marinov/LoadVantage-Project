@@ -274,3 +274,25 @@ body {
 .centered-row {
     gap: 1rem; /* Adjust as needed to reduce or increase space */
 }
+
+
+.badge-danger {
+    display: inline-block;
+    background-color: #8208c3; /* Light red background */
+    color: #11b1ac;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.55rem;
+    margin-top: 0.25rem;
+}
+
+.form-floating input {
+    border: 2px #0945d4 solid;
+}
+
+td form button {
+    font-size: 12px;
+    color: #0462bd;
+    padding: 0.35rem;
+    border-radius: 1em;
+    margin-top: 0.25rem;
+}
