@@ -41,18 +41,7 @@ namespace LoadVantage.Common
 		public const byte BrokerCompanyMinLength = 3;
 		public const byte BrokerCompanyMaxLength = 50;
 
-		// LOAD
-
-		public const byte LoadOriginCityMinLength = 2;
-		public const byte LoadOriginCityMaxLength = 30;
-
-		public const byte LoadDestinationCityMinLength = 2;
-		public const byte LoadDestinationCityMaxLength = 30;
-
-		public const byte StateMinMaxLength = 2;
-
-		public const decimal LoadPriceMinValue = 1.00m;
-		public const decimal LoadPriceMaxValue = 99999.99m;
+		
 
 		// DRIVER 
 
@@ -63,9 +52,45 @@ namespace LoadVantage.Common
 		// VALIDATION MESSAGES 
 
 		public const string EmailAlreadyExists = "An account with this email already exists.";
-		public const string InvalidUserNameOrPassword = "Invalid username or password";
+		public const string InvalidUserNameOrPassword = "Invalid username or password.";
 		public const string InvalidPositionSelected = "The selected position is invalid.";
-		
+
+        public static class LoadValidations
+        {
+
+            public const byte LoadOriginCityMinLength = 2;
+            public const byte LoadOriginCityMaxLength = 30;
+
+            public const byte LoadDestinationCityMinLength = 2;
+            public const byte LoadDestinationCityMaxLength = 30;
+
+            public const byte StateMinMaxLength = 2;
+
+            public const double LoadPriceMinValue = 1.00;
+            public const double LoadPriceMaxValue = 99999.99;
+
+            public const double WeightMinValue = 1.00;
+            public const double WeightMaxValue = 48000.00;
+
+            public const string OriginCityRequired = "Origin city is required.";
+            public const string OriginStateRequired = "Origin state is required.";
+            public const string DestinationCityRequired = "Destination city is required.";
+            public const string DestinationStateRequired = "Destination state is required.";
+            public const string PickupTimeRequired = "Pickup time is required.";
+            public const string DeliveryTimeRequired = "Delivery time is required.";
+            public const string PriceRequired = "Price is required.";
+            public const string WeightRequired = "Weight is required.";
+
+            public const string OriginCityLengthNotValid = "Origin city should be between 2 and 30 characters";
+            public const string DestinationCityLengthNotValid = "Destiantion city should be between 2 and 30 characters";
+            public const string StateLengthNotValid = "State should be a 2-letter code.";
+            public const string PickupTimeInvalidFormat = "Invalid date format for Pickup Time.";
+            public const string DeliveryTimeInvalidFormat = "Invalid date format for Delivery Time.";
+            public const string DeliveryTimeCannotBeBeforePickupTime = "Delivery time must be after pickup time.";
+            public const string PriceRangeInvalid = "Price needs to be between 1.00 and 99999.99";
+            public const string WeightRangeInvalid = "Weight needs to be between 1.00 and 48000.00";
+
+        }
 
 	}
 }
