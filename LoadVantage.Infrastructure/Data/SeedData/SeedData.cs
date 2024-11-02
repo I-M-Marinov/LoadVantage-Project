@@ -250,6 +250,8 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 
                     loads.Add(new Load
                     {
+                        Id = Guid.NewGuid(),
+                        CreatedDate = DateTime.Now,
                         OriginCity = origin.City,
                         OriginState = origin.State,
                         DestinationCity = destination.City,

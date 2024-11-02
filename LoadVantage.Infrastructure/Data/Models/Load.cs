@@ -12,8 +12,9 @@ namespace LoadVantage.Infrastructure.Data.Models
         [Key]
         public Guid Id { get; set; }
 
-        [Required]
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        [Required] 
+        public DateTime CreatedDate { get; set; } = DateTime.MinValue;
+
         [Required]
         [StringLength(LoadOriginCityMaxLength)]
 
