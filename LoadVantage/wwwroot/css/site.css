@@ -289,10 +289,9 @@ body {
     border: 2px #0945d4 solid;
 }
 
-td form button {
-    font-size: 12px;
-    color: #0462bd;
-    padding: 0.35rem;
-    border-radius: 1em;
-    margin-top: 0.25rem;
+.view-button {
+    font-size: 11px !important;
+    padding: 0.25rem 0.35rem !important;
+    border-radius: 0.85em !important;
+    margin-top: 0.35rem !important;
 }
