@@ -6,19 +6,39 @@ namespace LoadVantage.Extensions
 {
 	public static class TempDataExtension
 	{
-		private const string TempDataMessageKey = "";
+		private const string SuccessMessageKey = "SuccessMessage";
+		private const string ErrorMessageKey = "ErrorMessage";
 
-		public static void SetMessage(this ITempDataDictionary tempData, string message)
+		// Set success message
+		public static void SetSuccessMessage(this ITempDataDictionary tempData, string message)
 		{
-			tempData[TempDataMessageKey] = message;
+			tempData[SuccessMessageKey] = message;
 		}
 
-		public static string GetMessage(this ITempDataDictionary tempData)
+		// Get and clear success message
+		public static string GetSuccessMessage(this ITempDataDictionary tempData)
 		{
-			if (tempData.TryGetValue(TempDataMessageKey, out var message))
+			if (tempData.TryGetValue(SuccessMessageKey, out var message))
 			{
-				tempData.Remove(TempDataMessageKey); 
-				return message?.ToString();
+				tempData.Remove(SuccessMessageKey);
+				return message?.ToString() ?? string.Empty;
+			}
+			return string.Empty;
+		}
+
+		// Set error message
+		public static void SetErrorMessage(this ITempDataDictionary tempData, string message)
+		{
+			tempData[ErrorMessageKey] = message;
+		}
+
+		// Get and clear error message
+		public static string GetErrorMessage(this ITempDataDictionary tempData)
+		{
+			if (tempData.TryGetValue(ErrorMessageKey, out var message))
+			{
+				tempData.Remove(ErrorMessageKey);
+				return message?.ToString() ?? string.Empty;
 			}
 			return string.Empty;
 		}
