@@ -309,7 +309,20 @@
 	    <div class="card-body justify-content-center">
 		    <h5 class="card-title">Adding a load</h5>
 			
-		    <form asp-action="CreateLoad" asp-controller="Broker" method="post" class="row g-3">
+		    <div class="spinner-container">
+                <div id="loader" class="spinner" style="display: none;">
+		                    
+				    <div></div>
+				    <div></div>
+				    <div></div>
+				    <div></div>
+				    <div></div>
+				    <div></div>
+
+			    </div>
+		    </div>
+
+            <form asp-action="CreateLoad" asp-controller="Broker" method="post" class="row g-3" onsubmit="showLoader()">
 			    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
 			    <div class="col-12 d-flex justify-content-center mb-2" style="margin-bottom: -0.5rem !important;">
@@ -395,8 +408,10 @@
 			    </div>
 
 			    <div class="text-center">
-				    <button type="submit" class="btn btn-success">Create Load</button>
-				    <button type="reset" class="btn btn-secondary">Reset</button>
+                    <button type="submit" class="btn btn-success" id="create-load-btn">Create Load</button>
+                    <button type="reset" class="btn btn-secondary">Reset</button>
+
+                   
 			    </div>
 		    </form><!-- End Form -->
 
@@ -408,5 +423,28 @@
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />
 }
+
+<script>
+    function showLoader() {
+        // Disable the button to prevent multiple clicks
+        document.getElementById("create-load-btn").disabled = true;
+
+        // Show the loader
+        document.getElementById("loader").style.display = "inline-block";
+
+        // Simulate a delay for demonstration (e.g., replace with your async function)
+        setTimeout(() => {
+            hideLoader();
+        }, 3000); // Remove this when using real async function
+    }
+
+    function hideLoader() {
+        // Re-enable the button after completion
+        document.getElementById("create-load-btn").disabled = false;
+
+        // Hide the loader
+        document.getElementById("loader").style.display = "none";
+    }
+</script>
 
 
