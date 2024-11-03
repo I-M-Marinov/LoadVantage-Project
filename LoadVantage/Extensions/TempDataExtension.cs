@@ -12,8 +12,11 @@ namespace LoadVantage.Extensions
 		// Set success message
 		public static void SetSuccessMessage(this ITempDataDictionary tempData, string message)
 		{
-			tempData[SuccessMessageKey] = message;
-		}
+            if (!string.IsNullOrEmpty(message))
+            {
+                tempData[SuccessMessageKey] = message;
+            }
+        }
 
 		// Get and clear success message
 		public static string GetSuccessMessage(this ITempDataDictionary tempData)
@@ -29,8 +32,11 @@ namespace LoadVantage.Extensions
 		// Set error message
 		public static void SetErrorMessage(this ITempDataDictionary tempData, string message)
 		{
-			tempData[ErrorMessageKey] = message;
-		}
+            if (!string.IsNullOrEmpty(message))
+            {
+                tempData[ErrorMessageKey] = message;
+            }
+        }
 
 		// Get and clear error message
 		public static string GetErrorMessage(this ITempDataDictionary tempData)

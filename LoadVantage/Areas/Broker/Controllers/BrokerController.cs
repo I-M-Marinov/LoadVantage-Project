@@ -103,5 +103,33 @@ namespace LoadVantage.Areas.Broker.Controllers
 
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> EditLoad(LoadViewModel model, bool isEditing, Guid loadId)
+        {
+            if (isEditing)
+            {
+                if (!ModelState.IsValid)
+                {
+                    // debugging purposes only
+                    foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
+
+                    return RedirectToAction("LoadDetails", new { loadId = model.Id });
+                }
+
+                await loadService.EditLoadAsync(loadId, model); 
+
+                TempData["isEditing"] = false;
+
+                return RedirectToAction("LoadDetails", new { loadId = model.Id });
+            }
+
+            return View("LoadDetails", model);
+        }
+
     }
 }

@@ -4,18 +4,13 @@
 @using Microsoft.AspNetCore.Identity
 @model LoadViewModel
 
-
-
-
 @{
     ViewData["Title"] = "Create a Load";
     Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 
-
     var firstName = User.FindFirst("FirstName")?.Value;
     var lastName = User.FindFirst("LastName")?.Value;
     var position = User.FindFirst("Position")?.Value; 
-
 
 }
 
@@ -422,26 +417,13 @@
 }
 
 <script>
+
     function showLoader() {
-        // Disable the button to prevent multiple clicks
+
         document.getElementById("create-load-btn").disabled = true;
-
-        // Show the loader
         document.getElementById("loader").style.display = "inline-block";
-
-        // Simulate a delay for demonstration (e.g., replace with your async function)
-        setTimeout(() => {
-            hideLoader();
-        }, 3000); // Remove this when using real async function
     }
 
-    function hideLoader() {
-        // Re-enable the button after completion
-        document.getElementById("create-load-btn").disabled = false;
-
-        // Hide the loader
-        document.getElementById("loader").style.display = "none";
-    }
 </script>
 
 

@@ -1,7 +1,9 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using LoadVantage.Core.Models.Load;
+@using LoadVantage.Extensions
 @using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @inject UserManager<User> UserManager
 @model LoadViewModel
 
@@ -12,6 +14,21 @@
     var firstName = User.FindFirst("FirstName")?.Value;
     var lastName = User.FindFirst("LastName")?.Value;
     var position = User.FindFirst("Position")?.Value;
+
+    var successMessage = string.Empty;
+    var errorMessage = string.Empty;
+
+    if (TempData["ErrorMessage"] != null)
+    {
+	    errorMessage = TempData.GetErrorMessage();
+    }
+
+    if (TempData["SuccessMessage"] != null)
+    {
+	    successMessage = TempData.GetSuccessMessage();
+    }
+
+    var isEditing = TempData["isEditing"] as bool? ?? false;
 }
 
 <header id="header" class="header fixed-top d-flex align-items-center">
@@ -312,80 +329,130 @@
 	
     <div class="card">
         <div class="card-body justify-content-center">
-		    <h5 class="card-title">Viewing a load</h5>
+	        <h5 class="card-title">Viewing a load</h5>
+			
+	        @if (!string.IsNullOrEmpty(successMessage)) // render the success message if there is one
+	        {
+		        <p class="alert alert-success text-center font-weight-medium" style="font-size: 0.8em;">@successMessage</p>
+	        }
 
-            <form class="row g-3">
-	            <div class="col-12 d-flex justify-content-center mb-2">
-		            <div class="d-flex centered-row flex-wrap justify-content-center">
-			            <div class="col-md-3">
-				            <div class="form-floating">
-					            <input type="text" class="form-control" id="originCity" placeholder="Origin City" value="@Model.OriginCity" disabled>
-					            <label for="originCity">Origin City</label>
-				            </div>
-			            </div>
-			            <div class="col-md-1">
-				            <div class="form-floating">
-					            <input type="text" class="form-control" id="originState" placeholder="State" value="@Model.OriginState" disabled>
-					            <label for="originState">State</label>
-				            </div>
-			            </div>
-			            <div class="col-md-3">
-				            <div class="form-floating">
-					            <input type="text" class="form-control" id="destinationCity" placeholder="Origin City" value="@Model.DestinationCity" disabled>
-					            <label for="destinationCity">Destination City</label>
-				            </div>
-			            </div>
-			            <div class="col-md-1">
-				            <div class="form-floating">
-					            <input type="text" class="form-control" id="destinationState" placeholder="State" value="@Model.DestinationState" disabled>
-					            <label for="destinationState">State</label>
-				            </div>
-			            </div>
-		            </div>
-	            </div>
-				
-	            <div class="col-12 d-flex justify-content-center mb-2">
-		            <div class="d-flex centered-row flex-wrap justify-content-center">
-			            <div class="col-md-5">
-				            <div class="form-floating">
-                                <input type="text" class="form-control" id="pickupTime" placeholder="Pickup Time" value="@Model.PickupTime.ToString("dd/MM/yyyy HH:mm")" disabled>
-					            <label for="pickupTime">Pickup Time</label>
-				            </div>
-			            </div>
-			            <div class="col-md-5">
-				            <div class="form-floating">
-                                <input type="text" class="form-control" id="deliveryTime" placeholder="Delivery Time" value="@Model.DeliveryTime.ToString("dd/MM/yyyy HH:mm")" disabled>
-					            <label for="deliveryTime">Delivery Time</label>
-				            </div>
-			            </div>
-		            </div>
-	            </div>
-				
-	            <div class="col-12 d-flex justify-content-center mb-2">
-		            <div class="d-flex centered-row flex-wrap justify-content-center">
-			            <div class="col-md-3">
-				            <div class="form-floating">
-                                <input type="text" class="form-control" id="price" placeholder="Price" value="$@Model.PostedPrice" disabled>
-                                <label for="price">Price</label>
-				            </div>
-			            </div>
-			            <div class="col-md-3">
-				            <div class="form-floating">
-                                <input type="text" class="form-control" id="weight" placeholder="Weight" value="@Model.Weight" disabled>
-                                <label for="weight">Weight in lbs</label>
-				            </div>
-			            </div>
-		            </div>
-	            </div>
+	        @if (!string.IsNullOrEmpty(errorMessage)) // render the error message if there is one
+	        {
+		        <p class="alert alert-danger text-center font-weight-medium" style="font-size: 0.8em;">@errorMessage</p>
+	        }
 
-			    <div class="text-center">
-				    <button type="" class="btn btn-primary">Edit</button>
-				    <button type="" class="btn btn-secondary">Post</button>
-			    </div>
-		    </form>   <!-- End No Labels Form -->
+	        <form id="loadDetailsForm" asp-action="EditLoad" asp-controller="Broker" method="post" class="row g-3">
+		        <input type="hidden" name="brokerId" value="@Model.BrokerId" />
+		        <input type="hidden" name="loadId" value="@Model.Id" />
+		        <input type="hidden" id="isEditing" name="isEditing" value="false" /> 
+		        @Html.AntiForgeryToken()
+
+		        <div class="col-12 d-flex justify-content-center mb-2">
+			        <div class="d-flex centered-row flex-wrap justify-content-center">
+				        <div class="col-md-3">
+					        <div class="form-floating">
+                                <input type="text" class="form-control" id="originCity" placeholder="Origin City" name="OriginCity" value="@Model.OriginCity" @(isEditing ? "" : "disabled") />
+						        <label for="originCity">Origin City</label>
+					        </div>
+				        </div>
+				        <div class="col-md-1">
+					        <div class="form-floating">
+                                <input type="text" class="form-control" id="originState" placeholder="State" name="OriginState" value="@Model.OriginState" @(isEditing ? "" : "disabled") />
+						        <label for="originState">State</label>
+					        </div>
+				        </div>
+				        <div class="col-md-3">
+					        <div class="form-floating">
+                                <input type="text" class="form-control" id="destinationCity" placeholder="Origin City" name="DestinationCity" value="@Model.DestinationCity" @(isEditing ? "" : "disabled") />
+						        <label for="destinationCity">Destination City</label>
+					        </div>
+				        </div>
+				        <div class="col-md-1">
+					        <div class="form-floating">
+                                <input type="text" class="form-control" id="destinationState" placeholder="State" name="DestinationState" value="@Model.DestinationState" @(isEditing ? "" : "disabled") />
+						        <label for="destinationState">State</label>
+					        </div>
+				        </div>
+			        </div>
+		        </div>
+
+		        <div class="col-12 d-flex justify-content-center mb-2">
+			        <div class="d-flex centered-row flex-wrap justify-content-center">
+				        <div class="col-md-5">
+					        <div class="form-floating">
+                                <input type="text" class="form-control" id="pickupTime" placeholder="Pickup Time" name="PickupTime" value="@Model.PickupTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") />
+						        <label for="pickupTime">Pickup Time</label>
+					        </div>
+				        </div>
+				        <div class="col-md-5">
+					        <div class="form-floating">
+                                <input type="text" class="form-control" id="deliveryTime" placeholder="Delivery Time" name="DeliveryTime" value="@Model.DeliveryTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") />
+						        <label for="deliveryTime">Delivery Time</label>
+					        </div>
+				        </div>
+			        </div>
+		        </div>
+
+		        <div class="col-12 d-flex justify-content-center mb-2">
+			        <div class="d-flex centered-row flex-wrap justify-content-center">
+				        <div class="col-md-3">
+					        <div class="form-floating">
+                                <input type="text" class="form-control" id="price" placeholder="Price" name="PostedPrice" value="@Model.PostedPrice" @(isEditing ? "" : "disabled") />
+						        <label for="price">Price</label>
+					        </div>
+				        </div>
+				        <div class="col-md-3">
+					        <div class="form-floating">
+                                <input type="text" class="form-control" id="weight" placeholder="Weight" name="Weight" value="@Model.Weight" @(isEditing ? "" : "disabled") />
+						        <label for="weight">Weight in lbs</label>
+					        </div>
+				        </div>
+			        </div>
+		        </div>
+
+		        <div class="text-center">
+
+			        <button type="button" id="editLoadButton" class="btn btn-primary" onclick="enableFields()">Edit</button>
+			        <button type="submit" id="saveLoadButton" class="btn btn-success" style="display: none;">Save</button>
+
+			        <button type="" class="btn btn-secondary">Post</button>
+		        </div>
+	        </form>   <!-- End No Labels Form -->
 
 	    </div>
     </div>
 
 
 </main><!-- End #main -->
+
+<script>
+
+    function enableFields() {
+        // Enable form fields for editing
+
+        document.getElementById("originCity").disabled = false;
+        document.getElementById("originState").disabled = false;
+        document.getElementById("destinationCity").disabled = false;
+        document.getElementById("destinationState").disabled = false;
+        document.getElementById("pickupTime").disabled = false;
+        document.getElementById("deliveryTime").disabled = false;
+        document.getElementById("price").disabled = false;
+        document.getElementById("weight").disabled = false;
+
+        document.getElementById("editLoadButton").style.display = "none";
+        document.getElementById("saveLoadButton").style.display = "inline-block";
+
+        document.getElementById("isEditing").value = "true";
+    }
+
+    function disableFields() {
+
+    
+    }
+
+    function toggleButtons() {
+        document.getElementById("editLoadButton").style.display = "inline-block";
+        document.getElementById("saveLoadButton").style.display = "none";
+    }
+
+</script>

@@ -6,7 +6,7 @@ namespace LoadVantage.Core.Contracts
     {
         Task<Guid> CreateLoadAsync(LoadViewModel model, Guid brokerId);
         Task<bool> PostLoadAsync(Guid loadId);
-        Task<bool> EditLoadAsync(Guid loadId, LoadViewModel updatedLoadViewModel);
+        Task<bool> EditLoadAsync(Guid loadId, LoadViewModel model);
         Task<bool> BookLoadAsync(Guid loadId, Guid dispatcherId);
         Task<bool> LoadDeliveredAsync(Guid loadId);
         Task<bool> CancelLoadAsync(Guid loadId);

@@ -83,7 +83,7 @@ namespace LoadVantage.Core.Services
             return true;
         }
 
-        public async Task<bool> EditLoadAsync(Guid loadId, LoadViewModel updatedLoadViewModel)
+        public async Task<bool> EditLoadAsync(Guid loadId, LoadViewModel model)
         {
             var load = await context.Loads.FindAsync(loadId);
             if (load == null)
@@ -91,27 +91,27 @@ namespace LoadVantage.Core.Services
                 return false; // Load not found
             }
             // If any changes in the Origin City or State
-            bool originChanged = load.OriginCity != updatedLoadViewModel.OriginCity || load.OriginState != updatedLoadViewModel.OriginState;
+            bool originChanged = load.OriginCity != model.OriginCity || load.OriginState != model.OriginState;
             // If any changes in the Destination City or State
-            bool destinationChanged = load.DestinationCity != updatedLoadViewModel.DestinationCity || load.DestinationState != updatedLoadViewModel.DestinationState; 
+            bool destinationChanged = load.DestinationCity != model.DestinationCity || load.DestinationState != model.DestinationState; 
 
             // Update properties
-            load.OriginCity = updatedLoadViewModel.OriginCity;
-            load.OriginState = updatedLoadViewModel.OriginState;
-            load.DestinationCity = updatedLoadViewModel.DestinationCity;
-            load.DestinationState = updatedLoadViewModel.DestinationState;
-            load.PickupTime = updatedLoadViewModel.PickupTime;
-            load.DeliveryTime = updatedLoadViewModel.DeliveryTime;
-            load.Price = updatedLoadViewModel.PostedPrice;
-            load.Weight = updatedLoadViewModel.Weight;
+            load.OriginCity = model.OriginCity;
+            load.OriginState = model.OriginState;
+            load.DestinationCity = model.DestinationCity;
+            load.DestinationState = model.DestinationState;
+            load.PickupTime = model.PickupTime;
+            load.DeliveryTime = model.DeliveryTime;
+            load.Price = model.PostedPrice;
+            load.Weight = model.Weight;
 
             if (originChanged || destinationChanged) // if either of the two is TRUE ----> Recalculate the distance 
             {
                 var distance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(
-                    updatedLoadViewModel.OriginCity,
-                    updatedLoadViewModel.OriginState,
-                    updatedLoadViewModel.DestinationCity,
-                    updatedLoadViewModel.DestinationState
+                    model.OriginCity,
+                    model.OriginState,
+                    model.DestinationCity,
+                    model.DestinationState
                 );
 
                 load.Distance = distance;
@@ -226,7 +226,7 @@ namespace LoadVantage.Core.Services
                 DestinationCity = load.DestinationCity,
                 DestinationState = load.DestinationState,
                 PickupTime = load.PickupTime,
-                DeliveryTime = load.PickupTime,
+                DeliveryTime = load.DeliveryTime,
                 PostedPrice = load.Price,
                 Weight = load.Weight,
                 Status = load.Status.ToString(),
