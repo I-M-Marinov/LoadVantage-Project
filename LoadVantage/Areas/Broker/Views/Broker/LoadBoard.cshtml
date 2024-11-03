@@ -1,8 +1,10 @@
 ﻿@using System.Security.Claims
 @using LoadVantage.Areas.Broker.Models
 @using LoadVantage.Common.Enums
+@using LoadVantage.Extensions
 @using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
+@using static LoadVantage.Common.GeneralConstants.UserRoles;
 @inject UserManager<User> UserManager
 
 @model BrokerLoadBoardViewModel
@@ -11,9 +13,8 @@
     ViewData["Title"] = "Broker LoadBoard";
     Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 
-	var firstName = User.FindFirst("FirstName")?.Value;
-	var lastName = User.FindFirst("LastName")?.Value;
-	var position = User.FindFirst("Position")?.Value;
+    var successMessage = TempData.GetSuccessMessage();
+    var errorMessage = TempData.GetErrorMessage();
 }
 
 <header id="header" class="header fixed-top d-flex align-items-center">
@@ -187,13 +188,13 @@
 
 		        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
 			        <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-			        <span class="d-none d-md-block dropdown-toggle ps-2">@firstName[0].@lastName</span>
+					<span class="d-none d-md-block dropdown-toggle ps-2">@Model.FirstName[0].@Model.LastName</span>
 		        </a><!-- End Profile Iamge Icon -->
 
 		        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
 			        <li class="dropdown-header">
-				        <h6>@firstName @lastName</h6>
-				        <span>@position</span>
+						<h6>@Model.FirstName @Model.LastName</h6>
+				        <span>@Model.Position</span>
 			        </li>
 			        <li>
 				        <hr class="dropdown-divider">
@@ -321,6 +322,16 @@
                 <div class="card">
                     <div class="card-body">
 	                    <h5 class="card-title">LoadBoard</h5>
+
+	                    @if (!string.IsNullOrEmpty(successMessage)) // render the success message if there is one
+	                    {
+		                    <p class="alert alert-success text-center font-weight-medium" style="font-size: 0.8em;">@successMessage</p>
+	                    }
+
+						@if (!string.IsNullOrEmpty(errorMessage)) // render the error message if there is one
+	                    {
+		                    <p class="alert alert-danger text-center font-weight-medium" style="font-size: 0.8em;">@errorMessage</p>
+	                    }
 						
 	                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 		                    <li class="nav-item" role="presentation">
@@ -377,11 +388,6 @@
 										                    <span>View</span>
 									                    </button>
 								                    </form>
-													
-								               @*      <form method="get" action="/Broker/LoadDetails">
-									                    <input type="hidden" name="loadId" value="@load.Id" />
-									                    <button type="submit"><i class="bi bi-card-text"></i>View</button>
-								                    </form> *@
 						                        </td> 
 						                    </tr>
 					                    }

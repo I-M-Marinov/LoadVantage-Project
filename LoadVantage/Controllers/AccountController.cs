@@ -70,7 +70,7 @@ namespace LoadVantage.Controllers
 	            await userManager.AddToRoleAsync(user, UserRoleName);
                 await userManager.AddClaimAsync(user, new Claim("Position", user.Position ?? ""));
 
-                TempData.SetMessage(LoginWithNewAccount);
+                TempData.SetSuccessMessage(LoginWithNewAccount);
 				return RedirectToAction(nameof(Login));
             }
 
@@ -137,7 +137,7 @@ namespace LoadVantage.Controllers
         public async Task<IActionResult> Logout()
         {
 	        await signInManager.SignOutAsync();
-	        TempData.SetMessage(LoggedOutOfAccount);
+	        TempData.SetSuccessMessage(LoggedOutOfAccount);
 	        return RedirectToAction("Login", "Account", new { area = "" });
         }
 

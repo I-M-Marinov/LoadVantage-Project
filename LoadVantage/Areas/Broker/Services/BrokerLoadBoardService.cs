@@ -2,11 +2,13 @@
 using LoadVantage.Areas.Broker.Models;
 using LoadVantage.Common.Enums;
 using LoadVantage.Infrastructure.Data;
+using LoadVantage.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace LoadVantage.Areas.Broker.Services
 {
-    public class BrokerLoadBoardService(LoadVantageDbContext context) : IBrokerLoadBoardService
+    public class BrokerLoadBoardService(LoadVantageDbContext context, UserManager<User> userManager) : IBrokerLoadBoardService
     {
         public async Task<IEnumerable<BrokerLoadViewModel>> GetAllCreatedLoadsForBrokerAsync(Guid brokerId)
         {
@@ -103,7 +105,10 @@ namespace LoadVantage.Areas.Broker.Services
 
         public async Task<BrokerLoadBoardViewModel> GetBrokerLoadBoardAsync(Guid brokerId)
         {
-            var createdLoads = await GetAllCreatedLoadsForBrokerAsync(brokerId);
+	        var broker = await userManager.Users
+		        .FirstOrDefaultAsync(u => u.Id == brokerId);
+
+			var createdLoads = await GetAllCreatedLoadsForBrokerAsync(brokerId);
             var postedLoads = await GetAllPostedLoadsForBrokerAsync(brokerId);
             var bookedLoads = await GetAllBookedLoadsForBrokerAsync(brokerId);
             var billedLoads = await GetAllBilledLoadsForBrokerAsync(brokerId);
@@ -111,7 +116,11 @@ namespace LoadVantage.Areas.Broker.Services
             return new BrokerLoadBoardViewModel
             {
                 BrokerId = brokerId,
-                CreatedLoads = createdLoads.ToList(),
+                FirstName = broker.FirstName,
+                LastName = broker.LastName,
+                CompanyName = broker.CompanyName,
+                Position = broker.Position,
+				CreatedLoads = createdLoads.ToList(),
                 PostedLoads = postedLoads.ToList(),
                 BookedLoads = bookedLoads.ToList(),
                 BilledLoads = billedLoads.ToList()

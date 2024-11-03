@@ -2,7 +2,6 @@
 @using LoadVantage.Core.Models.Load;
 @using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
-@inject UserManager<User> UserManager
 @model LoadViewModel
 
 
@@ -17,8 +16,6 @@
     var lastName = User.FindFirst("LastName")?.Value;
     var position = User.FindFirst("Position")?.Value; 
 
-    var broker = await UserManager.GetUserAsync(User);
-    Guid brokerId = broker.Id;
 
 }
 
@@ -335,7 +332,7 @@
 				    <div class="d-flex centered-row flex-wrap justify-content-center">
 					    <div class="col-md-3">
 						    @Html.AntiForgeryToken()
-						    <input type="hidden" name="brokerId" value="@brokerId" />
+						    <input type="hidden" name="brokerId" value="@Model.BrokerId" />
 						    <div class="form-floating">
 							    <input type="text" asp-for="OriginCity" class="form-control" id="originCity" aria-required="true" placeholder="Origin City" required>
 							    <label for="originCity">Origin City</label>

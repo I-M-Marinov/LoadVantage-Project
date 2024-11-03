@@ -6,7 +6,9 @@ using LoadVantage.Core.Models.Load;
 using LoadVantage.Filters;
 using LoadVantage.Areas.Broker.Services;
 using LoadVantage.Common.Enums;
+using LoadVantage.Extensions;
 using LoadVantage.Infrastructure.Data.Models;
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Areas.Broker.Controllers
 {
@@ -57,10 +59,11 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             if (loadToShow == null)
             {
-                return null;
+                TempData.SetErrorMessage(LoadCouldNotBeRetrieved);
+                return View(nameof(LoadBoard));
             }
 
-            return View(loadToShow); // Specify the view name if needed
+            return View(loadToShow); 
         }
 
         [HttpGet]
