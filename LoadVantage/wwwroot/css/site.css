@@ -369,3 +369,8 @@ body {
     transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
     }
 }
+
+
+#cancelLoadButton{
+    margin-top: 0.5em;
+}

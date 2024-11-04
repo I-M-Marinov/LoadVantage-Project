@@ -9,6 +9,8 @@ using LoadVantage.Common.Enums;
 using LoadVantage.Extensions;
 using LoadVantage.Infrastructure.Data.Models;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
+using static LoadVantage.Common.GeneralConstants.SuccessMessages;
+using LoadVantage.Core.Services;
 
 namespace LoadVantage.Areas.Broker.Controllers
 {
@@ -59,11 +61,11 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             if (loadToShow == null)
             {
-                TempData.SetErrorMessage(LoadCouldNotBeRetrieved);
+                TempData["ErrorMessage"] = LoadInformationCouldNotBeRetrieved;
                 return View(nameof(LoadBoard));
             }
 
-            return View(loadToShow); 
+			return View(loadToShow); 
         }
 
         [HttpGet]
@@ -85,7 +87,6 @@ namespace LoadVantage.Areas.Broker.Controllers
 
         public async Task<IActionResult> CreateLoad(LoadViewModel model, Guid brokerId)
         {
-
             model.Status = LoadStatus.Created.ToString();
 
             if (!ModelState.IsValid)
@@ -100,6 +101,14 @@ namespace LoadVantage.Areas.Broker.Controllers
             }
 
             var loadId = await loadService.CreateLoadAsync(model, brokerId);
+            var result = await loadService.GetLoadByIdAsync(loadId);
+
+
+            if (result.Distance < 0) 
+            {
+                TempData["ErrorMessage"] = ErrorCalculatingDistance;
+                return View(model); 
+            }
 
             // Redirect to the details page ( which is exactly the same, but user not allowed to edit )
             return RedirectToAction("LoadDetails", new { loadId });
@@ -108,6 +117,7 @@ namespace LoadVantage.Areas.Broker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("Edit")] 
 
         public async Task<IActionResult> EditLoad(LoadViewModel model, bool isEditing, Guid loadId)
         {
@@ -135,5 +145,29 @@ namespace LoadVantage.Areas.Broker.Controllers
             return RedirectToAction("LoadDetails", new { loadId });
 		}
 
-	}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Cancel")] 
+
+        public async Task<IActionResult> CancelLoad(Guid loadId)
+        {
+            TempData["isEditing"] = false;
+
+            if (loadId == Guid.Empty)
+            {
+				TempData["ErrorMessage"] = LoadCouldNotBeRetrieved;
+				return View("LoadDetails");
+            }
+
+            if (await loadService.CancelLoadAsync(loadId))
+            {
+	            TempData["SuccessMessage"] = LoadCancelledSuccessfully;
+				return RedirectToAction("LoadBoard");
+            }
+
+			TempData["ErrorMessage"] = LoadIdInvalid;
+			return View("LoadDetails");
+        }
+
+    }
 }

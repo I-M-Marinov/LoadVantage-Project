@@ -11,12 +11,15 @@
     ViewData["Title"] = "Broker LoadBoard";
     Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 
+    Console.WriteLine(TempData["isEditing"]);
+
     var firstName = User.FindFirst("FirstName")?.Value;
     var lastName = User.FindFirst("LastName")?.Value;
     var position = User.FindFirst("Position")?.Value;
 
-    var isEditing = TempData["isEditing"] as bool? ?? false;
+    var isEditing = TempData["isEditing"] as bool? ?? false; // This should handle null
 }
+
 
 <header id="header" class="header fixed-top d-flex align-items-center">
 
@@ -316,7 +319,17 @@
 	
     <div class="card">
         <div class="card-body justify-content-center">
-	        <h5 class="card-title">Viewing a load</h5>
+	        <h5 class="card-title">Viewing a load</h5>.
+			
+	        @if (TempData["ErrorMessage"] != null)
+	        {
+		        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+	        }
+
+	        @if (TempData["SuccessMessage"] != null)
+	        {
+		        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+	        }
 			
 	        <div class="spinner-container">
 		        <div id="loader" class="spinner" style="display: none;">
@@ -403,11 +416,20 @@
 		        <div class="text-center">
 
 			        <button type="button" id="editLoadButton" class="btn btn-primary" onclick="enableFields()">Edit</button>
+
 			        <button type="submit" id="saveLoadButton" class="btn btn-success" style="display: none;">Save</button>
 
-			        <button type="" class="btn btn-secondary">Post</button>
+			        <button type="" class="btn btn-warning">Post</button>
 		        </div>
-	        </form>   <!-- End No Labels Form -->
+	        </form> 
+	        <div class="text-center">
+		        <form asp-action="CancelLoad" asp-controller="Broker" method="post" id="cancelLoadButton" >
+			        <input type="hidden" name="loadId" value="@Model.Id" />
+			        <button type="submit" class="btn btn-danger" onclick="return confirmCancel();">
+				        <span>Cancel Load</span>
+			        </button>
+		        </form>
+	        </div>
 
 	    </div>
     </div>
@@ -444,6 +466,11 @@
     function toggleButtons() {
         document.getElementById("editLoadButton").style.display = "inline-block";
         document.getElementById("saveLoadButton").style.display = "none";
+    }
+
+    function confirmCancel() {
+
+        return confirm("Are you sure you want to cancel this load?");
     }
 
 </script>

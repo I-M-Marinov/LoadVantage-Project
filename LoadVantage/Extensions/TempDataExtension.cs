@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-#nullable disable
-
 namespace LoadVantage.Extensions
 {
 	public static class TempDataExtension
@@ -14,39 +12,40 @@ namespace LoadVantage.Extensions
 		{
             if (!string.IsNullOrEmpty(message))
             {
-                tempData[SuccessMessageKey] = message;
+				tempData.Add(SuccessMessageKey, message);
             }
         }
 
-		// Get and clear success message
-		public static string GetSuccessMessage(this ITempDataDictionary tempData)
-		{
-			if (tempData.TryGetValue(SuccessMessageKey, out var message))
-			{
-				tempData.Remove(SuccessMessageKey);
-				return message?.ToString() ?? string.Empty;
-			}
-			return string.Empty;
-		}
+        // Get and clear success message
+        public static string? GetSuccessMessage(this ITempDataDictionary tempData)
+        {
+            if (tempData.TryGetValue(SuccessMessageKey, out var message) && message is string strMessage)
+            {
+                tempData.Remove(SuccessMessageKey);
+                return strMessage;
+            }
 
-		// Set error message
-		public static void SetErrorMessage(this ITempDataDictionary tempData, string message)
+            return null;
+        }
+
+        // Set error message
+        public static void SetErrorMessage(this ITempDataDictionary tempData, string message)
 		{
             if (!string.IsNullOrEmpty(message))
             {
-                tempData[ErrorMessageKey] = message;
+                tempData.Add(ErrorMessageKey, message);
             }
         }
 
-		// Get and clear error message
-		public static string GetErrorMessage(this ITempDataDictionary tempData)
-		{
-			if (tempData.TryGetValue(ErrorMessageKey, out var message))
-			{
-				tempData.Remove(ErrorMessageKey);
-				return message?.ToString() ?? string.Empty;
-			}
-			return string.Empty;
-		}
-	}
+        // Get and clear error message
+        public static string? GetErrorMessage(this ITempDataDictionary tempData)
+        {
+            if (tempData.TryGetValue(ErrorMessageKey, out var message) && message is string strMessage)
+            {
+                tempData.Remove(ErrorMessageKey);
+                return strMessage;
+            }
+            return null;
+        }
+    }
 }

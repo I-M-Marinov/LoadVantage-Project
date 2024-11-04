@@ -27,6 +27,8 @@ builder.Services.AddDbContext<LoadVantageDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+builder.Services.AddSession();
+
 builder.Services.AddIdentity<User, Role>(options =>
 	{
 		options.Password.RequireDigit = true;
@@ -55,11 +57,11 @@ builder.Services.AddScoped<IBrokerLoadBoardService, BrokerLoadBoardService>(); /
 
 
 builder.Services.AddControllersWithViews()
-	.AddMvcOptions(options =>
-	{
-		options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+    .AddMvcOptions(options =>
+    {
+        options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
 
-	});
+    });
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -72,7 +74,6 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 var app = builder.Build();
-
 
 using (var scope = app.Services.CreateScope())
 {
@@ -104,6 +105,7 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthentication();
