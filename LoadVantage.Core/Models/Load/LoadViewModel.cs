@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using LoadVantage.Common.Enums;
 using LoadVantage.Core.ValidationAttributes;
 using static LoadVantage.Common.ValidationConstants.LoadValidations;
 

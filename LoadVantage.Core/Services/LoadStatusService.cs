@@ -90,16 +90,21 @@ namespace LoadVantage.Core.Services
             {
                 return false; // Load not found
             }
+
+            var (originFormattedCity, originFormattedState) = FormatLocation(model.OriginCity, model.OriginState);
+            var (destinationFormattedCity, destinationFormattedState) = FormatLocation(model.DestinationCity, model.DestinationState);
+
             // If any changes in the Origin City or State
-            bool originChanged = load.OriginCity != model.OriginCity || load.OriginState != model.OriginState;
+            bool originChanged = load.OriginCity != originFormattedCity || load.OriginState != originFormattedState;
             // If any changes in the Destination City or State
-            bool destinationChanged = load.DestinationCity != model.DestinationCity || load.DestinationState != model.DestinationState; 
+            bool destinationChanged = load.DestinationCity != destinationFormattedCity || load.DestinationState != destinationFormattedState; 
 
             // Update properties
-            load.OriginCity = model.OriginCity;
-            load.OriginState = model.OriginState;
-            load.DestinationCity = model.DestinationCity;
-            load.DestinationState = model.DestinationState;
+            load.Id = loadId;
+            load.OriginCity = originFormattedCity;
+            load.OriginState = originFormattedState;
+            load.DestinationCity = destinationFormattedCity;
+            load.DestinationState = destinationFormattedState;
             load.PickupTime = model.PickupTime;
             load.DeliveryTime = model.DeliveryTime;
             load.Price = model.PostedPrice;
