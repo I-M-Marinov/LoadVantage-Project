@@ -9,12 +9,41 @@ using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using System.Globalization;
+using Microsoft.Extensions.Logging;
 
 
 namespace LoadVantage.Core.Services
 {
-    public class LoadStatusService(LoadVantageDbContext context, IDistanceCalculatorService distanceCalculatorService,UserManager<User> userManager) : ILoadStatusService
+    public class LoadStatusService(LoadVantageDbContext context, IDistanceCalculatorService distanceCalculatorService,UserManager<User> userManager, ILogger<LoadStatusService> logger) : ILoadStatusService
     {
+        public async Task<LoadViewModel> GetLoadByIdAsync(Guid loadId)
+        {
+            var load = await context.Loads.FindAsync(loadId);
+
+            if (load == null)
+            {
+                return null;
+            }
+
+            var foundLoad = new LoadViewModel
+            {
+                Id = load.Id,
+                OriginCity = load.OriginCity,
+                OriginState = load.OriginState,
+                DestinationCity = load.DestinationCity,
+                DestinationState = load.DestinationState,
+                PickupTime = load.PickupTime,
+                DeliveryTime = load.DeliveryTime,
+                PostedPrice = load.Price,
+                Distance = load.Distance,
+                Weight = load.Weight,
+                BrokerId = load.BrokerId,
+                Status = LoadStatus.Created.ToString()
+            };
+
+            return foundLoad;
+        }
+
         public async Task<Guid> CreateLoadAsync(LoadViewModel model, Guid brokerId)
         {
             double calculatedDistance = 0;
@@ -27,8 +56,9 @@ namespace LoadVantage.Core.Services
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
-                    throw;
+                    logger.LogError(e, $"Error calculating distance between cities: {model.OriginCity}, {model.OriginState} to {model.DestinationCity}, {model.DestinationState}");
+                    calculatedDistance = -1;
+                    return Guid.Empty;
                 }
             }
 
@@ -58,6 +88,7 @@ namespace LoadVantage.Core.Services
 
             return load.Id;
         }
+
         public async Task<bool> PostLoadAsync(Guid loadId)
         {
             var load = await context.Loads
@@ -82,7 +113,6 @@ namespace LoadVantage.Core.Services
 
             return true;
         }
-
         public async Task<bool> EditLoadAsync(Guid loadId, LoadViewModel model)
         {
             var load = await context.Loads.FindAsync(loadId);
@@ -191,7 +221,7 @@ namespace LoadVantage.Core.Services
 
             if (load == null)
             {
-                return false; // Load not found or not owned by broker
+                return false;
             }
 
             // Update status to cancelled (soft delete)
@@ -206,9 +236,6 @@ namespace LoadVantage.Core.Services
         public async Task<LoadViewModel> SeeLoadDetails(Guid loadId)
         {
             var load = await context.Loads
-                .Include(l => l.PostedLoad)
-                .Include(l => l.BookedLoad)
-                .Include(l => l.BilledLoad)
                 .FirstOrDefaultAsync(l => l.Id == loadId);
 
             if (load == null)
