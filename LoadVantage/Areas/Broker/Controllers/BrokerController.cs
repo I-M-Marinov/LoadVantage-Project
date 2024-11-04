@@ -17,7 +17,7 @@ namespace LoadVantage.Areas.Broker.Controllers
     [BrokerOnly]
     [Area("Broker")]
     [Route("Broker")]
-    public class BrokerController(IBrokerService brokerService, IBrokerLoadBoardService brokerLoadBoardService, ILoadStatusService loadService) : Controller
+    public class BrokerController(IBrokerService brokerService, IBrokerLoadBoardService brokerLoadBoardService, ILoadStatusService loadService, ILogger<BrokerController> logger) : Controller
     {
         [HttpGet]
         [Route("Profile")]
@@ -100,18 +100,20 @@ namespace LoadVantage.Areas.Broker.Controllers
                 return View(model);
             }
 
-            var loadId = await loadService.CreateLoadAsync(model, brokerId);
-            var result = await loadService.GetLoadByIdAsync(loadId);
-
-
-            if (result.Distance < 0) 
+            try
             {
-                TempData["ErrorMessage"] = ErrorCalculatingDistance;
-                return View(model); 
-            }
+                var loadId = await loadService.CreateLoadAsync(model, brokerId);
+                var result = await loadService.GetLoadByIdAsync(loadId);
 
-            // Redirect to the details page ( which is exactly the same, but user not allowed to edit )
-            return RedirectToAction("LoadDetails", new { loadId });
+                // Redirect to the details page ( which is exactly the same, but user not allowed to edit )
+                return RedirectToAction("LoadDetails", new { loadId });
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error creating load");
+                ModelState.AddModelError(string.Empty, ErrorCreatingLoad);
+                return View(model);
+            }
 
         }
 
