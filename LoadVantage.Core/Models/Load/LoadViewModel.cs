@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using LoadVantage.Core.ValidationAttributes;
+using LoadVantage.Infrastructure.Data.Services;
 using static LoadVantage.Common.ValidationConstants.LoadValidations;
 
 namespace LoadVantage.Core.Models.Load
@@ -35,6 +36,8 @@ namespace LoadVantage.Core.Models.Load
         [DataType(DataType.DateTime, ErrorMessage = DeliveryTimeInvalidFormat)]
         [DateGreaterThan(nameof(PickupTime), ErrorMessage = DeliveryTimeCannotBeBeforePickupTime)] // Custom attribute  
         public DateTime DeliveryTime { get; set; }
+
+        public double? Distance { get; set; }
 
         [Required(ErrorMessage = PriceRequired)]
         [Range(LoadPriceMinValue, LoadPriceMaxValue, ErrorMessage = PriceRangeInvalid)]
