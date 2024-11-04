@@ -69,9 +69,12 @@ namespace LoadVantage.Areas.Broker.Controllers
         [HttpGet]
         [Route("Create")]
 
-        public async Task<IActionResult> CreateLoad()
+        public IActionResult CreateLoad(Guid brokerId)
         {
-            var model = new LoadViewModel();
+            var model = new LoadViewModel
+            {
+                BrokerId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!)
+            };
 
             return View(model);
         }
@@ -118,18 +121,19 @@ namespace LoadVantage.Areas.Broker.Controllers
                         Console.WriteLine(error.ErrorMessage);
                     }
 
-                    return RedirectToAction("LoadDetails", new { loadId = model.Id });
+                    return View("LoadDetails", model);
+
                 }
 
                 await loadService.EditLoadAsync(loadId, model); 
 
                 TempData["isEditing"] = false;
 
-                return RedirectToAction("LoadDetails", new { loadId = model.Id });
+                return RedirectToAction("LoadDetails", new { loadId });
             }
 
-            return View("LoadDetails", model);
-        }
+            return RedirectToAction("LoadDetails", new { loadId });
+		}
 
-    }
+	}
 }

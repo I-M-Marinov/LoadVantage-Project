@@ -2,7 +2,7 @@
 @using LoadVantage.Core.Models.Load;
 @using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
-@model LoadViewModel
+@model LoadVantage.Core.Models.Load.LoadViewModel;
 
 @{
     ViewData["Title"] = "Create a Load";
@@ -314,8 +314,9 @@
 			    </div>
 		    </div>
 
-            <form asp-action="CreateLoad" asp-controller="Broker" method="post" class="row g-3" onsubmit="showLoader()">
+            <form method="post" action="@Url.Action("CreateLoad", "Broker")" class="row g-3" onsubmit="showLoader()">
 			    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+			    <input type="hidden" name="brokerId" value="@Model.BrokerId"/>
 
 			    <div class="col-12 d-flex justify-content-center mb-2" style="margin-bottom: -0.5rem !important;">
 				    <span asp-validation-for="OriginState" class="badge badge-danger mb-1" style="margin-right: 15em;"></span> <!-- Validation message above the input -->
@@ -327,7 +328,6 @@
 				    <div class="d-flex centered-row flex-wrap justify-content-center">
 					    <div class="col-md-3">
 						    @Html.AntiForgeryToken()
-						    <input type="hidden" name="brokerId" value="@Model.BrokerId" />
 						    <div class="form-floating">
 							    <input type="text" asp-for="OriginCity" class="form-control" id="originCity" aria-required="true" placeholder="Origin City" required>
 							    <label for="originCity">Origin City</label>
@@ -405,7 +405,7 @@
 
                    
 			    </div>
-		    </form><!-- End Form -->
+		    </form> <!-- End Form -->
 
 	    </div>
     </div>

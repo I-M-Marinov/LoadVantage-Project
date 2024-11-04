@@ -15,19 +15,6 @@
     var lastName = User.FindFirst("LastName")?.Value;
     var position = User.FindFirst("Position")?.Value;
 
-    var successMessage = string.Empty;
-    var errorMessage = string.Empty;
-
-    if (TempData["ErrorMessage"] != null)
-    {
-	    errorMessage = TempData.GetErrorMessage();
-    }
-
-    if (TempData["SuccessMessage"] != null)
-    {
-	    successMessage = TempData.GetSuccessMessage();
-    }
-
     var isEditing = TempData["isEditing"] as bool? ?? false;
 }
 
@@ -331,17 +318,20 @@
         <div class="card-body justify-content-center">
 	        <h5 class="card-title">Viewing a load</h5>
 			
-	        @if (!string.IsNullOrEmpty(successMessage)) // render the success message if there is one
-	        {
-		        <p class="alert alert-success text-center font-weight-medium" style="font-size: 0.8em;">@successMessage</p>
-	        }
+	        <div class="spinner-container">
+		        <div id="loader" class="spinner" style="display: none;">
+		                    
+			        <div></div>
+			        <div></div>
+			        <div></div>
+			        <div></div>
+			        <div></div>
+			        <div></div>
 
-	        @if (!string.IsNullOrEmpty(errorMessage)) // render the error message if there is one
-	        {
-		        <p class="alert alert-danger text-center font-weight-medium" style="font-size: 0.8em;">@errorMessage</p>
-	        }
+		        </div>
+	        </div>
 
-	        <form id="loadDetailsForm" asp-action="EditLoad" asp-controller="Broker" method="post" class="row g-3">
+	        <form id="loadDetailsForm" asp-action="EditLoad" asp-controller="Broker" method="post" class="row g-3" onsubmit="showLoader()">
 		        <input type="hidden" name="brokerId" value="@Model.BrokerId" />
 		        <input type="hidden" name="loadId" value="@Model.Id" />
 		        <input type="hidden" id="isEditing" name="isEditing" value="false" /> 
@@ -427,8 +417,13 @@
 
 <script>
 
+    function showLoader() {
+
+        document.getElementById("saveLoadButton").disabled = true;
+        document.getElementById("loader").style.display = "inline-block";
+    }
+
     function enableFields() {
-        // Enable form fields for editing
 
         document.getElementById("originCity").disabled = false;
         document.getElementById("originState").disabled = false;
@@ -445,10 +440,6 @@
         document.getElementById("isEditing").value = "true";
     }
 
-    function disableFields() {
-
-    
-    }
 
     function toggleButtons() {
         document.getElementById("editLoadButton").style.display = "inline-block";
