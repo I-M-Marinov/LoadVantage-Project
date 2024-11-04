@@ -56,9 +56,9 @@ namespace LoadVantage.Core.Services
                 }
                 catch (Exception e)
                 {
-                    logger.LogError(e, $"Error calculating distance between cities: {model.OriginCity}, {model.OriginState} to {model.DestinationCity}, {model.DestinationState}");
+                    logger.LogError(e, $"Error calculating distance!");
                     calculatedDistance = -1;
-                    return Guid.Empty;
+                    throw;
                 }
             }
 

@@ -35,8 +35,15 @@ namespace LoadVantage.Common
 
         public static class ErrorMessages
         {
-            public const string LoadCouldNotBeRetrieved = "Error retrieving the load information!";
+            public const string LoadInformationCouldNotBeRetrieved = "Error retrieving the load information.";
+            public const string LoadCouldNotBeRetrieved = "Load could not be retrieved.";
+            public const string LoadIdInvalid = "Load id is not valid.";
+            public const string ErrorCreatingLoad = "There was an error creating the load. Please check your input and try again.";
         }
 
+        public static class SuccessMessages
+        {
+            public const string LoadCancelledSuccessfully = "Load was cancelled successfully.";
+        }
     }
 }
