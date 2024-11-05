@@ -14,6 +14,9 @@ namespace LoadVantage.Areas.Broker.Services
         {
             var createdLoads = await context.Loads
                 .Where(load => load.Status == LoadStatus.Created && load.BrokerId == brokerId)
+                .OrderBy(l => l.PickupTime)
+                .ThenByDescending(l => l.OriginCity)
+                .ThenByDescending(l => l.OriginState)
                 .ToListAsync();
 
             return createdLoads.Select(load => new BrokerLoadViewModel()
