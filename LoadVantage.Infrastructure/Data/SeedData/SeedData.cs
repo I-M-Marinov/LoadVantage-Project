@@ -222,7 +222,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
             var locations = new List<(string City, string State)>
             {
                 ("Chicago", "IL"),
-                ("New York", "NY"),
+                ("New York City", "NY"),
                 ("Atlanta", "GA"),
                 ("Houston", "TX"),
                 ("Los Angeles", "CA"),

@@ -45,6 +45,10 @@ namespace LoadVantage.Common
             public const string ErrorCreatingLoad = "There was an error creating the load. Please check your input and try again.";
             public const string ErrorEditingLoad = "Load was not edited succesfully. Please provide valid origin and destination city and state.";
             public const string ErrorUpdatingLoad = "Load was not updated !";
+
+            public const string LoadIsNotInCorrectStatus = "This load cannot be posted. It is not with status \"Created\"";
+            public const string LoadIsAlreadyPosted = "This load is already posted.";
+            public const string ErrorPostingLoad = "An error occured and the load was not posted.";
         }
 
         public static class SuccessMessages
@@ -52,6 +56,8 @@ namespace LoadVantage.Common
             public const string LoadCreatedSuccessfully = "Load was created successfully.";
             public const string LoadUpdatedSuccessfully = "Load was updated successfully.";
             public const string LoadCancelledSuccessfully = "Load was cancelled successfully.";
+            public const string LoadPostedSuccessfully = "Load was posted successfully.";
+
         }
     }
 }
