@@ -217,8 +217,8 @@ namespace LoadVantage.Areas.Broker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-		public async Task<IActionResult> PostALoad(Guid loadId)
+        [Route("Post")]
+        public async Task<IActionResult> PostALoad(Guid loadId)
         {
             
             if (!ModelState.IsValid)
@@ -259,6 +259,54 @@ namespace LoadVantage.Areas.Broker.Controllers
             catch (Exception e)
             {
                 TempData["ErrorMessage"] = ErrorPostingLoad;
+                return RedirectToAction("LoadDetails", new { loadId = load.Id });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Unpost")]
+        public async Task<IActionResult> UnpostALoad(Guid loadId)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("LoadDetails", new { loadId });
+            }
+
+            if (loadId == Guid.Empty)
+            {
+                TempData["ErrorMessage"] = LoadIdInvalid;
+                return View("LoadBoard");
+            }
+
+            LoadViewModel load = await loadService.GetLoadByIdAsync(loadId);
+
+            if (load.Status != LoadStatus.Available.ToString())
+            {
+                if (load.Status == LoadStatus.Created.ToString())
+                {
+                    TempData["ErrorMessage"] = LoadIsNotPosted; // if the load is already not posted ( created status ) 
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = LoadIsNotInCorrectStatus; // if the load is booked or billed 
+                }
+
+                return RedirectToAction("LoadDetails", new { loadId = load.Id });
+            }
+
+            try
+            {
+                await loadService.UnpostLoadAsync(load.Id); // unpost the load
+
+                TempData["ActiveTab"] = "created"; // navigate to the created tab
+                TempData["SuccessMessage"] = LoadUnpostedSuccessfully; 
+                return RedirectToAction("LoadBoard");
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = ErrorUnpostingLoad;
                 return RedirectToAction("LoadDetails", new { loadId = load.Id });
             }
         }
