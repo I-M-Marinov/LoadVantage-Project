@@ -321,14 +321,15 @@
                     <div class="card-body">
 	                    <h5 class="card-title">LoadBoard</h5>
 
-						@if (TempData["ErrorMessage"] != null)
+							
+	                    @if (TempData["ErrorMessage"] != null)
 	                    {
-							<div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+		                    <div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["ErrorMessage"]</div>
 	                    }
 
-						@if (TempData["SuccessMessage"] != null)
+	                    @if (TempData["SuccessMessage"] != null)
 	                    {
-							<div class="alert alert-success">@TempData["SuccessMessage"]</div>
+		                    <div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["SuccessMessage"]</div>
 	                    }
 						
 	                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">

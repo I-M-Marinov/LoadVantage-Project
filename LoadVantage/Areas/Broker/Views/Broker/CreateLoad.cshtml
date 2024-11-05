@@ -301,6 +301,17 @@
 	    <div class="card-body justify-content-center">
 		    <h5 class="card-title">Adding a load</h5>
 			
+            	
+		    @if (TempData["ErrorMessage"] != null)
+		    {
+			    <div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["ErrorMessage"]</div>
+		    }
+
+		    @if (TempData["SuccessMessage"] != null)
+		    {
+			    <div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["SuccessMessage"]</div>
+		    }
+			
 		    <div class="spinner-container">
                 <div id="loader" class="spinner" style="display: none;">
 		                    
