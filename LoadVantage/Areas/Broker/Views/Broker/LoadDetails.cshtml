@@ -21,6 +21,9 @@
     var position = User.FindFirst("Position")?.Value;
 
     var isEditing = TempData["isEditing"] as bool? ?? false; 
+
+    var errorMessage = TempData["ErrorMessage"];
+    var successMessage = TempData["SuccessMessage"];
 }
 
 
@@ -359,12 +362,12 @@
 
 				@if (TempData["ErrorMessage"] != null)
 				{
-					<div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["ErrorMessage"]</div>
+					<div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@errorMessage</div>
 				}
 
 				@if (TempData["SuccessMessage"] != null)
 				{
-					<div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["SuccessMessage"]</div>
+					<div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@successMessage</div>
 				}
 
 				<div class="spinner-container">
@@ -468,13 +471,44 @@
 					</div>
 				</form>
 				<div class="text-center details-buttons-container">
-					<form asp-action="PostALoad" asp-controller="Broker" method="post" id="postLoadForm">
-						@Html.AntiForgeryToken()
-						<input type="hidden" name="loadId" value="@Model.Id"/>
-						<button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
-							<i class="ri-file-list-line"></i> Post
-						</button>
-					</form>
+					@{
+						switch (status)
+						{
+							case LoadStatus.Created:
+								<form asp-action="PostALoad" asp-controller="Broker" method="post" id="postLoadForm">
+									@Html.AntiForgeryToken()
+									<input type="hidden" name="loadId" value="@Model.Id"/>
+									<button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
+										<i class="ri-file-list-line"></i> Post
+									</button>
+								</form>
+								break;
+							case LoadStatus.Available:
+	                            <form asp-action="UnpostALoad" asp-controller="Broker" method="post" id="postLoadForm">
+	                                @Html.AntiForgeryToken()
+	                                <input type="hidden" name="loadId" value="@Model.Id" />
+	                                <button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
+	                                    <i class="ri-file-list-line"></i> Unpost
+	                                </button>
+	                            </form>
+								break;
+							// case LoadStatus.Booked:
+							// 	<div class="load-status badge bg-warning">
+							// 		<i class="bi bi-bookmark me-1"></i> Booked
+							// 	</div>
+							// 	break;
+							// case LoadStatus.Delivered:
+							// 	<div class="load-status badge bg-info">
+							// 		<i class="bi bi-truck me-1"></i> Delivered
+							// 	</div>
+							// 	break;
+							// case LoadStatus.Cancelled:
+							// 	<div class="load-status badge bg-danger">
+							// 		<i class="bi bi-x-circle me-1"></i> Cancelled
+							// 	</div>
+							// 	break;
+						}
+					}
 
 					<form asp-action="CancelLoad" asp-controller="Broker" method="post" id="cancelLoadButton">
 						@Html.AntiForgeryToken()

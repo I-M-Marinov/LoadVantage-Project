@@ -10,7 +10,11 @@
 
     var firstName = User.FindFirst("FirstName")?.Value;
     var lastName = User.FindFirst("LastName")?.Value;
-    var position = User.FindFirst("Position")?.Value; 
+    var position = User.FindFirst("Position")?.Value;
+
+    var errorMessage = TempData["ErrorMessage"];
+    var successMessage = TempData["SuccessMessage"];
+
 
 }
 
@@ -299,17 +303,17 @@
 
     <div class="card">
 	    <div class="card-body justify-content-center">
-		    <h5 class="card-title">Adding a load</h5>
+		    <h5 class="card-title">Creating a load</h5>
 			
             	
 		    @if (TempData["ErrorMessage"] != null)
 		    {
-			    <div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["ErrorMessage"]</div>
+                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@errorMessage</div>
 		    }
 
 		    @if (TempData["SuccessMessage"] != null)
 		    {
-			    <div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["SuccessMessage"]</div>
+			    <div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@successMessage</div>
 		    }
 			
 		    <div class="spinner-container">
