@@ -7,9 +7,9 @@ using LoadVantage.Core.Models.Load;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data.Contracts;
-using Microsoft.AspNetCore.Authorization;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 
 namespace LoadVantage.Core.Services
@@ -116,6 +116,7 @@ namespace LoadVantage.Core.Services
         public async Task<bool> EditLoadAsync(Guid loadId, LoadViewModel model)
         {
             var load = await context.Loads.FindAsync(loadId);
+
             if (load == null)
             {
                 return false; // Load not found
@@ -142,20 +143,30 @@ namespace LoadVantage.Core.Services
 
             if (originChanged || destinationChanged) // if either of the two is TRUE ----> Recalculate the distance 
             {
-                var distance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(
-                    model.OriginCity,
-                    model.OriginState,
-                    model.DestinationCity,
-                    model.DestinationState
-                );
+                try
+                {
+                    var distance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(
+                        model.OriginCity,
+                        model.OriginState,
+                        model.DestinationCity,
+                        model.DestinationState
+                    );
 
-                load.Distance = distance;
+                    load.Distance = distance;
+
+                    context.Loads.Update(load);
+                    await context.SaveChangesAsync();
+
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(ErrorEditingLoad);
+                    throw;
+                }
             }
 
-            context.Loads.Update(load);
-            await context.SaveChangesAsync();
-
-            return true;
+            return false;
         }
 
         public async Task<bool> BookLoadAsync(Guid loadId, Guid dispatcherId)
@@ -239,15 +250,8 @@ namespace LoadVantage.Core.Services
                 .FirstOrDefaultAsync(l => l.Id == loadId);
 
             if (load == null)
-            {
-                return null; 
-            }
-
-            Guid? dispatcherId = null;
-
-            if (load.Status == LoadStatus.Booked && load.BookedLoad != null)
-            {
-                dispatcherId = load.BookedLoad.DispatcherId;
+            { 
+                throw new Exception(ErrorEditingLoad);
             }
 
             var loadViewModel = new LoadViewModel
@@ -260,10 +264,11 @@ namespace LoadVantage.Core.Services
                 PickupTime = load.PickupTime,
                 DeliveryTime = load.DeliveryTime,
                 PostedPrice = load.Price,
+                Distance = load.Distance,
                 Weight = load.Weight,
                 Status = load.Status.ToString(),
                 BrokerId = load.BrokerId,
-                DispatcherId = dispatcherId
+                DispatcherId = null
             };
 
             return loadViewModel;
