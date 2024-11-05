@@ -103,11 +103,11 @@ namespace LoadVantage.Infrastructure.Data.Services
 
     }
 
-        // DTO for deserializing the city data
-        public class CityDto
-        {
-            public string Name { get; set; }
-        }
+    // DTO for deserializing the city data
+    public class CityDto
+    { 
+        public string Name { get; set; }
+    }
 
 }
 

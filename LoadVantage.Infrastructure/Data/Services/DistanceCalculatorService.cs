@@ -68,25 +68,24 @@ namespace LoadVantage.Infrastructure.Data.Services
 
             if (!areCitiesValid)
             {
-                logger.LogError("Invalid city or state specified.");
-                throw new Exception("Invalid city or state specified.");
+                logger.LogError(InvalidCityOrStateSpecified);
+                throw new InvalidOperationException(InvalidCityOrStateSpecified);
             }
 
             try
             {
                 // Get coordinates for the origin and destination cities
-                var (originLat, originLon, originCountry) = await geocodeService.GetCoordinatesAsync(originCity, originState);
-                var (destLat, destLon, destCountry) = await geocodeService.GetCoordinatesAsync(destCity, destState);
+                var (originLat, originLon) = await geocodeService.GetCoordinatesAsync(originCity, originState);
+                var (destLat, destLon) = await geocodeService.GetCoordinatesAsync(destCity, destState);
 
+                return await GetDistanceAsync(originLat, originLon, destLat, destLon);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                logger.LogError(ErrorRetrievingCoordinates);
                 throw;
             }
 
-            // Calculate the distance between the coordinates
-            return await GetDistanceAsync(originLat, originLon, destLat, destLon);
         }
 
     }
