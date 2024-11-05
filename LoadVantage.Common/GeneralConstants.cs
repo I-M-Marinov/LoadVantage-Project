@@ -38,11 +38,19 @@ namespace LoadVantage.Common
             public const string LoadInformationCouldNotBeRetrieved = "Error retrieving the load information.";
             public const string LoadCouldNotBeRetrieved = "Load could not be retrieved.";
             public const string LoadIdInvalid = "Load id is not valid.";
+            public const string ErrorCancellingLoad = "There was an error cancelling the load";
+
+            public const string InvalidCityOrStateSpecified = "Invalid city or state specified.";
+            public const string ErrorRetrievingCoordinates = "Error retrieving coordinates.";
             public const string ErrorCreatingLoad = "There was an error creating the load. Please check your input and try again.";
+            public const string ErrorEditingLoad = "Load was not edited succesfully. Please provide valid origin and destination city and state.";
+            public const string ErrorUpdatingLoad = "Load was not updated !";
         }
 
         public static class SuccessMessages
         {
+            public const string LoadCreatedSuccessfully = "Load was created successfully.";
+            public const string LoadUpdatedSuccessfully = "Load was updated successfully.";
             public const string LoadCancelledSuccessfully = "Load was cancelled successfully.";
         }
     }
