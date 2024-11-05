@@ -382,14 +382,6 @@ body {
     }
 }
 
-/*--------------------------------------------------------------
-# CANCEL LOAD BUTTON IN THE LOAD DETAILS VIEW 
---------------------------------------------------------------*/
-
-#cancelLoadButton{
-    margin-top: 0.5em;
-}
-
 
 /*-------------------------------------------------------------------------------------
 # BUTTONS LOAD DETAILS VIEW ( EDIT, SAVE, CANCEL, BACK TO LOADBOARD, POST, CANCEL LOAD
@@ -397,7 +389,16 @@ body {
 
 .details-buttons-container,
 .create-load-buttons-container {
-    padding: 0.05em;
+    padding: 0.10em;
+}
+
+.details-buttons-container {
+    margin-top: 0.5em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
 }
 
 .create-load-buttons-container button,
@@ -406,13 +407,7 @@ body {
     font-family: Nunito;
     font-size: 0.90rem;
     font-weight: 700;
-    margin-top: 0.5em;
     border: 2px solid;
-    margin: 0.5em;
-}
-
-details-buttons-container {
-    margin-top: 3em;
 }
 
 #editLoadButton {
