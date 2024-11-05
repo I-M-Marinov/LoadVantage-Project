@@ -38,7 +38,7 @@ namespace LoadVantage.Core.Services
                 Distance = load.Distance,
                 Weight = load.Weight,
                 BrokerId = load.BrokerId,
-                Status = LoadStatus.Created.ToString()
+                Status = load.Status.ToString()
             };
 
             return foundLoad;
@@ -109,6 +109,30 @@ namespace LoadVantage.Core.Services
             };
 
             context.Loads.Update(load);
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+        public async Task<bool> UnpostLoadAsync(Guid loadId)
+        {
+            var load = await context.Loads
+                .Include(l => l.PostedLoad)
+                .FirstOrDefaultAsync(l => l.Id == loadId);
+
+            if (load == null || load.Status != LoadStatus.Available)
+            {
+                return false; // Only allow unposting if the load is in "Available" status
+            }
+
+            // Update status to Created
+            load.Status = LoadStatus.Created;
+
+            if (load.PostedLoad != null)
+            {
+                context.PostedLoads.Remove(load.PostedLoad);
+                load.PostedLoad = null; // Clear the navigation property
+            }
+
             await context.SaveChangesAsync();
 
             return true;
