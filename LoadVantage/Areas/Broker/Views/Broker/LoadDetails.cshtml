@@ -1,4 +1,5 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Common.Enums
 @using LoadVantage.Core.Models.Load;
 @using LoadVantage.Extensions
 @using LoadVantage.Infrastructure.Data.Models
@@ -319,146 +320,179 @@
 	</div><!-- End Page Title -->
 	
 	
-    <div class="card">
-        <div class="card-body justify-content-center" style="dispay:flex;">
-            <h5 class="card-title">Viewing a load</h5>
-			
-	        @if (TempData["ErrorMessage"] != null)
-	        {
-                <div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["ErrorMessage"]</div>
-	        }
+	<div class="card">
+			@{
+				LoadStatus status = Enum.TryParse(typeof(LoadStatus), Model.Status, out var parsedStatus) 
+					? (LoadStatus)parsedStatus : LoadStatus.Created;
 
-	        @if (TempData["SuccessMessage"] != null)
-	        {
-                <div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["SuccessMessage"]</div>
-	        }
-			
-	        <div class="spinner-container">
-		        <div id="loader" class="spinner" style="display: none;">
-		                    
-			        <div></div>
-			        <div></div>
-			        <div></div>
-			        <div></div>
-			        <div></div>
-			        <div></div>
+				switch (status)
+				{
+					case LoadStatus.Created:
+						<div class="load-status badge bg-primary">
+							<i class="bi bi-star me-1"></i> @Model.Status
+						</div>
+						break;
+					case LoadStatus.Available:
+						<div class="load-status badge bg-success">
+							<i class="bi bi-check-circle me-1"></i> Available
+						</div>
+						break;
+					case LoadStatus.Booked:
+						<div class="load-status badge bg-warning">
+							<i class="bi bi-bookmark me-1"></i> Booked
+						</div>
+						break;
+					case LoadStatus.Delivered:
+						<div class="load-status badge bg-info">
+							<i class="bi bi-truck me-1"></i> Delivered
+						</div>
+						break;
+					case LoadStatus.Cancelled:
+						<div class="load-status badge bg-danger">
+							<i class="bi bi-x-circle me-1"></i> Cancelled
+						</div>
+						break;
+				}
+			}
+			<div class="card-body justify-content-center" style="dispay:flex;">
+				<h5 class="card-title">Viewing a load</h5>
 
-		        </div>
-	        </div>
+				@if (TempData["ErrorMessage"] != null)
+				{
+					<div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["ErrorMessage"]</div>
+				}
 
-	        <form id="loadDetailsForm" asp-action="EditLoad" asp-controller="Broker" method="post" class="row g-3" onsubmit="showLoader()">
-		        <input type="hidden" name="brokerId" value="@Model.BrokerId" />
-		        <input type="hidden" name="loadId" value="@Model.Id" />
-		        <input type="hidden" id="isEditing" name="isEditing" value="false" />
-		        @Html.AntiForgeryToken()
+				@if (TempData["SuccessMessage"] != null)
+				{
+					<div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["SuccessMessage"]</div>
+				}
 
-		        <div class="col-12 d-flex justify-content-center mb-2">
-			        <div class="d-flex centered-row flex-wrap justify-content-center">
-				        <div class="col-md-3">
-					        <div class="form-floating">
-						        <input type="hidden" asp-for="Id" />
-						        <input type="text" class="form-control" id="originCity" placeholder="Origin City" name="OriginCity" value="@Model.OriginCity" @(isEditing ? "" : "disabled")/>
-						        <label for="originCity">Origin City</label>
-					        </div>
-				        </div>
-				        <div class="col-md-1">
-					        <div class="form-floating">
-						        <input type="text" class="form-control" id="originState" placeholder="State" name="OriginState" value="@Model.OriginState" @(isEditing ? "" : "disabled") />
-						        <label for="originState">State</label>
-					        </div>
-				        </div>
-				        <div class="col-md-3">
-					        <div class="form-floating">
-						        <input type="text" class="form-control" id="destinationCity" placeholder="Origin City" name="DestinationCity" value="@Model.DestinationCity" @(isEditing ? "" : "disabled") />
-						        <label for="destinationCity">Destination City</label>
-					        </div>
-				        </div>
-				        <div class="col-md-1">
-					        <div class="form-floating">
-						        <input type="text" class="form-control" id="destinationState" placeholder="State" name="DestinationState" value="@Model.DestinationState" @(isEditing ? "" : "disabled") />
-						        <label for="destinationState">State</label>
-					        </div>
-				        </div>
-			        </div>
-		        </div>
+				<div class="spinner-container">
+					<div id="loader" class="spinner" style="display: none;">
 
-		        <div class="col-12 d-flex justify-content-center mb-2">
-			        <div class="d-flex centered-row flex-wrap justify-content-center">
-				        <div class="col-md-5">
-					        <div class="form-floating">
-						        <input type="text" class="form-control" id="pickupTime" placeholder="Pickup Time" name="PickupTime" value="@Model.PickupTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") />
-						        <label for="pickupTime">Pickup Time</label>
-					        </div>
-				        </div>
-				        <div class="col-md-5">
-					        <div class="form-floating">
-						        <input type="text" class="form-control" id="deliveryTime" placeholder="Delivery Time" name="DeliveryTime" value="@Model.DeliveryTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") />
-						        <label for="deliveryTime">Delivery Time</label>
-					        </div>
-				        </div>
-			        </div>
-		        </div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
 
-		        <div class="col-12 d-flex justify-content-center mb-2">
-			        <div class="d-flex centered-row flex-wrap justify-content-center">
-				        <div class="col-md-3">
-					        <div class="form-floating">
-						        <input type="text" class="form-control" id="price" placeholder="Price" name="PostedPrice" value="@Model.PostedPrice" @(isEditing ? "" : "disabled") />
-						        <label for="price">Price</label>
+					</div>
+				</div>
 
-					        </div>
-				        </div>
-				        <div class="col-md-3">
-					        <div class="form-floating">
-						        <input type="text" class="form-control" id="weight" placeholder="Weight" name="Weight" value="@Model.Weight" @(isEditing ? "" : "disabled") />
-						        <label for="weight">Weight in lbs</label>
-					        </div>
-				        </div>
-			        </div>
-		        </div>
+				<form id="loadDetailsForm" asp-action="EditLoad" asp-controller="Broker" method="post" class="row g-3" onsubmit="showLoader()">
+					<input type="hidden" name="brokerId" value="@Model.BrokerId"/>
+					<input type="hidden" name="loadId" value="@Model.Id"/>
+					<input type="hidden" id="isEditing" name="isEditing" value="false"/>
+					@Html.AntiForgeryToken()
 
-		        <div class="text-center details-buttons-container gap-2 d-md-block">
-			        <button type="button" id="editLoadButton" class="btn btn-primary" onclick="enableFields()">
-				        <i class="ri-edit-box-line"></i> Edit
-			        </button>
+					<div class="col-12 d-flex justify-content-center mb-2">
+						<div class="d-flex centered-row flex-wrap justify-content-center">
+							<div class="col-md-3">
+								<div class="form-floating">
+									<input type="hidden" asp-for="Id"/>
+									<input type="text" class="form-control" id="originCity" placeholder="Origin City" name="OriginCity" value="@Model.OriginCity" @(isEditing ? "" : "disabled")/>
+									<label for="originCity">Origin City</label>
+								</div>
+							</div>
+							<div class="col-md-1">
+								<div class="form-floating">
+									<input type="text" class="form-control" id="originState" placeholder="State" name="OriginState" value="@Model.OriginState" @(isEditing ? "" : "disabled")/>
+									<label for="originState">State</label>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-floating">
+									<input type="text" class="form-control" id="destinationCity" placeholder="Origin City" name="DestinationCity" value="@Model.DestinationCity" @(isEditing ? "" : "disabled")/>
+									<label for="destinationCity">Destination City</label>
+								</div>
+							</div>
+							<div class="col-md-1">
+								<div class="form-floating">
+									<input type="text" class="form-control" id="destinationState" placeholder="State" name="DestinationState" value="@Model.DestinationState" @(isEditing ? "" : "disabled")/>
+									<label for="destinationState">State</label>
+								</div>
+							</div>
+						</div>
+					</div>
 
-			        <button type="submit" id="saveLoadButton" class="btn btn-success" style="display: none;">
-				        <i class="bx bxs-save"></i> Save
-			        </button>
+					<div class="col-12 d-flex justify-content-center mb-2">
+						<div class="d-flex centered-row flex-wrap justify-content-center">
+							<div class="col-md-5">
+								<div class="form-floating">
+									<input type="text" class="form-control" id="pickupTime" placeholder="Pickup Time" name="PickupTime" value="@Model.PickupTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled")/>
+									<label for="pickupTime">Pickup Time</label>
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="form-floating">
+									<input type="text" class="form-control" id="deliveryTime" placeholder="Delivery Time" name="DeliveryTime" value="@Model.DeliveryTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled")/>
+									<label for="deliveryTime">Delivery Time</label>
+								</div>
+							</div>
+						</div>
+					</div>
 
-			        <button type="button" id="cancelEditingButton" onclick="dissableFieldsAndtoggleButtons()" class="btn btn-secondary" style="display: none;">
-				        <i class="bx bx-arrow-back"></i> Cancel
-			        </button>
+					<div class="col-12 d-flex justify-content-center mb-2">
+						<div class="d-flex centered-row flex-wrap justify-content-center">
+							<div class="col-md-3">
+								<div class="form-floating">
+									<input type="text" class="form-control" id="price" placeholder="Price" name="PostedPrice" value="@Model.PostedPrice" @(isEditing ? "" : "disabled")/>
+									<label for="price">Price</label>
 
-			        
-		        </div>
-	        </form>
-	        <div class="text-center details-buttons-container">
-		        <form asp-action="PostALoad" asp-controller="Broker" method="post" id="postLoadForm">
-			        @Html.AntiForgeryToken()
-			        <input type="hidden" name="loadId" value="@Model.Id"/>
-			        <button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
-				        <i class="ri-file-list-line"></i> Post
-			        </button>
-		        </form>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-floating">
+									<input type="text" class="form-control" id="weight" placeholder="Weight" name="Weight" value="@Model.Weight" @(isEditing ? "" : "disabled")/>
+									<label for="weight">Weight in lbs</label>
+								</div>
+							</div>
+						</div>
+					</div>
 
-		        <form asp-action="CancelLoad" asp-controller="Broker" method="post" id="cancelLoadButton">
-			        @Html.AntiForgeryToken()
-			        <input type="hidden" name="loadId" value="@Model.Id"/>
-			        <button type="submit" class="btn btn-outline-danger" onclick="return confirmCancel();" id="cancelLoadBtn">
-				        <i class="bx bxs-x-circle"></i> Cancel Load
-			        </button>
-		        </form>
+					<div class="text-center details-buttons-container gap-2 d-md-block">
+						<button type="button" id="editLoadButton" class="btn btn-primary" onclick="enableFields()">
+							<i class="ri-edit-box-line"></i> Edit
+						</button>
 
-		        <form asp-action="ReturnToLoadBoard" asp-controller="Broker" method="post" id="backToLoadBoardButton">
-			        @Html.AntiForgeryToken()
-			        <button type="submit" class="btn btn-outline-info">
-				        <i class="bx bxs-dashboard"></i> Back to LoadBoard
-			        </button>
-		        </form>
-	        </div>
-        </div>
-    </div>
+						<button type="submit" id="saveLoadButton" class="btn btn-success" style="display: none;">
+							<i class="bx bxs-save"></i> Save
+						</button>
+
+						<button type="button" id="cancelEditingButton" onclick="dissableFieldsAndtoggleButtons()" class="btn btn-secondary" style="display: none;">
+							<i class="bx bx-arrow-back"></i> Cancel
+						</button>
+
+
+					</div>
+				</form>
+				<div class="text-center details-buttons-container">
+					<form asp-action="PostALoad" asp-controller="Broker" method="post" id="postLoadForm">
+						@Html.AntiForgeryToken()
+						<input type="hidden" name="loadId" value="@Model.Id"/>
+						<button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
+							<i class="ri-file-list-line"></i> Post
+						</button>
+					</form>
+
+					<form asp-action="CancelLoad" asp-controller="Broker" method="post" id="cancelLoadButton">
+						@Html.AntiForgeryToken()
+						<input type="hidden" name="loadId" value="@Model.Id"/>
+						<button type="submit" class="btn btn-outline-danger" onclick="return confirmCancel();" id="cancelLoadBtn">
+							<i class="bx bxs-x-circle"></i> Cancel Load
+						</button>
+					</form>
+
+					<form asp-action="ReturnToLoadBoard" asp-controller="Broker" method="post" id="backToLoadBoardButton">
+						@Html.AntiForgeryToken()
+						<button type="submit" class="btn btn-outline-info">
+							<i class="bx bxs-dashboard"></i> Back to LoadBoard
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
 
 
 </main><!-- End #main -->

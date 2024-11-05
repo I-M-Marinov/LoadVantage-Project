@@ -459,3 +459,12 @@ body {
     border: 2px #dc3545 solid !important;
 }
 
+.load-status {
+    position: absolute;
+    top: 0.75em;
+    right: 0.75em;
+    width: 7.5em;
+    height: 2em;
+    text-align: center;
+}
+
