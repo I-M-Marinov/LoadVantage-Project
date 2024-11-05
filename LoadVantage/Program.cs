@@ -27,7 +27,12 @@ builder.Services.AddDbContext<LoadVantageDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddSession();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60); 
+    options.Cookie.HttpOnly = true; // Set other cookie options as needed
+    options.Cookie.IsEssential = true; // Essential for session state
+});
 
 builder.Services.AddIdentity<User, Role>(options =>
 	{
