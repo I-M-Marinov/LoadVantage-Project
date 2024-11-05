@@ -459,6 +459,10 @@ body {
     border: 2px #dc3545 solid !important;
 }
 
+/*-------------------------------------------------------------------------------------
+# LOAD STATUS BADGE ON THE RIGHT TOP CORNER IN THE LOAD DETAILS VIEW
+--------------------------------------------------------------------------------------*/
+
 .load-status {
     position: absolute;
     top: 0.75em;
@@ -467,4 +471,21 @@ body {
     height: 2em;
     text-align: center;
 }
+
+/*-------------------------------------------------------------------------------------
+# FADE OUT EFFECT FOR THE SUCCESS AND ERROR MESSAGES 
+--------------------------------------------------------------------------------------*/
+
+#success-message,
+#error-message {
+    width: auto;
+    margin-bottom: 1em;
+    font-size: 0.85em;
+}
+
+.fade-out {
+    opacity: 0; /* Start fading out */
+    transition: opacity 3s ease-out; /* Transition effect */
+}
+
 
