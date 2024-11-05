@@ -48,7 +48,9 @@ namespace LoadVantage.Common
 
             public const string LoadIsNotInCorrectStatus = "This load cannot be posted. It is not with status \"Created\"";
             public const string LoadIsAlreadyPosted = "This load is already posted.";
+            public const string LoadIsNotPosted = "This load is not posted yet.";
             public const string ErrorPostingLoad = "An error occured and the load was not posted.";
+            public const string ErrorUnpostingLoad = "An error occured and the load was not unposted.";
         }
 
         public static class SuccessMessages
@@ -57,6 +59,7 @@ namespace LoadVantage.Common
             public const string LoadUpdatedSuccessfully = "Load was updated successfully.";
             public const string LoadCancelledSuccessfully = "Load was cancelled successfully.";
             public const string LoadPostedSuccessfully = "Load was posted successfully.";
+            public const string LoadUnpostedSuccessfully = "Load was unposted successfully.";
 
         }
     }
