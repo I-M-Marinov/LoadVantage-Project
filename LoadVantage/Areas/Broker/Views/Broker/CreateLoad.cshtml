@@ -422,7 +422,18 @@
 
         document.getElementById("create-load-btn").disabled = true;
         document.getElementById("loader").style.display = "inline-block";
+
+        setTimeout(() => {
+            hideLoader();
+        }, 2500); 
     }
+
+    function hideLoader() {
+
+        document.getElementById("create-load-btn").disabled = false;
+        document.getElementById("loader").style.display = "none";
+    }
+
 
 </script>
 
