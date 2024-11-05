@@ -361,7 +361,7 @@
 						                    <th>Delivery Time</th>
 						                    <th>Distance</th>
 						                    <th>Price</th>
-						                    <th>RPM</th>
+						                    <th data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Rate per Mile">RPM</th>
 						                    <th class="hidden-th">hidden</th>
 					                    </tr>
 					                    </thead>
@@ -377,13 +377,13 @@
 							                    <td>@load.DeliveryTime.ToString("dd/MM/yyyy HH:mm")</td>
 							                    <td>@(load.Distance.HasValue ? Math.Round(load.Distance.Value) : 0)</td>
 							                    <td>$@load.PostedPrice</td>
-							                    <td>@($"${(load.PostedPrice / (decimal)load.Distance):F2}/mile")</td>
+							                    <td title="Price per mile">@($"${(load.PostedPrice / (decimal)load.Distance):F2}/mile")</td>
  							                    <td>
-								                    <!-- Hidden field to store the URL -->
+								                    <!-- Hidden -->
 								                    <form method="get" action="@Url.Action("LoadDetails", "Broker")">
 									                    <input type="hidden" name="loadId" value="@load.Id" />
 									                    <button class="btn btn-warning view-button">
-										                    <i class="bi bi-card-text"></i>
+																<i class="ri-clipboard-line"></i>
 										                    <span>View</span>
 									                    </button>
 								                    </form>
@@ -508,7 +508,7 @@
         </div>
     </section>    <!-- LOAD BOARD START -->
 	
-@*     <script>
+	@*     <script>
 
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -521,5 +521,15 @@
         });
 
     </script> *@
+	
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+			var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+				return new bootstrap.Tooltip(tooltipTriggerEl);
+			});
+		});
+	</script>
+
 
 </main><!-- End #main -->

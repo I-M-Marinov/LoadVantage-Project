@@ -23,7 +23,7 @@ body {
 }
 
 /*--------------------------------------------------------------
-# FANCY BUTTON 
+# FANCY BUTTON ( NAVIGATION BUTTONS HOME INDEX - UNAUTHORIZED )
 --------------------------------------------------------------*/
 .fancy-project-button {
     --color: #560bad;
@@ -272,13 +272,13 @@ body {
 --------------------------------------------------------------*/
 
 .centered-row {
-    gap: 1rem; /* Adjust as needed to reduce or increase space */
+    gap: 1rem; 
 }
 
 
 .badge-danger {
     display: inline-block;
-    background-color: #8208c3; /* Light red background */
+    background-color: #8208c3; 
     color: #11b1ac;
     padding: 0.375rem 0.75rem;
     border-radius: 0.55rem;
@@ -292,17 +292,29 @@ body {
 
 .view-button {
     font-size: 11px !important;
-    padding: 0.25rem 0.35rem !important;
+    padding: 0.20rem 0.35rem !important;
     border-radius: 0.85em !important;
-    margin-top: 0.35rem !important;
+    margin-top: 0.20rem !important;
+    font-family: Nunito;
+    font-weight: 700;
+}
+
+.view-button span {
+    font-family: Nunito;
+    font-weight: 700;
+}
+
+.section {
+    font-family: Nunito;
+    font-weight: 550;
+    font-size: 15px;
 }
 
 /*--------------------------------------------------------------
 # LOADING SPINNER 
 --------------------------------------------------------------*/
-
 .spinner-container {
-    position:center;
+    position: center;
 }
 
 .spinner {
@@ -370,7 +382,85 @@ body {
     }
 }
 
+/*--------------------------------------------------------------
+# CANCEL LOAD BUTTON IN THE LOAD DETAILS VIEW 
+--------------------------------------------------------------*/
 
 #cancelLoadButton{
     margin-top: 0.5em;
 }
+
+
+/*-------------------------------------------------------------------------------------
+# BUTTONS LOAD DETAILS VIEW ( EDIT, SAVE, CANCEL, BACK TO LOADBOARD, POST, CANCEL LOAD
+--------------------------------------------------------------------------------------*/
+
+.details-buttons-container,
+.create-load-buttons-container {
+    padding: 0.05em;
+}
+
+.create-load-buttons-container button,
+.details-buttons-container button,
+.btn btn-outline-danger {
+    font-family: Nunito;
+    font-size: 0.90rem;
+    font-weight: 700;
+    margin-top: 0.5em;
+    border: 2px solid;
+    margin: 0.5em;
+}
+
+details-buttons-container {
+    margin-top: 3em;
+}
+
+#editLoadButton {
+    border: #0d6efd transparent;
+    color: #0d6efd;
+    background: ghostwhite;
+}
+
+#editLoadButton:hover {
+    background: #0d6efd;
+    color: ghostwhite;
+}
+
+#saveLoadButton {
+    border: #198754 transparent;
+    color: #198754;
+    background: ghostwhite;
+}
+
+#saveLoadButton:hover {
+    background: #198754;
+    color: ghostwhite;
+}
+
+#cancelEditingButton {
+    border: #6c757d transparent;
+    color: #6c757d;
+    background: ghostwhite;
+}
+
+#cancelEditingButton:hover {
+    background: #6c757d;
+    color: ghostwhite;
+}
+
+#postLoadButton {
+    border: #ffc008 transparent;
+    color: #ffc008;
+    background: ghostwhite;
+}
+
+#postLoadButton:hover {
+    background: #ffc008;
+    color: black;
+}
+
+
+.btn btn-outline-danger {
+    border: 2px #dc3545 solid !important;
+}
+

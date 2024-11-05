@@ -54,6 +54,12 @@ namespace LoadVantage.Areas.Broker.Controllers
 
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ReturnToLoadBoard()
+        {
+            return RedirectToAction("LoadBoard");
+        }
 
         [HttpGet]
         [Route("Load")]
@@ -205,6 +211,7 @@ namespace LoadVantage.Areas.Broker.Controllers
             }
 
         }
+
 
     }
 }

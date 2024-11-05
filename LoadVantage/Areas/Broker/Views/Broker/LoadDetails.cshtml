@@ -417,24 +417,44 @@
 			        </div>
 		        </div>
 
-		        <div class="text-center">
+                <div class="text-center details-buttons-container gap-2 d-md-block">
 
-			        <button type="button" id="editLoadButton" class="btn btn-primary" onclick="enableFields()">Edit</button>
-
-			        <button type="submit" id="saveLoadButton" class="btn btn-success" style="display: none;">Save</button>
-
-			        <button type="" class="btn btn-warning">Post</button>
-		        </div>
-	        </form> 
-	        <div class="text-center">
-		        <form asp-action="CancelLoad" asp-controller="Broker" method="post" id="cancelLoadButton" >
-			        <input type="hidden" name="loadId" value="@Model.Id" />
-			        <button type="submit" class="btn btn-danger" onclick="return confirmCancel();">
-				        <span>Cancel Load</span>
+			        <button type="button" id="editLoadButton" class="btn btn-primary" onclick="enableFields()">
+                        <i class="ri-edit-box-line"></i> Edit
 			        </button>
-		        </form>
-	        </div>
 
+			        <button type="submit" id="saveLoadButton" class="btn btn-success" style="display: none;">
+                        <i class="bx bxs-save"></i> Save
+			        </button>
+
+			        <button type="button" id="cancelEditingButton" onclick="dissableFieldsAndtoggleButtons()" class="btn btn-secondary" style="display: none;">
+                        <i class="bx bx-arrow-back"></i> Cancel
+			        </button>
+
+			        <button id="postLoadButton" type="submit" class="btn btn-warning">
+				        <i class="ri-file-list-line"></i> Post
+			        </button>
+					
+			        <form asp-action="CancelLoad" asp-controller="Broker" method="post" id="cancelLoadButton">
+				        <input type="hidden" name="loadId" value="@Model.Id" />
+				        <button type="submit" class="btn btn-outline-danger" onclick="return confirmCancel();">
+					        <span>
+						        <i class="bx bxs-x-circle"></i> Cancel Load
+					        </span>
+				        </button>
+			        </form>
+
+                    <form asp-action="ReturnToLoadBoard" asp-controller="Broker" method="post" id="backToLoadBoardButton">
+                        <button type="submit" class="btn btn-outline-info">
+					        <span>
+						        <i class="bx bxs-dashboard"></i> Back to LoadBoard
+					        </span>
+				        </button>
+			        </form>
+
+                </div>
+	        </form> 
+		        
 	    </div>
     </div>
 
@@ -462,14 +482,27 @@
 
         document.getElementById("editLoadButton").style.display = "none";
         document.getElementById("saveLoadButton").style.display = "inline-block";
+        document.getElementById("cancelEditingButton").style.display = "inline-block";
 
         document.getElementById("isEditing").value = "true";
     }
 
 
-    function toggleButtons() {
+    function dissableFieldsAndtoggleButtons() {
+
+        document.getElementById("originCity").disabled = true;
+        document.getElementById("originState").disabled = true;
+        document.getElementById("destinationCity").disabled = true;
+        document.getElementById("destinationState").disabled = true;
+        document.getElementById("pickupTime").disabled = true;
+        document.getElementById("deliveryTime").disabled = true;
+        document.getElementById("price").disabled = true;
+        document.getElementById("weight").disabled = true;
+
         document.getElementById("editLoadButton").style.display = "inline-block";
         document.getElementById("saveLoadButton").style.display = "none";
+        document.getElementById("cancelEditingButton").style.display = "none";
+
     }
 
     function confirmCancel() {
