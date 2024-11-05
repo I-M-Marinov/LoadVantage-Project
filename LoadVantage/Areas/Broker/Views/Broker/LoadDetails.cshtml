@@ -431,13 +431,22 @@
                         <i class="bx bx-arrow-back"></i> Cancel
 			        </button>
 
-			        <button id="postLoadButton" type="submit" class="btn btn-warning">
+@* 			        <button id="postLoadButton" type="submit" class="btn btn-warning">
 				        <i class="ri-file-list-line"></i> Post
-			        </button>
+			        </button> *@
+
+                    <form asp-action="PostLoad" asp-controller="Broker" method="post" id="postLoadButton">
+				        <input type="hidden" name="loadId" value="@Model.Id" />
+                        <button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
+					        <span>
+                                <i class="ri-file-list-line"></i> Post
+					        </span>
+				        </button>
+			        </form>
 					
 			        <form asp-action="CancelLoad" asp-controller="Broker" method="post" id="cancelLoadButton">
 				        <input type="hidden" name="loadId" value="@Model.Id" />
-				        <button type="submit" class="btn btn-outline-danger" onclick="return confirmCancel();">
+                        <button type="submit" class="btn btn-outline-danger" onclick="return confirmCancel();" id="cancelLoadBtnn">
 					        <span>
 						        <i class="bx bxs-x-circle"></i> Cancel Load
 					        </span>
@@ -465,43 +474,73 @@
 
     function showLoader() {
 
-        document.getElementById("saveLoadButton").disabled = true;
         document.getElementById("loader").style.display = "inline-block";
+        setTimeout(() => {
+            hideLoader();
+        }, 320);
+    }
+
+    function hideLoader() {
+        document.getElementById("loader").style.display = "none";
     }
 
     function enableFields() {
+       
+        setTimeout(() => {
 
-        document.getElementById("originCity").disabled = false;
-        document.getElementById("originState").disabled = false;
-        document.getElementById("destinationCity").disabled = false;
-        document.getElementById("destinationState").disabled = false;
-        document.getElementById("pickupTime").disabled = false;
-        document.getElementById("deliveryTime").disabled = false;
-        document.getElementById("price").disabled = false;
-        document.getElementById("weight").disabled = false;
+            showLoader();
 
-        document.getElementById("editLoadButton").style.display = "none";
-        document.getElementById("saveLoadButton").style.display = "inline-block";
-        document.getElementById("cancelEditingButton").style.display = "inline-block";
+            document.getElementById("originCity").disabled = false;
+            document.getElementById("originState").disabled = false;
+            document.getElementById("destinationCity").disabled = false;
+            document.getElementById("destinationState").disabled = false;
+            document.getElementById("pickupTime").disabled = false;
+            document.getElementById("deliveryTime").disabled = false;
+            document.getElementById("price").disabled = false;
+            document.getElementById("weight").disabled = false;
 
-        document.getElementById("isEditing").value = "true";
+            document.getElementById("editLoadButton").style.display = "none";
+            document.getElementById("saveLoadButton").style.display = "inline-block";
+            document.getElementById("cancelEditingButton").style.display = "inline-block";
+
+            document.getElementById("postLoadBtn").style.display = "none";
+            document.getElementById("cancelLoadBtnn").style.display = "none";
+
+            document.getElementById("isEditing").value = "true";
+
+        }, 300);
+
     }
 
 
     function dissableFieldsAndtoggleButtons() {
 
-        document.getElementById("originCity").disabled = true;
-        document.getElementById("originState").disabled = true;
-        document.getElementById("destinationCity").disabled = true;
-        document.getElementById("destinationState").disabled = true;
-        document.getElementById("pickupTime").disabled = true;
-        document.getElementById("deliveryTime").disabled = true;
-        document.getElementById("price").disabled = true;
-        document.getElementById("weight").disabled = true;
+        
+        setTimeout(() => {
 
-        document.getElementById("editLoadButton").style.display = "inline-block";
-        document.getElementById("saveLoadButton").style.display = "none";
-        document.getElementById("cancelEditingButton").style.display = "none";
+            showLoader();
+
+            document.getElementById("originCity").disabled = true;
+            document.getElementById("originState").disabled = true;
+            document.getElementById("destinationCity").disabled = true;
+            document.getElementById("destinationState").disabled = true;
+            document.getElementById("pickupTime").disabled = true;
+            document.getElementById("deliveryTime").disabled = true;
+            document.getElementById("price").disabled = true;
+            document.getElementById("weight").disabled = true;
+
+            document.getElementById("editLoadButton").style.display = "inline-block";
+            document.getElementById("saveLoadButton").style.display = "none";
+            document.getElementById("cancelEditingButton").style.display = "none";
+
+            document.getElementById("postLoadBtn").style.display = "inline-block";
+            document.getElementById("cancelLoadBtnn").style.display = "inline-block";
+
+
+        }, 300); 
+
+        
+
 
     }
 
