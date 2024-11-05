@@ -3,7 +3,9 @@
 @using LoadVantage.Extensions
 @using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using static LoadVantage.Common.ValidationConstants.LoadValidations
 @inject UserManager<User> UserManager
 @model LoadViewModel
 
@@ -318,17 +320,17 @@
 	
 	
     <div class="card">
-        <div class="card-body justify-content-center">
-	        <h5 class="card-title">Viewing a load</h5>.
+        <div class="card-body justify-content-center" style="dispay:flex;">
+            <h5 class="card-title">Viewing a load</h5>
 			
 	        @if (TempData["ErrorMessage"] != null)
 	        {
-		        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                <div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["ErrorMessage"]</div>
 	        }
 
 	        @if (TempData["SuccessMessage"] != null)
 	        {
-		        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                <div class="badge badge-danger mt-1 d-flex justify-content-center" style="width: auto; margin-bottom: 1em;">@TempData["SuccessMessage"]</div>
 	        }
 			
 	        <div class="spinner-container">
@@ -354,7 +356,8 @@
 			        <div class="d-flex centered-row flex-wrap justify-content-center">
 				        <div class="col-md-3">
 					        <div class="form-floating">
-                                <input type="text" class="form-control" id="originCity" placeholder="Origin City" name="OriginCity" value="@Model.OriginCity" @(isEditing ? "" : "disabled") />
+						        <input type="hidden" asp-for="Id" />
+						        <input type="text" class="form-control" id="originCity" placeholder="Origin City" name="OriginCity" value="@Model.OriginCity" @(isEditing ? "" : "disabled")/>
 						        <label for="originCity">Origin City</label>
 					        </div>
 				        </div>
@@ -401,12 +404,13 @@
 				        <div class="col-md-3">
 					        <div class="form-floating">
                                 <input type="text" class="form-control" id="price" placeholder="Price" name="PostedPrice" value="@Model.PostedPrice" @(isEditing ? "" : "disabled") />
-						        <label for="price">Price</label>
+                                <label for="price">Price</label>
+
 					        </div>
 				        </div>
 				        <div class="col-md-3">
 					        <div class="form-floating">
-                                <input type="text" class="form-control" id="weight" placeholder="Weight" name="Weight" value="@Model.Weight" @(isEditing ? "" : "disabled") />
+						        <input type="text" class="form-control" id="weight" placeholder="Weight" name="Weight" value="@Model.Weight" @(isEditing ? "" : "disabled") />
 						        <label for="weight">Weight in lbs</label>
 					        </div>
 				        </div>
