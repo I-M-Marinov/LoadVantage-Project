@@ -12,6 +12,7 @@
 @{
     ViewData["Title"] = "Broker LoadBoard";
     Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+    var activeTab = TempData["ActiveTab"]?.ToString();
 
 }
 
@@ -508,20 +509,6 @@
         </div>
     </section>    <!-- LOAD BOARD START -->
 	
-	@*     <script>
-
-
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".clickable-row").forEach(function (row) {
-                row.addEventListener("click", function () {
-                    const url = row.querySelector(".load-url").value; // Get the hidden URL value
-                    window.location.href = url; // Redirect to the URL
-                });
-            });
-        });
-
-    </script> *@
-	
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
 			var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -529,6 +516,23 @@
 				return new bootstrap.Tooltip(tooltipTriggerEl);
 			});
 		});
+
+		document.addEventListener("DOMContentLoaded", function () {
+			var activeTab = "@activeTab";
+			if (activeTab === "posted") { 
+				var postedTabButton = document.getElementById("pills-posted-tab");
+				if (postedTabButton) {
+					new bootstrap.Tab(postedTabButton).show();
+				}
+			} else {
+				// Show "Created Loads" by default
+				var createdTabButton = document.getElementById("pills-created-tab");
+				if (createdTabButton) {
+					new bootstrap.Tab(createdTabButton).show();
+				}
+			}
+		});
+
 	</script>
 
 
