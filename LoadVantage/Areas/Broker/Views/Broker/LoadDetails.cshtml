@@ -349,7 +349,7 @@
 	        <form id="loadDetailsForm" asp-action="EditLoad" asp-controller="Broker" method="post" class="row g-3" onsubmit="showLoader()">
 		        <input type="hidden" name="brokerId" value="@Model.BrokerId" />
 		        <input type="hidden" name="loadId" value="@Model.Id" />
-		        <input type="hidden" id="isEditing" name="isEditing" value="false" /> 
+		        <input type="hidden" id="isEditing" name="isEditing" value="false" />
 		        @Html.AntiForgeryToken()
 
 		        <div class="col-12 d-flex justify-content-center mb-2">
@@ -363,19 +363,19 @@
 				        </div>
 				        <div class="col-md-1">
 					        <div class="form-floating">
-                                <input type="text" class="form-control" id="originState" placeholder="State" name="OriginState" value="@Model.OriginState" @(isEditing ? "" : "disabled") />
+						        <input type="text" class="form-control" id="originState" placeholder="State" name="OriginState" value="@Model.OriginState" @(isEditing ? "" : "disabled") />
 						        <label for="originState">State</label>
 					        </div>
 				        </div>
 				        <div class="col-md-3">
 					        <div class="form-floating">
-                                <input type="text" class="form-control" id="destinationCity" placeholder="Origin City" name="DestinationCity" value="@Model.DestinationCity" @(isEditing ? "" : "disabled") />
+						        <input type="text" class="form-control" id="destinationCity" placeholder="Origin City" name="DestinationCity" value="@Model.DestinationCity" @(isEditing ? "" : "disabled") />
 						        <label for="destinationCity">Destination City</label>
 					        </div>
 				        </div>
 				        <div class="col-md-1">
 					        <div class="form-floating">
-                                <input type="text" class="form-control" id="destinationState" placeholder="State" name="DestinationState" value="@Model.DestinationState" @(isEditing ? "" : "disabled") />
+						        <input type="text" class="form-control" id="destinationState" placeholder="State" name="DestinationState" value="@Model.DestinationState" @(isEditing ? "" : "disabled") />
 						        <label for="destinationState">State</label>
 					        </div>
 				        </div>
@@ -386,13 +386,13 @@
 			        <div class="d-flex centered-row flex-wrap justify-content-center">
 				        <div class="col-md-5">
 					        <div class="form-floating">
-                                <input type="text" class="form-control" id="pickupTime" placeholder="Pickup Time" name="PickupTime" value="@Model.PickupTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") />
+						        <input type="text" class="form-control" id="pickupTime" placeholder="Pickup Time" name="PickupTime" value="@Model.PickupTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") />
 						        <label for="pickupTime">Pickup Time</label>
 					        </div>
 				        </div>
 				        <div class="col-md-5">
 					        <div class="form-floating">
-                                <input type="text" class="form-control" id="deliveryTime" placeholder="Delivery Time" name="DeliveryTime" value="@Model.DeliveryTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") />
+						        <input type="text" class="form-control" id="deliveryTime" placeholder="Delivery Time" name="DeliveryTime" value="@Model.DeliveryTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") />
 						        <label for="deliveryTime">Delivery Time</label>
 					        </div>
 				        </div>
@@ -403,8 +403,8 @@
 			        <div class="d-flex centered-row flex-wrap justify-content-center">
 				        <div class="col-md-3">
 					        <div class="form-floating">
-                                <input type="text" class="form-control" id="price" placeholder="Price" name="PostedPrice" value="@Model.PostedPrice" @(isEditing ? "" : "disabled") />
-                                <label for="price">Price</label>
+						        <input type="text" class="form-control" id="price" placeholder="Price" name="PostedPrice" value="@Model.PostedPrice" @(isEditing ? "" : "disabled") />
+						        <label for="price">Price</label>
 
 					        </div>
 				        </div>
@@ -417,62 +417,60 @@
 			        </div>
 		        </div>
 
-                <div class="text-center details-buttons-container gap-2 d-md-block">
-
+		        <div class="text-center details-buttons-container gap-2 d-md-block">
 			        <button type="button" id="editLoadButton" class="btn btn-primary" onclick="enableFields()">
-                        <i class="ri-edit-box-line"></i> Edit
+				        <i class="ri-edit-box-line"></i> Edit
 			        </button>
 
 			        <button type="submit" id="saveLoadButton" class="btn btn-success" style="display: none;">
-                        <i class="bx bxs-save"></i> Save
+				        <i class="bx bxs-save"></i> Save
 			        </button>
 
 			        <button type="button" id="cancelEditingButton" onclick="dissableFieldsAndtoggleButtons()" class="btn btn-secondary" style="display: none;">
-                        <i class="bx bx-arrow-back"></i> Cancel
+				        <i class="bx bx-arrow-back"></i> Cancel
 			        </button>
 
-@* 			        <button id="postLoadButton" type="submit" class="btn btn-warning">
+			        
+		        </div>
+	        </form>
+	        <div class="text-center details-buttons-container">
+		        <form asp-action="PostALoad" asp-controller="Broker" method="post" id="postLoadForm">
+			        @Html.AntiForgeryToken()
+			        <input type="hidden" name="loadId" value="@Model.Id"/>
+			        <button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
 				        <i class="ri-file-list-line"></i> Post
-			        </button> *@
+			        </button>
+		        </form>
 
-                    <form asp-action="PostLoad" asp-controller="Broker" method="post" id="postLoadButton">
-				        <input type="hidden" name="loadId" value="@Model.Id" />
-                        <button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
-					        <span>
-                                <i class="ri-file-list-line"></i> Post
-					        </span>
-				        </button>
-			        </form>
-					
-			        <form asp-action="CancelLoad" asp-controller="Broker" method="post" id="cancelLoadButton">
-				        <input type="hidden" name="loadId" value="@Model.Id" />
-                        <button type="submit" class="btn btn-outline-danger" onclick="return confirmCancel();" id="cancelLoadBtnn">
-					        <span>
-						        <i class="bx bxs-x-circle"></i> Cancel Load
-					        </span>
-				        </button>
-			        </form>
+		        <form asp-action="CancelLoad" asp-controller="Broker" method="post" id="cancelLoadButton">
+			        @Html.AntiForgeryToken()
+			        <input type="hidden" name="loadId" value="@Model.Id"/>
+			        <button type="submit" class="btn btn-outline-danger" onclick="return confirmCancel();" id="cancelLoadBtn">
+				        <i class="bx bxs-x-circle"></i> Cancel Load
+			        </button>
+		        </form>
 
-                    <form asp-action="ReturnToLoadBoard" asp-controller="Broker" method="post" id="backToLoadBoardButton">
-                        <button type="submit" class="btn btn-outline-info">
-					        <span>
-						        <i class="bx bxs-dashboard"></i> Back to LoadBoard
-					        </span>
-				        </button>
-			        </form>
-
-                </div>
-	        </form> 
-		        
-	    </div>
+		        <form asp-action="ReturnToLoadBoard" asp-controller="Broker" method="post" id="backToLoadBoardButton">
+			        @Html.AntiForgeryToken()
+			        <button type="submit" class="btn btn-outline-info">
+				        <i class="bx bxs-dashboard"></i> Back to LoadBoard
+			        </button>
+		        </form>
+	        </div>
+        </div>
     </div>
 
 
 </main><!-- End #main -->
 
 <script>
-
     function showLoader() {
+
+        document.getElementById("loader").style.display = "inline-block";
+       
+    }
+
+    function showAndHideLoader() {
 
         document.getElementById("loader").style.display = "inline-block";
         setTimeout(() => {
@@ -488,7 +486,7 @@
        
         setTimeout(() => {
 
-            showLoader();
+            showAndHideLoader();
 
             document.getElementById("originCity").disabled = false;
             document.getElementById("originState").disabled = false;
@@ -500,16 +498,15 @@
             document.getElementById("weight").disabled = false;
 
             document.getElementById("editLoadButton").style.display = "none";
+            document.getElementById("postLoadBtn").style.display = "none";
+            document.getElementById("cancelLoadBtn").style.display = "none";
+
             document.getElementById("saveLoadButton").style.display = "inline-block";
             document.getElementById("cancelEditingButton").style.display = "inline-block";
-
-            document.getElementById("postLoadBtn").style.display = "none";
-            document.getElementById("cancelLoadBtnn").style.display = "none";
 
             document.getElementById("isEditing").value = "true";
 
         }, 300);
-
     }
 
 
@@ -518,7 +515,7 @@
         
         setTimeout(() => {
 
-            showLoader();
+            showAndHideLoader();
 
             document.getElementById("originCity").disabled = true;
             document.getElementById("originState").disabled = true;
@@ -530,18 +527,15 @@
             document.getElementById("weight").disabled = true;
 
             document.getElementById("editLoadButton").style.display = "inline-block";
+            document.getElementById("postLoadBtn").style.display = "inline-block";
+            document.getElementById("cancelLoadBtn").style.display = "inline-block";
+
             document.getElementById("saveLoadButton").style.display = "none";
             document.getElementById("cancelEditingButton").style.display = "none";
 
-            document.getElementById("postLoadBtn").style.display = "inline-block";
-            document.getElementById("cancelLoadBtnn").style.display = "inline-block";
 
 
         }, 300); 
-
-        
-
-
     }
 
     function confirmCancel() {
