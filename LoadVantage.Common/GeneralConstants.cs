@@ -60,6 +60,7 @@ namespace LoadVantage.Common
             public const string UserNotFound = "The user was not found.";
             public const string UserProfileUpdateFailed = "Failed to update user profile.";
             public const string ErrorUpdatingProfile = "An error occurred while updating the profile.";
+            public const string UserNameIsAlreadyTaken = "The username is already taken.";
 
             // BROKER 
 
@@ -78,6 +79,10 @@ namespace LoadVantage.Common
             public const string LoadCancelledSuccessfully = "Load was cancelled successfully.";
             public const string LoadPostedSuccessfully = "Load was posted successfully.";
             public const string LoadUnpostedSuccessfully = "Load was unposted successfully.";
+
+            // PROFILE
+
+            public const string ProfileUpdatedSuccessfully = "Your profile was updated successfully.";
 
         }
     }
