@@ -17,12 +17,32 @@
       "PackagePath": "staticwebassets\\assets\\img\\card.jpg"
     },
     {
-      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\favicon.png",
-      "PackagePath": "staticwebassets\\assets\\img\\favicon.png"
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\favicon.ico",
+      "PackagePath": "staticwebassets\\assets\\img\\favicon.ico"
     },
     {
-      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\logo.png",
-      "PackagePath": "staticwebassets\\assets\\img\\logo.png"
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\loadVantage.png",
+      "PackagePath": "staticwebassets\\assets\\img\\loadVantage.png"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\loadVantage.svg",
+      "PackagePath": "staticwebassets\\assets\\img\\loadVantage.svg"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\loadVantage2.png",
+      "PackagePath": "staticwebassets\\assets\\img\\loadVantage2.png"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\loadVantage3.png",
+      "PackagePath": "staticwebassets\\assets\\img\\loadVantage3.png"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\logo.svg",
+      "PackagePath": "staticwebassets\\assets\\img\\logo.svg"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\logo2.svg",
+      "PackagePath": "staticwebassets\\assets\\img\\logo2.svg"
     },
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\messages-1.jpg",

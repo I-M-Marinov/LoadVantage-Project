@@ -468,8 +468,9 @@ body {
     top: 0.75em;
     right: 0.75em;
     width: 7.5em;
-    height: 2em;
+    height: 2.2em;
     text-align: center;
+    border: 2px black solid;
 }
 
 /*-------------------------------------------------------------------------------------

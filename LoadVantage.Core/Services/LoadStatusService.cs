@@ -7,8 +7,10 @@ using LoadVantage.Core.Models.Load;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data.Contracts;
+
 using System.Globalization;
 using Microsoft.Extensions.Logging;
+
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 
@@ -43,7 +45,6 @@ namespace LoadVantage.Core.Services
 
             return foundLoad;
         }
-
         public async Task<Guid> CreateLoadAsync(LoadViewModel model, Guid brokerId)
         {
             double calculatedDistance = 0;
@@ -88,7 +89,6 @@ namespace LoadVantage.Core.Services
 
             return load.Id;
         }
-
         public async Task<bool> PostLoadAsync(Guid loadId)
         {
             var load = await context.Loads
@@ -192,7 +192,6 @@ namespace LoadVantage.Core.Services
 
             return false;
         }
-
         public async Task<bool> BookLoadAsync(Guid loadId, Guid dispatcherId)
         {
             var load = await context.Loads
@@ -222,7 +221,6 @@ namespace LoadVantage.Core.Services
 
             return true;
         }
-
         public async Task<bool> LoadDeliveredAsync(Guid loadId)
         {
             var load = await context.Loads
@@ -249,7 +247,6 @@ namespace LoadVantage.Core.Services
 
             return true;
         }
-
         public async Task<bool> CancelLoadAsync(Guid loadId)
         {
             var load = await context.Loads.FindAsync(loadId);
@@ -267,7 +264,6 @@ namespace LoadVantage.Core.Services
 
             return true;
         }
-
         public async Task<LoadViewModel> SeeLoadDetails(Guid loadId)
         {
             var load = await context.Loads
@@ -298,7 +294,6 @@ namespace LoadVantage.Core.Services
             return loadViewModel;
 
         }
-
         private (string FormattedCity, string FormattedState) FormatLocation(string city, string state)
         {
             string formattedCity = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(city.Trim().ToLower());
@@ -308,4 +303,4 @@ namespace LoadVantage.Core.Services
         }
     }
 
-}
+}  
