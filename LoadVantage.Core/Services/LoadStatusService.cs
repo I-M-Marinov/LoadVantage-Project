@@ -185,12 +185,16 @@ namespace LoadVantage.Core.Services
                 }
                 catch (Exception e)
                 {
+
                     logger.LogError(ErrorEditingLoad);
                     throw;
                 }
             }
 
-            return false;
+            context.Loads.Update(load);
+            await context.SaveChangesAsync();
+
+            return true;
         }
         public async Task<bool> BookLoadAsync(Guid loadId, Guid dispatcherId)
         {
