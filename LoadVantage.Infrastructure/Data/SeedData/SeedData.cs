@@ -142,10 +142,18 @@ namespace LoadVantage.Infrastructure.Data.SeedData
         }
 
         public static async Task SeedBrokers(IServiceProvider serviceProvider, IConfiguration configuration)
-        {
+        { 
+            var dbContext = serviceProvider.GetRequiredService<LoadVantageDbContext>();
+
             using var scope = serviceProvider.CreateScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+
+            // Check if any brokers already exist
+            if (dbContext.Brokers.Any())
+            {
+                return; // do not seed any brokers again
+            }
 
             Role? userRole = await roleManager.FindByNameAsync(UserRoleName);
 
@@ -175,6 +183,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                 }
             };
 
+
             var counter = 1;
             foreach (var broker in brokers)
             {
@@ -203,11 +212,11 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                 }
 
             }
+
         }
 
-        public static async Task SeedCreatedLoads(IServiceProvider serviceProvider, IConfiguration configuration, UserManager<User> userManager)
+        public static async Task SeedCreatedLoads(UserManager<User> userManager, IServiceProvider serviceProvider)
         {
-            // Get the DbContext
             await using var context = serviceProvider.GetRequiredService<LoadVantageDbContext>();
 
             var distanceCalculatorService = serviceProvider.GetRequiredService<IDistanceCalculatorService>();

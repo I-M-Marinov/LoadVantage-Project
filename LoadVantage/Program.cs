@@ -11,6 +11,7 @@ using LoadVantage.Infrastructure.Data.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using static LoadVantage.Infrastructure.Data.SeedData.SeedData;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -83,15 +84,18 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-	var services = scope.ServiceProvider;
+
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<LoadVantageDbContext>();
     var userManager = services.GetRequiredService<UserManager<User>>();
     var configuration = services.GetRequiredService<IConfiguration>();
+    
 
     await InitializeRoles(services); // Seed the roles
     await SeedAdminUser(services, configuration); // Seed the Administrator 
     await SeedDispatchers(services, configuration); // Seed the Dispatchers
     await SeedBrokers(services, configuration); // Seed the Brokers
-    await SeedCreatedLoads(services, configuration, userManager); // Seed the Created loads ( 6 random loads each per broker )
+    await SeedCreatedLoads(userManager, services); // Seed the Created loads ( 6 random loads each per broker )
 }
 
 
