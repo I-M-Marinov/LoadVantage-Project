@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +60,11 @@ namespace LoadVantage.Core.Services
             if (user.Position != model.Position)
             {
                 throw new UnauthorizedAccessException(PositionCannotBeChanged);
+            }
+
+            if (userManager.Users.Any(u => u.Email == model.Email) && model.Email != user.Email)
+            {
+                throw new Exception(EmailIsAlreadyTaken);
             }
 
             await UpdateUserClaimsAsync(user, model);
