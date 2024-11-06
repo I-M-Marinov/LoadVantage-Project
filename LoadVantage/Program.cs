@@ -50,7 +50,7 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddUserSecrets<Program>();
 }
-
+builder.Services.AddScoped<IProfileService, ProfileService>(); // Add the Profile Service 
 builder.Services.AddHttpClient<ICountryStateCityService, CountryStateCityService>(); // Add CountryStateCity Service 
 builder.Services.AddScoped<IGeocodeService, GeocodeService>(); // Add the Geocode Retrieval Service 
 builder.Services.AddScoped<IDistanceCalculatorService, DistanceCalculatorService>(); // Add the Distance Calculator Service
@@ -91,7 +91,7 @@ using (var scope = app.Services.CreateScope())
     await SeedAdminUser(services, configuration); // Seed the Administrator 
     await SeedDispatchers(services, configuration); // Seed the Dispatchers
     await SeedBrokers(services, configuration); // Seed the Brokers
-    await SeedCreatedLoads(services, configuration, userManager); // Seed the Created loads ( 3 random loads each per broker )
+    await SeedCreatedLoads(services, configuration, userManager); // Seed the Created loads ( 6 random loads each per broker )
 }
 
 

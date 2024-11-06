@@ -48,6 +48,13 @@ namespace LoadVantage.Controllers
 	            ModelState.AddModelError("Email", EmailAlreadyExists);
 	            return View(model);
             }
+            
+            existingUser = await userManager.FindByEmailAsync(model.UserName);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("Username", UserNameAlreadyExists);
+                return View(model);
+            }
 
             Role? role = await roleManager.FindByNameAsync(model.Role);
 
@@ -108,7 +115,7 @@ namespace LoadVantage.Controllers
 
                 if (result.Succeeded)
                 {
-	               var claims =  GetOrAddClaims(User.Claims, user.FirstName, user.LastName, user.UserName, user.Position);
+	               var claims =  GetMissingClaims(User.Claims, user.FirstName, user.LastName, user.UserName, user.Position);
 
 	               if (claims.Count != 0)
 	               {
@@ -141,7 +148,7 @@ namespace LoadVantage.Controllers
 	        return RedirectToAction("Login", "Account", new { area = "" });
         }
 
-        private List<Claim> GetOrAddClaims(IEnumerable<Claim> existingClaims, string firstName, string lastName, string userName, string userPosition)
+        private List<Claim> GetMissingClaims(IEnumerable<Claim> existingClaims, string firstName, string lastName, string userName, string userPosition)
         {
 			var claims = new List<Claim>
 			{
@@ -157,5 +164,6 @@ namespace LoadVantage.Controllers
 
 			return missingClaims; 
 		}
-	}
+
+    }
 }

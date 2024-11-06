@@ -13,7 +13,7 @@ namespace LoadVantage.Infrastructure.Data.Models
         public Guid Id { get; set; }
 
         [Required] 
-        public DateTime CreatedDate { get; set; } = DateTime.MinValue;
+        public DateTime CreatedDate { get; set; }
 
         [Required]
         [StringLength(LoadOriginCityMaxLength)]
@@ -51,7 +51,7 @@ namespace LoadVantage.Infrastructure.Data.Models
         public double Weight { get; set; }
 
         // Track current load status
-        public LoadStatus Status { get; set; } = LoadStatus.Created;
+        public LoadStatus Status { get; set; }
 
         [Required]
         public Guid BrokerId { get; set; }

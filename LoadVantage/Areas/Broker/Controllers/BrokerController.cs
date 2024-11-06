@@ -6,6 +6,7 @@ using LoadVantage.Core.Models.Load;
 using LoadVantage.Filters;
 using LoadVantage.Areas.Broker.Services;
 using LoadVantage.Common.Enums;
+using LoadVantage.Core.Models.Profile;
 using LoadVantage.Extensions;
 using LoadVantage.Infrastructure.Data.Models;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
@@ -13,34 +14,72 @@ using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 using LoadVantage.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using static LoadVantage.Common.GeneralConstants;
+using Microsoft.AspNetCore.Identity;
 
 namespace LoadVantage.Areas.Broker.Controllers
 {
     [BrokerOnly]
     [Area("Broker")]
     [Route("Broker")]
-    public class BrokerController(IBrokerService brokerService, IBrokerLoadBoardService brokerLoadBoardService, ILoadStatusService loadService, ILogger<BrokerController> logger) : Controller
+    public class BrokerController(
+        IBrokerService brokerService, 
+        IBrokerLoadBoardService brokerLoadBoardService, 
+        ILoadStatusService loadService, 
+        ILogger<BrokerController> logger, 
+        IProfileService profileService) 
+        : Controller
     {
         [HttpGet]
         [Route("Profile")]
         public async Task<IActionResult> Profile()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userGuidId = User.GetUserId();
 
-            if (string.IsNullOrEmpty(userId))
+            if (userGuidId == null)
             {
-                return NotFound(); // User ID not found
+                return NotFound(UserNotFound); // User was not found
             }
 
-            var broker = await brokerService.GetBrokerInformationAsync(userId);
+            var broker = await profileService.GetUserInformation(userGuidId.Value);
 
             if (broker == null)
             {
-
-                return View(); // Broker was not found
+                return NotFound(BrokerInformationNotRetrieved);  // Broker was not found
             }
 
-            return View(broker); // Pass the broker info to the view
+            return View(broker); 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Profile")]
+        public async Task<IActionResult> UpdateProfile(ProfileViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Profile", model);
+            }
+
+            var userGuidId = User.GetUserId();
+
+            if (userGuidId == null)
+            {
+                return NotFound(UserNotFound); // User was not found
+            }
+
+            try
+            {
+
+                var updatedModel = await profileService.UpdateProfileInformation(model, userGuidId.Value);
+                TempData["SuccessMessage"] = "Profile updated.";
+
+                return View("Profile", updatedModel);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ErrorUpdatingProfile + ex.Message);
+                return View("Profile", model);
+            }
         }
 
         [HttpGet]

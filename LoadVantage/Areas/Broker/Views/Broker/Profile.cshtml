@@ -1,11 +1,15 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using System.Security.Claims
-@using LoadVantage.Areas.Broker.Models
-@model BrokerViewModel
+@using LoadVantage.Core.Models.Profile
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ProfileViewModel
 
 @{
 	ViewData["Title"] = "Broker Profile";
 	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+
+	var errorMessage = TempData["ErrorMessage"];
+	var successMessage = TempData["SuccessMessage"];
 }
 
 
@@ -358,13 +362,18 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-lg-3 col-md-4 label">Company</div>
-                                    <div class="col-lg-9 col-md-8">@Model.CompanyName</div>
+	                                <div class="col-lg-3 col-md-4 label">Company</div>
+	                                <div class="col-lg-9 col-md-8">@Model.CompanyName</div>
                                 </div>
 
                                 <div class="row">
 	                                <div class="col-lg-3 col-md-4 label">Position</div>
 	                                <div class="col-lg-9 col-md-8">@Model.Position</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Username</div>
+                                    <div class="col-lg-9 col-md-8">@Model.Username</div>
                                 </div>
 								
                                 <div class="row">
@@ -373,59 +382,119 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-lg-3 col-md-4 label">Email</div>
-                                    <div class="col-lg-9 col-md-8">@Model.Email.ToLower()</div>
+	                                <div class="col-lg-3 col-md-4 label">Email</div>
+	                                <div class="col-lg-9 col-md-8">@Model.Email.ToLower()</div>
                                 </div>
+								
+                                @if (TempData["ErrorMessage"] != null)
+                                {
+	                                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@errorMessage</div>
+                                }
+
+                                @if (TempData["SuccessMessage"] != null)
+                                {
+	                                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@successMessage</div>
+                                }
 
                             </div>
 
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+								
+	                            @*    <div class="row mb-3">
+		                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+		                            <div class="col-md-8 col-lg-9">
+			                            <p name="fullName" type="text" class="form-control" id="fullName">@Model.FullName</p>
+		                            </div>
+	                            </div>
 
-                                <!-- Profile Edit Form -->
-                                <form>
-                                    <div class="row mb-3">
-                                        <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <img src="~/assets/img/profile-img.jpg" alt="Profile">
-                                            <div class="pt-2">
-                                                <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
+	                            <div class="row mb-3">
+		                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Username</label>
+		                            <div class="col-md-8 col-lg-9">
+			                            <p name="fullName" type="text" class="form-control" id="userName">@Model.Username</p>
+		                            </div>
+	                            </div> *@
 
-                                    <div class="row mb-3">
-                                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <p name="fullName" type="text" class="form-control" id="fullName">@Model.FullName</p>
-                                        </div>
-                                    </div>
+	                            <!-- Profile Edit Form -->
+                                <form asp-action="UpdateProfile" asp-controller="Broker" method="post" id="updateProfileForm">
+	                                @Html.AntiForgeryToken()
 
-                                    <div class="row mb-3">
-                                        <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="company" type="text" class="form-control" id="company" value="@Model.CompanyName">
-                                        </div>
-                                    </div>
+                                    @* <input type="hidden" name="firstNameProfile" value="@Model.FirstName" />
+                                    <input type="hidden" name="lastNameProfile" value="@Model.LastName" /> *@
+	                                <input type="hidden" name="Position" value="@Model.Position" />
+	                                <input type="hidden" name="Id" value="@Model.Id" />
 
-                                    <div class="row mb-3">
-                                        <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="phone" type="text" class="form-control" id="Phone" value="@Model.PhoneNumber">
-                                        </div>
-                                    </div>
+	                                @*  <div class="row mb-3">
+		                                <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+		                                <div class="col-md-8 col-lg-9">
+			                                <img src="~/assets/img/profile-img.jpg" alt="Profile">
+			                                <div class="pt-2">
+				                                <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
+				                                <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
+			                                </div>
+		                                </div>
+	                                </div> *@
+									
+	                                <div class="row mb-3">
+                                        <label for="firstNameProfile" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+		                                <div class="col-md-8 col-lg-9">
+			                                <input name="FirstName" type="text" class="form-control" id="firstNameProfile" value="@Model.FirstName">
+		                                </div>
+	                                </div>
 
-                                    <div class="row mb-3">
-                                        <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="email" type="email" class="form-control" id="Email" value="@Model.Email">
-                                        </div>
-                                    </div>
+	                                <div class="row mb-3">
+                                        <label for="lastNameProfile" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
+		                                <div class="col-md-8 col-lg-9">
+			                                <input name="LastName" type="text" class="form-control" id="lastNameProfile" value="@Model.LastName">
+		                                </div>
+	                                </div>
 
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                                    </div>
+	                                <div class="row mb-3">
+                                        <label for="usernameProfile" class="col-md-4 col-lg-3 col-form-label">Username</label>
+		                                <div class="col-md-8 col-lg-9">
+			                                <input name="Username" type="text" class="form-control" id="usernameProfile" value="@Model.Username">
+		                                </div>
+	                                </div>
+
+
+	                                <div class="row mb-3">
+                                        <label for="companyNameProfile" class="col-md-4 col-lg-3 col-form-label">Company</label>
+		                                <div class="col-md-8 col-lg-9">
+			                                <input name="CompanyName" type="text" class="form-control" id="companyNameProfile" value="@Model.CompanyName">
+		                                </div>
+	                                </div>
+
+	                                <div class="row mb-3">
+                                        <label for="phoneNumberProfile" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+		                                <div class="col-md-8 col-lg-9">
+			                                <input name="PhoneNumber" type="text" class="form-control" id="phoneNumberProfile" value="@Model.PhoneNumber">
+		                                </div>
+	                                </div>
+
+	                                <div class="row mb-3">
+                                        <label for="emailProfile" class="col-md-4 col-lg-3 col-form-label">Email</label>
+		                                <div class="col-md-8 col-lg-9">
+			                                <input name="Email" type="email" class="form-control" id="emailProfile" value="@Model.Email">
+		                                </div>
+	                                </div>
+
+	                                <div class="text-center">
+		                                <button type="submit" class="btn btn-outline-primary" id="saveProfileButton" onclick="handleSaveButtonClick(event)">
+			                                <span id="buttonSpinner" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" style="display: none;"></span>
+			                                <span id="buttonText">Save Changes</span>
+		                                </button>
+	                                </div>
+
                                 </form><!-- End Profile Edit Form -->
+								
+                                @if (TempData["ErrorMessage"] != null)
+                                {
+	                                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@errorMessage</div>
+                                }
+
+                                @if (TempData["SuccessMessage"] != null)
+                                {
+	                                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@successMessage</div>
+                                }
 
                             </div>
 
@@ -434,31 +503,32 @@
                                 <!-- Change Password Form -->
                                 <form>
 
-                                    <div class="row mb-3">
-                                        <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="password" type="password" class="form-control" id="currentPassword">
-                                        </div>
-                                    </div>
+	                                <div class="row mb-3">
+		                                <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+		                                <div class="col-md-8 col-lg-9">
+			                                <input name="password" type="password" class="form-control" id="currentPassword">
+		                                </div>
+	                                </div>
 
-                                    <div class="row mb-3">
-                                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="newpassword" type="password" class="form-control" id="newPassword">
-                                        </div>
-                                    </div>
+	                                <div class="row mb-3">
+		                                <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+		                                <div class="col-md-8 col-lg-9">
+			                                <input name="newpassword" type="password" class="form-control" id="newPassword">
+		                                </div>
+	                                </div>
 
-                                    <div class="row mb-3">
-                                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
-                                        <div class="col-md-8 col-lg-9">
-                                            <input name="renewpassword" type="password" class="form-control" id="renewPassword">
-                                        </div>
-                                    </div>
+	                                <div class="row mb-3">
+		                                <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+		                                <div class="col-md-8 col-lg-9">
+			                                <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+		                                </div>
+	                                </div>
 
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-primary">Change Password</button>
-                                    </div>
-                                </form><!-- End Change Password Form -->
+	                                <div class="text-center">
+		                                <button type="submit" class="btn btn-primary">Change Password</button>
+	                                </div>
+                                </form>
+                                <!-- End Change Password Form -->
 
                             </div>
 

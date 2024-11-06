@@ -489,4 +489,14 @@ body {
     transition: opacity 3s ease-out; /* Transition effect */
 }
 
+/*-------------------------------------------------------------------------------------
+# PROFILE ---> EDIT PROFILE ---> FIELDS THAT ARE NOT GOING TO BE EDITED  
+--------------------------------------------------------------------------------------*/
+
+#fullName,
+#userName {
+    background: #dedede;
+    margin: 0.1em !important;
+}
+
 

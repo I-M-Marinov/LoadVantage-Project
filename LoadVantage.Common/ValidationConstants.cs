@@ -19,7 +19,7 @@ namespace LoadVantage.Common
 		public const byte EmailMinLength = 7;
 		public const byte EmailMaxLength = 50;
 
-		public const byte FirstNameMinLength = 5;
+		public const byte FirstNameMinLength = 2;
 		public const byte FirstNameMaxLength = 25;
 
 		public const byte LastNameMinLength = 3;
@@ -31,18 +31,8 @@ namespace LoadVantage.Common
         public const byte UserPhoneNumberMinLength = 7;
 		public const byte UserPhoneNumberMaxLength = 15;
 
-		// DISPATCHER 
 
-		public const byte DispatcherCompanyMinLength = 3;
-		public const byte DispatcherCompanyMaxLength = 50;
-
-		// BROKER
-
-		public const byte BrokerCompanyMinLength = 3;
-		public const byte BrokerCompanyMaxLength = 50;
-
-		
-
+        
 		// DRIVER 
 
 		public const byte LicenseNumberMinLength = 5;
@@ -52,6 +42,7 @@ namespace LoadVantage.Common
 		// VALIDATION MESSAGES 
 
 		public const string EmailAlreadyExists = "An account with this email already exists.";
+		public const string UserNameAlreadyExists = "An account with this username already exists.";
 		public const string InvalidUserNameOrPassword = "Invalid username or password.";
 		public const string InvalidPositionSelected = "The selected position is invalid.";
 
@@ -90,6 +81,17 @@ namespace LoadVantage.Common
             public const string PriceRangeInvalid = "Price needs to be between 1.00 and 99999.99";
             public const string WeightRangeInvalid = "Weight needs to be between 1.00 and 48000.00";
 
+        }
+
+        public static class UserValidations
+        {
+            public const string EmailLengthNotValid = "The length of the email must be between 7 and 50 characters.";
+            public const string CompanyNameLengthNotValid = "The length of the company name must be between 3 and 50 characters.";
+            public const string UserPhoneNumberLengthNotValid = "The length of the phone number must be between 7 and 15 characters.";
+            public const string UserNameLengthNotValid = "The length of the username must be between 4 and 30 characters.";
+            public const string FirstNameLengthNotValid = "The length of the firstname must be between 2 and 25 characters.";
+            public const string LastNameLengthNotValid = "The length of the lastname must be between 3 and 25 characters.";
+            public const string PositionLengthNotValid = "The length of the postion must be between 6 and 20 characters.";
         }
 
 	}

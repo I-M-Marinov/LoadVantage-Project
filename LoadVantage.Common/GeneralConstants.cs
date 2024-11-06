@@ -35,6 +35,9 @@ namespace LoadVantage.Common
 
         public static class ErrorMessages
         {
+
+            // LOAD 
+
             public const string LoadInformationCouldNotBeRetrieved = "Error retrieving the load information.";
             public const string LoadCouldNotBeRetrieved = "Load could not be retrieved.";
             public const string LoadIdInvalid = "Load id is not valid.";
@@ -51,6 +54,21 @@ namespace LoadVantage.Common
             public const string LoadIsNotPosted = "This load is not posted yet.";
             public const string ErrorPostingLoad = "An error occured and the load was not posted.";
             public const string ErrorUnpostingLoad = "An error occured and the load was not unposted.";
+
+            // USER
+
+            public const string UserNotFound = "The user was not found.";
+            public const string UserProfileUpdateFailed = "Failed to update user profile.";
+            public const string ErrorUpdatingProfile = "An error occurred while updating the profile.";
+
+            // BROKER 
+
+            public const string BrokerInformationNotRetrieved = "Broker information could not be retrieved.";
+
+            // NOT ALLOWED
+
+            public const string IdCannotBeChanged = "The Id cannot be changed.";
+            public const string PositionCannotBeChanged = "The Position cannot be changed.";
         }
 
         public static class SuccessMessages

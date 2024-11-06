@@ -276,6 +276,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                 .Where(b => brokerIds.Contains(b.Id))
                 .ToListAsync(); // Get the list of brokers
 
+            var allLoads = new List<Load>();
 
             foreach (var broker in brokersWithLoadList)
             {
@@ -290,10 +291,14 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     );
 
                     // Add the load to the broker's collection
-                    broker.Loads.Add(load);
+                    load.BrokerId = broker.Id;
+                    allLoads.Add(load);
                 }
             }
+
+            await context.Loads.AddRangeAsync(allLoads);
             await context.SaveChangesAsync();
+            
         }
     }
 }
