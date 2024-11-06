@@ -55,8 +55,7 @@ namespace LoadVantage.Infrastructure.Migrations
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
@@ -169,28 +168,28 @@ namespace LoadVantage.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PostedLoads",
+                name: "Loads",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PostedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OriginCity = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     OriginState = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
                     DestinationCity = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     DestinationState = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
                     PickupTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeliveryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PostedPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    Distance = table.Column<double>(type: "float", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Weight = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    BrokerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsBooked = table.Column<bool>(type: "bit", nullable: false)
+                    BrokerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostedLoads", x => x.Id);
+                    table.PrimaryKey("PK_Loads", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PostedLoads_AspNetUsers_BrokerId",
+                        name: "FK_Loads_AspNetUsers_BrokerId",
                         column: x => x.BrokerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -218,6 +217,45 @@ namespace LoadVantage.Infrastructure.Migrations
                         name: "FK_Trucks_AspNetUsers_DispatcherId",
                         column: x => x.DispatcherId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BilledLoads",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LoadId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BilledAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    BilledDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BilledLoads", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BilledLoads_Loads_LoadId",
+                        column: x => x.LoadId,
+                        principalTable: "Loads",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PostedLoads",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LoadId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PostedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostedLoads", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PostedLoads_Loads_LoadId",
+                        column: x => x.LoadId,
+                        principalTable: "Loads",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                 });
@@ -258,8 +296,7 @@ namespace LoadVantage.Infrastructure.Migrations
                     DispatcherId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BrokerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BookedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    DriverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -269,7 +306,7 @@ namespace LoadVantage.Infrastructure.Migrations
                         column: x => x.BrokerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BookedLoads_AspNetUsers_DispatcherId",
                         column: x => x.DispatcherId,
@@ -283,37 +320,9 @@ namespace LoadVantage.Infrastructure.Migrations
                         principalColumn: "DriverId",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_BookedLoads_PostedLoads_LoadId",
+                        name: "FK_BookedLoads_Loads_LoadId",
                         column: x => x.LoadId,
-                        principalTable: "PostedLoads",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BilledLoads",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoadId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BookedLoadId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BilledAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    BilledDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BilledLoads", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BilledLoads_BookedLoads_BookedLoadId",
-                        column: x => x.BookedLoadId,
-                        principalTable: "BookedLoads",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_BilledLoads_PostedLoads_LoadId",
-                        column: x => x.LoadId,
-                        principalTable: "PostedLoads",
+                        principalTable: "Loads",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                 });
@@ -363,14 +372,10 @@ namespace LoadVantage.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BilledLoads_BookedLoadId",
-                table: "BilledLoads",
-                column: "BookedLoadId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_BilledLoads_LoadId",
                 table: "BilledLoads",
-                column: "LoadId");
+                column: "LoadId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookedLoads_BrokerId",
@@ -406,9 +411,15 @@ namespace LoadVantage.Infrastructure.Migrations
                 filter: "[TruckId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostedLoads_BrokerId",
-                table: "PostedLoads",
+                name: "IX_Loads_BrokerId",
+                table: "Loads",
                 column: "BrokerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostedLoads_LoadId",
+                table: "PostedLoads",
+                column: "LoadId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trucks_DispatcherId",
@@ -441,10 +452,13 @@ namespace LoadVantage.Infrastructure.Migrations
                 name: "BookedLoads");
 
             migrationBuilder.DropTable(
+                name: "PostedLoads");
+
+            migrationBuilder.DropTable(
                 name: "Drivers");
 
             migrationBuilder.DropTable(
-                name: "PostedLoads");
+                name: "Loads");
 
             migrationBuilder.DropTable(
                 name: "Trucks");

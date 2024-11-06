@@ -43,7 +43,7 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.HasIndex("LoadId")
                         .IsUnique();
 
-                    b.ToTable("BilledLoads");
+                    b.ToTable("BilledLoads", (string)null);
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.BookedLoad", b =>
@@ -79,7 +79,7 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.HasIndex("LoadId")
                         .IsUnique();
 
-                    b.ToTable("BookedLoads");
+                    b.ToTable("BookedLoads", (string)null);
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Driver", b =>
@@ -120,7 +120,7 @@ namespace LoadVantage.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[TruckId] IS NOT NULL");
 
-                    b.ToTable("Drivers");
+                    b.ToTable("Drivers", (string)null);
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Load", b =>
@@ -178,7 +178,7 @@ namespace LoadVantage.Infrastructure.Migrations
 
                     b.HasIndex("BrokerId");
 
-                    b.ToTable("Loads");
+                    b.ToTable("Loads", (string)null);
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.PostedLoad", b =>
@@ -198,7 +198,7 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.HasIndex("LoadId")
                         .IsUnique();
 
-                    b.ToTable("PostedLoads");
+                    b.ToTable("PostedLoads", (string)null);
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Role", b =>
@@ -267,7 +267,7 @@ namespace LoadVantage.Infrastructure.Migrations
 
                     b.HasIndex("DispatcherId");
 
-                    b.ToTable("Trucks");
+                    b.ToTable("Trucks", (string)null);
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.User", b =>

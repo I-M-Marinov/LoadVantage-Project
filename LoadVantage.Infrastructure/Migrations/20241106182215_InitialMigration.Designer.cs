@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoadVantage.Infrastructure.Migrations
 {
     [DbContext(typeof(LoadVantageDbContext))]
-    [Migration("20241028162108_InitialMigration")]
+    [Migration("20241106182215_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -38,20 +38,13 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.Property<DateTime>("BilledDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("BookedLoadId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("LoadId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("BookedLoadId");
-
-                    b.HasIndex("LoadId");
+                    b.HasIndex("LoadId")
+                        .IsUnique();
 
                     b.ToTable("BilledLoads");
                 });
@@ -77,9 +70,6 @@ namespace LoadVantage.Infrastructure.Migrations
 
                     b.Property<Guid>("LoadId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -136,7 +126,7 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.ToTable("Drivers");
                 });
 
-            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.PostedLoad", b =>
+            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Load", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -144,6 +134,9 @@ namespace LoadVantage.Infrastructure.Migrations
 
                     b.Property<Guid>("BrokerId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DeliveryTime")
                         .HasColumnType("datetime2");
@@ -158,8 +151,8 @@ namespace LoadVantage.Infrastructure.Migrations
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
-                    b.Property<bool>("IsBooked")
-                        .HasColumnType("bit");
+                    b.Property<double?>("Distance")
+                        .HasColumnType("float");
 
                     b.Property<string>("OriginCity")
                         .IsRequired()
@@ -174,10 +167,7 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.Property<DateTime>("PickupTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("PostedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("PostedPrice")
+                    b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
@@ -190,6 +180,26 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrokerId");
+
+                    b.ToTable("Loads");
+                });
+
+            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.PostedLoad", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("LoadId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("PostedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LoadId")
+                        .IsUnique();
 
                     b.ToTable("PostedLoads");
                 });
@@ -280,11 +290,6 @@ namespace LoadVantage.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -322,7 +327,6 @@ namespace LoadVantage.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
@@ -362,7 +366,7 @@ namespace LoadVantage.Infrastructure.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.HasDiscriminator<string>("Position").HasValue("User");
 
                     b.UseTphMappingStrategy();
                 });
@@ -493,21 +497,13 @@ namespace LoadVantage.Infrastructure.Migrations
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.BilledLoad", b =>
                 {
-                    b.HasOne("LoadVantage.Infrastructure.Data.Models.BookedLoad", "BookedLoad")
-                        .WithMany()
-                        .HasForeignKey("BookedLoadId")
+                    b.HasOne("LoadVantage.Infrastructure.Data.Models.Load", "Load")
+                        .WithOne("BilledLoad")
+                        .HasForeignKey("LoadVantage.Infrastructure.Data.Models.BilledLoad", "LoadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LoadVantage.Infrastructure.Data.Models.PostedLoad", "PostedLoad")
-                        .WithMany()
-                        .HasForeignKey("LoadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BookedLoad");
-
-                    b.Navigation("PostedLoad");
+                    b.Navigation("Load");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.BookedLoad", b =>
@@ -530,7 +526,7 @@ namespace LoadVantage.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LoadVantage.Infrastructure.Data.Models.PostedLoad", "PostedLoad")
+                    b.HasOne("LoadVantage.Infrastructure.Data.Models.Load", "Load")
                         .WithOne("BookedLoad")
                         .HasForeignKey("LoadVantage.Infrastructure.Data.Models.BookedLoad", "LoadId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -542,7 +538,7 @@ namespace LoadVantage.Infrastructure.Migrations
 
                     b.Navigation("Driver");
 
-                    b.Navigation("PostedLoad");
+                    b.Navigation("Load");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Driver", b =>
@@ -558,15 +554,26 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.Navigation("Truck");
                 });
 
-            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.PostedLoad", b =>
+            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Load", b =>
                 {
                     b.HasOne("LoadVantage.Infrastructure.Data.Models.Broker", "Broker")
-                        .WithMany("PostedLoads")
+                        .WithMany("Loads")
                         .HasForeignKey("BrokerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Broker");
+                });
+
+            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.PostedLoad", b =>
+                {
+                    b.HasOne("LoadVantage.Infrastructure.Data.Models.Load", "Load")
+                        .WithOne("PostedLoad")
+                        .HasForeignKey("LoadVantage.Infrastructure.Data.Models.PostedLoad", "LoadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Load");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Truck", b =>
@@ -642,9 +649,13 @@ namespace LoadVantage.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.PostedLoad", b =>
+            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Load", b =>
                 {
+                    b.Navigation("BilledLoad");
+
                     b.Navigation("BookedLoad");
+
+                    b.Navigation("PostedLoad");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Truck", b =>
@@ -654,7 +665,7 @@ namespace LoadVantage.Infrastructure.Migrations
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Broker", b =>
                 {
-                    b.Navigation("PostedLoads");
+                    b.Navigation("Loads");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Dispatcher", b =>
