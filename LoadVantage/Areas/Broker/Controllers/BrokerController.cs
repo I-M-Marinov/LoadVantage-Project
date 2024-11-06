@@ -40,14 +40,23 @@ namespace LoadVantage.Areas.Broker.Controllers
                 return NotFound(UserNotFound); // User was not found
             }
 
-            var broker = await profileService.GetUserInformation(userGuidId.Value);
-
-            if (broker == null)
+            try
             {
-                return NotFound(BrokerInformationNotRetrieved);  // Broker was not found
+                var broker = await profileService.GetUserInformation(userGuidId.Value);
+
+                if (broker == null)
+                {
+                    return NotFound(BrokerInformationNotRetrieved);  // Broker was not found
+                }
+
+                return View(broker);
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = BrokerInformationNotRetrieved + e.Message;
+                return View();
             }
 
-            return View(broker); 
         }
 
         [HttpPost]
@@ -62,16 +71,22 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             var userGuidId = User.GetUserId();
 
-            if (userGuidId == null)
+            var isUsernameTaken = await profileService.IsUsernameTakenAsync(model.Username, userGuidId.Value);
+            if (isUsernameTaken)
+            {
+                ModelState.AddModelError("Username", UserNameIsAlreadyTaken);
+                return View("Profile", model);
+            }
+
+            if (userGuidId == Guid.Empty)
             {
                 return NotFound(UserNotFound); // User was not found
             }
 
             try
             {
-
                 var updatedModel = await profileService.UpdateProfileInformation(model, userGuidId.Value);
-                TempData["SuccessMessage"] = "Profile updated.";
+                TempData["SuccessMessage"] = ProfileUpdatedSuccessfully;
 
                 return View("Profile", updatedModel);
             }
