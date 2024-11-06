@@ -17,8 +17,24 @@
       "PackagePath": "staticwebassets\\assets\\img\\card.jpg"
     },
     {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\favicon-alternate.ico",
+      "PackagePath": "staticwebassets\\assets\\img\\favicon-alternate.ico"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\favicon-png.png",
+      "PackagePath": "staticwebassets\\assets\\img\\favicon-png.png"
+    },
+    {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\favicon.ico",
       "PackagePath": "staticwebassets\\assets\\img\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\favicon2.ico",
+      "PackagePath": "staticwebassets\\assets\\img\\favicon2.ico"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\favicon3.ico",
+      "PackagePath": "staticwebassets\\assets\\img\\favicon3.ico"
     },
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\img\\loadVantage.png",
@@ -2071,6 +2087,14 @@
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\favicon1.ico",
+      "PackagePath": "staticwebassets\\favicon1.ico"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\favicon2.ico",
+      "PackagePath": "staticwebassets\\favicon2.ico"
     },
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\js\\site.js",
