@@ -11,7 +11,7 @@ namespace LoadVantage.Core.Contracts
         Task<bool> BookLoadAsync(Guid loadId, Guid dispatcherId);
         Task<bool> LoadDeliveredAsync(Guid loadId);
         Task<bool> CancelLoadAsync(Guid loadId);
-        Task<LoadViewModel> SeeLoadDetails(Guid loadId);
+        Task<LoadViewModel?> GetLoadDetailsAsync(Guid loadId);
         Task<LoadViewModel> GetLoadByIdAsync(Guid loadId);
     }
 }

@@ -186,7 +186,7 @@ namespace LoadVantage.Core.Services
                 catch (Exception e)
                 {
 
-                    logger.LogError(ErrorEditingLoad);
+                    logger.LogError(ErrorRetrievingDetailsForLoad);
                     throw;
                 }
             }
@@ -268,14 +268,14 @@ namespace LoadVantage.Core.Services
 
             return true;
         }
-        public async Task<LoadViewModel> SeeLoadDetails(Guid loadId)
+        public async Task<LoadViewModel?> GetLoadDetailsAsync(Guid loadId)
         {
             var load = await context.Loads
                 .FirstOrDefaultAsync(l => l.Id == loadId);
 
             if (load == null)
             { 
-                throw new Exception(ErrorEditingLoad);
+                throw new Exception(LoadCouldNotBeRetrieved);
             }
 
             var loadViewModel = new LoadViewModel
