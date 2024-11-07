@@ -8,10 +8,10 @@ using LoadVantage.Common.Enums;
 using LoadVantage.Core.Models.Profile;
 using LoadVantage.Extensions;
 using LoadVantage.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace LoadVantage.Areas.Broker.Controllers
 {
@@ -19,7 +19,7 @@ namespace LoadVantage.Areas.Broker.Controllers
     [Area("Broker")]
     [Route("Broker")]
     public class BrokerController(
-        IBrokerService brokerService, 
+        UserManager<User> userManager, 
         IBrokerLoadBoardService brokerLoadBoardService, 
         ILoadStatusService loadService, 
         ILogger<BrokerController> logger, 
@@ -48,7 +48,7 @@ namespace LoadVantage.Areas.Broker.Controllers
                 
                 return View(broker);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return View();
             }
@@ -342,6 +342,41 @@ namespace LoadVantage.Areas.Broker.Controllers
                 TempData.SetErrorMessage(ErrorUnpostingLoad + e.Message);
 				return RedirectToAction("LoadDetails", new { loadId = load.Id });
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+
+            User? user = await User.GetUserAsync(userManager);
+
+            if (!ModelState.IsValid)
+	        {
+                return View("Profile", new ProfileViewModel { ChangePasswordViewModel = model }); // Redirect to the profile page and pass the Model for the password form  
+            }
+
+			if (user == null)
+	        {
+		        return NotFound(UserNotFound);
+	        }
+
+	        var result = await profileService.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+	        if (result.Succeeded)
+	        {
+		       TempData.SetSuccessMessage(PasswordUpdatedSuccessfully);
+				return View("Profile", new ProfileViewModel { ChangePasswordViewModel = model }); // Redirect to the profile page and pass the Model for the password form  
+			}
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+
+            return View("Profile", new ProfileViewModel { ChangePasswordViewModel = model }); // Redirect to the profile page and pass the Model for the password form  
+
         }
     }
 }
