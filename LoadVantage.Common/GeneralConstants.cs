@@ -46,7 +46,7 @@ namespace LoadVantage.Common
             public const string InvalidCityOrStateSpecified = "Invalid city or state specified.";
             public const string ErrorRetrievingCoordinates = "Error retrieving coordinates.";
             public const string ErrorCreatingLoad = "There was an error creating the load. Please check your input and try again.";
-            public const string ErrorEditingLoad = "Load was not edited succesfully. Please provide valid origin and destination city and state.";
+            public const string ErrorRetrievingDetailsForLoad = "Could not retrieve the details for this load.";
             public const string ErrorUpdatingLoad = "Load was not updated !";
 
             public const string LoadIsNotInCorrectStatus = "This load cannot be posted. It is not with status \"Created\"";
@@ -61,6 +61,7 @@ namespace LoadVantage.Common
             public const string UserProfileUpdateFailed = "Failed to update user profile.";
             public const string ErrorUpdatingProfile = "An error occurred while updating the profile.";
             public const string UserNameIsAlreadyTaken = "The username is already taken.";
+            public const string EmailIsAlreadyTaken = "The email is already taken.";
 
             // BROKER 
 
@@ -70,10 +71,17 @@ namespace LoadVantage.Common
 
             public const string IdCannotBeChanged = "The Id cannot be changed.";
             public const string PositionCannotBeChanged = "The Position cannot be changed.";
+
+            // PROFILE 
+
+            public const string NoChangesMadeToProfile = "No changes were made to your profile.";
         }
 
         public static class SuccessMessages
         {
+
+            // LOAD 
+
             public const string LoadCreatedSuccessfully = "Load was created successfully.";
             public const string LoadUpdatedSuccessfully = "Load was updated successfully.";
             public const string LoadCancelledSuccessfully = "Load was cancelled successfully.";
@@ -84,6 +92,12 @@ namespace LoadVantage.Common
 
             public const string ProfileUpdatedSuccessfully = "Your profile was updated successfully.";
 
+        }
+
+        public static class ActiveTabs
+        {
+	        public const string CreatedActiveTab = "created";
+	        public const string PostedActiveTab = "posted";
         }
     }
 }

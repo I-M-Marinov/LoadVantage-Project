@@ -77,7 +77,7 @@ namespace LoadVantage.Common
             public const string StateLengthNotValid = "State should be a 2-letter code.";
             public const string PickupTimeInvalidFormat = "Invalid date format for Pickup Time.";
             public const string DeliveryTimeInvalidFormat = "Invalid date format for Delivery Time.";
-            public const string DeliveryTimeCannotBeBeforePickupTime = "Delivery time must be after pickup time.";
+            public const string DeliveryTimeCannotBeBeforePickupTime = "Delivery time must be after the pickup time.";
             public const string PriceRangeInvalid = "Price needs to be between 1.00 and 99999.99";
             public const string WeightRangeInvalid = "Weight needs to be between 1.00 and 48000.00";
 
