@@ -14,8 +14,13 @@ using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Core.Services
 {
-    public class ProfileService(LoadVantageDbContext context, UserManager<User> userManager) : IProfileService
+    public class ProfileService(
+	    LoadVantageDbContext context, 
+	    UserManager<User> userManager,
+		 SignInManager<User> signInManager) : IProfileService
     {
+
+
         public async Task<ProfileViewModel?> GetUserInformation(Guid userId)
         {
             var user = await userManager.FindByIdAsync(userId.ToString());
@@ -118,28 +123,6 @@ namespace LoadVantage.Core.Services
 
         }
 
-        private async Task<IEnumerable<Claim>> GetUserClaimsAsync(User user)
-        {
-            return await userManager.GetClaimsAsync(user);
-        }
-
-        private List<Claim> GetMissingClaims(IEnumerable<Claim> existingClaims, string firstName, string lastName, string userName, string userPosition)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim("FirstName", firstName),
-                new Claim("LastName", lastName),
-                new Claim("UserName", userName),
-                new Claim("Position", userPosition),
-            };
-
-            var missingClaims = claims.Where(claim =>
-                !existingClaims.Any(c => c.Type == claim.Type && c.Value == claim.Value)
-            ).ToList();
-
-            return missingClaims;
-        }
-
         public async Task<bool> IsUsernameTakenAsync(string username, Guid currentUserId)
         {
             var existingUser = await userManager.FindByNameAsync(username);
@@ -168,6 +151,52 @@ namespace LoadVantage.Core.Services
                    user.PhoneNumber == model.PhoneNumber &&
                    user.Email == model.Email;
         }
+        private async Task<IEnumerable<Claim>> GetUserClaimsAsync(User user)
+        {
+	        return await userManager.GetClaimsAsync(user);
+        }
 
-    }
+        private List<Claim> GetMissingClaims(IEnumerable<Claim> existingClaims, string firstName, string lastName, string userName, string userPosition)
+        {
+	        var claims = new List<Claim>
+	        {
+		        new Claim("FirstName", firstName),
+		        new Claim("LastName", lastName),
+		        new Claim("UserName", userName),
+		        new Claim("Position", userPosition),
+	        };
+
+	        var missingClaims = claims.Where(claim =>
+		        !existingClaims.Any(c => c.Type == claim.Type && c.Value == claim.Value)
+	        ).ToList();
+
+	        return missingClaims;
+        }
+
+        public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
+        {
+	        if (user == null)
+	        {
+		        throw new ArgumentNullException(nameof(user), UserCannotBeNull);
+	        }
+
+            if (currentPassword == newPassword)
+            {
+                return IdentityResult.Failed(new IdentityError
+                {
+                    Description = CurrentAndNewPasswordCannotMatch
+                });
+            }
+
+            var result = await userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+	        if (result.Succeeded)
+	        {
+		        await signInManager.SignOutAsync(); // Log Out 
+                await signInManager.PasswordSignInAsync(user, newPassword, false, false); // Log in again with the new password
+			}
+
+	        return result;
+        }
+	}
 }
