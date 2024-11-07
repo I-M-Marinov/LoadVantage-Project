@@ -16,7 +16,7 @@ namespace LoadVantage.Core.Services
 {
     public class ProfileService(LoadVantageDbContext context, UserManager<User> userManager) : IProfileService
     {
-        public async Task<ProfileViewModel> GetUserInformation(Guid userId)
+        public async Task<ProfileViewModel?> GetUserInformation(Guid userId)
         {
             var user = await userManager.FindByIdAsync(userId.ToString());
 
@@ -25,18 +25,16 @@ namespace LoadVantage.Core.Services
                 throw new Exception(UserNotFound);
             }
 
-            var userClaims = await userManager.GetClaimsAsync(user);
-
             var profile = new ProfileViewModel
             {
                 Id = user.Id.ToString(),
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Username = user.UserName,
-                Position = user.Position,
-                CompanyName = user.CompanyName,
-                PhoneNumber = user.PhoneNumber,
-                Email = user.Email
+                Username = user.UserName!,
+                Position = user.Position!,
+                CompanyName = user.CompanyName!,
+                PhoneNumber = user.PhoneNumber!,
+                Email = user.Email!
                 
             };
 
@@ -67,9 +65,15 @@ namespace LoadVantage.Core.Services
                 throw new Exception(EmailIsAlreadyTaken);
             }
 
+            if (AreUserPropertiesEqual(user,model))
+            {
+                throw new Exception(NoChangesMadeToProfile);
+            }
+
             await UpdateUserClaimsAsync(user, model);
 
-            // Now update the user's properties
+            // Update the user's properties ( NOT THE ID ) 
+
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             user.UserName = model.Username;
@@ -77,8 +81,8 @@ namespace LoadVantage.Core.Services
             user.PhoneNumber = model.PhoneNumber;
             user.Email = model.Email;
 
-            user.NormalizedUserName = model.Username.ToUpperInvariant();  
-            user.NormalizedEmail = model.Email.ToUpperInvariant();       
+            user.NormalizedUserName = model.Username.ToUpperInvariant();  // normalized username
+            user.NormalizedEmail = model.Email.ToUpperInvariant();       // normalized email address
 
             var result = await userManager.UpdateAsync(user);
 
@@ -140,6 +144,29 @@ namespace LoadVantage.Core.Services
         {
             var existingUser = await userManager.FindByNameAsync(username);
             return existingUser != null && existingUser.Id != currentUserId;
+        }
+
+        private bool AreUserPropertiesEqual(User user, ProfileViewModel model)
+        {
+            
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user), "User cannot be null.");
+            }
+
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model), "Model cannot be null.");
+            }
+
+            return user.Id == Guid.Parse(model.Id) &&
+                   user.Position == model.Position &&
+                   user.FirstName == model.FirstName &&
+                   user.LastName == model.LastName &&
+                   user.UserName == model.Username &&
+                   user.CompanyName == model.CompanyName &&
+                   user.PhoneNumber == model.PhoneNumber &&
+                   user.Email == model.Email;
         }
 
     }
