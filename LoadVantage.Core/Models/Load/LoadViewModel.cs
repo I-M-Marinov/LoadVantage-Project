@@ -18,7 +18,7 @@ namespace LoadVantage.Core.Models.Load
 
         [Required(ErrorMessage = OriginStateRequired)]
         [DisplayName("Origin state")]
-        [StringLength(StateMinMaxLength, ErrorMessage = StateLengthNotValid)]
+        [StringLength(StateMinMaxLength, MinimumLength = StateMinMaxLength, ErrorMessage = StateLengthNotValid)]
 
         public string OriginState { get; set; } = null!;
 
@@ -30,8 +30,8 @@ namespace LoadVantage.Core.Models.Load
 
         [Required(ErrorMessage = DestinationStateRequired)]
         [DisplayName("Destination state")]
-        [StringLength(StateMinMaxLength, ErrorMessage = StateLengthNotValid)]
-        public string DestinationState { get; set; } = null!;
+        [StringLength(StateMinMaxLength, MinimumLength = StateMinMaxLength, ErrorMessage = StateLengthNotValid)]
+		public string DestinationState { get; set; } = null!;
 
         [Required(ErrorMessage = PickupTimeRequired)]
         [DisplayName("Pickup time")]
