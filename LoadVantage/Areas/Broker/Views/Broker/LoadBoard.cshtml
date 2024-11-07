@@ -6,7 +6,6 @@
 @using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
 @using static LoadVantage.Common.GeneralConstants.UserRoles;
-@inject UserManager<User> UserManager
 
 @model BrokerLoadBoardViewModel
 
@@ -14,9 +13,9 @@
     ViewData["Title"] = "Broker LoadBoard";
     Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 
-    var activeTab = TempData["ActiveTab"]?.ToString();
-    var errorMessage = TempData["ErrorMessage"];
-    var successMessage = TempData["SuccessMessage"];
+    var tempDataSuccessMessage = TempData.GetSuccessMessage();
+    var tempDataErrorMessage = TempData.GetErrorMessage();
+    var tempDataActiveTab = TempData.GetActiveTab();
 
 }
 
@@ -326,14 +325,15 @@
                     <div class="card-body">
 	                    <h5 class="card-title">LoadBoard</h5>
 
-	                    @if (TempData["ErrorMessage"] != null)
+	                   
+	                    @if (!string.IsNullOrEmpty(tempDataSuccessMessage))
 	                    {
-		                    <div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@errorMessage</div>
+		                    <div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@tempDataSuccessMessage</div>
 	                    }
 
-	                    @if (TempData["SuccessMessage"] != null)
+	                    @if (!string.IsNullOrEmpty(tempDataErrorMessage))
 	                    {
-		                    <div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@successMessage</div>
+		                    <div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@tempDataErrorMessage</div>
 	                    }
 						
 	                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -533,7 +533,7 @@
 		});
 
 		document.addEventListener("DOMContentLoaded", function () {
-			var activeTab = "@activeTab";
+			var activeTab = "@tempDataActiveTab";
 			if (activeTab === "posted") { 
 				var postedTabButton = document.getElementById("pills-posted-tab");
 				if (postedTabButton) {
@@ -541,7 +541,7 @@
 				}
 			} else {
 				// Show "Created Loads" by default
-				var createdTabButton = document.getElementById("pills-created-tab");
+				var createdTabButton = document.getElementById("pills-created-tab"); // fallback to created tab
 				if (createdTabButton) {
 					new bootstrap.Tab(createdTabButton).show();
 				}
