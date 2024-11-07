@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using LoadVantage.Core.ValidationAttributes;
-using LoadVantage.Infrastructure.Data.Services;
 using static LoadVantage.Common.ValidationConstants.LoadValidations;
 
 namespace LoadVantage.Core.Models.Load
@@ -30,7 +29,7 @@ namespace LoadVantage.Core.Models.Load
 
         [Required(ErrorMessage = DestinationStateRequired)]
         [DisplayName("Destination state")]
-        [StringLength(StateMinMaxLength, MinimumLength = StateMinMaxLength, ErrorMessage = StateLengthNotValid)]
+		[StringLength(StateMinMaxLength, MinimumLength = StateMinMaxLength, ErrorMessage = StateLengthNotValid)]
 		public string DestinationState { get; set; } = null!;
 
         [Required(ErrorMessage = PickupTimeRequired)]

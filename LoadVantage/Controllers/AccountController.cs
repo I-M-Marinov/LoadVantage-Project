@@ -1,5 +1,4 @@
 ﻿using LoadVantage.Core.Models.Account;
-using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -165,5 +164,5 @@ namespace LoadVantage.Controllers
 			return missingClaims; 
 		}
 
-    }
+	}
 }

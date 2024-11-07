@@ -6,7 +6,7 @@ namespace LoadVantage.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {
-        public static Guid? GetUserId(this ClaimsPrincipal user)
+        public static Guid? GetUserId(this ClaimsPrincipal? user)
         {
             if (user == null)
             {
@@ -23,7 +23,7 @@ namespace LoadVantage.Extensions
             return null;
         }
 
-		public static async Task<User> GetUserAsync(this ClaimsPrincipal user, UserManager<User> userManager)
+		public static async Task<User?> GetUserAsync(this ClaimsPrincipal user, UserManager<User> userManager)
 		{
 			var userId = user.GetUserId();
 

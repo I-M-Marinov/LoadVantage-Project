@@ -43,12 +43,6 @@
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-<!-- jQuery and jQuery Validation -->
-	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script> 
-	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-
- 
     <!-- Vendor JS Files -->
     <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
@@ -65,6 +59,12 @@
 
     <!-- Section for additional scripts -->
     @await RenderSectionAsync("Scripts", required: false)
-</body>
+	
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- jQuery Validation -->
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    </body>
 
 </html>
