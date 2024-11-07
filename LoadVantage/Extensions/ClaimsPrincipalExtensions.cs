@@ -1,4 +1,6 @@
-﻿using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using LoadVantage.Infrastructure.Data.Models;
 
 namespace LoadVantage.Extensions
 {
@@ -20,5 +22,17 @@ namespace LoadVantage.Extensions
             
             return null;
         }
-    }
+
+		public static async Task<User> GetUserAsync(this ClaimsPrincipal user, UserManager<User> userManager)
+		{
+			var userId = user.GetUserId();
+
+			if (userId == null)
+			{
+				return null; 
+			}
+
+			return await userManager.FindByIdAsync(userId.Value.ToString());
+		}
+	}
 }

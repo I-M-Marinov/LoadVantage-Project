@@ -1,15 +1,22 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using System.Security.Claims
 @using LoadVantage.Core.Models.Profile
+@using LoadVantage.Extensions
+@using LoadVantage.Infrastructure.Data.Models
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@inject UserManager<User> UserManager
 @model ProfileViewModel
 
 @{
-	ViewData["Title"] = "Broker Profile";
-	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+    ViewData["Title"] = "Broker Profile";
+    Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 
-	var errorMessage = TempData["ErrorMessage"];
-	var successMessage = TempData["SuccessMessage"];
+    var user = await User.GetUserAsync(UserManager);
+
+    var tempDataSuccessMessage = TempData.GetSuccessMessage();
+    var tempDataErrorMessage = TempData.GetErrorMessage();
+
 }
 
 
@@ -184,13 +191,13 @@
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                     <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">@Model.FirstName[0].@Model.LastName</span>
+                    <span class="d-none d-md-block dropdown-toggle ps-2">@user.FirstName[0].@user.LastName</span>
                 </a><!-- End Profile Iamge Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
-                        <h6>@Model.FullName</h6>
-                        <span>@Model.Position</span>
+                        <h6>@user.FullName</h6>
+                        <span>@user.Position</span>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -199,7 +206,7 @@
                     <li>
 
 	                    <form method="get" action="@Url.Action("Profile", "Broker")">
-		                    <input type="hidden" name="brokerId" value="@Model.Id"/>
+                            <input type="hidden" name="brokerId" value="@user.Id" />
 		                    <button type="submit" class="dropdown-item d-flex align-items-center">
 			                    <i class="bi bi-person"></i>
 			                    <span>My Profile</span>
@@ -232,7 +239,7 @@
 
                     <li>
 	                    <form method="get" action="@Url.Action("Logout", "Account")">
-		                    <input type="hidden" name="brokerId" value="@Model.Id" />
+                            <input type="hidden" name="brokerId" value="@user.Id" />
 		                    <button type="submit" class="dropdown-item d-flex align-items-center">
 			                    <i class="bi bi-box-arrow-right"></i>
 			                    <span>Sign Out</span>
@@ -258,7 +265,7 @@
     <li class="nav-item">
 
         <form method="get" action="@Url.Action("LoadBoard", "Broker")">
-		    <input type="hidden" name="brokerId" value="@Model.Id" />
+                <input type="hidden" name="brokerId" value="@user.Id" />
 		    <button type="submit" class="nav-link collapsed" id="loadboard-nav">
 			    <i class="ri-truck-line"></i>
 			    <span>LoadBoard</span>
@@ -272,7 +279,7 @@
 	 
 
 	    <form method="get" action="@Url.Action("Profile", "Broker")">
-		    <input type="hidden" name="brokerId" value="@Model.Id" />
+                <input type="hidden" name="brokerId" value="@user.Id" />
 		    <button type="submit" class="nav-link" id="profile-nav">
 			    <i class="ri-account-pin-box-line"></i>
 			    <span>Profile</span>
@@ -285,7 +292,7 @@
 	 
 
 	    <form method="get" action="@Url.Action("CreateLoad", "Broker")">
-		    <input type="hidden" name="brokerId" value="@Model.Id" />
+                <input type="hidden" name="brokerId" value="@user.Id" />
                 <button type="submit" class="nav-link collapsed" id="create-load-nav">
 	                <i class="ri-treasure-map-line"></i>
 			    <span>Create a load</span>
@@ -320,8 +327,8 @@
                     <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
                         <img src="~/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                        <h2>@Model.FullName</h2>
-                        <h3>@Model.Position at @Model.CompanyName</h3>
+                        <h2>@user.FullName</h2>
+                        <h3>@user.Position at @user.CompanyName</h3>
                         <div class="social-links mt-2">
                             
                         </div>
@@ -358,68 +365,63 @@
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Full Name</div>
-                                    <div class="col-lg-9 col-md-8">@Model.FullName</div>
+                                    <div class="col-lg-9 col-md-8">@user.FullName</div>
                                 </div>
 
                                 <div class="row">
 	                                <div class="col-lg-3 col-md-4 label">Company</div>
-	                                <div class="col-lg-9 col-md-8">@Model.CompanyName</div>
+                                    <div class="col-lg-9 col-md-8">@user.CompanyName</div>
                                 </div>
 
                                 <div class="row">
 	                                <div class="col-lg-3 col-md-4 label">Position</div>
-	                                <div class="col-lg-9 col-md-8">@Model.Position</div>
+                                    <div class="col-lg-9 col-md-8">@user.Position</div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Username</div>
-                                    <div class="col-lg-9 col-md-8">@Model.Username</div>
+                                    <div class="col-lg-9 col-md-8">@user.UserName</div>
                                 </div>
 								
                                 <div class="row">
 	                                <div class="col-lg-3 col-md-4 label">Phone Number</div>
-	                                <div class="col-lg-9 col-md-8">@Model.PhoneNumber</div>
+                                    <div class="col-lg-9 col-md-8">@user.PhoneNumber</div>
                                 </div>
 
                                 <div class="row">
 	                                <div class="col-lg-3 col-md-4 label">Email</div>
-	                                <div class="col-lg-9 col-md-8">@Model.Email.ToLower()</div>
+                                    <div class="col-lg-9 col-md-8">@user.Email.ToLower()</div>
                                 </div>
 								
-                                @if (TempData["ErrorMessage"] != null)
+
+                                <div class="text-danger">
+	                                @Html.ValidationSummary()
+                                </div>
+								
+                                @if (!string.IsNullOrEmpty(tempDataSuccessMessage))
                                 {
-	                                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@errorMessage</div>
+	                                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@tempDataSuccessMessage</div>
                                 }
 
-                                @if (TempData["SuccessMessage"] != null)
+                                @if (!string.IsNullOrEmpty(tempDataErrorMessage))
                                 {
-	                                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@successMessage</div>
+	                                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@tempDataErrorMessage</div>
                                 }
+                                
+								
 
                             </div>
 
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
-								
-	                            @*    <div class="row mb-3">
-		                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
-		                            <div class="col-md-8 col-lg-9">
-			                            <p name="fullName" type="text" class="form-control" id="fullName">@Model.FullName</p>
-		                            </div>
-	                            </div>
-
-	                            <div class="row mb-3">
-		                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Username</label>
-		                            <div class="col-md-8 col-lg-9">
-			                            <p name="fullName" type="text" class="form-control" id="userName">@Model.Username</p>
-		                            </div>
-	                            </div> *@
 
 	                            <!-- Profile Edit Form -->
-                                <form asp-action="UpdateProfile" asp-controller="Broker" method="post" id="updateProfileForm">
+                                <form asp-action="Profile" asp-controller="Broker" method="post" id="updateProfileForm">
 	                                @Html.AntiForgeryToken()
+									
+	                                <div class="text-danger">
+		                                @Html.ValidationSummary(true)
+	                                </div>
 
-                                    @* <input type="hidden" name="firstNameProfile" value="@Model.FirstName" />
-                                    <input type="hidden" name="lastNameProfile" value="@Model.LastName" /> *@
 	                                <input type="hidden" name="Position" value="@Model.Position" />
 	                                <input type="hidden" name="Id" value="@Model.Id" />
 
@@ -438,6 +440,7 @@
                                         <label for="firstNameProfile" class="col-md-4 col-lg-3 col-form-label">First Name</label>
 		                                <div class="col-md-8 col-lg-9">
 			                                <input name="FirstName" type="text" class="form-control" id="firstNameProfile" value="@Model.FirstName">
+			                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
 		                                </div>
 	                                </div>
 
@@ -445,6 +448,7 @@
                                         <label for="lastNameProfile" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
 		                                <div class="col-md-8 col-lg-9">
 			                                <input name="LastName" type="text" class="form-control" id="lastNameProfile" value="@Model.LastName">
+			                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
 		                                </div>
 	                                </div>
 
@@ -452,6 +456,7 @@
                                         <label for="usernameProfile" class="col-md-4 col-lg-3 col-form-label">Username</label>
 		                                <div class="col-md-8 col-lg-9">
 			                                <input name="Username" type="text" class="form-control" id="usernameProfile" value="@Model.Username">
+			                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
 		                                </div>
 	                                </div>
 
@@ -460,6 +465,7 @@
                                         <label for="companyNameProfile" class="col-md-4 col-lg-3 col-form-label">Company</label>
 		                                <div class="col-md-8 col-lg-9">
 			                                <input name="CompanyName" type="text" class="form-control" id="companyNameProfile" value="@Model.CompanyName">
+                                            @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
 		                                </div>
 	                                </div>
 
@@ -467,6 +473,7 @@
                                         <label for="phoneNumberProfile" class="col-md-4 col-lg-3 col-form-label">Phone</label>
 		                                <div class="col-md-8 col-lg-9">
 			                                <input name="PhoneNumber" type="text" class="form-control" id="phoneNumberProfile" value="@Model.PhoneNumber">
+                                            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
 		                                </div>
 	                                </div>
 
@@ -474,6 +481,7 @@
                                         <label for="emailProfile" class="col-md-4 col-lg-3 col-form-label">Email</label>
 		                                <div class="col-md-8 col-lg-9">
 			                                <input name="Email" type="email" class="form-control" id="emailProfile" value="@Model.Email">
+                                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
 		                                </div>
 	                                </div>
 
@@ -485,16 +493,7 @@
 	                                </div>
 
                                 </form><!-- End Profile Edit Form -->
-								
-                                @if (TempData["ErrorMessage"] != null)
-                                {
-	                                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@errorMessage</div>
-                                }
 
-                                @if (TempData["SuccessMessage"] != null)
-                                {
-	                                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@successMessage</div>
-                                }
 
                             </div>
 

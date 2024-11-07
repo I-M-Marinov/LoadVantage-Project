@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap5")]
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("aspnet-LoadVantage-d35d6ab2-623d-43ce-8b2e-a0bcc67c4733")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("LoadVantage")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5d1a5685c6c8e101f6a80c6e7ba01f44bd6b6627")]
 [assembly: System.Reflection.AssemblyProductAttribute("LoadVantage")]
