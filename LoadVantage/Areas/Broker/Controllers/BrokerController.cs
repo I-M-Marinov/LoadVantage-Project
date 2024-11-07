@@ -4,17 +4,14 @@ using LoadVantage.Areas.Broker.Contracts;
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Load;
 using LoadVantage.Filters;
-using LoadVantage.Areas.Broker.Services;
 using LoadVantage.Common.Enums;
 using LoadVantage.Core.Models.Profile;
 using LoadVantage.Extensions;
 using LoadVantage.Infrastructure.Data.Models;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
-using LoadVantage.Core.Services;
-using Microsoft.EntityFrameworkCore;
-using static LoadVantage.Common.GeneralConstants;
-using Microsoft.AspNetCore.Identity;
+using static LoadVantage.Common.GeneralConstants.ActiveTabs;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace LoadVantage.Areas.Broker.Controllers
 {
@@ -33,7 +30,7 @@ namespace LoadVantage.Areas.Broker.Controllers
         [Route("Profile")]
         public async Task<IActionResult> Profile()
         {
-            var userGuidId = User.GetUserId();
+			var userGuidId = User.GetUserId();
 
             if (userGuidId == null)
             {
@@ -42,18 +39,17 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             try
             {
-                var broker = await profileService.GetUserInformation(userGuidId.Value);
+                ProfileViewModel? broker = await profileService.GetUserInformation(userGuidId.Value);
 
                 if (broker == null)
                 {
                     return NotFound(BrokerInformationNotRetrieved);  // Broker was not found
                 }
-
+                
                 return View(broker);
             }
             catch (Exception e)
             {
-                TempData["ErrorMessage"] = BrokerInformationNotRetrieved + e.Message;
                 return View();
             }
 
@@ -62,37 +58,37 @@ namespace LoadVantage.Areas.Broker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Profile")]
-        public async Task<IActionResult> UpdateProfile(ProfileViewModel model)
+        public async Task<IActionResult> Profile(ProfileViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View("Profile", model);
-            }
+				return View(model);
+			}
 
             var userGuidId = User.GetUserId();
-
-            var isUsernameTaken = await profileService.IsUsernameTakenAsync(model.Username, userGuidId.Value);
-            if (isUsernameTaken)
-            {
-                ModelState.AddModelError("Username", UserNameIsAlreadyTaken);
-                return View("Profile", model);
-            }
 
             if (userGuidId == Guid.Empty)
             {
                 return NotFound(UserNotFound); // User was not found
             }
 
+            var isUsernameTaken = await profileService.IsUsernameTakenAsync(model.Username, userGuidId.Value);
+            if (isUsernameTaken)
+            {
+                ModelState.AddModelError("Username", UserNameIsAlreadyTaken);
+                return View(model);
+            }
+
             try
             {
                 var updatedModel = await profileService.UpdateProfileInformation(model, userGuidId.Value);
-                TempData["SuccessMessage"] = ProfileUpdatedSuccessfully;
+                TempData.SetSuccessMessage(ProfileUpdatedSuccessfully);
 
-                return View("Profile", updatedModel);
+                return View(updatedModel);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, ErrorUpdatingProfile + ex.Message);
+                TempData.SetSuccessMessage(ex.Message);
                 return View("Profile", model);
             }
         }
@@ -124,11 +120,11 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             try
             {
-                var loadToShow = await loadService.SeeLoadDetails(loadId);
+                var loadToShow = await loadService.GetLoadDetailsAsync(loadId);
 
                 if (loadToShow == null)
                 {
-                    TempData["ErrorMessage"] = LoadInformationCouldNotBeRetrieved;
+                    TempData.SetErrorMessage(LoadInformationCouldNotBeRetrieved);
 
                     return RedirectToAction("LoadDetails", new { loadId });
                 }
@@ -137,10 +133,8 @@ namespace LoadVantage.Areas.Broker.Controllers
             }
             catch (Exception e)
             {
-                logger.LogError(e, ErrorEditingLoad);
-                TempData["ErrorMessage"] = ErrorEditingLoad;
-
-                return RedirectToAction("LoadDetails", new { loadId });
+                TempData.SetErrorMessage(ErrorRetrievingDetailsForLoad + " " + e.Message);
+				return RedirectToAction("LoadDetails", new { loadId });
             }
 
         }
@@ -168,12 +162,6 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             if (!ModelState.IsValid)
             {
-                // debugging purposes only
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    ModelState.AddModelError(string.Empty, error.ErrorMessage);
-                }
-
                 return View(model);
             }
 
@@ -181,13 +169,12 @@ namespace LoadVantage.Areas.Broker.Controllers
             {
                 var loadId = await loadService.CreateLoadAsync(model, brokerId);
 
-                // View the load after creation in the LoadDetails View
+                TempData.SetSuccessMessage(LoadCreatedSuccessfully);
                 return RedirectToAction("LoadDetails", loadId);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, ErrorCreatingLoad);
-                ModelState.AddModelError(string.Empty, ErrorCreatingLoad);
+                ModelState.AddModelError(string.Empty, ErrorCreatingLoad + ex.Message);
                 return View("LoadDetails", model);
             }
 
@@ -204,15 +191,7 @@ namespace LoadVantage.Areas.Broker.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    // add the models state errors so they are visible in the View
-                    foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        ModelState.AddModelError(string.Empty, error.ErrorMessage);
-                        TempData["ErrorMessage"] += $" {error.ErrorMessage}";
-                    }
-
-                    return RedirectToAction("LoadDetails", new { loadId = model.Id });
-
+					return View("LoadDetails", model);
                 }
 
                 try
@@ -220,15 +199,13 @@ namespace LoadVantage.Areas.Broker.Controllers
                     await loadService.EditLoadAsync(loadId, model);
 
                     TempData["isEditing"] = false;
-                    TempData["SuccessMessage"] = LoadUpdatedSuccessfully;
+                    TempData.SetSuccessMessage(LoadUpdatedSuccessfully);
 
                 }
                 catch (Exception e)
                 {
-                    logger.LogError(ErrorUpdatingLoad);
-                    ModelState.AddModelError(string.Empty, e.Message);
-                    TempData["ErrorMessage"] = e.Message;
-
+                    ModelState.AddModelError(string.Empty, ErrorUpdatingLoad + e.Message);
+                    TempData.SetErrorMessage(ErrorUpdatingLoad + e.Message);
                 }
 
                 return RedirectToAction("LoadDetails", new { loadId = model.Id });
@@ -248,7 +225,7 @@ namespace LoadVantage.Areas.Broker.Controllers
             
             if (loadId == Guid.Empty)
             {
-				TempData["ErrorMessage"] = LoadCouldNotBeRetrieved + " " + LoadIdInvalid;
+                TempData.SetErrorMessage(LoadCouldNotBeRetrieved + " " + LoadIdInvalid);
 				return View("LoadDetails");
             }
 
@@ -257,14 +234,14 @@ namespace LoadVantage.Areas.Broker.Controllers
             try
             {
                 await loadService.CancelLoadAsync(loadId);
-                TempData["SuccessMessage"] = LoadCancelledSuccessfully;
-                return RedirectToAction("LoadBoard");
+
+                TempData.SetSuccessMessage(LoadCancelledSuccessfully);
+				return RedirectToAction("LoadBoard");
             }
             catch (Exception e)
             {
-                logger.LogError(ErrorCancellingLoad);
-                TempData["ErrorMessage"] = ErrorCancellingLoad;
-                return View("LoadDetails", load);
+                TempData.SetErrorMessage(ErrorCancellingLoad + e.Message);
+				return View("LoadDetails", load);
             }
 
         }
@@ -282,8 +259,8 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             if (loadId == Guid.Empty)
             {
-                TempData["ErrorMessage"] = LoadIdInvalid;
-                return View("LoadBoard");
+                TempData.SetErrorMessage(LoadIdInvalid);
+				return View("LoadBoard");
             }
 
             LoadViewModel load = await loadService.GetLoadByIdAsync(loadId);
@@ -292,28 +269,29 @@ namespace LoadVantage.Areas.Broker.Controllers
             {
                 if (load.Status == LoadStatus.Available.ToString())
                 {
-                    TempData["ErrorMessage"] = LoadIsAlreadyPosted;
+                    TempData.SetErrorMessage(LoadIsAlreadyPosted);
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = LoadIsNotInCorrectStatus;
-                }
+                    TempData.SetErrorMessage(LoadIsNotInCorrectStatus);
+				}
 
-                return RedirectToAction("LoadDetails", new { loadId = load.Id });
+				return RedirectToAction("LoadDetails", new { loadId = load.Id });
             }
 
             try
             {
                 await loadService.PostLoadAsync(load.Id);
 
-                TempData["ActiveTab"] = "posted";
-                TempData["SuccessMessage"] = LoadPostedSuccessfully;
-                return RedirectToAction("LoadBoard");
+                TempData.SetActiveTab(PostedActiveTab); // navigate to the posted tab
+				TempData.SetSuccessMessage(LoadPostedSuccessfully);
+
+				return RedirectToAction("LoadBoard");
 			}
             catch (Exception e)
             {
-                TempData["ErrorMessage"] = ErrorPostingLoad;
-                return RedirectToAction("LoadDetails", new { loadId = load.Id });
+                TempData.SetErrorMessage(ErrorPostingLoad + e.Message);
+				return RedirectToAction("LoadDetails", new { loadId = load.Id });
             }
         }
 
@@ -330,8 +308,8 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             if (loadId == Guid.Empty)
             {
-                TempData["ErrorMessage"] = LoadIdInvalid;
-                return View("LoadBoard");
+                TempData.SetErrorMessage(LoadIdInvalid);
+				return View("LoadBoard");
             }
 
             LoadViewModel load = await loadService.GetLoadByIdAsync(loadId);
@@ -340,12 +318,12 @@ namespace LoadVantage.Areas.Broker.Controllers
             {
                 if (load.Status == LoadStatus.Created.ToString())
                 {
-                    TempData["ErrorMessage"] = LoadIsNotPosted; // if the load is already not posted ( created status ) 
-                }
-                else
+					TempData.SetErrorMessage(LoadIsNotPosted); // if the load is already not posted ( created status ) 
+				}
+				else
                 {
-                    TempData["ErrorMessage"] = LoadIsNotInCorrectStatus; // if the load is booked or billed 
-                }
+                    TempData.SetErrorMessage(LoadIsNotInCorrectStatus); // if the load is booked or billed 
+				}
 
                 return RedirectToAction("LoadDetails", new { loadId = load.Id });
             }
@@ -354,14 +332,15 @@ namespace LoadVantage.Areas.Broker.Controllers
             {
                 await loadService.UnpostLoadAsync(load.Id); // unpost the load
 
-                TempData["ActiveTab"] = "created"; // navigate to the created tab
-                TempData["SuccessMessage"] = LoadUnpostedSuccessfully; 
+                TempData.SetActiveTab(CreatedActiveTab); // navigate to the created tab
+                TempData.SetSuccessMessage(LoadUnpostedSuccessfully);
+
                 return RedirectToAction("LoadBoard");
             }
             catch (Exception e)
             {
-                TempData["ErrorMessage"] = ErrorUnpostingLoad;
-                return RedirectToAction("LoadDetails", new { loadId = load.Id });
+                TempData.SetErrorMessage(ErrorUnpostingLoad + e.Message);
+				return RedirectToAction("LoadDetails", new { loadId = load.Id });
             }
         }
     }
