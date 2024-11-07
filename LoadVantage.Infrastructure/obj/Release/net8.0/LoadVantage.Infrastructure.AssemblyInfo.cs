@@ -13,7 +13,7 @@ using System.Reflection;
 
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("df21149d-4aab-49f1-b2d7-9cbe8bd753e5")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("LoadVantage.Infrastructure")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5d1a5685c6c8e101f6a80c6e7ba01f44bd6b6627")]
 [assembly: System.Reflection.AssemblyProductAttribute("LoadVantage.Infrastructure")]
