@@ -57,11 +57,13 @@ namespace LoadVantage.Common
 
             // USER
 
-            public const string UserNotFound = "The user was not found.";
+            public const string UserCannotBeNull = "User cannot be null.";
+			public const string UserNotFound = "The user was not found.";
             public const string UserProfileUpdateFailed = "Failed to update user profile.";
             public const string ErrorUpdatingProfile = "An error occurred while updating the profile.";
             public const string UserNameIsAlreadyTaken = "The username is already taken.";
             public const string EmailIsAlreadyTaken = "The email is already taken.";
+            public const string CurrentAndNewPasswordCannotMatch = "The new password cannot be the same as the current password.";
 
             // BROKER 
 
@@ -91,6 +93,8 @@ namespace LoadVantage.Common
             // PROFILE
 
             public const string ProfileUpdatedSuccessfully = "Your profile was updated successfully.";
+            public const string PasswordUpdatedSuccessfully = "Your password has been changed successfully.";
+
 
         }
 

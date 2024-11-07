@@ -1,38 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LoadVantage.Common
+﻿namespace LoadVantage.Common
 {
 	public static class ValidationConstants
 	{
-		// USER
-
-		public const byte UserNameMinLength = 4;
-		public const byte UserNameMaxLength = 30;
-
-		public const byte PositionMinLength = 6;
-		public const byte PositionMaxLength = 20;
-
-		public const byte EmailMinLength = 7;
-		public const byte EmailMaxLength = 50;
-
-		public const byte FirstNameMinLength = 2;
-		public const byte FirstNameMaxLength = 25;
-
-		public const byte LastNameMinLength = 3;
-		public const byte LastNameMaxLength = 25;
-
-        public const byte CompanyNameMinLength = 3;
-        public const byte CompanyNameMaxLength = 50;
-
-        public const byte UserPhoneNumberMinLength = 7;
-		public const byte UserPhoneNumberMaxLength = 15;
-
-
-        
 		// DRIVER 
 
 		public const byte LicenseNumberMinLength = 5;
@@ -48,6 +17,7 @@ namespace LoadVantage.Common
 
         public static class LoadValidations
         {
+            // LOAD 
 
             public const byte LoadOriginCityMinLength = 2;
             public const byte LoadOriginCityMaxLength = 30;
@@ -85,14 +55,44 @@ namespace LoadVantage.Common
 
         public static class UserValidations
         {
-            public const string EmailLengthNotValid = "The length of the email must be between 7 and 50 characters.";
+
+	        public const byte UserNameMinLength = 4;
+	        public const byte UserNameMaxLength = 30;
+
+	        public const byte PositionMinLength = 6;
+	        public const byte PositionMaxLength = 20;
+
+	        public const byte EmailMinLength = 7;
+	        public const byte EmailMaxLength = 50;
+
+	        public const byte FirstNameMinLength = 2;
+	        public const byte FirstNameMaxLength = 25;
+
+	        public const byte LastNameMinLength = 3;
+	        public const byte LastNameMaxLength = 25;
+
+	        public const byte CompanyNameMinLength = 3;
+	        public const byte CompanyNameMaxLength = 50;
+
+	        public const byte UserPhoneNumberMinLength = 7;
+	        public const byte UserPhoneNumberMaxLength = 15;
+
+	        // NEW PASSWORD 
+	        public const byte NewPasswordMinLength = 6;
+	        public const byte NewPasswordMaxLength = 30;
+
+
+			public const string EmailLengthNotValid = "The length of the email must be between 7 and 50 characters.";
             public const string CompanyNameLengthNotValid = "The length of the company name must be between 3 and 50 characters.";
             public const string UserPhoneNumberLengthNotValid = "The length of the phone number must be between 7 and 15 characters.";
             public const string UserNameLengthNotValid = "The length of the username must be between 4 and 30 characters.";
             public const string FirstNameLengthNotValid = "The length of the firstname must be between 2 and 25 characters.";
             public const string LastNameLengthNotValid = "The length of the lastname must be between 3 and 25 characters.";
             public const string PositionLengthNotValid = "The length of the postion must be between 6 and 20 characters.";
-        }
+            public const string NewPasswordLengthNotValid = "The new password must be between 6 and 30 characters long.";
+            public const string NewAndConfirmPasswordDoNotMatch = "The new password and confirmation password do not match.";
 
+
+        }
 	}
 }
