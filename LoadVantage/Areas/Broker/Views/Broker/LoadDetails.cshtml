@@ -7,23 +7,22 @@
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using static LoadVantage.Common.ValidationConstants.LoadValidations
-@inject UserManager<User> UserManager
 @model LoadViewModel
 
 @{
     ViewData["Title"] = "Broker LoadBoard";
     Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 
-    Console.WriteLine(TempData["isEditing"]);
-
     var firstName = User.FindFirst("FirstName")?.Value;
     var lastName = User.FindFirst("LastName")?.Value;
     var position = User.FindFirst("Position")?.Value;
 
-    var isEditing = TempData["isEditing"] as bool? ?? false; 
+    var isEditing = TempData["isEditing"] as bool? ?? false;
 
-    var errorMessage = TempData["ErrorMessage"];
-    var successMessage = TempData["SuccessMessage"];
+	var tempDataSuccessMessage = TempData.GetSuccessMessage();
+	var tempDataErrorMessage = TempData.GetErrorMessage();
+	var tempDataActiveTab = TempData.GetActiveTab();
+
 }
 
 
@@ -360,15 +359,15 @@
 			<div class="card-body justify-content-center" style="dispay:flex;">
 				<h5 class="card-title">Viewing a load</h5>
 
-				@if (TempData["ErrorMessage"] != null)
-				{
-					<div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@errorMessage</div>
-				}
+			@if (!string.IsNullOrEmpty(tempDataSuccessMessage))
+			{
+				<div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@tempDataSuccessMessage</div>
+			}
 
-				@if (TempData["SuccessMessage"] != null)
-				{
-					<div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@successMessage</div>
-				}
+			@if (!string.IsNullOrEmpty(tempDataErrorMessage))
+			{
+				<div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@tempDataErrorMessage</div>
+			}
 
 				<div class="spinner-container">
 					<div id="loader" class="spinner" style="display: none;">
@@ -388,6 +387,13 @@
 					<input type="hidden" name="loadId" value="@Model.Id"/>
 					<input type="hidden" id="isEditing" name="isEditing" value="false"/>
 					@Html.AntiForgeryToken()
+					
+					<div class="col-12 d-flex justify-content-center mb-2" style="margin-bottom: -0.5rem !important;">
+						<span asp-validation-for="OriginState" class="badge badge-danger mb-1" style="margin-right: 15em;"></span> <!-- Validation message for the ORIGIN STATE above the input -->
+
+						<span asp-validation-for="DestinationState" class="badge badge-danger mb-1" style="margin-right: -17em;"></span> <!-- Validation message for the DESTINATION STATE above the input -->
+					</div>
+
 
 					<div class="col-12 d-flex justify-content-center mb-2">
 						<div class="d-flex centered-row flex-wrap justify-content-center">
@@ -396,6 +402,8 @@
 									<input type="hidden" asp-for="Id"/>
 									<input type="text" class="form-control" id="originCity" placeholder="Origin City" name="OriginCity" value="@Model.OriginCity" @(isEditing ? "" : "disabled")/>
 									<label for="originCity">Origin City</label>
+									<span asp-validation-for="OriginCity" class="badge badge-danger mt-1"></span>
+
 								</div>
 							</div>
 							<div class="col-md-1">
@@ -403,11 +411,13 @@
 									<input type="text" class="form-control" id="originState" placeholder="State" name="OriginState" value="@Model.OriginState" @(isEditing ? "" : "disabled")/>
 									<label for="originState">State</label>
 								</div>
+
 							</div>
 							<div class="col-md-3">
 								<div class="form-floating">
 									<input type="text" class="form-control" id="destinationCity" placeholder="Origin City" name="DestinationCity" value="@Model.DestinationCity" @(isEditing ? "" : "disabled")/>
 									<label for="destinationCity">Destination City</label>
+									<span asp-validation-for="DestinationCity" class="badge badge-danger mt-1"></span>
 								</div>
 							</div>
 							<div class="col-md-1">
@@ -425,12 +435,15 @@
 								<div class="form-floating">
 									<input type="text" class="form-control" id="pickupTime" placeholder="Pickup Time" name="PickupTime" value="@Model.PickupTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled")/>
 									<label for="pickupTime">Pickup Time</label>
+								<span asp-validation-for="PickupTime" class="badge badge-danger mt-1"></span>
 								</div>
 							</div>
 							<div class="col-md-5">
 								<div class="form-floating">
 									<input type="text" class="form-control" id="deliveryTime" placeholder="Delivery Time" name="DeliveryTime" value="@Model.DeliveryTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled")/>
 									<label for="deliveryTime">Delivery Time</label>
+								<span asp-validation-for="DeliveryTime" class="badge badge-danger mt-1"></span>
+
 								</div>
 							</div>
 						</div>
@@ -442,13 +455,16 @@
 								<div class="form-floating">
 									<input type="text" class="form-control" id="price" placeholder="Price" name="PostedPrice" value="@Model.PostedPrice" @(isEditing ? "" : "disabled")/>
 									<label for="price">Price</label>
+								<span asp-validation-for="PostedPrice" class="badge badge-danger mt-1"></span>
 
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-floating">
-									<input type="text" class="form-control" id="weight" placeholder="Weight" name="Weight" value="@Model.Weight" @(isEditing ? "" : "disabled")/>
+									<input type="text" class="form-control" id="weight" placeholder="Weight" name="Weight" value="@Model.Weight" @(isEditing ? "" : "disabled") />
 									<label for="weight">Weight in lbs</label>
+								<span asp-validation-for="Weight" class="badge badge-danger mt-1"></span>
+
 								</div>
 							</div>
 						</div>
@@ -466,7 +482,6 @@
 						<button type="button" id="cancelEditingButton" onclick="dissableFieldsAndtoggleButtons()" class="btn btn-secondary" style="display: none;">
 							<i class="bx bx-arrow-back"></i> Cancel
 						</button>
-
 
 					</div>
 				</form>
@@ -524,6 +539,14 @@
 							<i class="bx bxs-dashboard"></i> Back to LoadBoard
 						</button>
 					</form>
+					
+					<form asp-action="LoadDetails" asp-controller="Broker" method="get" id="refreshLoadForm">
+						<input type="hidden" name="loadId" value="@Model.Id" />
+						<button  id="refreshLoadInfoButton" class="btn btn-outline-info" style="display: none;">
+							<i class="bx  bx-refresh"></i>
+							<span>Refresh Load Info</span>
+						</button>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -532,83 +555,21 @@
 </main><!-- End #main -->
 
 <script>
-    function showLoader() {
-
-        document.getElementById("loader").style.display = "inline-block";
-       
-    }
-
-    function showAndHideLoader() {
-
-        document.getElementById("loader").style.display = "inline-block";
-        setTimeout(() => {
-            hideLoader();
-        }, 320);
-    }
-
-    function hideLoader() {
-        document.getElementById("loader").style.display = "none";
-    }
-
-    function enableFields() {
-       
-        setTimeout(() => {
-
-            showAndHideLoader();
-
-            document.getElementById("originCity").disabled = false;
-            document.getElementById("originState").disabled = false;
-            document.getElementById("destinationCity").disabled = false;
-            document.getElementById("destinationState").disabled = false;
-            document.getElementById("pickupTime").disabled = false;
-            document.getElementById("deliveryTime").disabled = false;
-            document.getElementById("price").disabled = false;
-            document.getElementById("weight").disabled = false;
-
-            document.getElementById("editLoadButton").style.display = "none";
-            document.getElementById("postLoadBtn").style.display = "none";
-            document.getElementById("cancelLoadBtn").style.display = "none";
-
-            document.getElementById("saveLoadButton").style.display = "inline-block";
-            document.getElementById("cancelEditingButton").style.display = "inline-block";
-
-            document.getElementById("isEditing").value = "true";
-
-        }, 300);
-    }
-
-
-    function dissableFieldsAndtoggleButtons() {
-
-        
-        setTimeout(() => {
-
-            showAndHideLoader();
-
-            document.getElementById("originCity").disabled = true;
-            document.getElementById("originState").disabled = true;
-            document.getElementById("destinationCity").disabled = true;
-            document.getElementById("destinationState").disabled = true;
-            document.getElementById("pickupTime").disabled = true;
-            document.getElementById("deliveryTime").disabled = true;
-            document.getElementById("price").disabled = true;
-            document.getElementById("weight").disabled = true;
-
-            document.getElementById("editLoadButton").style.display = "inline-block";
-            document.getElementById("postLoadBtn").style.display = "inline-block";
-            document.getElementById("cancelLoadBtn").style.display = "inline-block";
-
-            document.getElementById("saveLoadButton").style.display = "none";
-            document.getElementById("cancelEditingButton").style.display = "none";
-
-
-
-        }, 300); 
-    }
-
-    function confirmCancel() {
-
-        return confirm("Are you sure you want to cancel this load?");
-    }
+	
+	document.addEventListener("DOMContentLoaded", function () {
+		var activeTab = "@tempDataActiveTab";
+			if (activeTab === "posted") { 
+				var postedTabButton = document.getElementById("pills-posted-tab");
+				if (postedTabButton) {
+					new bootstrap.Tab(postedTabButton).show();
+				}
+			} else {
+				var createdTabButton = document.getElementById("pills-created-tab"); // fallback to created tab 
+				if (createdTabButton) {
+					new bootstrap.Tab(createdTabButton).show();
+				}
+			}
+		});
 
 </script>
+
