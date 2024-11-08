@@ -344,16 +344,31 @@
                         <!-- Bordered Tabs -->
                         <ul class="nav nav-tabs nav-tabs-bordered">
 
-                            <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="tab" id="profile-overview-tab" href="#profile-overview" data-bs-target="#profile-overview">Overview</button>
-                            </li>
+	                        <li class="nav-item">
+		                        <button class="nav-link active" data-bs-toggle="tab" id="profile-overview-tab" href="#profile-overview" data-bs-target="#profile-overview">Overview</button>
+	                        </li>
+                            
+	                        <li class="nav-item">
+	                            @if (Model.Id == null)
+		                        {
+				                      
+			                        <form asp-action="GoToEditProfileTab" asp-controller="Broker" method="post">
+				                        @Html.AntiForgeryToken()
+				                        <input type="hidden" name="brokerId" value="@Model.Id"/>
+				                        <button type="submit" class="nav-link" data-bs-toggle="tab" id="profile-edit-tab" href="#profile-edit" data-bs-target="#profile-edit">
+					                        Edit Profile
+				                        </button>
+			                        </form>
+			                       
+		                        }
+	                            else
+	                            {
+		                            <button class="nav-link" data-bs-toggle="tab" id="profile-edit-tab"  href="#profile-edit" data-bs-target="#profile-edit">Edit Profile</button>
+	                            }
+	                        </li>
 
                             <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" id="profile-change-password-tab" href="#profile-change-password" data-bs-target="#profile-edit">Edit Profile</button>
-                            </li>
-
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" id="profile-edit-tab" href="#profile-edit" data-bs-target="#profile-change-password">Change Password</button>
+                                <button class="nav-link" data-bs-toggle="tab" id="profile-change-password-tab" href="#profile-change-password" data-bs-target="#profile-change-password">Change Password</button>
                             </li>
 
                         </ul>
@@ -395,12 +410,12 @@
 
                                 @if (!string.IsNullOrEmpty(tempDataSuccessMessage))
                                 {
-	                                <div class="badge badge-danger mt-1" id="success-message">@tempDataSuccessMessage</div>
+                                    <div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@tempDataSuccessMessage</div>
                                 }
 
                                 @if (!string.IsNullOrEmpty(tempDataErrorMessage))
                                 {
-	                                <div class="badge badge-danger mt-1" id="error-message">@tempDataErrorMessage</div>
+                                    <div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@tempDataErrorMessage</div>
                                 }
 
                             </div>
@@ -431,29 +446,33 @@
 <script>
 
     document.addEventListener("DOMContentLoaded", function () {
-        var activeTab = "@TempData["ActiveTab"]";  // Read the tab info from TempData
+        var activeTab = "@tempDataActiveTab";  
 
         if (activeTab === "changePassword") {
-            var changePasswordTabLink = document.querySelector('a[href="#profile-change-password"]');
+            var changePasswordTabLink = document.getElementById('profile-change-password-tab');
             if (changePasswordTabLink) {
                 new bootstrap.Tab(changePasswordTabLink).show();
+                console.log("redirected to the password change!");
             }
         } else if (activeTab === "profileEdit") {
-            var editProfileTabLink = document.querySelector('a[href="#profile-edit"]');
+            var editProfileTabLink = document.getElementById('profile-edit-tab');
             if (editProfileTabLink) {
                 new bootstrap.Tab(editProfileTabLink).show();
+                console.log("redirected to the profile edit!");
             }
         } else {
-            var overviewTabLink = document.querySelector('a[href="#profile-overview"]');
+            var overviewTabLink = document.getElementById('profile-overview-tab'); // fall back to the profile overview tab
             if (overviewTabLink) {
                 new bootstrap.Tab(overviewTabLink).show();
+                console.log("redirected to the profile overview!");
+
             }
         }
     });
 
-
+    // Debugging purposes only
     $(document).ready(function () {
-        console.log("jQuery is working!");
+        console.log("jQuery is loaded!");
     });
 
 </script>
