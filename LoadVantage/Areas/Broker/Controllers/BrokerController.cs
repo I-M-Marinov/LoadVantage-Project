@@ -62,7 +62,7 @@ namespace LoadVantage.Areas.Broker.Controllers
         {
             if (!ModelState.IsValid)
             {
-				return View(model);
+                return View(model);
 			}
 
             var userGuidId = User.GetUserId();
@@ -117,7 +117,6 @@ namespace LoadVantage.Areas.Broker.Controllers
         [Route("Load")]
         public async Task<IActionResult> LoadDetails(Guid loadId)
         {
-
             try
             {
                 var loadToShow = await loadService.GetLoadDetailsAsync(loadId);
@@ -136,7 +135,6 @@ namespace LoadVantage.Areas.Broker.Controllers
                 TempData.SetErrorMessage(ErrorRetrievingDetailsForLoad + " " + e.Message);
 				return RedirectToAction("LoadDetails", new { loadId });
             }
-
         }
 
         [HttpGet]
@@ -350,10 +348,12 @@ namespace LoadVantage.Areas.Broker.Controllers
         {
 
             User? user = await User.GetUserAsync(userManager);
+            var profileModel = new ProfileViewModel { ChangePasswordViewModel = model };
 
             if (!ModelState.IsValid)
 	        {
-                return View("Profile", new ProfileViewModel { ChangePasswordViewModel = model }); // Redirect to the profile page and pass the Model for the password form  
+                TempData.SetActiveTab(ProfileChangePasswordActiveTab); // navigate to the change password tab
+                return View("Profile", profileModel); // Redirect to the profile page and pass the Model for the password form  
             }
 
 			if (user == null)
@@ -366,7 +366,8 @@ namespace LoadVantage.Areas.Broker.Controllers
 	        if (result.Succeeded)
 	        {
 		       TempData.SetSuccessMessage(PasswordUpdatedSuccessfully);
-				return View("Profile", new ProfileViewModel { ChangePasswordViewModel = model }); // Redirect to the profile page and pass the Model for the password form  
+               TempData.SetActiveTab(ProfileActiveTab); // navigate to the profile tab
+                return View("Profile", profileModel); // Redirect to the profile page and pass the Model for the password form  
 			}
 
             foreach (var error in result.Errors)
@@ -374,8 +375,8 @@ namespace LoadVantage.Areas.Broker.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 
-
-            return View("Profile", new ProfileViewModel { ChangePasswordViewModel = model }); // Redirect to the profile page and pass the Model for the password form  
+            TempData.SetActiveTab(ProfileChangePasswordActiveTab); // navigate to the change password tab
+            return View("Profile", profileModel); // Redirect to the profile page and pass the Model for the password form  
 
         }
     }
