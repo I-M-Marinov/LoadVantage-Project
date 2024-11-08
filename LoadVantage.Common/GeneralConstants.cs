@@ -102,6 +102,11 @@ namespace LoadVantage.Common
         {
 	        public const string CreatedActiveTab = "created";
 	        public const string PostedActiveTab = "posted";
+
+            public const string ProfileActiveTab = "profile";
+            public const string ProfileChangePasswordActiveTab = "changePassword";
+            public const string ProfileEditActiveTab = "profileEdit";
+            
         }
     }
 }
