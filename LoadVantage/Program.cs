@@ -31,8 +31,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(60); 
-    options.Cookie.HttpOnly = true; // Set other cookie options as needed
-    options.Cookie.IsEssential = true; // Essential for session state
+    options.Cookie.HttpOnly = true; 
+    options.Cookie.IsEssential = true; 
 });
 
 builder.Services.AddIdentity<User, Role>(options =>
@@ -120,21 +120,6 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-//app.MapAreaControllerRoute(
-//	name: "admin",
-//	areaName: "Admin",
-//	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-//app.MapAreaControllerRoute(
-//	name: "dispatcher",
-//	areaName: "Dispatcher",
-//	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-//app.MapAreaControllerRoute(
-//	name: "broker",
-//	areaName: "Broker",
-//	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 // Default route for controllers without area
 app.MapControllerRoute(

@@ -1,10 +1,26 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using LoadVantage.Extensions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model LoadVantage.Core.Models.Profile.ProfileViewModel
 
+@{
+	var tempDataSuccessMessage = TempData.GetSuccessMessage();
+	var tempDataErrorMessage = TempData.GetErrorMessage();
+}
 
 
 	<form asp-action="Profile" asp-controller="Broker" method="post" id="updateProfileForm">
 		@Html.AntiForgeryToken()
+		
+		@if (!string.IsNullOrEmpty(tempDataSuccessMessage))
+		{
+			<div class="badge badge-danger mt-1" id="success-message">@tempDataSuccessMessage</div>
+		}
+
+		@if (!string.IsNullOrEmpty(tempDataErrorMessage))
+		{
+			<div class="badge badge-danger mt-1" id="error-message">@tempDataErrorMessage</div>
+		}
+
 
 		@* @if (ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
 		{

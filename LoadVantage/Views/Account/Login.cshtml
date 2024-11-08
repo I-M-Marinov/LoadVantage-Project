@@ -5,6 +5,8 @@
 @{
 	var tempDataMessage = TempData.GetSuccessMessage();
 	ViewBag.Title = "Log In";
+
+
 }
 
 <div class="container">
@@ -45,7 +47,7 @@
 						<div class="pt-4 pb-2">
 							@if (!string.IsNullOrEmpty(tempDataMessage))
 							{
-								<p class="alert alert-success" style="text-align: center; font:500; font-size: 0.8em;">@tempDataMessage</p>
+								<p class="alert alert-success" style="text-align: center;">@tempDataMessage</p>
 							}
 							<h4 class="card-title text-center pb-0 fs-4">Log In</h4>
 							<p class="text-center small">Enter your username & password to login</p>

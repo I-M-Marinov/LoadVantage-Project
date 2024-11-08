@@ -18,10 +18,17 @@ html {
     min-height: 100%;
 }
 
+.header {
+    box-shadow: 0px -23px 25px 0px rgba(0, 0, 0, 0.17) inset, 0px -36px 30px 0px rgba(0, 0, 0, 0.15) inset, 0px -79px 40px 0px rgba(0, 0, 0, 0.1) inset, 0px 2px 1px rgba(0, 0, 0, 0.06), 0px 4px 2px rgba(0, 0, 0, 0.09), 0px 8px 4px rgba(0, 0, 0, 0.09), 0px 16px 8px rgba(0, 0, 0, 0.09);
+}
+
 body {
     margin-bottom: 60px;
 }
 
+.card {
+    box-shadow: 0 26px 58px 0 rgba(0, 0, 0, .22), 0 5px 14px 0 rgba(0, 0, 0, .18) !important;
+}
 /*--------------------------------------------------------------
 # FANCY BUTTON ( NAVIGATION BUTTONS HOME INDEX - UNAUTHORIZED )
 --------------------------------------------------------------*/
@@ -56,10 +63,11 @@ body {
     border-radius: 50%;
 }
 
-.fancy-project-button:hover {
-    color: #fff;
-    box-shadow: 0 26px 58px 0 rgba(0, 0, 0, .22), 0 5px 14px 0 rgba(0, 0, 0, .18);
-}
+    .fancy-project-button:hover {
+        color: #fff;
+        box-shadow: 0 1px 1px rgba(0,0,0,0.08), 0 2px 10px rgba(140, 192, 247, 1), 0 4px 4px rgba(0,0,0,0.16), 0 8px 8px rgba(0,0,0,0.20);
+        transition: box-shadow 0.3s ease;
+    }
 
 .fancy-project-button:before {
     bottom: 100%;
@@ -285,7 +293,8 @@ body {
     margin-top: 0.25rem;
 }
 
-#pass-change-validation-errors {
+#pass-change-divider1,
+#pass-change-divider2{
     margin-bottom: 1.50em;
     padding-top: 1.5em;
     font-size: 0.75rem;
@@ -503,6 +512,42 @@ body {
 #userName {
     background: #dedede;
     margin: 0.1em !important;
+}
+
+/*-------------------------------------------------------------------------------------
+# PROFILE ---> TAB EFFECT
+--------------------------------------------------------------------------------------*/
+
+.tab-pane.fade {
+    transition: opacity 0.25s ease;
+}
+
+.nav-tabs-bordered .nav-link {
+    margin-bottom: 0.7em !important;
+}
+
+
+.nav-tabs-bordered .nav-link.active {
+    background: linear-gradient(to left, #8360c3, #4cddf1);
+    color: #121112 !important;
+    border-radius: 1em;
+    border-bottom: 3px solid #0d6efd !important;
+    border-top: 3px solid #8c1db8 !important;
+    font-weight: 750;
+    box-shadow: 25px 0 20px -20px rgba(0, 0, 0, 0.45), -25px 0 20px -20px rgba(0, 0, 0, 0.45);
+}
+
+.nav-tabs-bordered .nav-link.active:hover {
+    color: ghostwhite !important;
+}
+
+.nav-tabs-bordered .nav-link:hover {
+    background-color: #fff !important;
+    color: #0d6efd !important;
+    border-radius: 1em;
+    transition: opacity 0.25s ease-out;
+    border-bottom: 3px solid #0d6efd !important;
+    border-top: 3px solid #8c1db8 !important;
 }
 
 
