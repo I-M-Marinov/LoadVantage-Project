@@ -285,6 +285,12 @@ body {
     margin-top: 0.25rem;
 }
 
+#pass-change-validation-errors {
+    margin-bottom: 1.50em;
+    padding-top: 1.5em;
+    font-size: 0.75rem;
+}
+
 .form-floating input {
     border: 2px #0945d4 solid;
 }
