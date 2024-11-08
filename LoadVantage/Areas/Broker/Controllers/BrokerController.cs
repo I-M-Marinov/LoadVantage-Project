@@ -111,7 +111,6 @@ namespace LoadVantage.Areas.Broker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("BackToLoadBoard")]
-
 		public IActionResult ReturnToLoadBoard()
         {
             return RedirectToAction("LoadBoard");
@@ -120,7 +119,6 @@ namespace LoadVantage.Areas.Broker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("BackToEditProfile")]
-
         public IActionResult GoToEditProfileTab()
         {
             TempData.SetActiveTab(ProfileEditActiveTab);
@@ -138,7 +136,6 @@ namespace LoadVantage.Areas.Broker.Controllers
                 if (loadToShow == null)
                 {
                     TempData.SetErrorMessage(LoadInformationCouldNotBeRetrieved);
-
                     return RedirectToAction("LoadDetails", new { loadId });
                 }
 
@@ -182,8 +179,9 @@ namespace LoadVantage.Areas.Broker.Controllers
                 var loadId = await loadService.CreateLoadAsync(model, brokerId);
 
                 TempData.SetSuccessMessage(LoadCreatedSuccessfully);
-                return RedirectToAction("LoadDetails", loadId);
-            }
+
+				return RedirectToAction("LoadDetails", new { loadId });
+			}
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ErrorCreatingLoad + ex.Message);

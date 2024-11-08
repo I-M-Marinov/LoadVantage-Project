@@ -82,7 +82,6 @@
 	        public const byte NewPasswordMinLength = 6;
 	        public const byte NewPasswordMaxLength = 30;
 
-
 			public const string EmailLengthNotValid = "The length of the email must be between 7 and 50 characters.";
             public const string CompanyNameLengthNotValid = "The length of the company name must be between 3 and 50 characters.";
             public const string UserPhoneNumberLengthNotValid = "The length of the phone number must be between 7 and 15 characters.";
