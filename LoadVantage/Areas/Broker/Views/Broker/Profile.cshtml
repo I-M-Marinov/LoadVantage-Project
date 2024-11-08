@@ -16,10 +16,11 @@
 
     var tempDataSuccessMessage = TempData.GetSuccessMessage();
     var tempDataErrorMessage = TempData.GetErrorMessage();
+    var tempDataActiveTab = TempData.GetActiveTab();
 
 }
 
-
+<!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
@@ -253,10 +254,9 @@
         </ul>
     </nav><!-- End Icons Navigation -->
 
-</header><!-- End Header -->
-<!-- ======= Sidebar ======= -->
+    </header><!-- End Header -->
 
-
+    <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
@@ -345,19 +345,19 @@
                         <ul class="nav nav-tabs nav-tabs-bordered">
 
                             <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                                <button class="nav-link active" data-bs-toggle="tab" id="profile-overview-tab" href="#profile-overview" data-bs-target="#profile-overview">Overview</button>
                             </li>
 
                             <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                                <button class="nav-link" data-bs-toggle="tab" id="profile-change-password-tab" href="#profile-change-password" data-bs-target="#profile-edit">Edit Profile</button>
                             </li>
 
                             <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+                                <button class="nav-link" data-bs-toggle="tab" id="profile-edit-tab" href="#profile-edit" data-bs-target="#profile-change-password">Change Password</button>
                             </li>
 
                         </ul>
-                        <div class="tab-content pt-2">
+						<div class="tab-content pt-2">
 
                             <div class="tab-pane fade show active profile-overview" id="profile-overview">
                       
@@ -392,113 +392,30 @@
 	                                <div class="col-lg-3 col-md-4 label">Email</div>
                                     <div class="col-lg-9 col-md-8">@user.Email.ToLower()</div>
                                 </div>
-								
 
-                                <div class="text-danger">
-	                                @Html.ValidationSummary()
-                                </div>
-								
                                 @if (!string.IsNullOrEmpty(tempDataSuccessMessage))
                                 {
-	                                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@tempDataSuccessMessage</div>
+	                                <div class="badge badge-danger mt-1" id="success-message">@tempDataSuccessMessage</div>
                                 }
 
                                 @if (!string.IsNullOrEmpty(tempDataErrorMessage))
                                 {
-	                                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@tempDataErrorMessage</div>
+	                                <div class="badge badge-danger mt-1" id="error-message">@tempDataErrorMessage</div>
                                 }
-                                
-								
 
                             </div>
 
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
-	                            <!-- Profile Edit Form -->
-                                <form asp-action="Profile" asp-controller="Broker" method="post" id="updateProfileForm">
-	                                @Html.AntiForgeryToken()
-									
-	                                <div class="text-danger">
-		                                @Html.ValidationSummary(true)
-	                                </div>
-
-	                                <input type="hidden" name="Position" value="@Model.Position" />
-	                                <input type="hidden" name="Id" value="@Model.Id" />
-
-	                                @*  <div class="row mb-3">
-		                                <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-		                                <div class="col-md-8 col-lg-9">
-			                                <img src="~/assets/img/profile-img.jpg" alt="Profile">
-			                                <div class="pt-2">
-				                                <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
-				                                <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
-			                                </div>
-		                                </div>
-	                                </div> *@
-									
-	                                <div class="row mb-3">
-                                        <label for="firstNameProfile" class="col-md-4 col-lg-3 col-form-label">First Name</label>
-		                                <div class="col-md-8 col-lg-9">
-			                                <input name="FirstName" type="text" class="form-control" id="firstNameProfile" value="@Model.FirstName">
-			                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-		                                </div>
-	                                </div>
-
-	                                <div class="row mb-3">
-                                        <label for="lastNameProfile" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
-		                                <div class="col-md-8 col-lg-9">
-			                                <input name="LastName" type="text" class="form-control" id="lastNameProfile" value="@Model.LastName">
-			                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-		                                </div>
-	                                </div>
-
-	                                <div class="row mb-3">
-                                        <label for="usernameProfile" class="col-md-4 col-lg-3 col-form-label">Username</label>
-		                                <div class="col-md-8 col-lg-9">
-			                                <input name="Username" type="text" class="form-control" id="usernameProfile" value="@Model.Username">
-			                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
-		                                </div>
-	                                </div>
-
-
-	                                <div class="row mb-3">
-                                        <label for="companyNameProfile" class="col-md-4 col-lg-3 col-form-label">Company</label>
-		                                <div class="col-md-8 col-lg-9">
-			                                <input name="CompanyName" type="text" class="form-control" id="companyNameProfile" value="@Model.CompanyName">
-                                            @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
-		                                </div>
-	                                </div>
-
-	                                <div class="row mb-3">
-                                        <label for="phoneNumberProfile" class="col-md-4 col-lg-3 col-form-label">Phone</label>
-		                                <div class="col-md-8 col-lg-9">
-			                                <input name="PhoneNumber" type="text" class="form-control" id="phoneNumberProfile" value="@Model.PhoneNumber">
-                                            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-		                                </div>
-	                                </div>
-
-	                                <div class="row mb-3">
-                                        <label for="emailProfile" class="col-md-4 col-lg-3 col-form-label">Email</label>
-		                                <div class="col-md-8 col-lg-9">
-			                                <input name="Email" type="email" class="form-control" id="emailProfile" value="@Model.Email">
-                                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-		                                </div>
-	                                </div>
-
-	                                <div class="text-center">
-		                                <button type="submit" class="btn btn-outline-primary" id="saveProfileButton" onclick="handleSaveButtonClick(event)">
-			                                <span id="buttonSpinner" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" style="display: none;"></span>
-			                                <span id="buttonText">Save Changes</span>
-		                                </button>
-	                                </div>
-
-                                </form><!-- End Profile Edit Form -->
-
-
+	                            @Html.Partial("_EditProfilePartialView", Model)
+							
                             </div>
 							
-                            @Html.Partial("_ChangePasswordPartialView", new ChangePasswordViewModel())
+                            <div class="tab-pane fade pt-3" id="profile-change-password">
 
+	                            @Html.Partial("_ChangePasswordPartialView", new ChangePasswordViewModel())
+
+                            </div>
 
                         </div><!-- End Bordered Tabs -->
 
@@ -510,3 +427,33 @@
     </section>
 
 </main><!-- End #main -->
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var activeTab = "@TempData["ActiveTab"]";  // Read the tab info from TempData
+
+        if (activeTab === "changePassword") {
+            var changePasswordTabLink = document.querySelector('a[href="#profile-change-password"]');
+            if (changePasswordTabLink) {
+                new bootstrap.Tab(changePasswordTabLink).show();
+            }
+        } else if (activeTab === "profileEdit") {
+            var editProfileTabLink = document.querySelector('a[href="#profile-edit"]');
+            if (editProfileTabLink) {
+                new bootstrap.Tab(editProfileTabLink).show();
+            }
+        } else {
+            var overviewTabLink = document.querySelector('a[href="#profile-overview"]');
+            if (overviewTabLink) {
+                new bootstrap.Tab(overviewTabLink).show();
+            }
+        }
+    });
+
+
+    $(document).ready(function () {
+        console.log("jQuery is working!");
+    });
+
+</script>
