@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+﻿using System.Security.Claims;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+
 using LoadVantage.Areas.Broker.Contracts;
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Load;
@@ -8,7 +11,7 @@ using LoadVantage.Common.Enums;
 using LoadVantage.Core.Models.Profile;
 using LoadVantage.Extensions;
 using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Identity;
+
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;

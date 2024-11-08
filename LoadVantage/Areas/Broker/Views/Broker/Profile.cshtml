@@ -451,19 +451,19 @@
             var changePasswordTabLink = document.getElementById('profile-change-password-tab');
             if (changePasswordTabLink) {
                 new bootstrap.Tab(changePasswordTabLink).show();
-                console.log("redirected to the password change!");
+                console.log("redirected to the password change!"); // Debugging purposes only
             }
         } else if (activeTab === "profileEdit") {
             var editProfileTabLink = document.getElementById('profile-edit-tab');
             if (editProfileTabLink) {
                 new bootstrap.Tab(editProfileTabLink).show();
-                console.log("redirected to the profile edit!");
+                console.log("redirected to the profile edit!"); // Debugging purposes only
             }
         } else {
             var overviewTabLink = document.getElementById('profile-overview-tab'); // fall back to the profile overview tab
             if (overviewTabLink) {
                 new bootstrap.Tab(overviewTabLink).show();
-                console.log("redirected to the profile overview!");
+                console.log("redirected to the profile overview!"); // Debugging purposes only
 
             }
         }

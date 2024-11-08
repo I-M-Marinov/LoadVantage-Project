@@ -122,8 +122,26 @@ function dissableFieldsAndtoggleButtons() {
     }, 300);
 }
 
-function confirmCancel() {
+//function confirmCancel() {
 
-    return confirm("Are you sure you want to cancel this load?");
+//    return confirm("Are you sure you want to cancel this load?");
+//}
+
+
+function confirmCancel(event) {
+    event.preventDefault(); 
+
+    var cancelModal = new bootstrap.Modal(document.getElementById('cancelConfirmationModal'));
+    cancelModal.show();
+
+    document.getElementById('confirmCancelBtn').onclick = function () {
+        cancelModal.hide();
+        proceedWithCancellation();
+    };
+}
+
+function proceedWithCancellation() {
+    document.getElementById('cancelLoadForm').submit();
+
 }
 

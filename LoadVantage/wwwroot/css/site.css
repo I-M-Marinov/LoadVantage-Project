@@ -550,4 +550,35 @@ body {
     border-top: 3px solid #8c1db8 !important;
 }
 
+/*-------------------------------------------------------------------------------------
+# CONFIRM CANCEL MODAL 
+--------------------------------------------------------------------------------------*/
+
+.modal-footer-centered button{
+    margin-bottom: 1em;
+}
+
+.modal-body{
+    margin: -2em 2em 2em 2em;
+}
+
+.modal-content{
+    border: 3px black solid !important;
+}
+
+#cancelConfirmationModalLabel {
+    display: block;
+    margin: 0 auto;
+}
+
+#modal-icon {
+    font-size: 3.5rem;
+    color: #dc3545;
+    display: block;
+    margin: 0 auto;
+    margin-top: -0.2em;
+    text-align: center;
+    padding: 10px 0;
+}
+
 

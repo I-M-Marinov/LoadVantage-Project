@@ -521,13 +521,31 @@
 						}
 					}
 
-					<form asp-action="CancelLoad" asp-controller="Broker" method="post" id="cancelLoadButton">
+					<form id="cancelLoadForm" asp-action="CancelLoad" asp-controller="Broker" method="post" id="cancelLoadButton">
 						@Html.AntiForgeryToken()
 						<input type="hidden" name="loadId" value="@Model.Id"/>
-						<button type="submit" class="btn btn-outline-danger" onclick="return confirmCancel();" id="cancelLoadBtn">
+					<button type="submit" class="btn btn-outline-danger" onclick="confirmCancel(event)" id="cancelLoadBtn">
 							<i class="bx bxs-x-circle"></i> Cancel Load
 						</button>
 					</form>
+					
+					<div class="modal fade" id="cancelConfirmationModal" tabindex="-1" aria-labelledby="cancelConfirmationModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="cancelConfirmationModalLabel">Confirm Cancellation</h5>
+								</div>
+								<i id="modal-icon" class="ri-error-warning-fill"></i>
+								<div class="modal-body">
+									Are you sure you want to cancel this load?
+								</div>
+								<div class="modal-footer-centered">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Go Back</button>
+									<button type="button" class="btn btn-danger" id="confirmCancelBtn">Yes, Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div>
 
 					<form asp-action="ReturnToLoadBoard" asp-controller="Broker" method="post" id="backToLoadBoardButton">
 						@Html.AntiForgeryToken()
