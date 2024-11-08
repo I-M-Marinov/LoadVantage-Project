@@ -30,6 +30,9 @@ namespace LoadVantage.Infrastructure.Data.Models
         [StringLength(CompanyNameMaxLength)]
         public string? CompanyName { get; set; }
 
+        [StringLength(UserImageMaxLength)]
+		public string? UserImage { get; set; }
+
 		public string FullName => $"{FirstName} {LastName}"; // FullName combines FirstName and LastName
 
 		public abstract string GetRoleName(); // to be implemented by child classes
