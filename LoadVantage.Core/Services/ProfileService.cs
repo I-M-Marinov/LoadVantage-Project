@@ -44,19 +44,9 @@ namespace LoadVantage.Core.Services
         {
             var user = await context.Users.FindAsync(userId);
 
-            if (user == null)
+            if (user.Id != Guid.Parse(model.Id) || user.Position != model.Position) // If the user tries to change position or id from the hidden fields returns the same model 
             {
-                throw new Exception(UserNotFound);
-            }
-
-            if (user.Id != Guid.Parse(model.Id))
-            {
-                throw new UnauthorizedAccessException(IdCannotBeChanged);
-            }
-
-            if (user.Position != model.Position)
-            {
-                throw new UnauthorizedAccessException(PositionCannotBeChanged);
+	            return model;
             }
 
             if (userManager.Users.Any(u => u.Email == model.Email) && model.Email != user.Email)
