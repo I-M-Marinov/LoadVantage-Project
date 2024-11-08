@@ -62,8 +62,9 @@ namespace LoadVantage.Areas.Broker.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
-			}
+	            TempData.SetActiveTab(ProfileEditActiveTab);
+                return View("Profile", model);
+            }
 
             var userGuidId = User.GetUserId();
 
@@ -75,6 +76,7 @@ namespace LoadVantage.Areas.Broker.Controllers
             var isUsernameTaken = await profileService.IsUsernameTakenAsync(model.Username, userGuidId.Value);
             if (isUsernameTaken)
             {
+                TempData.SetActiveTab(ProfileEditActiveTab);
                 ModelState.AddModelError("Username", UserNameIsAlreadyTaken);
                 return View(model);
             }
@@ -82,12 +84,14 @@ namespace LoadVantage.Areas.Broker.Controllers
             try
             {
                 var updatedModel = await profileService.UpdateProfileInformation(model, userGuidId.Value);
-                TempData.SetSuccessMessage(ProfileUpdatedSuccessfully);
 
+                TempData.SetSuccessMessage(ProfileUpdatedSuccessfully);
+                TempData.SetActiveTab(ProfileEditActiveTab);
                 return View(updatedModel);
             }
             catch (Exception ex)
             {
+                TempData.SetActiveTab(ProfileActiveTab);
                 TempData.SetSuccessMessage(ex.Message);
                 return View("Profile", model);
             }
@@ -111,6 +115,16 @@ namespace LoadVantage.Areas.Broker.Controllers
 		public IActionResult ReturnToLoadBoard()
         {
             return RedirectToAction("LoadBoard");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("BackToEditProfile")]
+
+        public IActionResult GoToEditProfileTab()
+        {
+            TempData.SetActiveTab(ProfileEditActiveTab);
+            return RedirectToAction("Profile");
         }
 
         [HttpGet]
@@ -344,6 +358,8 @@ namespace LoadVantage.Areas.Broker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("ChangePassword")]
+
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
 
@@ -370,11 +386,15 @@ namespace LoadVantage.Areas.Broker.Controllers
                 return View("Profile", profileModel); // Redirect to the profile page and pass the Model for the password form  
 			}
 
+            var errors = "";
+
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
+                errors += error.Description;
             }
 
+            TempData.SetErrorMessage(errors);
             TempData.SetActiveTab(ProfileChangePasswordActiveTab); // navigate to the change password tab
             return View("Profile", profileModel); // Redirect to the profile page and pass the Model for the password form  
 
