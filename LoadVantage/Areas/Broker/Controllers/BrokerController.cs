@@ -11,13 +11,14 @@ using LoadVantage.Common.Enums;
 using LoadVantage.Core.Models.Profile;
 using LoadVantage.Extensions;
 using LoadVantage.Infrastructure.Data.Models;
-
+using Microsoft.AspNetCore.Authorization;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
 
 namespace LoadVantage.Areas.Broker.Controllers
 {
+    [Authorize]
     [BrokerOnly]
     [Area("Broker")]
     [Route("Broker")]
@@ -25,7 +26,6 @@ namespace LoadVantage.Areas.Broker.Controllers
         UserManager<User> userManager, 
         IBrokerLoadBoardService brokerLoadBoardService, 
         ILoadStatusService loadService, 
-        ILogger<BrokerController> logger, 
         IProfileService profileService) 
         : Controller
     {
@@ -35,16 +35,11 @@ namespace LoadVantage.Areas.Broker.Controllers
         {
 			var userGuidId = User.GetUserId();
 
-            if (userGuidId == null)
-            {
-                return NotFound(UserNotFound); // User was not found
-            }
-
             try
             {
-                ProfileViewModel? broker = await profileService.GetUserInformation(userGuidId.Value);
+				ProfileViewModel? broker = await profileService.GetUserInformation(userGuidId.Value); // Fetch user information for the logged-in user only
 
-                if (broker == null)
+				if (broker == null)
                 {
                     return NotFound(BrokerInformationNotRetrieved);  // Broker was not found
                 }
@@ -71,11 +66,6 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             var userGuidId = User.GetUserId();
 
-            if (userGuidId == Guid.Empty)
-            {
-                return NotFound(UserNotFound); // User was not found
-            }
-
             var isUsernameTaken = await profileService.IsUsernameTakenAsync(model.Username, userGuidId.Value);
             if (isUsernameTaken)
             {
@@ -88,7 +78,15 @@ namespace LoadVantage.Areas.Broker.Controllers
             {
                 var updatedModel = await profileService.UpdateProfileInformation(model, userGuidId.Value);
 
-                TempData.SetSuccessMessage(ProfileUpdatedSuccessfully);
+                if (updatedModel.Id != userGuidId.ToString()) // If the returned model from the method is with a different Id or Position return the View and add some messages 
+                {
+	                TempData.SetActiveTab(ProfileEditActiveTab);
+	                ModelState.AddModelError(string.Empty, NoChangesMadeToProfile);
+
+					return View(updatedModel);
+				}
+
+				TempData.SetSuccessMessage(ProfileUpdatedSuccessfully);
                 TempData.SetActiveTab(ProfileEditActiveTab);
                 return View(updatedModel);
             }
@@ -104,8 +102,8 @@ namespace LoadVantage.Areas.Broker.Controllers
         [Route("LoadBoard")]
         public async Task<IActionResult> LoadBoard()
         {
-            Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
-            var loadBoardInfo = await brokerLoadBoardService.GetBrokerLoadBoardAsync(userId);
+            Guid? userId = User.GetUserId();
+			var loadBoardInfo = await brokerLoadBoardService.GetBrokerLoadBoardAsync(userId.Value);
 
             return View(loadBoardInfo);
 
@@ -132,14 +130,22 @@ namespace LoadVantage.Areas.Broker.Controllers
         [Route("Load")]
         public async Task<IActionResult> LoadDetails(Guid loadId)
         {
-            try
+
+	        Guid? userId = User.GetUserId();
+
+			try
             {
                 var loadToShow = await loadService.GetLoadDetailsAsync(loadId);
 
                 if (loadToShow == null)
                 {
-                    TempData.SetErrorMessage(LoadInformationCouldNotBeRetrieved);
-                    return RedirectToAction("LoadDetails", new { loadId });
+	                TempData.SetErrorMessage(LoadInformationCouldNotBeRetrieved);
+	                return RedirectToAction("LoadDetails", new { loadId });
+                }
+
+				if (userId != loadToShow.BrokerId)
+                {
+	                return RedirectToAction("LoadBoard"); // If the load does not belong to the broker redirect him back to the LoadBoard
                 }
 
                 return View(loadToShow);
@@ -158,7 +164,7 @@ namespace LoadVantage.Areas.Broker.Controllers
         {
             var model = new LoadViewModel
             {
-                BrokerId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!)
+                BrokerId = brokerId
             };
 
             return View(model);
@@ -172,12 +178,21 @@ namespace LoadVantage.Areas.Broker.Controllers
         {
             model.Status = LoadStatus.Created.ToString();
 
-            if (!ModelState.IsValid)
+            Guid? userId = User.GetUserId();
+
+
+			if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            try
+            if (userId != brokerId)
+            {
+	            return RedirectToAction("LoadBoard"); // If the brokerId is not the same as logged user's id, redirect him back to the LoadBoard
+
+			}
+
+			try
             {
                 var loadId = await loadService.CreateLoadAsync(model, brokerId);
 
@@ -200,7 +215,9 @@ namespace LoadVantage.Areas.Broker.Controllers
         public async Task<IActionResult> EditLoad(LoadViewModel model, bool isEditing, Guid loadId)
         {
 
-            if (isEditing)
+	        Guid? userId = User.GetUserId();
+
+			if (isEditing)
             {
                 if (!ModelState.IsValid)
                 {
@@ -211,7 +228,13 @@ namespace LoadVantage.Areas.Broker.Controllers
                 {
                     await loadService.EditLoadAsync(loadId, model);
 
-                    TempData["isEditing"] = false;
+                    if (userId != model.BrokerId)
+                    {
+	                    return RedirectToAction("LoadBoard"); // If the brokerId is not the same as logged user's id, redirect him back to the LoadBoard
+
+					}
+
+					TempData["isEditing"] = false;
                     TempData.SetSuccessMessage(LoadUpdatedSuccessfully);
 
                 }
@@ -235,8 +258,10 @@ namespace LoadVantage.Areas.Broker.Controllers
         public async Task<IActionResult> CancelLoad(Guid loadId)
         {
             TempData["isEditing"] = false;
-            
-            if (loadId == Guid.Empty)
+
+            Guid? userId = User.GetUserId();
+
+			if (loadId == Guid.Empty)
             {
                 TempData.SetErrorMessage(LoadCouldNotBeRetrieved + " " + LoadIdInvalid);
 				return View("LoadDetails");
@@ -246,7 +271,12 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             try
             {
-                await loadService.CancelLoadAsync(loadId);
+	            if (userId != load.BrokerId)
+	            {
+		            return RedirectToAction("LoadBoard"); // If the load's broker is not the same as logged user, redirect him back to the LoadBoard
+				}
+
+				await loadService.CancelLoadAsync(loadId);
 
                 TempData.SetSuccessMessage(LoadCancelledSuccessfully);
 				return RedirectToAction("LoadBoard");
@@ -264,8 +294,9 @@ namespace LoadVantage.Areas.Broker.Controllers
         [Route("Post")]
         public async Task<IActionResult> PostALoad(Guid loadId)
         {
-            
-            if (!ModelState.IsValid)
+	        Guid? userId = User.GetUserId();
+
+			if (!ModelState.IsValid)
             {
                 return RedirectToAction("LoadDetails", new { loadId });
             }
@@ -278,7 +309,12 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             LoadViewModel load = await loadService.GetLoadByIdAsync(loadId);
 
-            if (load.Status != LoadStatus.Created.ToString())
+            if (userId != load.BrokerId)
+            {
+	            return RedirectToAction("LoadBoard"); // If the load's broker is not the same as logged user, redirect him back to the LoadBoard
+            }
+
+			if (load.Status != LoadStatus.Created.ToString())
             {
                 if (load.Status == LoadStatus.Available.ToString())
                 {
@@ -313,8 +349,9 @@ namespace LoadVantage.Areas.Broker.Controllers
         [Route("Unpost")]
         public async Task<IActionResult> UnpostALoad(Guid loadId)
         {
+	        Guid? userId = User.GetUserId();
 
-            if (!ModelState.IsValid)
+			if (!ModelState.IsValid)
             {
                 return RedirectToAction("LoadDetails", new { loadId });
             }
@@ -327,7 +364,13 @@ namespace LoadVantage.Areas.Broker.Controllers
 
             LoadViewModel load = await loadService.GetLoadByIdAsync(loadId);
 
-            if (load.Status != LoadStatus.Available.ToString())
+
+            if (userId != load.BrokerId)
+            {
+	            return RedirectToAction("LoadBoard"); // If the load's broker is not the same as logged user, redirect him back to the LoadBoard
+            }
+
+			if (load.Status != LoadStatus.Available.ToString())
             {
                 if (load.Status == LoadStatus.Created.ToString())
                 {
@@ -365,6 +408,7 @@ namespace LoadVantage.Areas.Broker.Controllers
         {
 
             User? user = await User.GetUserAsync(userManager);
+
             var profileModel = new ProfileViewModel { ChangePasswordViewModel = model };
 
             if (!ModelState.IsValid)
@@ -372,11 +416,6 @@ namespace LoadVantage.Areas.Broker.Controllers
                 TempData.SetActiveTab(ProfileChangePasswordActiveTab); // navigate to the change password tab
                 return View("Profile", profileModel); // Redirect to the profile page and pass the Model for the password form  
             }
-
-			if (user == null)
-	        {
-		        return NotFound(UserNotFound);
-	        }
 
 	        var result = await profileService.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
 
