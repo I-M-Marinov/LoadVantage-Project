@@ -54,73 +54,90 @@ function hideLoader() {
     document.getElementById("loader").style.display = "none";
 }
 
-function enableFields() {
-
-    setTimeout(() => {
-
-        showAndHideLoader();
-
-        document.getElementById("originCity").disabled = false;
-        document.getElementById("originState").disabled = false;
-        document.getElementById("destinationCity").disabled = false;
-        document.getElementById("destinationState").disabled = false;
-        document.getElementById("pickupTime").disabled = false;
-        document.getElementById("deliveryTime").disabled = false;
-        document.getElementById("price").disabled = false;
-        document.getElementById("weight").disabled = false;
-
-        document.getElementById("editLoadButton").style.display = "none";
-        document.getElementById("postLoadBtn").style.display = "none";
-        document.getElementById("cancelLoadBtn").style.display = "none";
-
-        document.getElementById("saveLoadButton").style.display = "inline-block";
-        document.getElementById("cancelEditingButton").style.display = "inline-block";
-        document.getElementById("refreshLoadInfoButton").style.display = "inline-block";
 
 
-        document.getElementById("isEditing").value = "true";
+document.addEventListener("DOMContentLoaded", function () {
+    var editLoadButton = document.getElementById('editLoadButton');
 
-    }, 300);
-}
+    if (editLoadButton) { // Only run if the button exists on the page
+        editLoadButton.addEventListener('click', function (event) {
+            enableFields();
+        });
+    }
+
+    function enableFields() {
+        setTimeout(() => {
+            if (typeof showAndHideLoader === "function") {
+                showAndHideLoader();
+            }
+            document.getElementById("originCity").disabled = false;
+            document.getElementById("originState").disabled = false;
+            document.getElementById("destinationCity").disabled = false;
+            document.getElementById("destinationState").disabled = false;
+            document.getElementById("pickupTime").disabled = false;
+            document.getElementById("deliveryTime").disabled = false;
+            document.getElementById("price").disabled = false;
+            document.getElementById("weight").disabled = false;
+
+            document.getElementById("editLoadButton").style.display = "none";
+            document.getElementById("postLoadBtn").style.display = "none";
+            document.getElementById("cancelLoadBtn").style.display = "none";
+
+            document.getElementById("saveLoadButton").style.display = "inline-block";
+            document.getElementById("cancelEditingButton").style.display = "inline-block";
+            document.getElementById("refreshLoadInfoButton").style.display = "inline-block";
+
+            document.getElementById("isEditing").value = "true";
+        }, 300);
+    }
+});
 
 
-function dissableFieldsAndtoggleButtons() {
+
+document.addEventListener("DOMContentLoaded", function () {
+    var cancelEditingButton = document.getElementById('cancelEditingButton');
 
 
-    setTimeout(() => {
+    if (cancelEditingButton) { // Only run if the button exists on the page
+        cancelEditingButton.addEventListener('click', function (event) {
+            dissableFieldsAndtoggleButtons();
 
-        const form = document.getElementById("loadDetailsForm"); 
-        const isValid = $(form).valid(); 
+        });
+    }
+   
+    function dissableFieldsAndtoggleButtons() {
+        setTimeout(() => {
 
-        if (!isValid) {
+            const form = document.getElementById("loadDetailsForm"); 
+            const isValid = $(form).valid(); 
+
+            if (!isValid) {
          
-            return; 
-        }
+                return; 
+            }
 
-        showAndHideLoader();
+            showAndHideLoader();
 
-        document.getElementById("originCity").disabled = true;
-        document.getElementById("originState").disabled = true;
-        document.getElementById("destinationCity").disabled = true;
-        document.getElementById("destinationState").disabled = true;
-        document.getElementById("pickupTime").disabled = true;
-        document.getElementById("deliveryTime").disabled = true;
-        document.getElementById("price").disabled = true;
-        document.getElementById("weight").disabled = true;
+            document.getElementById("originCity").disabled = true;
+            document.getElementById("originState").disabled = true;
+            document.getElementById("destinationCity").disabled = true;
+            document.getElementById("destinationState").disabled = true;
+            document.getElementById("pickupTime").disabled = true;
+            document.getElementById("deliveryTime").disabled = true;
+            document.getElementById("price").disabled = true;
+            document.getElementById("weight").disabled = true;
 
-        document.getElementById("editLoadButton").style.display = "inline-block";
-        document.getElementById("postLoadBtn").style.display = "inline-block";
-        document.getElementById("cancelLoadBtn").style.display = "inline-block";
+            document.getElementById("editLoadButton").style.display = "inline-block";
+            document.getElementById("postLoadBtn").style.display = "inline-block";
+            document.getElementById("cancelLoadBtn").style.display = "inline-block";
 
-        document.getElementById("saveLoadButton").style.display = "none";
-        document.getElementById("cancelEditingButton").style.display = "none";
-        document.getElementById("refreshLoadInfoButton").style.display = "none";
+            document.getElementById("saveLoadButton").style.display = "none";
+            document.getElementById("cancelEditingButton").style.display = "none";
+            document.getElementById("refreshLoadInfoButton").style.display = "none";
 
-
-
-
-    }, 300);
-}
+        }, 300);
+    }
+});
 
 //function confirmCancel() {
 
@@ -128,20 +145,57 @@ function dissableFieldsAndtoggleButtons() {
 //}
 
 
-function confirmCancel(event) {
-    event.preventDefault(); 
+//function confirmCancel(event) {
+//    event.preventDefault(); 
 
-    var cancelModal = new bootstrap.Modal(document.getElementById('cancelConfirmationModal'));
-    cancelModal.show();
+//    var cancelModal = new bootstrap.Modal(document.getElementById('cancelConfirmationModal'));
+//    cancelModal.show();
 
-    document.getElementById('confirmCancelBtn').onclick = function () {
-        cancelModal.hide();
-        proceedWithCancellation();
-    };
-}
+//    document.getElementById('confirmCancelBtn').onclick = function () {
+//        cancelModal.hide();
+//        proceedWithCancellation();
+//    };
+//}
 
-function proceedWithCancellation() {
-    document.getElementById('cancelLoadForm').submit();
+//function proceedWithCancellation() {
+//    document.getElementById('cancelLoadForm').submit();
 
-}
+//}
+
+document.addEventListener("DOMContentLoaded", function () {
+    var cancelButton = document.getElementById('cancelLoadBtn');
+    
+    if (cancelButton) {  // Only run if the button exists on the page
+        cancelButton.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            showCancelConfirmationModal();
+        });
+    }
+   
+    function showCancelConfirmationModal() {
+        var modal = document.getElementById('cancelConfirmationModal');
+        var cancelBtn = document.getElementById('confirmCancelBtn');
+
+        $(modal).modal('show');
+
+        cancelBtn.addEventListener('click', function () {
+            document.getElementById('cancelLoadForm').submit();
+        });
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const passChangeDivider = document.getElementById("badge-validation");
+
+    if (passChangeDivider) {
+        const validationMessages = passChangeDivider.querySelector("ul, ol");
+
+        if (validationMessages && validationMessages.childElementCount > 0) {
+            passChangeDivider.style.display = 'inline-block'; 
+        } else {
+            passChangeDivider.style.display = 'none'; 
+        }
+    }
+});
 

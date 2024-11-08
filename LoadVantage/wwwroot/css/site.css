@@ -293,11 +293,22 @@ body {
     margin-top: 0.25rem;
 }
 
-#pass-change-divider1,
-#pass-change-divider2{
+#pass-change-divider{
     margin-bottom: 1.50em;
-    padding-top: 1.5em;
     font-size: 0.75rem;
+}
+
+.badge-validation {
+    padding: .25em .4em;
+    font-size: 75%;
+    font-weight: 750;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+    color: white;
+    background-color: #8208c3;
 }
 
 .form-floating input {

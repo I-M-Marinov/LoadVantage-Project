@@ -467,15 +467,15 @@
 					</div>
 
 					<div class="text-center details-buttons-container gap-2 d-md-block">
-						<button type="button" id="editLoadButton" class="btn btn-primary" onclick="enableFields()">
+						<button type="button" id="editLoadButton" class="btn btn-primary">
 							<i class="ri-edit-box-line"></i> Edit
 						</button>
 
 						<button type="submit" id="saveLoadButton" class="btn btn-success" style="display: none;">
 							<i class="bx bxs-save"></i> Save
-						</button>
+						</button> 
 
-						<button type="button" id="cancelEditingButton" onclick="dissableFieldsAndtoggleButtons()" class="btn btn-secondary" style="display: none;">
+						<button type="button" id="cancelEditingButton" class="btn btn-secondary" style="display: none;">
 							<i class="bx bx-arrow-back"></i> Cancel
 						</button>
 
@@ -524,7 +524,7 @@
 					<form id="cancelLoadForm" asp-action="CancelLoad" asp-controller="Broker" method="post" id="cancelLoadButton">
 						@Html.AntiForgeryToken()
 						<input type="hidden" name="loadId" value="@Model.Id"/>
-					<button type="submit" class="btn btn-outline-danger" onclick="confirmCancel(event)" id="cancelLoadBtn">
+					<button type="submit" class="btn btn-outline-danger" id="cancelLoadBtn">
 							<i class="bx bxs-x-circle"></i> Cancel Load
 						</button>
 					</form>

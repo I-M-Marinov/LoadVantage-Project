@@ -2,25 +2,9 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model LoadVantage.Core.Models.Profile.ProfileViewModel
 
-@{
-	var tempDataSuccessMessage = TempData.GetSuccessMessage();
-	var tempDataErrorMessage = TempData.GetErrorMessage();
-}
-
 
 	<form asp-action="Profile" asp-controller="Broker" method="post" id="updateProfileForm">
 		@Html.AntiForgeryToken()
-		
-		@if (!string.IsNullOrEmpty(tempDataSuccessMessage))
-		{
-			<div class="badge badge-danger mt-1" id="success-message">@tempDataSuccessMessage</div>
-		}
-
-		@if (!string.IsNullOrEmpty(tempDataErrorMessage))
-		{
-			<div class="badge badge-danger mt-1" id="error-message">@tempDataErrorMessage</div>
-		}
-
 
 		@* @if (ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
 		{
@@ -42,6 +26,10 @@
 		</div>
 		</div>
 		</div> *@
+
+		<div id="pass-change-divider" class="badge badge-danger mt-1 d-flex justify-content-center" style="dispay:none;">
+			@Html.ValidationSummary(true)
+		</div>
 
 		<div class="row mb-3">
 			<label for="firstNameProfile" class="col-md-4 col-lg-3 col-form-label">First Name</label>
@@ -98,7 +86,7 @@
 		</div>
 
 		<div class="text-center">
-			<button type="submit" class="btn btn-outline-primary" id="saveProfileButton" onclick="handleSaveButtonClick(event)">
+			<button type="submit" class="btn btn-outline-primary" id="saveProfileButton">
 				<span id="buttonSpinner" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" style="display: none;"></span>
 				<span id="buttonText">Save Changes</span>
 			</button>

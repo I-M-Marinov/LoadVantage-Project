@@ -1,3 +1,4 @@
+using System.Threading.RateLimiting;
 using LoadVantage.Areas.Broker.Contracts;
 using LoadVantage.Areas.Broker.Services;
 using LoadVantage.Areas.Dispatcher.Contracts;
@@ -10,11 +11,23 @@ using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using static LoadVantage.Infrastructure.Data.SeedData.SeedData;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// =============== Rate limiting middleware ============== // 
+
+builder.Services.AddRateLimiter(_ => _
+	.AddFixedWindowLimiter(policyName: "fixed", options =>
+	{
+		options.PermitLimit = 4;
+		options.Window = TimeSpan.FromSeconds(12);
+		options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+		options.QueueLimit = 3;
+	}));
 
 if (builder.Environment.IsDevelopment())
 {
@@ -43,6 +56,7 @@ builder.Services.AddIdentity<User, Role>(options =>
 		options.Password.RequireUppercase = false;
 		options.Lockout.MaxFailedAccessAttempts = 5;
 		options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+		options.User.RequireUniqueEmail = true; // Unique email address 
 	})
 	.AddEntityFrameworkStores<LoadVantageDbContext>() 
 	.AddDefaultTokenProviders();
@@ -73,11 +87,17 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+// =============== Cookies middleware ============== // 
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
 	options.LoginPath = "/Account/Login";
 	options.LogoutPath = "/Home/Index";
 	options.ExpireTimeSpan = TimeSpan.FromDays(2);
+	options.Cookie.HttpOnly = true;
+	options.SlidingExpiration = true;
+	options.Cookie.SameSite = SameSiteMode.Strict;
+
 });
 
 var app = builder.Build();

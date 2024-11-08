@@ -421,13 +421,13 @@
 
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
-	                            @Html.Partial("_EditProfilePartialView", Model)
+	                            @await Html.PartialAsync("_EditProfilePartialView", Model)
 							
                             </div>
 							
                             <div class="tab-pane fade pt-3" id="profile-change-password">
 
-	                            @Html.Partial("_ChangePasswordPartialView", new ChangePasswordViewModel())
+	                            @await Html.PartialAsync("_ChangePasswordPartialView", new ChangePasswordViewModel())
 
                             </div>
 
