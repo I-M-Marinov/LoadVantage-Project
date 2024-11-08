@@ -1,6 +1,5 @@
 ﻿using LoadVantage.Infrastructure.Data.Contracts;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
 namespace LoadVantage.Infrastructure.Data.Services

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using LoadVantage.Common.Enums;
 
 
 namespace LoadVantage.Infrastructure.Data.Models

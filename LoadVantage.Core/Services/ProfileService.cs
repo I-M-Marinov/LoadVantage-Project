@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Profile;
 using LoadVantage.Infrastructure.Data;

@@ -78,6 +78,7 @@
 	        public const byte UserPhoneNumberMaxLength = 15;
 
 	        // NEW PASSWORD 
+
 	        public const byte NewPasswordMinLength = 6;
 	        public const byte NewPasswordMaxLength = 30;
 

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using static LoadVantage.Common.GeneralConstants.UserRoles;
-using static LoadVantage.Common.ValidationConstants;
+﻿using static LoadVantage.Common.GeneralConstants.UserRoles;
 
 namespace LoadVantage.Infrastructure.Data.Models
 {

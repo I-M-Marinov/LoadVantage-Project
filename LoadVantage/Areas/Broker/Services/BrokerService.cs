@@ -1,5 +1,4 @@
 ﻿using LoadVantage.Areas.Broker.Contracts;
-using LoadVantage.Areas.Broker.Models;
 using LoadVantage.Core.Models.Profile;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;

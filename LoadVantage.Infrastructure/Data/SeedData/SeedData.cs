@@ -1,16 +1,18 @@
 ﻿using System.Security.Claims;
-using LoadVantage.Common.Enums;
-using LoadVantage.Infrastructure.Data.Models;
-using LoadVantage.Infrastructure.Data.Services;
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using LoadVantage.Common.Enums;
+using LoadVantage.Infrastructure.Data.Models;
+using LoadVantage.Infrastructure.Data.Contracts;
+
 using static LoadVantage.Common.GeneralConstants;
 using static LoadVantage.Common.GeneralConstants.UserRoles;
 using static LoadVantage.Common.GeneralConstants.SecretString;
-using Microsoft.EntityFrameworkCore;
-using System;
-using LoadVantage.Infrastructure.Data.Contracts;
+
 
 namespace LoadVantage.Infrastructure.Data.SeedData
 {

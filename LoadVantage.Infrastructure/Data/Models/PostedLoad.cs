@@ -1,8 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using static LoadVantage.Common.ValidationConstants;
-using Microsoft.EntityFrameworkCore;
-using LoadVantage.Common.Enums;
 
 namespace LoadVantage.Infrastructure.Data.Models
 {
