@@ -1,4 +1,5 @@
 ﻿using LoadVantage.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace LoadVantage.Core.Contracts
 {
@@ -10,6 +11,10 @@ namespace LoadVantage.Core.Contracts
         Task<IEnumerable<User>> GetBrokersAsync();
         Task UpdateUserPositionAsync(Guid userId, string position);
         Task AssignUserRoleAsync(Guid userId, string role);
+        Task UpdateUserImageAsync(Guid userId, IFormFile file);
+        Task DeleteUserImageAsync(Guid userId, Guid imageUrl);
+
+
     }
 
 }

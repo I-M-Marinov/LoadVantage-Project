@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using LoadVantage.Core.ValidationAttributes;
 using Microsoft.AspNetCore.Identity;
-using static LoadVantage.Common.ValidationConstants;
+using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.ValidationConstants.UserValidations;
 
 namespace LoadVantage.Core.Models.Profile
@@ -31,7 +32,11 @@ namespace LoadVantage.Core.Models.Profile
         [StringLength(UserPhoneNumberMaxLength, MinimumLength = UserPhoneNumberMinLength, ErrorMessage = UserPhoneNumberLengthNotValid)]
         public  string PhoneNumber { get; set; } = null!;
         public string FullName => $"{FirstName} {LastName}";
-        public ChangePasswordViewModel? ChangePasswordViewModel { get; set; } = null!;
+		[Url]
+		[StringLength(UserImageMaxLength, ErrorMessage = ImageUrlExceedsLimit)]
+		public string? UserImageUrl { get; set; }
+
+		public ChangePasswordViewModel? ChangePasswordViewModel { get; set; } = null!;
 
     }
 }
