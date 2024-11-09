@@ -4,6 +4,8 @@ using LoadVantage.Core.Models.Profile;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using static LoadVantage.Common.GeneralConstants;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Core.Services
@@ -24,6 +26,8 @@ namespace LoadVantage.Core.Services
                 throw new Exception(UserNotFound);
             }
 
+            var userImage = await context.UsersImages.SingleOrDefaultAsync(ui => ui.UserId == userId);
+
             var profile = new ProfileViewModel
             {
                 Id = user.Id.ToString(),
@@ -33,13 +37,13 @@ namespace LoadVantage.Core.Services
                 Position = user.Position!,
                 CompanyName = user.CompanyName!,
                 PhoneNumber = user.PhoneNumber!,
-                Email = user.Email!
-                
+                Email = user.Email!,
+                UserImageUrl = userImage?.ImageUrl
+
             };
 
             return profile;
         }
-
         public async Task<ProfileViewModel> UpdateProfileInformation(ProfileViewModel model, Guid userId)
         {
             var user = await context.Users.FindAsync(userId);
@@ -80,6 +84,8 @@ namespace LoadVantage.Core.Services
                 throw new Exception(UserProfileUpdateFailed);
             }
 
+            var userImage = await context.UsersImages.SingleOrDefaultAsync(ui => ui.UserId == user.Id);
+
             return new ProfileViewModel
             {
                 Id = user.Id.ToString(),
@@ -89,10 +95,10 @@ namespace LoadVantage.Core.Services
                 PhoneNumber = user.PhoneNumber,
                 Email = user.Email,
                 FirstName = user.FirstName,
-                LastName = user.LastName
+                LastName = user.LastName,
+                UserImageUrl = userImage.ImageUrl
             };
         }
-
         public async Task UpdateUserClaimsAsync(User user, ProfileViewModel model)
         {
             var existingClaims = await GetUserClaimsAsync(user);
@@ -106,13 +112,11 @@ namespace LoadVantage.Core.Services
             }
 
         }
-
         public async Task<bool> IsUsernameTakenAsync(string username, Guid currentUserId)
         {
             var existingUser = await userManager.FindByNameAsync(username);
             return existingUser != null && existingUser.Id != currentUserId;
         }
-
         private bool AreUserPropertiesEqual(User user, ProfileViewModel model)
         {
             
@@ -139,7 +143,6 @@ namespace LoadVantage.Core.Services
         {
 	        return await userManager.GetClaimsAsync(user);
         }
-
         private List<Claim> GetMissingClaims(IEnumerable<Claim> existingClaims, string firstName, string lastName, string userName, string userPosition)
         {
 	        var claims = new List<Claim>
@@ -156,7 +159,6 @@ namespace LoadVantage.Core.Services
 
 	        return missingClaims;
         }
-
         public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
         {
 	        if (user == null)

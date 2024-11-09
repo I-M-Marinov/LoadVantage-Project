@@ -1,14 +1,18 @@
 ﻿using LoadVantage.Core.Contracts;
+using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using Microsoft.AspNetCore.Http;
+using static LoadVantage.Common.GeneralConstants.UserImage;
 
 
 #nullable disable
 
 namespace LoadVantage.Core.Services
 {
-    public class UserService(UserManager<User> userManager) : IUserService
+    public class UserService(UserManager<User> userManager, LoadVantageDbContext context, IImageService imageService) : IUserService
     {
         public async Task<User> GetUserByIdAsync(Guid userId)
         {
@@ -34,6 +38,7 @@ namespace LoadVantage.Core.Services
                 .Where(u => u is Broker)
                 .ToListAsync();
         }
+
         public async Task UpdateUserPositionAsync(Guid userId, string position)
         {
             var user = await GetUserByIdAsync(userId);
@@ -55,6 +60,93 @@ namespace LoadVantage.Core.Services
                 await userManager.AddToRoleAsync(user, role);
             }
         }
-    }
+
+        public async Task UpdateUserImageAsync(Guid userId, IFormFile file)
+        {
+            var userImage = await context.UsersImages
+                .SingleOrDefaultAsync(ui => ui.UserId == userId);
+
+            // Delete the old image
+
+            if (userImage != null)
+            {
+                await DeleteUserImageAsync(userId, userImage.Id); 
+            }
+
+            // Upload the new image
+
+            var uploadResult = await imageService.UploadImageAsync(file);
+
+            if (uploadResult.StatusCode == HttpStatusCode.OK)
+            {
+                var resultImageUrl = uploadResult.SecureUrl.ToString();
+                var publicId = uploadResult.PublicId;
+
+                if (userImage == null)
+                {
+                    userImage = new UserImage
+                    {
+                        UserId = userId,
+                        ImageUrl = resultImageUrl,
+                        PublicId = publicId
+                    };
+                    await context.UsersImages.AddAsync(userImage);
+                }
+                else
+                {
+                    userImage.ImageUrl = resultImageUrl;
+                    userImage.PublicId = publicId;
+                }
+
+                // Save changes to the database
+                await context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception(ImageUploadFailed);
+            }
+        }
+
+
+
+        public async Task DeleteUserImageAsync(Guid userId, Guid imageId)
+        {
+            var userImage = await context.UsersImages
+                .SingleOrDefaultAsync(ui => ui.UserId == userId);
+
+
+            if (userImage != null)
+            {
+                if (!string.IsNullOrEmpty(userImage.PublicId) && userImage.PublicId != DefaultImagePath)
+                {
+                    try
+                    {
+                        var deleteResult = await imageService.DeleteImageAsync(userImage.PublicId);
+
+                        if (!deleteResult.IsSuccess)
+                        {
+                            throw new Exception($"{ErrorRemovingImage} {deleteResult.Message}");
+                        }
+
+                        userImage.ImageUrl = DefaultImagePath; // Default image URL
+                        userImage.PublicId = DefaultImagePath; // Set PublicId to the default image string
+                    }
+                    catch (Exception ex)
+                    {
+                        userImage.ImageUrl = DefaultImagePath; // Default to local image
+                        userImage.PublicId = DefaultImagePath; // Set PublicId to the default image string
+                    }
+                }
+                else
+                {
+                    userImage.ImageUrl = DefaultImagePath; // Local default image URL
+                    userImage.PublicId = DefaultImagePath; // Set PublicId to default image string
+                }
+
+                await context.SaveChangesAsync();
+            }
+
+        }
+	}
 
 }
