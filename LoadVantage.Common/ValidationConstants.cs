@@ -77,6 +77,13 @@
 	        public const byte UserPhoneNumberMinLength = 7;
 	        public const byte UserPhoneNumberMaxLength = 15;
 
+            // USER IMAGE 
+
+            public const int UserImageMaxLength = 1000;
+            public const int UserImagePublicIdMaxLength = 1000;
+
+
+
 	        // NEW PASSWORD 
 
 	        public const byte NewPasswordMinLength = 6;
@@ -94,5 +101,14 @@
 
 
         }
+
+        public static class UserImageValidations
+        {
+	        public const string UserImageValidFileExtensions = "jpg,jpeg,png,gif";
+	        public const int UserImageMaxFileSize = 5242880;
+			public const string InvalidImageFileExtension = "Please upload a valid image file (jpg, jpeg, png).";
+			public const string ImageFileSizeExceeded = "File size must not exceed 5 MegaBytes.";
+
+		}
 	}
 }
