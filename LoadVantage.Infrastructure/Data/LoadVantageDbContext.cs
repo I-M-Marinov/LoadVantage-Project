@@ -21,6 +21,7 @@ namespace LoadVantage.Infrastructure.Data
         public DbSet<BookedLoad> BookedLoads { get; set; }
         public DbSet<PostedLoad> PostedLoads { get; set; }
         public DbSet<BilledLoad> BilledLoads { get; set; }
+        public DbSet<UserImage> UsersImages { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,6 +32,11 @@ namespace LoadVantage.Infrastructure.Data
 				.HasOne(d => d.Truck)
 				.WithOne(t => t.Driver)
 				.HasForeignKey<Driver>(d => d.TruckId);
+
+			modelBuilder.Entity<UserImage>()
+				.HasOne(ui => ui.User)
+				.WithOne(u => u.UserImage)
+				.HasForeignKey<UserImage>(ui => ui.UserId);
 
 			modelBuilder.Entity<User>()
 				.HasDiscriminator<string>("Position")
@@ -52,7 +58,7 @@ namespace LoadVantage.Infrastructure.Data
                 .HasOne(l => l.BilledLoad)
                 .WithOne(b => b.Load)
                 .HasForeignKey<BilledLoad>(b => b.LoadId);
-        }
+		}
     }
 }
 
