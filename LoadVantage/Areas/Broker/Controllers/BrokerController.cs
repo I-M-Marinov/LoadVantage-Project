@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 
 using LoadVantage.Areas.Broker.Contracts;
@@ -23,7 +21,6 @@ namespace LoadVantage.Areas.Broker.Controllers
     [Area("Broker")]
     [Route("Broker")]
     public class BrokerController(
-        UserManager<User> userManager, 
         IBrokerLoadBoardService brokerLoadBoardService, 
         ILoadStatusService loadService, 
         IProfileService profileService) 
@@ -105,7 +102,7 @@ namespace LoadVantage.Areas.Broker.Controllers
             Guid? userId = User.GetUserId();
 			var loadBoardInfo = await brokerLoadBoardService.GetBrokerLoadBoardAsync(userId.Value);
 
-            return View(loadBoardInfo);
+			return View(loadBoardInfo);
 
         }
 
@@ -400,44 +397,6 @@ namespace LoadVantage.Areas.Broker.Controllers
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("ChangePassword")]
 
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
-        {
-
-            User? user = await User.GetUserAsync(userManager);
-
-            var profileModel = new ProfileViewModel { ChangePasswordViewModel = model };
-
-            if (!ModelState.IsValid)
-	        {
-                TempData.SetActiveTab(ProfileChangePasswordActiveTab); // navigate to the change password tab
-                return View("Profile", profileModel); // Redirect to the profile page and pass the Model for the password form  
-            }
-
-	        var result = await profileService.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
-
-	        if (result.Succeeded)
-	        {
-		       TempData.SetSuccessMessage(PasswordUpdatedSuccessfully);
-               TempData.SetActiveTab(ProfileActiveTab); // navigate to the profile tab
-                return View("Profile", profileModel); // Redirect to the profile page and pass the Model for the password form  
-			}
-
-            var errors = "";
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-                errors += error.Description;
-            }
-
-            TempData.SetErrorMessage(errors);
-            TempData.SetActiveTab(ProfileChangePasswordActiveTab); // navigate to the change password tab
-            return View("Profile", profileModel); // Redirect to the profile page and pass the Model for the password form  
-
-        }
-    }
+	}
 }
