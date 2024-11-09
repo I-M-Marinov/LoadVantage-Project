@@ -1,4 +1,6 @@
 ﻿
+using LoadVantage.Core.Models.Profile;
+
 namespace LoadVantage.Areas.Broker.Models
 {
     public class BrokerLoadBoardViewModel
@@ -8,6 +10,7 @@ namespace LoadVantage.Areas.Broker.Models
         public string LastName { get; set; } = null!;
         public string CompanyName { get; set; } = null!;
         public string Position { get; set; } = null!;
+        public ProfileViewModel Profile { get; set; } = null!;
 		public IEnumerable<BrokerLoadViewModel> CreatedLoads { get; set; }
         public IEnumerable<BrokerLoadViewModel> PostedLoads { get; set; }
         public IEnumerable<BrokerLoadViewModel> BookedLoads { get; set; }

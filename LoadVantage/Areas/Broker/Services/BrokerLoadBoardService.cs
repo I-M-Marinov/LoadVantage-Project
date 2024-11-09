@@ -1,6 +1,7 @@
 ﻿using LoadVantage.Areas.Broker.Contracts;
 using LoadVantage.Areas.Broker.Models;
 using LoadVantage.Common.Enums;
+using LoadVantage.Core.Models.Profile;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
@@ -115,8 +116,23 @@ namespace LoadVantage.Areas.Broker.Services
             var postedLoads = await GetAllPostedLoadsForBrokerAsync(brokerId);
             var bookedLoads = await GetAllBookedLoadsForBrokerAsync(brokerId);
             var billedLoads = await GetAllBilledLoadsForBrokerAsync(brokerId);
-            
-            return new BrokerLoadBoardViewModel
+
+            var userImage = await context.UsersImages.SingleOrDefaultAsync(ui => ui.UserId == brokerId);
+
+
+            var profileModel = new ProfileViewModel
+            {
+	            Username = broker.UserName,
+	            Email = broker.Email,
+	            FirstName = broker.FirstName,
+	            LastName = broker.LastName,
+	            CompanyName = broker.CompanyName,
+	            Position = broker.Position,
+	            PhoneNumber = broker.PhoneNumber,
+                UserImageUrl = userImage?.ImageUrl
+            };
+
+			return new BrokerLoadBoardViewModel
             {
                 BrokerId = brokerId,
                 FirstName = broker.FirstName,
@@ -126,8 +142,9 @@ namespace LoadVantage.Areas.Broker.Services
 				CreatedLoads = createdLoads.ToList(),
                 PostedLoads = postedLoads.ToList(),
                 BookedLoads = bookedLoads.ToList(),
-                BilledLoads = billedLoads.ToList()
-            };
+                BilledLoads = billedLoads.ToList(),
+                Profile = profileModel
+			};
         }
     }
 }
