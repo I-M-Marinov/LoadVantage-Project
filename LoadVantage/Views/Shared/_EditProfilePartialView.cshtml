@@ -1,31 +1,44 @@
-﻿@using LoadVantage.Extensions
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model LoadVantage.Core.Models.Profile.ProfileViewModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Core.Models.Profile;
+@model ProfileViewModel
 
 
-	<form asp-action="Profile" asp-controller="Broker" method="post" id="updateProfileForm">
+
+<div class="row mb-3">
+	<label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+	<div class="col-md-8 col-lg-9">
+		<img src="@Model.UserImageUrl" alt="Profile" id="profileImagePreview" />
+        
+		<div class="pt-2 d-xl-inline-flex">
+			<!-- Form to Upload New Profile Image -->
+			<form asp-controller="Profile" asp-action="UpdateProfileImage" enctype="multipart/form-data" method="post">
+				<input type="file" id="fileInput" name="file" style="display:none" accept="image/*">
+				<button id="uploadImageButton" type="button" class="btn btn-primary btn-sm" title="Upload new profile image">
+					<i class="bi bi-upload"></i> </button>
+				<button id="submitButton" type="submit" class="btn btn-success btn-sm" style="display:none;">
+					Upload Image
+				</button>
+			</form>
+            
+			<!-- Form to Delete Current Profile Image -->
+			<form asp-controller="Profile" asp-action="DeleteProfileImage" method="post" class="d-inline">
+				<button id="removeImageButton" type="submit" class="btn btn-danger btn-sm" title="Remove my profile image">
+					<i class="bi bi-trash"></i>
+				</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+<form asp-action="Profile" asp-controller="Broker" method="post" id="updateProfileForm">
 		@Html.AntiForgeryToken()
-
-		@* @if (ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
-		{
-			<div id="pass-change-validation-errors" class="badge badge-danger mt-1 d-flex justify-content-center">
-				@Html.ValidationSummary(false) 
-			</div>
-		} *@
 
 		<input type="hidden" name="Position" value="@Model.Position" />
 		<input type="hidden" name="Id" value="@Model.Id" />
+		<input name="UserImage" type="hidden" class="form-control" id="userImage" value="@Model.UserImageUrl">
 
-		@*  <div class="row mb-3">
-		<label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-		<div class="col-md-8 col-lg-9">
-		<img src="~/assets/img/profile-img.jpg" alt="Profile">
-		<div class="pt-2">
-		<a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
-		<a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
-		</div>
-		</div>
-		</div> *@
 
 		<div id="pass-change-divider" class="badge badge-danger mt-1 d-flex justify-content-center" style="dispay:none;">
 			@Html.ValidationSummary(true)
@@ -85,6 +98,8 @@
 			</div>
 		</div>
 
+		
+
 		<div class="text-center">
 			<button type="submit" class="btn btn-outline-primary" id="saveProfileButton">
 				<span id="buttonSpinner" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" style="display: none;"></span>
@@ -94,4 +109,22 @@
 
 	</form>
 
+	
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const uploadButton = document.getElementById("uploadButton");
+		const fileInput = document.getElementById("fileInput");
+		const submitButton = document.getElementById("submitButton");
 
+		if (uploadButton && fileInput && submitButton) {
+
+			uploadButton.addEventListener("click", function (event) {
+				event.preventDefault(); 
+				fileInput.click();      
+			});
+
+			fileInput.addEventListener("change", function () {
+				submitButton.style.display = 'inline-block'; 
+		}
+	});
+</script>
