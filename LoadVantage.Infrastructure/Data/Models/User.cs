@@ -36,7 +36,8 @@ namespace LoadVantage.Infrastructure.Data.Models
 
 			[Required]
 			public override string? PasswordHash { get; set; } = null!;
-            [Phone]
+
+			[Phone]
             [StringLength(UserPhoneNumberMaxLength)]
             public override string? PhoneNumber { get; set; } = null!;
 

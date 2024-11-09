@@ -10,6 +10,7 @@ using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data.Contracts;
 
 using static LoadVantage.Common.GeneralConstants;
+using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.UserRoles;
 using static LoadVantage.Common.GeneralConstants.SecretString;
 
@@ -47,6 +48,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 			var adminLastName = configuration["AdminCredentials:AdminLastName"];
 			var adminPhoneNumber = configuration["AdminCredentials:AdminPhoneNumber"];
 			var adminCompany = configuration["AdminCredentials:AdminCompany"];
+			var adminImage = configuration["AdminCredentials:AdminImage"];
 
 			if (await userManager.FindByNameAsync(adminUserName!) == null)
 			{
@@ -60,7 +62,8 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 					Position = AdminPositionName,
                     PhoneNumber = adminPhoneNumber!,
                     CompanyName = adminCompany,
-                    Role = role!
+                    Role = role!,
+                    //UserImage = adminImage
 				};
 
 				var result = await userManager.CreateAsync(adminUser, adminPassword!);
@@ -98,8 +101,9 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     CompanyName = "Coyote Logistics",
                     PhoneNumber = "+1-800-654-1234",
                     Position = DispatcherPositionName,
-                    Role = userRole!
-                },
+                    Role = userRole!,
+                    //UserImage = DefaultImagePath
+				},
                 new User()
                 {
                     UserName = "dispatcher2",
@@ -109,8 +113,9 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     CompanyName = "CH Robinson Worldwide",
                     PhoneNumber = "+1-225-968-4692",
                     Position = DispatcherPositionName,
-                    Role = userRole!
-                }
+                    Role = userRole!,
+                    //UserImage = DefaultImagePath
+				}
             };
 
             var counter = 1;
@@ -170,8 +175,9 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     CompanyName = "Echo Global Logistics",
                     PhoneNumber = "+1-708-953-7412",
                     Position = BrokerPositionName,
-                    Role = userRole!
-                },
+                    Role = userRole!,
+                    //UserImage = DefaultImagePath
+				},
                 new User()
                 {
                     UserName = "broker2",
@@ -181,9 +187,10 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     CompanyName = "Pitbull Freight Co.",
                     PhoneNumber = "+1-300-852-7391",
                     Position = BrokerPositionName,
-                    Role = userRole!
-                }
-            };
+                    Role = userRole!,
+                    //UserImage = DefaultImagePath
+				}
+			};
 
 
             var counter = 1;
