@@ -65,13 +65,16 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddUserSecrets<Program>();
 }
+
+
 builder.Services.AddScoped<IImageService, ImageService>();									// Add the Image Service 
 builder.Services.AddScoped<IProfileService, ProfileService>();								// Add the Profile Service 
 builder.Services.AddHttpClient<ICountryStateCityService, CountryStateCityService>();		// Add CountryStateCity Service 
 builder.Services.AddScoped<IGeocodeService, GeocodeService>();								// Add the Geocode Retrieval Service 
 builder.Services.AddScoped<IDistanceCalculatorService, DistanceCalculatorService>();		// Add the Distance Calculator Service
 builder.Services.AddScoped<ILoadStatusService, LoadStatusService>();						// Add the Load Status Service 
-builder.Services.AddScoped<IDispatcherService, DispatcherService>();						// Add the Dispatcher Service 
+builder.Services.AddScoped<IDispatcherService, DispatcherService>();                        // Add the Dispatcher Service 
+builder.Services.AddScoped<IUserService, UserService>();		// Add the User Service 
 builder.Services.AddScoped<IBrokerService, BrokerService>();								// Add the Broker Service 
 builder.Services.AddScoped<IDispatcherLoadBoardService, DispatcherLoadBoardService>();		// Add the Dispatcher's LoadBoard Service 
 builder.Services.AddScoped<IBrokerLoadBoardService, BrokerLoadBoardService>();				// Add the Broker's LoadBoard Service 
@@ -85,7 +88,6 @@ builder.Services.AddControllersWithViews()
 
     });
 
-builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 // =============== Cookies middleware ============== // 
