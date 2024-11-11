@@ -312,10 +312,6 @@
         if (errorMessage.trim() !== '') {
             var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
             errorModal.show();
-
-            setTimeout(() => {
-                successModal.hide();
-            }, 2000);
         }
     });
     
