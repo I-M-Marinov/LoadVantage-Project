@@ -4,7 +4,6 @@
 @using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using static LoadVantage.Common.GeneralConstants.UserImage
 @inject UserManager<User> UserManager
 @model ProfileViewModel
 
@@ -21,12 +20,12 @@
 }
 
 <!-- ======= Header ======= -->
-
-@await Html.PartialAsync("_HeaderPartialView")
+@await Html.PartialAsync("_HeaderPartialView", Model)
 
 <!-- End Header -->
+
  
-    <!-- ======= Sidebar ======= -->
+<!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
@@ -119,7 +118,7 @@
 	                        </li>
                             
 	                        <li class="nav-item">
-	                            @if (Model.Id == null)
+		                        @if (Model.Id == null)
 		                        {
 				                      
 			                        <form asp-action="GoToEditProfileTab" asp-controller="Broker" method="post">
@@ -131,15 +130,21 @@
 			                        </form>
 			                       
 		                        }
-	                            else
-	                            {
-		                            <button class="nav-link" data-bs-toggle="tab" id="profile-edit-tab"  href="#profile-edit" data-bs-target="#profile-edit">Edit Profile</button>
-	                            }
+		                        else
+		                        {
+			                        <button class="nav-link" data-bs-toggle="tab" id="profile-edit-tab"  href="#profile-edit" data-bs-target="#profile-edit">Edit Profile</button>
+		                        }
+	                        </li>
+							
+	                        <li class="nav-item">
+		                        <button class="nav-link" data-bs-toggle="tab" id="profile-change-picture-tab" href="#profile-change-picture" data-bs-target="#profile-change-picture">Edit Picture</button>
 	                        </li>
 
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" id="profile-change-password-tab" href="#profile-change-password" data-bs-target="#profile-change-password">Change Password</button>
-                            </li>
+	                        <li class="nav-item">
+		                        <button class="nav-link" data-bs-toggle="tab" id="profile-change-password-tab" href="#profile-change-password" data-bs-target="#profile-change-password">Change Password</button>
+	                        </li>
+							
+
 
                         </ul>
 						<div class="tab-content pt-2">
@@ -178,28 +183,58 @@
                                     <div class="col-lg-9 col-md-8">@user.Email!.ToLower()</div>
                                 </div>
 
-                                @if (!string.IsNullOrEmpty(tempDataSuccessMessage))
-                                {
-                                    <div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@tempDataSuccessMessage</div>
-                                }
-
-                                @if (!string.IsNullOrEmpty(tempDataErrorMessage))
-                                {
-                                    <div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@tempDataErrorMessage</div>
-                                }
 
                             </div>
 
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+								
 
 	                            @await Html.PartialAsync("_EditProfilePartialView", Model)
 							
+                            </div>
+							
+                            <div class="tab-pane fade profile-edit pt-3" id="profile-change-picture">
+								
+	                            @await Html.PartialAsync("_ProfileImagePartial", Model)
+
                             </div>
 							
                             <div class="tab-pane fade pt-3" id="profile-change-password">
 
 	                            @await Html.PartialAsync("_ChangePasswordPartialView", new ChangePasswordViewModel())
 
+                            </div>
+							
+                            
+                            <!-- Success Modal -->
+                            <div class="modal fade justify-content-center" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="false">
+	                            <div class="modal-dialog">
+		                            <div class="modal-content success-content">
+			                            <div class="modal-header bg-success text-white border-none">
+				                            <h5 class="modal-title text-center w-100" id="successModalLabel">Success</h5>
+				                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			                            </div>
+			                            <div class="modal-body messages-text">
+				                            @tempDataSuccessMessage
+
+			                            </div>
+		                            </div>
+	                            </div>
+                            </div>
+
+                            <!-- Error Modal -->
+                            <div class="modal fade justify-content-center" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true" data-bs-backdrop="false">
+	                            <div class="modal-dialog">
+		                            <div class="modal-content error-content">
+			                            <div class="modal-header bg-danger text-white border-none">
+				                            <h5 class="modal-title text-center w-100" id="errorModalLabel">Error</h5>
+				                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			                            </div>
+			                            <div class="modal-body messages-text">
+				                            @tempDataErrorMessage
+			                            </div>
+		                            </div>
+	                            </div>
                             </div>
 							
 
@@ -214,6 +249,12 @@
     </section>
 
 </main><!-- End #main -->
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<!-- jQuery Validation -->
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 <script>
 
@@ -230,8 +271,14 @@
             var editProfileTabLink = document.getElementById('profile-edit-tab');
             if (editProfileTabLink) {
                 new bootstrap.Tab(editProfileTabLink).show();
-                console.log("redirected to the profile edit!"); // Debugging purposes only
-            }
+            console.log("redirected to the profile edit!"); // Debugging purposes only
+            } 
+        } else if (activeTab === "profileChangePicture") {
+            var editProfilePictureTabLink = document.getElementById('profile-change-picture-tab');
+        if (editProfilePictureTabLink) {
+            new bootstrap.Tab(editProfilePictureTabLink).show();
+            console.log("redirected to the profile picture edit tab!"); // Debugging purposes only
+        }   
         } else {
             var overviewTabLink = document.getElementById('profile-overview-tab'); // fall back to the profile overview tab
             if (overviewTabLink) {
@@ -248,4 +295,33 @@
     });
 
 
+    document.addEventListener("DOMContentLoaded", function () {
+        var successMessage = '@tempDataSuccessMessage';
+        var errorMessage = '@tempDataErrorMessage';
+
+
+        if (successMessage.trim() !== '') {
+            var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+
+            setTimeout(() => {
+                successModal.hide();
+            }, 2000);
+        }
+
+        if (errorMessage.trim() !== '') {
+            var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            errorModal.show();
+
+            setTimeout(() => {
+                successModal.hide();
+            }, 2000);
+        }
+    });
+    
+
 </script>
+
+
+
+

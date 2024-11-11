@@ -1,130 +1,116 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using LoadVantage.Core.Models.Profile;
+@using LoadVantage.Extensions
 @model ProfileViewModel
 
 
+<form id="updateProfileForm" asp-action="Profile" asp-controller="Broker" method="post" novalidate>
+	@Html.AntiForgeryToken()
 
-<div class="row mb-3">
-	<label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-	<div class="col-md-8 col-lg-9">
-		<img src="@Model.UserImageUrl" alt="Profile" id="profileImagePreview" />
-        
-		<div class="pt-2 d-xl-inline-flex">
-			<!-- Form to Upload New Profile Image -->
-			<form asp-controller="Profile" asp-action="UpdateProfileImage" enctype="multipart/form-data" method="post">
-				<input type="file" id="fileInput" name="file" style="display:none" accept="image/*">
-				<button id="uploadImageButton" type="button" class="btn btn-primary btn-sm" title="Upload new profile image">
-					<i class="bi bi-upload"></i> </button>
-				<button id="submitButton" type="submit" class="btn btn-success btn-sm" style="display:none;">
-					Upload Image
-				</button>
-			</form>
-            
-			<!-- Form to Delete Current Profile Image -->
-			<form asp-controller="Profile" asp-action="DeleteProfileImage" method="post" class="d-inline">
-				<button id="removeImageButton" type="submit" class="btn btn-danger btn-sm" title="Remove my profile image">
-					<i class="bi bi-trash"></i>
-				</button>
-			</form>
+	<input type="hidden" name="Position" value="@Model.Position" />
+	<input type="hidden" name="Id" value="@Model.Id" />
+	<input name="UserImage" type="hidden" class="form-control" id="userImage" value="@Model.UserImageUrl">
+
+	<div class="row mb-3">
+		<label for="firstNameProfile" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+		<div class="col-md-8 col-lg-9">
+			<input name="FirstName" type="text" class="form-control" id="firstNameProfile" value="@Model.FirstName">
+			<span asp-validation-for="FirstName" class="badge badge-danger mt-1"></span>
 		</div>
 	</div>
-</div>
 
+	<div class="row mb-3">
+		<label for="lastNameProfile" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
+		<div class="col-md-8 col-lg-9">
+			<input name="LastName" type="text" class="form-control" id="lastNameProfile" value="@Model.LastName">
+			<span asp-validation-for="LastName" class="badge badge-danger mt-1"></span>
 
-
-<form asp-action="Profile" asp-controller="Broker" method="post" id="updateProfileForm">
-		@Html.AntiForgeryToken()
-
-		<input type="hidden" name="Position" value="@Model.Position" />
-		<input type="hidden" name="Id" value="@Model.Id" />
-		<input name="UserImage" type="hidden" class="form-control" id="userImage" value="@Model.UserImageUrl">
-
-
-		<div id="pass-change-divider" class="badge badge-danger mt-1 d-flex justify-content-center" style="dispay:none;">
-			@Html.ValidationSummary(true)
 		</div>
+	</div>
 
-		<div class="row mb-3">
-			<label for="firstNameProfile" class="col-md-4 col-lg-3 col-form-label">First Name</label>
-			<div class="col-md-8 col-lg-9">
-				<input name="FirstName" type="text" class="form-control" id="firstNameProfile" value="@Model.FirstName">
-				<span asp-validation-for="FirstName" class="badge badge-danger mt-1"></span>
-			</div>
+	<div class="row mb-3">
+		<label for="usernameProfile" class="col-md-4 col-lg-3 col-form-label">Username</label>
+		<div class="col-md-8 col-lg-9">
+			<input name="Username" type="text" class="form-control" id="usernameProfile" value="@Model.Username">
+			<span asp-validation-for="Username" class="badge badge-danger mt-1"></span>
+
 		</div>
+	</div>
 
-		<div class="row mb-3">
-			<label for="lastNameProfile" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
-			<div class="col-md-8 col-lg-9">
-				<input name="LastName" type="text" class="form-control" id="lastNameProfile" value="@Model.LastName">
-				<span asp-validation-for="LastName" class="badge badge-danger mt-1"></span>
 
-			</div>
+	<div class="row mb-3">
+		<label for="companyNameProfile" class="col-md-4 col-lg-3 col-form-label">Company</label>
+		<div class="col-md-8 col-lg-9">
+			<input name="CompanyName" type="text" class="form-control" id="companyNameProfile" value="@Model.CompanyName">
+			<span asp-validation-for="CompanyName" class="badge badge-danger mt-1"></span>
+
 		</div>
+	</div>
 
-		<div class="row mb-3">
-			<label for="usernameProfile" class="col-md-4 col-lg-3 col-form-label">Username</label>
-			<div class="col-md-8 col-lg-9">
-				<input name="Username" type="text" class="form-control" id="usernameProfile" value="@Model.Username">
-				<span asp-validation-for="Username" class="badge badge-danger mt-1"></span>
+	<div class="row mb-3">
+		<label for="phoneNumberProfile" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+		<div class="col-md-8 col-lg-9">
+			<input name="PhoneNumber" type="text" class="form-control" id="phoneNumberProfile" value="@Model.PhoneNumber">
+			<span asp-validation-for="PhoneNumber" class="badge badge-danger mt-1"></span>
 
-			</div>
 		</div>
+	</div>
 
+	<div class="row mb-3">
+		<label for="emailProfile" class="col-md-4 col-lg-3 col-form-label">Email</label>
+		<div class="col-md-8 col-lg-9">
+			<input name="Email" type="email" class="form-control" id="emailProfile" value="@Model.Email">
+			<span asp-validation-for="Email" class="badge badge-danger mt-1"></span>
 
-		<div class="row mb-3">
-			<label for="companyNameProfile" class="col-md-4 col-lg-3 col-form-label">Company</label>
-			<div class="col-md-8 col-lg-9">
-				<input name="CompanyName" type="text" class="form-control" id="companyNameProfile" value="@Model.CompanyName">
-				<span asp-validation-for="CompanyName" class="badge badge-danger mt-1"></span>
-
-			</div>
 		</div>
+	</div>
 
-		<div class="row mb-3">
-			<label for="phoneNumberProfile" class="col-md-4 col-lg-3 col-form-label">Phone</label>
-			<div class="col-md-8 col-lg-9">
-				<input name="PhoneNumber" type="text" class="form-control" id="phoneNumberProfile" value="@Model.PhoneNumber">
-				<span asp-validation-for="PhoneNumber" class="badge badge-danger mt-1"></span>
+	<div class="text-center">
+		<button type="submit" form="updateProfileForm" class="btn btn-outline-primary" id="saveProfileButton">
+			<span >Save Changes</span>
+		</button>
+	</div>
 
-			</div>
-		</div>
+</form>
 
-		<div class="row mb-3">
-			<label for="emailProfile" class="col-md-4 col-lg-3 col-form-label">Email</label>
-			<div class="col-md-8 col-lg-9">
-				<input name="Email" type="email" class="form-control" id="emailProfile" value="@Model.Email">
-				<span asp-validation-for="Email" class="badge badge-danger mt-1"></span>
 
-			</div>
-		</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-		
+<!-- jQuery Validation -->
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
-		<div class="text-center">
-			<button type="submit" class="btn btn-outline-primary" id="saveProfileButton">
-				<span id="buttonSpinner" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" style="display: none;"></span>
-				<span id="buttonText">Save Changes</span>
-			</button>
-		</div>
-
-	</form>
-
-	
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
-		const uploadButton = document.getElementById("uploadButton");
+		const uploadImageButton = document.getElementById("uploadImageButton");
 		const fileInput = document.getElementById("fileInput");
 		const submitButton = document.getElementById("submitButton");
 
-		if (uploadButton && fileInput && submitButton) {
+		submitButton.style.display = 'none';
 
-			uploadButton.addEventListener("click", function (event) {
-				event.preventDefault(); 
-				fileInput.click();      
+		if (uploadImageButton && fileInput && submitButton) {
+
+			uploadImageButton.addEventListener("click", function (event) {
+				event.preventDefault();
+				fileInput.click();
 			});
 
 			fileInput.addEventListener("change", function () {
-				submitButton.style.display = 'inline-block'; 
+				if (fileInput.files.length > 0) {
+					submitButton.style.display = 'inline-block';  
+				} else {
+					submitButton.style.display = 'none'; 
+				}
+			});
 		}
 	});
+
+	$("#updateProfileForm").submit(function (event) {
+		if (!$(this).valid()) {
+			event.preventDefault();
+		}
+	});
+
 </script>
+

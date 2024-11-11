@@ -1,15 +1,18 @@
 ﻿@using LoadVantage.Extensions
+@using LoadVantage.Infrastructure.Data
 @using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using static LoadVantage.Common.GeneralConstants.UserRoles;
 @inject UserManager<User> UserManager
+@inject LoadVantageDbContext DbContext
 
 @model LoadVantage.Core.Models.Profile.ProfileViewModel
 
 @{
-	var user = await User.GetUserAsync(UserManager);
-	
+    var user = await User.GetUserAsync(UserManager);
+    var userImageUrl = DbContext.UsersImages.First(ui => ui.User == user).ImageUrl;
+
 	var position = Model.Position;
 	var areaAndController = position == BrokerPositionName ? BrokerPositionName : DispatcherPositionName; // Set the area based on position
 }
@@ -134,7 +137,7 @@
 
                     <li class="message-item">
                         <a href="#">
-                            <img src=@Model.UserImageUrl alt="User Image" class="rounded-circle">
+                            <img src=# alt="User Image" class="rounded-circle">
                             <div>
                                 <h4>Maria Hudson</h4>
                                 <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -185,7 +188,7 @@
             <li class="nav-item dropdown pe-3">
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src=@Model.UserImageUrl alt="User Image" class="rounded-circle">
+                    <img src=@userImageUrl alt="User Image" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2">@user.FirstName[0].@user.LastName</span>
                 </a><!-- End Profile Iamge Icon -->
 				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">

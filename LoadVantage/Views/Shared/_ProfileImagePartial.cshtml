@@ -1,0 +1,44 @@
+﻿@using LoadVantage.Extensions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model LoadVantage.Core.Models.Profile.ProfileViewModel
+
+
+<div class="row mb-3">
+	
+	<div class="d-flex flex-row justify-content-center">
+		<img class="img-fluid img-thumbnail" src="@Model.UserImageUrl" alt="Profile" id="profileImagePreview" />
+
+		@Html.ValidationSummary(true)
+
+		<div class="d-flex flex-row align-items-center">
+			<div class="row ml-3">
+				<form id="imageUploadForm" asp-controller="Profile" asp-action="UpdateProfileImage" enctype="multipart/form-data" method="post">
+					@Html.AntiForgeryToken()
+
+					<input type="file" asp-for="ImageFileUploadModel!.FormFile" id="fileInput" style="display:none" accept="image/*">
+					<span asp-validation-for="ImageFileUploadModel!.FormFile" class="text-danger"></span>
+				
+				
+					<div class="pt-2">
+						<button id="uploadImageButton" type="button" class="btn btn-primary btn-sm" title="Upload new profile image">
+							<i class="bi bi-upload"></i>
+						</button>
+						<button id="submitButton" type="submit" class="btn btn-success btn-sm">
+							Upload
+						</button>
+					</div>
+				
+				</form>
+
+				<!-- Form to Delete Current Profile Image -->
+				<form asp-controller="Profile" asp-action="DeleteProfileImage" method="post" class="d-inline">
+					@Html.AntiForgeryToken()
+					<button id="removeImageButton" type="submit" class="btn btn-danger btn-sm" title="Remove my profile image">
+						<i class="bi bi-trash"></i>
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
