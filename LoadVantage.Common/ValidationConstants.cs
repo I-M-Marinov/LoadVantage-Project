@@ -104,10 +104,9 @@
 
         public static class UserImageValidations
         {
-	        public const string UserImageValidFileExtensions = "jpg,jpeg,png,gif";
-	        public const int UserImageMaxFileSize = 5242880;
-			public const string InvalidImageFileExtension = "Please upload a valid image file (jpg, jpeg, png).";
-			public const string ImageFileSizeExceeded = "File size must not exceed 5 MegaBytes.";
+	        public const int UserImageMaxFileSize = 10485760; // in bytes ( or 10 * 1024 * 1024 )
+            public const string InvalidImageFileExtension = "Invalid file extension. Only JPG, JPEG and PNG files are allowed.";
+            public const string ImageFileSizeExceeded = "File size must not exceed 10 MegaBytes.";
 
 		}
 	}

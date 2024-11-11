@@ -108,6 +108,7 @@ namespace LoadVantage.Common
             public const string ProfileActiveTab = "profile";
             public const string ProfileChangePasswordActiveTab = "changePassword";
             public const string ProfileEditActiveTab = "profileEdit";
+            public const string ProfileChangePictureActiveTab = "profileChangePicture";
             
         }
         public static class UserImage
