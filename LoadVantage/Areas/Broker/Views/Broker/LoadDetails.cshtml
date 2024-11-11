@@ -169,7 +169,7 @@
 							<div class="col-md-3">
 								<div class="form-floating">
 									<input type="hidden" asp-for="Id"/>
-									<input type="text" class="form-control" id="originCity" placeholder="Origin City" name="OriginCity" value="@Model.OriginCity" @(isEditing ? "" : "disabled")/>
+									<input type="text" class="form-control" id="originCity" placeholder="Origin City" name="OriginCity" value="@Model.OriginCity" @(isEditing ? "" : "disabled") required/>
 									<label for="originCity">Origin City</label>
 									<span asp-validation-for="OriginCity" class="badge badge-danger mt-1"></span>
 
@@ -177,21 +177,21 @@
 							</div>
 							<div class="col-md-1">
 								<div class="form-floating">
-									<input type="text" class="form-control" id="originState" placeholder="State" name="OriginState" value="@Model.OriginState" @(isEditing ? "" : "disabled")/>
+									<input type="text" class="form-control" id="originState" placeholder="State" name="OriginState" value="@Model.OriginState" @(isEditing ? "" : "disabled") required />
 									<label for="originState">State</label>
 								</div>
 
 							</div>
 							<div class="col-md-3">
 								<div class="form-floating">
-									<input type="text" class="form-control" id="destinationCity" placeholder="Origin City" name="DestinationCity" value="@Model.DestinationCity" @(isEditing ? "" : "disabled")/>
+									<input type="text" class="form-control" id="destinationCity" placeholder="Origin City" name="DestinationCity" value="@Model.DestinationCity" @(isEditing ? "" : "disabled") required />
 									<label for="destinationCity">Destination City</label>
 									<span asp-validation-for="DestinationCity" class="badge badge-danger mt-1"></span>
 								</div>
 							</div>
 							<div class="col-md-1">
 								<div class="form-floating">
-									<input type="text" class="form-control" id="destinationState" placeholder="State" name="DestinationState" value="@Model.DestinationState" @(isEditing ? "" : "disabled")/>
+									<input type="text" class="form-control" id="destinationState" placeholder="State" name="DestinationState" value="@Model.DestinationState" @(isEditing ? "" : "disabled") required />
 									<label for="destinationState">State</label>
 								</div>
 							</div>
@@ -202,16 +202,16 @@
 						<div class="d-flex centered-row flex-wrap justify-content-center">
 							<div class="col-md-5">
 								<div class="form-floating">
-									<input type="text" class="form-control" id="pickupTime" placeholder="Pickup Time" name="PickupTime" value="@Model.PickupTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled")/>
+									<input type="text" class="form-control" id="pickupTime" placeholder="Pickup Time" name="PickupTime" value="@Model.PickupTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") required />
 									<label for="pickupTime">Pickup Time</label>
-								<span asp-validation-for="PickupTime" class="badge badge-danger mt-1"></span>
+									<span asp-validation-for="PickupTime" class="badge badge-danger mt-1"></span>
 								</div>
 							</div>
 							<div class="col-md-5">
 								<div class="form-floating">
-									<input type="text" class="form-control" id="deliveryTime" placeholder="Delivery Time" name="DeliveryTime" value="@Model.DeliveryTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled")/>
+									<input type="text" class="form-control" id="deliveryTime" placeholder="Delivery Time" name="DeliveryTime" value="@Model.DeliveryTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") required />
 									<label for="deliveryTime">Delivery Time</label>
-								<span asp-validation-for="DeliveryTime" class="badge badge-danger mt-1"></span>
+									<span asp-validation-for="DeliveryTime" class="badge badge-danger mt-1"></span>
 
 								</div>
 							</div>
@@ -222,17 +222,17 @@
 						<div class="d-flex centered-row flex-wrap justify-content-center">
 							<div class="col-md-3">
 								<div class="form-floating">
-									<input type="text" class="form-control" id="price" placeholder="Price" name="PostedPrice" value="@Model.PostedPrice" @(isEditing ? "" : "disabled")/>
+									<input type="text" class="form-control" id="price" placeholder="Price" name="PostedPrice" value="@Model.PostedPrice" @(isEditing ? "" : "disabled") required />
 									<label for="price">Price</label>
-								<span asp-validation-for="PostedPrice" class="badge badge-danger mt-1"></span>
+									<span asp-validation-for="PostedPrice" class="badge badge-danger mt-1"></span>
 
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-floating">
-									<input type="text" class="form-control" id="weight" placeholder="Weight" name="Weight" value="@Model.Weight" @(isEditing ? "" : "disabled") />
+									<input type="text" class="form-control" id="weight" placeholder="Weight" name="Weight" value="@Model.Weight" @(isEditing ? "" : "disabled") required />
 									<label for="weight">Weight in lbs</label>
-								<span asp-validation-for="Weight" class="badge badge-danger mt-1"></span>
+									<span asp-validation-for="Weight" class="badge badge-danger mt-1"></span>
 
 								</div>
 							</div>
@@ -251,10 +251,14 @@
 						<button type="button" id="cancelEditingButton" class="btn btn-secondary" style="display: none;">
 							<i class="bx bx-arrow-back"></i> Cancel
 						</button>
+						
 
 					</div>
 				</form>
+				
+				
 				<div class="text-center details-buttons-container">
+
 					@{
 						switch (status)
 						{
@@ -268,13 +272,13 @@
 								</form>
 								break;
 							case LoadStatus.Available:
-	                            <form asp-action="UnpostALoad" asp-controller="Broker" method="post" id="postLoadForm">
-	                                @Html.AntiForgeryToken()
-	                                <input type="hidden" name="loadId" value="@Model.Id" />
-	                                <button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
-	                                    <i class="ri-file-list-line"></i> Unpost
-	                                </button>
-	                            </form>
+								<form asp-action="UnpostALoad" asp-controller="Broker" method="post" id="postLoadForm">
+									@Html.AntiForgeryToken()
+									<input type="hidden" name="loadId" value="@Model.Id"/>
+									<button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
+										<i class="ri-file-list-line"></i> Unpost
+									</button>
+								</form>
 								break;
 							// case LoadStatus.Booked:
 							// 	<div class="load-status badge bg-warning">
@@ -297,11 +301,11 @@
 					<form id="cancelLoadForm" asp-action="CancelLoad" asp-controller="Broker" method="post" id="cancelLoadButton">
 						@Html.AntiForgeryToken()
 						<input type="hidden" name="loadId" value="@Model.Id"/>
-					<button type="submit" class="btn btn-outline-danger" id="cancelLoadBtn">
+						<button type="submit" class="btn btn-outline-danger" id="cancelLoadBtn">
 							<i class="bx bxs-x-circle"></i> Cancel Load
 						</button>
 					</form>
-					
+
 					<div class="modal fade" id="cancelConfirmationModal" tabindex="-1" aria-labelledby="cancelConfirmationModalLabel" aria-hidden="true">
 						<div class="modal-dialog modal-dialog-centered">
 							<div class="modal-content">
@@ -326,7 +330,7 @@
 							<i class="bx bxs-dashboard"></i> Back to LoadBoard
 						</button>
 					</form>
-					
+
 					<form asp-action="LoadDetails" asp-controller="Broker" method="get" id="refreshLoadForm">
 						<input type="hidden" name="loadId" value="@Model.Id"/>
 						<button id="refreshLoadInfoButton" class="btn btn-outline-info" style="display: none;">
