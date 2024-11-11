@@ -4,7 +4,10 @@ using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using LoadVantage.Core.Models.Image;
+using LoadVantage.Core.Models.Profile;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static LoadVantage.Common.GeneralConstants.UserImage;
 
 
@@ -19,7 +22,30 @@ namespace LoadVantage.Core.Services
             return await userManager.FindByIdAsync(userId.ToString());
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<ProfileViewModel> GetUserInformation(Guid userId)
+        {
+	        var user =  await GetUserByIdAsync(userId);
+
+	        var viewModel = new ProfileViewModel
+	        {
+		        Id = user.Id.ToString(),
+		        Username = user.UserName!,
+		        Email = user.Email!,
+		        FirstName = user.FirstName,
+		        LastName = user.LastName,
+		        CompanyName = user.CompanyName!,
+		        Position = user.Position!,
+		        PhoneNumber = user.PhoneNumber!,
+		        UserImageUrl = user.UserImage!.ImageUrl,
+		        ChangePasswordViewModel = new ChangePasswordViewModel(),
+		        ImageFileUploadModel = new ImageFileUploadModel()
+	        };
+
+	        return viewModel;
+
+        }
+
+		public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             return  await userManager.Users
                 .ToListAsync();
@@ -91,23 +117,27 @@ namespace LoadVantage.Core.Services
                         PublicId = publicId
                     };
                     await context.UsersImages.AddAsync(userImage);
-                }
-                else
+				}
+				else
                 {
                     userImage.ImageUrl = resultImageUrl;
                     userImage.PublicId = publicId;
                 }
 
-                // Save changes to the database
-                await context.SaveChangesAsync();
+                // Add reference to the user in the User's table
+
+				var user = await userManager.FindByIdAsync(userId.ToString());
+                user!.UserImageId = userImage.Id;
+                await userManager.UpdateAsync(user);
+
+				// Save changes to the database
+				await context.SaveChangesAsync();
             }
             else
             {
                 throw new Exception(ImageUploadFailed);
             }
         }
-
-
 
         public async Task DeleteUserImageAsync(Guid userId, Guid imageId)
         {
