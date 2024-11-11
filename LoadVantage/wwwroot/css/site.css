@@ -574,7 +574,7 @@ body {
 }
 
 .modal-content{
-    border: 3px black solid !important;
+    border: 2px black solid !important;
 }
 
 #cancelConfirmationModalLabel {
@@ -592,4 +592,38 @@ body {
     padding: 10px 0;
 }
 
+#uploadImageButton,
+#removeImageButton {
+    margin: 0.50em;
+}
 
+.profile-change-picture{
+    display: flex;
+    justify-content: center;
+}
+
+.modal-header {
+    height: 2.3em;
+}
+
+#successModal,
+#errorModal {
+    font-family: Nunito 14px;
+    font-weight: 600;
+}
+
+#errorModalLabel,
+#successModalLabel {
+    font-family: Nunito 14px;
+    font-weight: 600;
+}
+
+.border-none {
+    border-top-left-radius: 0%;
+    border-top-right-radius: 0%;
+}
+
+
+.messages-text {
+    margin-top: 2em;
+}
