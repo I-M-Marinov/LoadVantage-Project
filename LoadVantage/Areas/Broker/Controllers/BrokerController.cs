@@ -32,16 +32,10 @@ namespace LoadVantage.Areas.Broker.Controllers
         {
 			var userGuidId = User.GetUserId();
 
-            try
-            {
-				ProfileViewModel? broker = await profileService.GetUserInformation(userGuidId.Value); // Fetch user information for the logged-in user only
-
-				if (broker == null)
-                {
-                    return NotFound(BrokerInformationNotRetrieved);  // Broker was not found
-                }
-                
-                return View(broker);
+			try
+			{
+				ProfileViewModel? userProfileViewModel = await profileService.GetUserInformation(userGuidId.Value); // Fetch user information for the logged-in user only
+				return View(userProfileViewModel);
             }
             catch (Exception)
             {
@@ -55,7 +49,14 @@ namespace LoadVantage.Areas.Broker.Controllers
         [Route("Profile")]
         public async Task<IActionResult> Profile(ProfileViewModel model)
         {
-            if (!ModelState.IsValid)
+            // manually pass the user's image so it's not null when a View is returned 
+	        Guid userId = User.GetUserId().Value;
+	        ProfileViewModel user = await profileService.GetUserInformation(userId);
+
+	        model.UserImageUrl = user!.UserImageUrl;
+
+
+			if (!ModelState.IsValid)
             {
 	            TempData.SetActiveTab(ProfileEditActiveTab);
                 return View("Profile", model);
@@ -77,20 +78,20 @@ namespace LoadVantage.Areas.Broker.Controllers
 
                 if (updatedModel.Id != userGuidId.ToString()) // If the returned model from the method is with a different Id or Position return the View and add some messages 
                 {
-	                TempData.SetActiveTab(ProfileEditActiveTab);
+	                TempData.SetActiveTab(ProfileActiveTab);
 	                ModelState.AddModelError(string.Empty, NoChangesMadeToProfile);
 
 					return View(updatedModel);
 				}
 
 				TempData.SetSuccessMessage(ProfileUpdatedSuccessfully);
-                TempData.SetActiveTab(ProfileEditActiveTab);
+                TempData.SetActiveTab(ProfileActiveTab);
                 return View(updatedModel);
             }
             catch (Exception ex)
             {
                 TempData.SetActiveTab(ProfileActiveTab);
-                TempData.SetSuccessMessage(ex.Message);
+                TempData.SetErrorMessage(ex.Message);
                 return View("Profile", model);
             }
         }
