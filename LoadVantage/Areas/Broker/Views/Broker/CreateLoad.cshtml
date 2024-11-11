@@ -1,5 +1,6 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using LoadVantage.Core.Models.Profile
+@using LoadVantage.Extensions
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model LoadVantage.Core.Models.Load.LoadViewModel;
 
@@ -7,13 +8,8 @@
     ViewData["Title"] = "Create a Load";
     Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 
-    var firstName = User.FindFirst("FirstName")?.Value;
-    var lastName = User.FindFirst("LastName")?.Value;
-    var position = User.FindFirst("Position")?.Value;
-
-    var errorMessage = TempData["ErrorMessage"];
-    var successMessage = TempData["SuccessMessage"];
-
+    var tempDataSuccessMessage = TempData.GetSuccessMessage();
+    var tempDataErrorMessage = TempData.GetErrorMessage();
 
 }
 
@@ -77,16 +73,15 @@
     <div class="card">
 	    <div class="card-body justify-content-center">
 		    <h5 class="card-title">Creating a load</h5>
-			
-            	
-		    @if (TempData["ErrorMessage"] != null)
+
+		    @if (!string.IsNullOrEmpty(tempDataSuccessMessage))
 		    {
-                <div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@errorMessage</div>
+			    <div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@tempDataSuccessMessage</div>
 		    }
 
-		    @if (TempData["SuccessMessage"] != null)
+		    @if (!string.IsNullOrEmpty(tempDataErrorMessage))
 		    {
-			    <div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@successMessage</div>
+			    <div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@tempDataErrorMessage</div>
 		    }
 			
 		    <div class="spinner-container">
@@ -215,7 +210,7 @@
 
         setTimeout(() => {
             hideLoader();
-        }, 2500); 
+        }, 4000); 
     }
 
     function hideLoader() {

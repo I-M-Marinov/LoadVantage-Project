@@ -50,13 +50,12 @@ namespace LoadVantage.Areas.Broker.Controllers
         public async Task<IActionResult> Profile(ProfileViewModel model)
         {
             // manually pass the user's image so it's not null when a View is returned 
-	        Guid userId = User.GetUserId().Value;
-	        ProfileViewModel user = await profileService.GetUserInformation(userId);
+            Guid userId = User.GetUserId().Value;
+            ProfileViewModel user = await profileService.GetUserInformation(userId);
+            model.UserImageUrl = user!.UserImageUrl;
 
-	        model.UserImageUrl = user!.UserImageUrl;
 
-
-			if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
 	            TempData.SetActiveTab(ProfileEditActiveTab);
                 return View("Profile", model);
