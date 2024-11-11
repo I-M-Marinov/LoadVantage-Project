@@ -1096,17 +1096,18 @@ h6 {
 }
 
 .profile .profile-overview .label {
-  font-weight: 600;
-  color: rgba(1, 41, 112, 0.6);
+    font-weight: 700;
+    color: rgba(1, 41, 112, 0.6);
 }
 
 .profile .profile-edit label {
-  font-weight: 600;
+  font-weight: 700;
   color: rgba(1, 41, 112, 0.6);
 }
 
 .profile .profile-edit img {
-  max-width: 120px;
+  max-width: 450px;
+  min-width: 100px;
 }
 
 /*--------------------------------------------------------------
