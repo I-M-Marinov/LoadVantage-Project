@@ -13,6 +13,7 @@ using static LoadVantage.Common.GeneralConstants;
 using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.UserRoles;
 using static LoadVantage.Common.GeneralConstants.SecretString;
+using UserImage = LoadVantage.Infrastructure.Data.Models.UserImage;
 
 
 namespace LoadVantage.Infrastructure.Data.SeedData
@@ -48,7 +49,6 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 			var adminLastName = configuration["AdminCredentials:AdminLastName"];
 			var adminPhoneNumber = configuration["AdminCredentials:AdminPhoneNumber"];
 			var adminCompany = configuration["AdminCredentials:AdminCompany"];
-			var adminImage = configuration["AdminCredentials:AdminImage"];
 
 			if (await userManager.FindByNameAsync(adminUserName!) == null)
 			{
@@ -63,8 +63,8 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     PhoneNumber = adminPhoneNumber!,
                     CompanyName = adminCompany,
                     Role = role!,
-                    //UserImage = adminImage
-				};
+                    UserImageId = Guid.Empty
+                };
 
 				var result = await userManager.CreateAsync(adminUser, adminPassword!);
 
@@ -102,8 +102,9 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     PhoneNumber = "+1-800-654-1234",
                     Position = DispatcherPositionName,
                     Role = userRole!,
-                    //UserImage = DefaultImagePath
-				},
+                    UserImageId = Guid.Empty
+
+                },
                 new User()
                 {
                     UserName = "dispatcher2",
@@ -114,8 +115,9 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     PhoneNumber = "+1-225-968-4692",
                     Position = DispatcherPositionName,
                     Role = userRole!,
-                    //UserImage = DefaultImagePath
-				}
+                    UserImageId = Guid.Empty
+
+                }
             };
 
             var counter = 1;
@@ -170,27 +172,29 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                 {
                     UserName = "broker1",
                     Email = "broker1@gmail.com",
-                    FirstName = "Richard",
-                    LastName = "Richardson",
-                    CompanyName = "Echo Global Logistics",
+                    FirstName = "Bugs",
+                    LastName = "Bunny",
+                    CompanyName = "What's Up Dock Inc",
                     PhoneNumber = "+1-708-953-7412",
                     Position = BrokerPositionName,
                     Role = userRole!,
-                    //UserImage = DefaultImagePath
-				},
+                    UserImageId = Guid.Empty
+
+                },
                 new User()
                 {
                     UserName = "broker2",
                     Email = "broker2@gmail.com",
                     FirstName = "Donald",
-                    LastName = "Gardner",
-                    CompanyName = "Pitbull Freight Co.",
+                    LastName = "Duck",
+                    CompanyName = "Lake Shore Freight Co.",
                     PhoneNumber = "+1-300-852-7391",
                     Position = BrokerPositionName,
                     Role = userRole!,
-                    //UserImage = DefaultImagePath
-				}
-			};
+                    UserImageId = Guid.Empty
+
+                }
+            };
 
 
             var counter = 1;
@@ -224,6 +228,34 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 
         }
 
+        public static async Task SeedDefaultPictures(UserManager<User> userManager, IServiceProvider serviceProvider)
+        {
+            var dbContext = serviceProvider.GetRequiredService<LoadVantageDbContext>();
+
+            var userList = await userManager.Users.ToListAsync(); // get all Users that are Brokers 
+
+            foreach (var user in userList)
+            {
+                if (user.UserImageId == Guid.Empty)
+                {
+                    // Create a new `UsersImages` entry with default image values
+                    var userImage = new UserImage
+                    {
+                        Id = Guid.NewGuid(), 
+                        UserId = user.Id, 
+                        ImageUrl = DefaultImagePath, 
+                        PublicId = string.Empty
+                    };
+
+                    dbContext.UsersImages.Add(userImage);
+                    user.UserImageId = userImage.Id;
+                    dbContext.Users.Update(user);
+                }
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
         public static async Task SeedCreatedLoads(UserManager<User> userManager, IServiceProvider serviceProvider)
         {
             await using var context = serviceProvider.GetRequiredService<LoadVantageDbContext>();
@@ -249,14 +281,26 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                 ("Seattle", "WA"),
                 ("Phoenix", "AZ"),
                 ("Reno", "NV"),
-                ("Indianapolis", "IN")
+                ("Indianapolis", "IN"),
+                ("Lincoln", "NE"),
+                ("Charlotte", "NC"),
+                ("Philadelphia", "PA"),
+                ("Fort Worth", "TX"),
+                ("Akron", "OH"),
+                ("Portland", "OR"),
+                ("Boston", "MA"),
+                ("Detroit", "MI"),
+                ("Albuquerque", "NM"),
+                ("Las Vegas", "NV"),
+                ("Montgomery", "AL"),
+                ("Rochester", "NY")
             };
 
             List<Load> GenerateRandomLoads()
             {
                 var loads = new List<Load>();
 
-                for (int i = 0; i < 6; i++) // Generate six random loads
+                for (int i = 0; i < 20; i++) // Generate twenty random loads per broker
                 {
                     // Pick random origin and destination that are not the same
                     var origin = locations[random.Next(locations.Count)];
@@ -277,8 +321,8 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                         PickupTime = DateTime.Now.AddDays(random.Next(1, 10)), // Pickup date 1 to 10 days from now
                         DeliveryTime = DateTime.Now.AddDays(random.Next(11, 20)), // Delivery date 11 to 20 days from now
                         Distance = 0,
-                        Price = random.Next(1000, 6000), // Random price 
-                        Weight = random.Next(10000, 45000), // Random weight 
+                        Price = random.Next(1000, 7500), // Random price 
+                        Weight = random.Next(500, 48000), // Random weight 
                         Status = LoadStatus.Created
                     });
                 }
