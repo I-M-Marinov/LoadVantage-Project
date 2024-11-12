@@ -1,11 +1,10 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using LoadVantage.Core.Models.Profile;
 @using LoadVantage.Extensions
 @model ProfileViewModel
 
 
-<form id="updateProfileForm" asp-action="Profile" asp-controller="Broker" method="post" novalidate>
+<form id="updateProfileForm" asp-action="Profile" asp-controller="Profile" method="post">
 	@Html.AntiForgeryToken()
 
 	<input type="hidden" name="Position" value="@Model.Position" />
@@ -67,13 +66,38 @@
 	</div>
 
 	<div class="text-center">
+
 		<button type="submit" form="updateProfileForm" class="btn btn-outline-primary" id="saveProfileButton">
 			<span >Save Changes</span>
 		</button>
+
 	</div>
 
 </form>
 
+<div class="text-center">
+		
+	<form asp-action="RefreshEditProfile" asp-controller="Profile" method="get" id="refreshProfile">
+		<button id="refreshProfileoButton" class="btn btn-outline-info">
+			<span><i class="bx  bx-refresh"></i></span>
+		</button>
+	</form>
+
+</div>
+
+<!-- Vendor JS Files -->
+<script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="~/assets/vendor/echarts/echarts.min.js"></script>
+<script src="~/assets/vendor/quill/quill.js"></script>
+<script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="~/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="~/assets/js/main.js"></script>
+<script src="~/js/site.js"></script>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
@@ -113,4 +137,3 @@
 	});
 
 </script>
-

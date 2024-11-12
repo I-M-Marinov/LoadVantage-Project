@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using static LoadVantage.Common.GeneralConstants.UserRoles;
+@using static LoadVantage.Common.GeneralConstants.UserImage;
 @inject UserManager<User> UserManager
 @inject LoadVantageDbContext DbContext
 
@@ -12,6 +13,11 @@
 @{
     var user = await User.GetUserAsync(UserManager);
     var userImageUrl = DbContext.UsersImages.First(ui => ui.User == user).ImageUrl;
+
+    if (userImageUrl == null)
+    {
+	    userImageUrl = DefaultImagePath;
+    }
 
 	var position = Model.Position;
 	var areaAndController = position == BrokerPositionName ? BrokerPositionName : DispatcherPositionName; // Set the area based on position
@@ -189,7 +195,7 @@
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                     <img src=@userImageUrl alt="User Image" class="rounded-circle">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">@user.FirstName[0].@user.LastName</span>
+                    <span class="d-none d-md-block dropdown-toggle ps-2">@user!.FirstName[0].@user.LastName</span>
                 </a><!-- End Profile Iamge Icon -->
 				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
 
@@ -203,8 +209,8 @@
 
                     <li>
 
-                        <form method="get" action="@Url.Action("Profile", "Broker")">
-                            <input type="hidden" name="brokerId" value="@user.Id" />
+                        <form method="get" action="@Url.Action("Profile", "Profile")">
+                            <input type="hidden" name="userId" value="@user.Id" />
                             <button type="submit" class="dropdown-item d-flex align-items-center">
                                 <i class="bi bi-person"></i>
                                 <span>My Profile</span>
@@ -251,4 +257,25 @@
         </ul>
     </nav><!-- End Icons Navigation -->
 
-</header><!-- End Header -->
+    </header><!-- End Header -->
+	
+
+    <!-- Vendor JS Files -->
+<script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="~/assets/vendor/echarts/echarts.min.js"></script>
+<script src="~/assets/vendor/quill/quill.js"></script>
+<script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="~/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="~/assets/js/main.js"></script>
+<script src="~/js/site.js"></script>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<!-- jQuery Validation -->
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

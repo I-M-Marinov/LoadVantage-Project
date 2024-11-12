@@ -1,0 +1,285 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Core.Models.Profile
+@using LoadVantage.Extensions
+@using LoadVantage.Infrastructure.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+@model ProfileViewModel
+
+@{
+    
+    Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+
+    var user = await User.GetUserAsync(UserManager);
+    ViewData["Title"] = $"{user.Position} Profile";
+
+    var tempDataSuccessMessage = TempData.GetSuccessMessage();
+    var tempDataErrorMessage = TempData.GetErrorMessage();
+    var tempDataActiveTab = TempData.GetActiveTab();
+
+}
+
+<!-- ======= Header ======= -->
+@await Html.PartialAsync("_HeaderPartialView", Model)
+
+<!-- ======= Sidebar ======= -->
+@await Html.PartialAsync("_SidebarPartialView")
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Profile</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Broker</li>
+                <li class="breadcrumb-item active">Profile</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section profile">
+	    <div class="row">
+		    <div class="col-xl-4">
+
+			    <div class="card">
+				    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+					    <img src=@Model.UserImageUrl alt="User Image" class="rounded-circle">
+					    <h2>@user.FullName</h2>
+					    <h3>@user.Position at @user.CompanyName</h3>
+					    <div class="social-links mt-2">
+                            
+					    </div>
+				    </div>
+			    </div>
+
+		    </div>
+
+		    <div class="col-xl-8">
+
+			    <div class="card">
+				    <div class="card-body pt-3">
+					    <!-- Bordered Tabs -->
+					    <ul class="nav nav-tabs nav-tabs-bordered">
+
+						    <li class="nav-item">
+							    <button class="nav-link active" data-bs-toggle="tab" id="profile-overview-tab" href="#profile-overview" data-bs-target="#profile-overview">Overview</button>
+						    </li>
+                            
+						    <li class="nav-item">
+		                        
+							    <button class="nav-link" data-bs-toggle="tab" id="profile-edit-tab"  href="#profile-edit" data-bs-target="#profile-edit">Edit Profile</button>
+		                        
+						    </li>
+							
+						    <li class="nav-item">
+							    <button class="nav-link" data-bs-toggle="tab" id="profile-change-picture-tab" href="#profile-change-picture" data-bs-target="#profile-change-picture">Edit Picture</button>
+						    </li>
+
+						    <li class="nav-item">
+							    <button class="nav-link" data-bs-toggle="tab" id="profile-change-password-tab" href="#profile-change-password" data-bs-target="#profile-change-password">Change Password</button>
+						    </li>
+							
+
+
+					    </ul>
+					    <div class="tab-content pt-2">
+
+						    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                      
+							    <h5 class="card-title">Profile Details</h5>
+
+							    <div class="row">
+								    <div class="col-lg-3 col-md-4 label">Full Name</div>
+								    <div class="col-lg-9 col-md-8">@user.FullName</div>
+							    </div>
+
+							    <div class="row">
+								    <div class="col-lg-3 col-md-4 label">Company</div>
+								    <div class="col-lg-9 col-md-8">@user.CompanyName</div>
+							    </div>
+
+							    <div class="row">
+								    <div class="col-lg-3 col-md-4 label">Position</div>
+								    <div class="col-lg-9 col-md-8">@user.Position</div>
+							    </div>
+
+							    <div class="row">
+								    <div class="col-lg-3 col-md-4 label">Username</div>
+								    <div class="col-lg-9 col-md-8">@user.UserName</div>
+							    </div>
+								
+							    <div class="row">
+								    <div class="col-lg-3 col-md-4 label">Phone Number</div>
+								    <div class="col-lg-9 col-md-8">@user.PhoneNumber</div>
+							    </div>
+
+							    <div class="row">
+								    <div class="col-lg-3 col-md-4 label">Email</div>
+								    <div class="col-lg-9 col-md-8">@user.Email!.ToLower()</div>
+							    </div>
+
+
+						    </div>
+
+						    <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+								
+
+							    @await Html.PartialAsync("_EditProfilePartialView", Model)
+							
+						    </div>
+							
+						    <div class="tab-pane fade profile-edit pt-3" id="profile-change-picture">
+								
+							    @await Html.PartialAsync("_ProfileImagePartial", Model)
+
+						    </div>
+							
+						    <div class="tab-pane fade pt-3" id="profile-change-password">
+
+							    @await Html.PartialAsync("_ChangePasswordPartialView", new ChangePasswordViewModel())
+
+						    </div>
+							
+						    <div class="spinner-container">
+							    <div id="loader" class="spinner" style="display: none;">
+
+								    <div></div>
+								    <div></div>
+								    <div></div>
+								    <div></div>
+								    <div></div>
+								    <div></div>
+
+							    </div>
+						    </div>
+							
+                            
+						    <!-- Success Modal -->
+						    <div class="modal fade justify-content-center" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="false">
+							    <div class="modal-dialog">
+								    <div class="modal-content success-content">
+									    <div class="modal-header bg-success text-white border-none">
+										    <h5 class="modal-title text-center w-100" id="successModalLabel">Success</h5>
+										    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									    </div>
+									    <div class="modal-body messages-text">
+										    @tempDataSuccessMessage
+
+									    </div>
+								    </div>
+							    </div>
+						    </div>
+
+						    <!-- Error Modal -->
+						    <div class="modal fade justify-content-center" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true" data-bs-backdrop="false">
+							    <div class="modal-dialog">
+								    <div class="modal-content error-content">
+									    <div class="modal-header bg-danger text-white border-none">
+										    <h5 class="modal-title text-center w-100" id="errorModalLabel">Error</h5>
+										    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									    </div>
+									    <div class="modal-body messages-text">
+										    @tempDataErrorMessage
+									    </div>
+								    </div>
+							    </div>
+						    </div>
+							
+
+
+					    </div><!-- End Bordered Tabs -->
+
+				    </div>
+			    </div>
+
+		    </div>
+	    </div>
+    </section>
+	
+    <!-- Vendor JS Files -->
+    <script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendor/chart.js/chart.umd.js"></script>
+    <script src="~/assets/vendor/echarts/echarts.min.js"></script>
+    <script src="~/assets/vendor/quill/quill.js"></script>
+    <script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="~/assets/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="~/assets/js/main.js"></script>
+    <script src="~/js/site.js"></script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- jQuery Validation -->
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+</main><!-- End #main -->
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var activeTab = "@tempDataActiveTab";  
+
+        if (activeTab === "changePassword") {
+            var changePasswordTabLink = document.getElementById('profile-change-password-tab');
+            if (changePasswordTabLink) {
+                new bootstrap.Tab(changePasswordTabLink).show();
+                console.log("redirected to the password change!"); // Debugging purposes only
+            }
+        } else if (activeTab === "profileEdit") {
+            var editProfileTabLink = document.getElementById('profile-edit-tab');
+            if (editProfileTabLink) {
+                new bootstrap.Tab(editProfileTabLink).show();
+            console.log("redirected to the profile edit!"); // Debugging purposes only
+            } 
+        } else if (activeTab === "profileChangePicture") {
+            var editProfilePictureTabLink = document.getElementById('profile-change-picture-tab');
+        if (editProfilePictureTabLink) {
+            new bootstrap.Tab(editProfilePictureTabLink).show();
+            console.log("redirected to the profile picture edit tab!"); // Debugging purposes only
+        }   
+        } else {
+            var overviewTabLink = document.getElementById('profile-overview-tab'); // fall back to the profile overview tab
+            if (overviewTabLink) {
+                new bootstrap.Tab(overviewTabLink).show();
+                console.log("redirected to the profile overview!"); // Debugging purposes only
+
+            }
+        }
+    });
+
+    // Debugging purposes only
+    $(document).ready(function () {
+        console.log("jQuery is loaded!");
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var successMessage = '@tempDataSuccessMessage';
+        var errorMessage = '@tempDataErrorMessage';
+
+
+        if (successMessage.trim() !== '') {
+            var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+
+            setTimeout(() => {
+                successModal.hide();
+            }, 2000);
+        }
+
+        if (errorMessage.trim() !== '') {
+            var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            errorModal.show();
+        }
+    });
+    
+
+</script>

@@ -10,6 +10,7 @@
 --------------------------------------------------------------------------------------*/
 document.addEventListener("DOMContentLoaded", function () {
     // Error message fade-out
+
     var errorMessage = document.getElementById('error-message');
     if (errorMessage) {
         setTimeout(function () {
@@ -139,28 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-//function confirmCancel() {
-
-//    return confirm("Are you sure you want to cancel this load?");
-//}
-
-
-//function confirmCancel(event) {
-//    event.preventDefault(); 
-
-//    var cancelModal = new bootstrap.Modal(document.getElementById('cancelConfirmationModal'));
-//    cancelModal.show();
-
-//    document.getElementById('confirmCancelBtn').onclick = function () {
-//        cancelModal.hide();
-//        proceedWithCancellation();
-//    };
-//}
-
-//function proceedWithCancellation() {
-//    document.getElementById('cancelLoadForm').submit();
-
-//}
 
 document.addEventListener("DOMContentLoaded", function () {
     var cancelButton = document.getElementById('cancelLoadBtn');
@@ -186,16 +165,22 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const passChangeDivider = document.getElementById("badge-validation");
+    const createLoadButton = document.getElementById("createLoadButton");
 
-    if (passChangeDivider) {
-        const validationMessages = passChangeDivider.querySelector("ul, ol");
+    if (createLoadButton) {
+        createLoadButton.addEventListener("click", function () {
 
-        if (validationMessages && validationMessages.childElementCount > 0) {
-            passChangeDivider.style.display = 'inline-block'; 
-        } else {
-            passChangeDivider.style.display = 'none'; 
-        }
+            const form = document.getElementById("creteLoadForm");
+            const isValid = $(form).valid();
+
+            if (!isValid) {
+
+                showAndHideLoader();
+                return;
+            }
+
+            showLoader();
+            
+        });
     }
 });
-

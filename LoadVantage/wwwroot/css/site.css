@@ -627,3 +627,7 @@ body {
 .messages-text {
     margin-top: 2em;
 }
+
+#refreshProfile{
+    margin-top: 0.5em;
+}

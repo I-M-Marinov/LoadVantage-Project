@@ -1,8 +1,4 @@
 using System.Threading.RateLimiting;
-using LoadVantage.Areas.Broker.Contracts;
-using LoadVantage.Areas.Broker.Services;
-using LoadVantage.Areas.Dispatcher.Contracts;
-using LoadVantage.Areas.Dispatcher.Services;
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Services;
 using LoadVantage.Infrastructure.Data;
@@ -68,16 +64,13 @@ if (builder.Environment.IsDevelopment())
 
 
 builder.Services.AddScoped<IImageService, ImageService>();									// Add the Image Service 
-builder.Services.AddScoped<IProfileService, ProfileService>();								// Add the Profile Service 
+builder.Services.AddScoped<IProfileService, ProfileService>();                              // Add the Profile Service 
+builder.Services.AddScoped<IUserService, UserService>();                                    // Add the User Service 
 builder.Services.AddHttpClient<ICountryStateCityService, CountryStateCityService>();		// Add CountryStateCity Service 
 builder.Services.AddScoped<IGeocodeService, GeocodeService>();								// Add the Geocode Retrieval Service 
 builder.Services.AddScoped<IDistanceCalculatorService, DistanceCalculatorService>();		// Add the Distance Calculator Service
 builder.Services.AddScoped<ILoadStatusService, LoadStatusService>();						// Add the Load Status Service 
-builder.Services.AddScoped<IDispatcherService, DispatcherService>();                        // Add the Dispatcher Service 
-builder.Services.AddScoped<IUserService, UserService>();		// Add the User Service 
-builder.Services.AddScoped<IBrokerService, BrokerService>();								// Add the Broker Service 
-builder.Services.AddScoped<IDispatcherLoadBoardService, DispatcherLoadBoardService>();		// Add the Dispatcher's LoadBoard Service 
-builder.Services.AddScoped<IBrokerLoadBoardService, BrokerLoadBoardService>();				// Add the Broker's LoadBoard Service 
+builder.Services.AddScoped<ILoadBoardService, LoadBoardService>();							// Add the LoadBoard Service 
 
 
 
@@ -117,6 +110,7 @@ using (var scope = app.Services.CreateScope())
     await SeedAdminUser(services, configuration); // Seed the Administrator 
     await SeedDispatchers(services, configuration); // Seed the Dispatchers
     await SeedBrokers(services, configuration); // Seed the Brokers
+    await SeedDefaultPictures(userManager, services); // Seed the Default Images for all Users
     await SeedCreatedLoads(userManager, services); // Seed the Created loads ( 6 random loads each per broker )
 }
 
@@ -143,10 +137,28 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Default route for controllers without area
-app.MapControllerRoute(
-	name: "default",
-	pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "profile",
+        pattern: "Profile",
+        defaults: new { controller = "Profile", action = "Profile" });
+
+    endpoints.MapControllerRoute(
+	    name: "loadboard",
+	    pattern: "LoadBoard",
+	    defaults: new { controller = "LoadBoard", action = "LoadBoard" });
+
+	endpoints.MapControllerRoute(
+	    name: "load",
+	    pattern: "Load/{action}/{id?}",
+	    defaults: new { controller = "Load", action = "LoadDetails" });
+
+	// Default route mapping
+	endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 
 //app.MapRazorPages();
 

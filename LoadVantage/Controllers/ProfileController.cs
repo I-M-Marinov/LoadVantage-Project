@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 using LoadVantage.Extensions;
@@ -7,16 +10,18 @@ using LoadVantage.Core.Models.Profile;
 using LoadVantage.Core.Models.Image;
 using LoadVantage.Infrastructure.Data.Models;
 
+
 using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
-using static LoadVantage.Common.GeneralConstants.UserRoles;
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 
 
 
 namespace LoadVantage.Controllers
 {
+	[Authorize]
 	public class ProfileController(
 		UserManager<User> userManager,
 		IUserService userService,
@@ -24,21 +29,98 @@ namespace LoadVantage.Controllers
 		: Controller
 	{
 
-		[HttpPost]
+
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);  // or any custom claim name you use for userId
+
+			if (userIdClaim == null)
+            {
+                // Handle the case where the userId is not found in the claims
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Parse the userId to Guid (assuming the claim is stored as a valid GUID string)
+            var userId = Guid.Parse(userIdClaim.Value);
+            
+            ProfileViewModel? userProfileViewModel = await profileService.GetUserInformation(userId); // Fetch user information for the logged-in user only
+            return View(userProfileViewModel);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> Profile(ProfileViewModel model)
+        {
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);  // or any custom claim name you use for userId
+
+            if (userIdClaim == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var userId = Guid.Parse(userIdClaim.Value); 
+            ProfileViewModel? user = await profileService.GetUserInformation(userId);
+            model.UserImageUrl = user!.UserImageUrl;
+
+
+            if (!ModelState.IsValid)
+            {
+                TempData.SetActiveTab(ProfileEditActiveTab);
+                return View(model);
+            }
+
+
+            var isUsernameTaken = await profileService.IsUsernameTakenAsync(model.Username, userId);
+            if (isUsernameTaken)
+            {
+                TempData.SetActiveTab(ProfileEditActiveTab);
+                ModelState.AddModelError("Username", UserNameIsAlreadyTaken);
+                return View(model);
+            }
+
+            try
+            {
+                var updatedModel = await profileService.UpdateProfileInformation(model, userId);
+
+                if (updatedModel.Id != userId.ToString()) // If the returned model from the method is with a different Id or Position return the View and add some messages 
+                {
+                    TempData.SetActiveTab(ProfileActiveTab);
+                    ModelState.AddModelError(string.Empty, NoChangesMadeToProfile);
+
+                    return View(updatedModel);
+                }
+
+                TempData.SetSuccessMessage(ProfileUpdatedSuccessfully);
+                TempData.SetActiveTab(ProfileActiveTab);
+                return View(updatedModel);
+            }
+            catch (Exception ex)
+            {
+                TempData.SetActiveTab(ProfileActiveTab);
+                TempData.SetErrorMessage(ex.Message);
+                return View(model);
+            }
+        }
+
+        [HttpPost]
 		[ValidateAntiForgeryToken]
-		[Route("ChangePassword")]
 
 		public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
 		{
 
 			User? user = await User.GetUserAsync(userManager);
+            ProfileViewModel? profileModel = await profileService.GetUserInformation(user.Id);
 
-			var profileModel = new ProfileViewModel { ChangePasswordViewModel = model };
+            profileModel.ChangePasswordViewModel = model;
 
 			if (!ModelState.IsValid)
 			{
 				TempData.SetActiveTab(ProfileChangePasswordActiveTab); // navigate to the change password tab
-				return RedirectToAction("Profile", "Broker", profileModel); // Redirect to the profile page and pass the Model for the password form  
+				return View("Profile", profileModel); // Redirect to the profile page and pass the Model for the password form  
 			}
 
 			var result = await profileService.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
@@ -48,13 +130,8 @@ namespace LoadVantage.Controllers
 				TempData.SetSuccessMessage(PasswordUpdatedSuccessfully);
 				TempData.SetActiveTab(ProfileActiveTab); // navigate to the profile tab
 
-				if(user is Administrator)
-					return RedirectToAction("AdminDashboard", "Admin", new { area = "Admin" });
-				if (user is Dispatcher)
-					return RedirectToAction("Profile", "Dispatcher", new { area = "Dispatcher" });
-				if (user is Broker)
-					return RedirectToAction("Profile", "Broker", new { area = "Broker" });
-			}
+                return View("Profile", profileModel);
+            }
 
 			var errors = "";
 
@@ -66,43 +143,70 @@ namespace LoadVantage.Controllers
 
 			TempData.SetErrorMessage(errors);
 			TempData.SetActiveTab(ProfileChangePasswordActiveTab); // navigate to the change password tab
-			return RedirectToAction("Profile", "Broker", profileModel); // Redirect to the profile page and pass the Model for the password form  
+			return View("Profile",  profileModel); // Redirect to the profile page and pass the Model for the password form  
 
 		}
 
+		[HttpGet]
+        public async Task<IActionResult> UpdateProfileImage()
+		{
+			Guid userId = User.GetUserId()!.Value;
+
+			try
+			{
+				var profile = await userService.GetUserInformation(userId);
+
+				profile.ImageFileUploadModel = new ImageFileUploadModel();
+
+                return RedirectToAction("Profile", profile);
+			}
+            catch (Exception ex)
+            { 
+				TempData.SetErrorMessage(ex.Message);
+                return View("Profile");
+
+            }
+        }
+
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Route("UpdateImage")]
-		public async Task<IActionResult> UpdateProfileImage(ImageFileUploadModel imageModel)
+		public async Task<IActionResult> UpdateProfileImage(ProfileViewModel model)
 		{
-			Guid userId = User.GetUserId().Value;
+			Guid userId = User.GetUserId()!.Value;
+
+			ModelState.Clear(); // Clear any other model state errors found 
+			TryValidateModel(model.ImageFileUploadModel); // Validate just the image uploaded 
 
 			if (!ModelState.IsValid)
 			{
+				var errors = ModelState.Values.SelectMany(v => v.Errors)
+					.Select(e => e.ErrorMessage)
+					.ToList();
+
+				TempData.SetErrorMessage(string.Join(", ", errors));
 				TempData.SetActiveTab(ProfileEditActiveTab);
-				return RedirectToAction("Profile", "Broker", new { area = "Broker" });
+				return RedirectToAction("Profile", model);
 			}
 
 			try
 			{
-                await userService.UpdateUserImageAsync(userId, imageModel.FormFile);
+                await userService.UpdateUserImageAsync(userId, model.ImageFileUploadModel.FormFile);
 
-                TempData.SetSuccessMessage(ImageUpdatedSuccessfully);
-                TempData.SetActiveTab(ProfileEditActiveTab);
+				TempData.SetSuccessMessage(ImageUpdatedSuccessfully);
+                TempData.SetActiveTab(ProfileChangePictureActiveTab);
 
-                return RedirectToAction("Profile", "Broker", new { area = "Broker" }); // Redirect to the profile page 
+                return RedirectToAction("Profile");
             }
-			catch (Exception ex)
+            catch (Exception ex)
 			{
 				ModelState.AddModelError("Image", ErrorUpdatingImage + ex.Message);
 				TempData.SetActiveTab(ProfileEditActiveTab);
-				return RedirectToAction("Profile", "Broker", new { area = "Broker" }); // Redirect to the profile page 
+                return RedirectToAction("Profile", model);
 			}
-		}
+        }
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Route("DeleteImage")]
 
 		public async Task<IActionResult> DeleteProfileImage()
 		{
@@ -110,41 +214,25 @@ namespace LoadVantage.Controllers
 
 			try
 			{
-				await userService.DeleteUserImageAsync(user.Id, user.UserImageId.Value);
+				await userService.DeleteUserImageAsync(user.Id, user.UserImageId!.Value);
 
 				TempData.SetSuccessMessage(ImageRemoveSuccessfully);
-				return RedirectToAction("Profile", "Broker", new { area = "Broker" });
-			}
+                return RedirectToAction("Profile");
+            }
 			catch (Exception ex)
 			{
 				ModelState.AddModelError("Image", ErrorRemovingImage + ex.Message);
 				TempData.SetErrorMessage(ErrorRemovingImage + ex.Message);
-				return RedirectToAction("Profile", "Broker", new { area = "Broker" });
-			}
+                return View("Profile");
+            }
 		}
 
-		private IActionResult RedirectToUserDashboard(User user)
+
+		[HttpGet]
+		public IActionResult RefreshEditProfile(ProfileViewModel model)
 		{
-			if (user is Administrator)
-				return RedirectToAction("AdminDashboard", "Admin", new { area = "Admin" });
-			if (user is Dispatcher)
-				return RedirectToAction("Profile", DispatcherPositionName, new { area = DispatcherPositionName });
-			if (user is Broker)
-				return RedirectToAction("Profile", BrokerPositionName, new { area = BrokerPositionName });
-
-			// Fallback if user type is not identified
-			return RedirectToAction("Index", "Home");
-		}
-
-		private IActionResult ViewUserProfile(User user, object viewModel)
-		{
-			if (user is Dispatcher)
-				return RedirectToAction("Profile", DispatcherPositionName, viewModel);
-			if (user is Broker)
-				return RedirectToAction("Profile", BrokerPositionName, viewModel);
-
-			// Fallback if user type is not identified
-			return View("Error"); // Or another appropriate fallback view
+			TempData.SetActiveTab(ProfileEditActiveTab);
+			return View(nameof(Profile), model);
 		}
 
 

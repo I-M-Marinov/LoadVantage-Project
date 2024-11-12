@@ -28,11 +28,19 @@
     <ProjectReference Include="..\LoadVantage.Infrastructure\LoadVantage.Infrastructure.csproj" />
   </ItemGroup>
 
+  <!--<ItemGroup>
+    <Folder Include="Views\User\" />
+  </ItemGroup>-->
+
   <ItemGroup>
     <Content Update="Views\Account\Register.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Broker\" />
   </ItemGroup>
 
 </Project>
