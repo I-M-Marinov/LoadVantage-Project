@@ -54,6 +54,7 @@ namespace LoadVantage.Common
             public const string LoadIsNotPosted = "This load is not posted yet.";
             public const string ErrorPostingLoad = "An error occured and the load was not posted.";
             public const string ErrorUnpostingLoad = "An error occured and the load was not unposted.";
+            public const string ErrorUnpostingLoads = "An error occured and the loads were not unposted.";
 
             // USER
 
@@ -91,6 +92,7 @@ namespace LoadVantage.Common
             public const string LoadCancelledSuccessfully = "Load was cancelled successfully.";
             public const string LoadPostedSuccessfully = "Load was posted successfully.";
             public const string LoadUnpostedSuccessfully = "Load was unposted successfully.";
+            public const string LoadsUnpostedSuccessfully = "All loads were unposted successfully.";
 
             // PROFILE
 
@@ -102,9 +104,14 @@ namespace LoadVantage.Common
 
         public static class ActiveTabs
         {
+
+            // LOAD BOARD TABS 
+
 	        public const string CreatedActiveTab = "created";
 	        public const string PostedActiveTab = "posted";
 
+
+            // PROFILE TABS 
             public const string ProfileActiveTab = "profile";
             public const string ProfileChangePasswordActiveTab = "changePassword";
             public const string ProfileEditActiveTab = "profileEdit";

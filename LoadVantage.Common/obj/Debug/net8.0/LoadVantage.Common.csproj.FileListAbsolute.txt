@@ -22,3 +22,4 @@ C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\n
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\refint\LoadVantage.Common.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.pdb
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\ref\LoadVantage.Common.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.csproj.AssemblyReference.cache

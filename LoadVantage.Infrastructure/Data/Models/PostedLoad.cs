@@ -14,9 +14,7 @@ namespace LoadVantage.Infrastructure.Data.Models
         [ForeignKey(nameof(LoadId))]
         public virtual Load Load { get; set; } = null!;
 
-        [Required]
-        public DateTime PostedDate { get; set; } = DateTime.Now;
-
+        public DateTime? PostedDate { get; set; }
 
     }
 }

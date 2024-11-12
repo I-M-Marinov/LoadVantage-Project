@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="jQuery" Version="3.7.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.4" />
   </ItemGroup>
 
 </Project>
