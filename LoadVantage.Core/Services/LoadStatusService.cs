@@ -126,18 +126,46 @@ namespace LoadVantage.Core.Services
 
             // Update status to Created
             load.Status = LoadStatus.Created;
+            
 
             if (load.PostedLoad != null)
             {
-                context.PostedLoads.Remove(load.PostedLoad);
-                load.PostedLoad = null; // Clear the navigation property
-            }
+				context.PostedLoads.Remove(load.PostedLoad); // Do not need to remove the posted date and time ( because the load is deleted from the table ) 
+				load.PostedLoad = null; // Clear the navigation property in the Loads table
+			}
 
             await context.SaveChangesAsync();
 
             return true;
         }
-        public async Task<bool> EditLoadAsync(Guid loadId, LoadViewModel model)
+
+        public async Task<bool> UnpostAllLoadsAsync(Guid brokerId)
+        {
+			var allPostedLoads = await context.Loads
+				.Include(l => l.PostedLoad)
+				.Where(load => load.Status == LoadStatus.Available && load.BrokerId == brokerId)
+				.ToListAsync();
+
+			if (allPostedLoads.Count == 0)
+	        {
+		        return false; // no loads posted for this broker, so cannot unpost them
+	        }
+
+
+	        foreach (var load in allPostedLoads)
+	        {
+				load.Status = LoadStatus.Created; // Update status to Created
+
+				context.PostedLoads.Remove(load.PostedLoad!);
+				load.PostedLoad = null; // Clear the navigation property in the Loads table
+			}
+
+
+	        await context.SaveChangesAsync();
+
+	        return true;
+        }
+		public async Task<bool> EditLoadAsync(Guid loadId, LoadViewModel model)
         {
             var load = await context.Loads.FindAsync(loadId);
 
