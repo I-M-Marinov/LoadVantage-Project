@@ -395,12 +395,12 @@ h6 {
   /* Search Bar */
 }
 
-.header .toggle-sidebar-btn {
+/*.header .toggle-sidebar-btn {
   font-size: 32px;
   padding-left: 10px;
   cursor: pointer;
   color: #012970;
-}
+}*/
 
 .header .search-bar {
   min-width: 360px;
