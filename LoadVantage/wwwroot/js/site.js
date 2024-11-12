@@ -184,3 +184,74 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const editLoadButton = document.getElementById("editLoadButton");
+
+    if (editLoadButton) {
+        editLoadButton.addEventListener("click", function () {
+
+            const form = document.getElementById("loadDetailsForm");
+            const isValid = $(form).valid();
+
+            if (!isValid) {
+
+                showAndHideLoader();
+                return;
+            }
+
+            showLoader();
+
+        });
+    }
+});
+
+
+
+/*-------------------------------------------------------------------------------------
+# SIGNALR WEB SOCKET CONNECTION TO RETRIEVE ANY NEW POSTED LOADS 
+--------------------------------------------------------------------------------------*/
+
+
+
+function initializePostedLoadsConnection() {
+    if (!postedLoadsConnection) {
+        postedLoadsConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/loadhub")
+            .build();
+
+        postedLoadsConnection.start()
+            .then(() => {
+                console.log("Connected to LoadHub.");
+            })
+            .catch(err => {
+                console.error("Error connecting to LoadHub: " + err);
+            });
+
+        postedLoadsConnection.on("ReceiveLoadPostedNotification", function (loadId) {
+            console.log("New load posted with ID: " + loadId);
+            reloadPostedLoadsTable();
+        });
+
+        postedLoadsConnection.on("ReceiveLoadUnpostedNotification", function (loadId) {
+            console.log("Changing status for load with ID: " + loadId);
+            reloadPostedLoadsTable();
+        });
+    }
+}
+
+function reloadPostedLoadsTable() {
+    $.get("/LoadBoard/GetPostedLoadsTable", function (data) {
+        $("#postedLoadsTableContainer").html(data);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    initializePostedLoadsConnection();
+});
+
+window.addEventListener("beforeunload", () => {
+    if (postedLoadsConnection.state === "Connected") {
+        postedLoadsConnection.stop();
+    }
+});
