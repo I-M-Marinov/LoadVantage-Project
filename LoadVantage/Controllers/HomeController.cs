@@ -20,15 +20,13 @@ namespace LoadVantage.Controllers
             {
                 var user = await userManager.FindByNameAsync(username);
 
-                if (User.Identity.IsAuthenticated)
+                if (User.Identity!.IsAuthenticated)
                 {
-                    if (user is Administrator)
-                        return RedirectToAction("AdminDashboard", "Admin", new { area = "Admin" }); // Redirect to admin dashboard
-                    if (user is Dispatcher)
-                        return RedirectToAction("Profile", "Dispatcher", new { area = "Dispatcher" }); // Redirect to Dispatcher dashboard
-                    if (user is Broker)
-                        return RedirectToAction("Profile", "Broker", new { area = "Broker" }); // Redirect to Broker dashboard
-                }
+					if (user is Administrator)
+						return RedirectToAction("AdminDashboard", "Admin"); // Redirect to admin dashboard
+					if (user is Dispatcher || user is Broker)
+						return RedirectToAction("Profile", "Profile"); // Redirect to Profile page
+				}
             }
 
 			return View();

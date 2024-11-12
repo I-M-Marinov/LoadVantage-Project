@@ -124,11 +124,9 @@ namespace LoadVantage.Controllers
 	               await signInManager.SignInAsync(user, isPersistent: false);
 
                     if (user is Administrator)
-                        return RedirectToAction("AdminDashboard", "Admin", new { area = "Admin" }); // Redirect to admin dashboard
-                    if (user is Dispatcher)
-                        return RedirectToAction("Profile", "Dispatcher", new { area = "Dispatcher" }); // Redirect to Dispatcher dashboard
-                    if (user is Broker)
-                        return RedirectToAction("Profile", "Broker", new { area = "Broker" }); // Redirect to Broker dashboard
+                        return RedirectToAction("AdminDashboard", "Admin"); // Redirect to admin dashboard
+                    if (user is Dispatcher || user is Broker)
+                        return RedirectToAction("Profile", "Profile"); // Redirect to Profile page
                 }
 
                 ModelState.AddModelError(string.Empty, InvalidUserNameOrPassword);
