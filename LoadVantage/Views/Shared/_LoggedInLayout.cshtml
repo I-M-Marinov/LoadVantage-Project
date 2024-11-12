@@ -4,10 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - LoadVantage</title>
-
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-	
+
     
     <!-- Vendor CSS Files -->
     <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -32,12 +31,11 @@
 
 </head>
 
-	<body style="background: rgb(131,58,180);background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(29,255,253,1) 100%, rgba(252,176,69,1) 100%);">
+	<body style="background: rgb(131,58,180);background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(29,255,253,1) 100%, rgba(252,176,69,1) 100%); ">
+		
 
-	    <div class="container">
-	        <main role="main" class="pb-3">
+	<div class="container">
 	            @RenderBody()
-	        </main>
 	    </div>
 
 		<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -54,9 +52,15 @@
 	<script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
 	<script src="~/assets/vendor/php-email-form/validate.js"></script>
 
+	<!-- SignalR  -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.5/signalr.min.js"></script>
+	<script src="~/assets/js/signalRconnections.js"></script>
+
+
 	<!-- Template Main JS File -->
 	<script src="~/assets/js/main.js"></script>
 	<script src="~/js/site.js"></script>
+
 	
 	<!-- jQuery -->
 
@@ -65,8 +69,10 @@
 	<!-- jQuery Validation -->
 	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+	
+	
 
-	    <!-- Section for additional scripts -->
+	<!-- Section for additional scripts -->
 	    @await RenderSectionAsync("Scripts", required: false)
 	
 
