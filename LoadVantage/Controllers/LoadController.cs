@@ -9,12 +9,14 @@ using LoadVantage.Filters;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
+using LoadVantage.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace LoadVantage.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]
-	public class LoadController(ILoadStatusService loadService) : Controller
+	public class LoadController(ILoadStatusService loadService, IHubContext<LoadHub> loadHubContext) : Controller
     {
 
         [HttpGet]
@@ -32,10 +34,10 @@ namespace LoadVantage.Controllers
 	                return NotFound("The load you are looking for does not exist");
                 }
 
-                if (userId != loadToShow.BrokerId)
-                {
-					return RedirectToAction("LoadBoard", "LoadBoard"); // If the load does not belong to the broker redirect him back to the LoadBoard
-				}
+    //            if (userId != loadToShow.BrokerId)
+    //            {
+				//	return RedirectToAction("LoadBoard", "LoadBoard"); // If the load does not belong to the broker redirect him back to the LoadBoard
+				//}
 
                 return View(loadToShow);
             }
@@ -87,7 +89,7 @@ namespace LoadVantage.Controllers
 
                 TempData.SetSuccessMessage(LoadCreatedSuccessfully);
 
-                return RedirectToAction("LoadDetails",  new { loadId });
+				return RedirectToAction("LoadDetails",  new { loadId });
             }
             catch (Exception ex)
             {
@@ -99,8 +101,9 @@ namespace LoadVantage.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [BrokerOnly]
 
-        public async Task<IActionResult> EditLoad(LoadViewModel model, bool isEditing, Guid loadId)
+		public async Task<IActionResult> EditLoad(LoadViewModel model, bool isEditing, Guid loadId)
         {
 
             Guid? userId = User.GetUserId();
@@ -141,8 +144,9 @@ namespace LoadVantage.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [BrokerOnly]
 
-        public async Task<IActionResult> CancelLoad(Guid loadId)
+		public async Task<IActionResult> CancelLoad(Guid loadId)
         {
             TempData["isEditing"] = false;
 
@@ -178,7 +182,9 @@ namespace LoadVantage.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PostALoad(Guid loadId)
+        [BrokerOnly]
+
+		public async Task<IActionResult> PostALoad(Guid loadId)
         {
             Guid? userId = User.GetUserId();
 
@@ -220,8 +226,11 @@ namespace LoadVantage.Controllers
 
                 TempData.SetActiveTab(PostedActiveTab); // navigate to the posted tab
                 TempData.SetSuccessMessage(LoadPostedSuccessfully);
+                
+                await loadHubContext.Clients.All.SendAsync("ReceiveLoadPostedNotification", loadId); // send a notification to all Dispatchers the load is posted using SignalR
 
-                return RedirectToAction("LoadBoard", "LoadBoard");
+
+				return RedirectToAction("LoadBoard", "LoadBoard");
 			}
             catch (Exception e)
             {
@@ -232,7 +241,9 @@ namespace LoadVantage.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UnpostALoad(Guid loadId)
+        [BrokerOnly]
+
+		public async Task<IActionResult> UnpostALoad(Guid loadId)
         {
             Guid? userId = User.GetUserId();
 
@@ -255,25 +266,11 @@ namespace LoadVantage.Controllers
 				return RedirectToAction("LoadBoard", "LoadBoard"); // If the load's broker is not the same as logged user, redirect him back to the LoadBoard
 			}
 
-            if (load.Status != LoadStatus.Available.ToString())
-            {
-                if (load.Status == LoadStatus.Created.ToString())
-                {
-                    TempData.SetErrorMessage(LoadIsNotPosted); // if the load is already not posted ( created status ) 
-                }
-                else
-                {
-                    TempData.SetErrorMessage(LoadIsNotInCorrectStatus); // if the load is booked or billed 
-                }
-
-                return RedirectToAction("LoadDetails", new { loadId = load.Id });
-            }
 
             try
             {
                 await loadService.UnpostLoadAsync(load.Id); // unpost the load
 
-                TempData.SetActiveTab(CreatedActiveTab); // navigate to the created tab
                 TempData.SetSuccessMessage(LoadUnpostedSuccessfully);
 
 				return RedirectToAction("LoadBoard", "LoadBoard");
@@ -284,5 +281,29 @@ namespace LoadVantage.Controllers
                 return RedirectToAction("LoadDetails", new { loadId = load.Id });
             }
         }
-    }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [BrokerOnly]
+
+        public async Task<IActionResult> UnpostAllLoads(Guid brokerId)
+        {
+
+	        try
+	        {
+		        await loadService.UnpostAllLoadsAsync(brokerId); // unpost all the broker's loads
+
+		        TempData.SetSuccessMessage(LoadsUnpostedSuccessfully);
+
+		        return RedirectToAction("LoadBoard", "LoadBoard");
+	        }
+	        catch (Exception e)
+	        {
+		        TempData.SetErrorMessage(ErrorUnpostingLoads);
+				return RedirectToAction("LoadBoard", "LoadBoard");
+			}
+
+
+		}
+	}
 }
