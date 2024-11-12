@@ -7,6 +7,8 @@
 @model LoadViewModel
 
 @{
+
+
     ViewData["Title"] = "Broker LoadBoard";
     Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 
@@ -34,8 +36,8 @@
 		<h1>Load</h1>
 		<nav>
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="Profile">Broker</a></li>
-                <li class="breadcrumb-item"><a href="LoadBoard">LoadBoard</a></li>
+				<li class="breadcrumb-item"><a href="#">Broker</a></li>
+                <li class="breadcrumb-item"><a href="#">LoadBoard</a></li>
 				<li class="breadcrumb-item active">Load</li>
 			</ol>
 		</nav>
@@ -102,7 +104,7 @@
 					</div>
 				</div>
 
-			<form id="loadDetailsForm" asp-action="EditLoad" asp-controller="Load" method="post" class="row g-3" onsubmit="showLoader()">
+			<form id="loadDetailsForm" asp-action="EditLoad" asp-controller="Load" method="post" class="row g-3">
 					<input type="hidden" name="brokerId" value="@Model.BrokerId"/>
 					<input type="hidden" name="loadId" value="@Model.Id"/>
 					<input type="hidden" id="isEditing" name="isEditing" value="false"/>
@@ -223,11 +225,19 @@
 								</form>
 								break;
 							case LoadStatus.Available:
-							<form asp-action="UnpostALoad" asp-controller="Load" method="post" id="postLoadForm">
+								<form asp-action="UnpostALoad" asp-controller="Load" method="post" id="postLoadForm">
 									@Html.AntiForgeryToken()
 									<input type="hidden" name="loadId" value="@Model.Id"/>
 									<button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
 										<i class="ri-file-list-line"></i> Unpost
+									</button>
+								</form>
+
+								<form asp-action="UnpostAllLoads" asp-controller="Load" method="post" id="postLoadForm">
+									@Html.AntiForgeryToken()
+									<input type="hidden" name="brokerId" value="@Model.BrokerId"/>
+									<button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
+										<i class="ri-file-list-line"></i> Unpost All
 									</button>
 								</form>
 								break;
