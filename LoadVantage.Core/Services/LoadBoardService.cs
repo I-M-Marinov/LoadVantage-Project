@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Identity;
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Load;
 using LoadVantage.Core.Models.LoadBoard;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace LoadVantage.Core.Services
 {
+	[Authorize]
 	public class LoadBoardService(LoadVantageDbContext context, UserManager<User> userManager) : ILoadBoardService
 	{
 		public async Task<IEnumerable<LoadViewModel>> GetAllCreatedLoadsForBrokerAsync(Guid userId)
@@ -62,6 +64,32 @@ namespace LoadVantage.Core.Services
 			});
 		}
 
+		public async Task<IEnumerable<LoadViewModel>> GetAllPostedLoadsAsync(Guid userId)
+		{
+			var postedLoads = await context.Loads
+				.Include(load => load.PostedLoad)
+				.Where(load => load.Status == LoadStatus.Available)
+				.OrderByDescending(load => load.PostedLoad.PostedDate)
+				.ToListAsync();
+
+			return postedLoads.Select(load => new LoadViewModel()
+			{
+				Id = load.Id,
+				OriginCity = load.OriginCity,
+				OriginState = load.OriginState,
+				DestinationCity = load.DestinationCity,
+				DestinationState = load.DestinationState,
+				PickupTime = load.PickupTime,
+				DeliveryTime = load.DeliveryTime,
+				PostedPrice = load.Price,
+				Distance = load.Distance,
+				Weight = load.Weight,
+				Status = load.Status.ToString(),
+				BrokerId = load.BrokerId
+			}).ToList();
+		}
+
+
 		public async Task<IEnumerable<LoadViewModel>> GetAllBookedLoadsForBrokerAsync(Guid userId)
 		{
 			var bookedLoads = await context.Loads
@@ -108,8 +136,7 @@ namespace LoadVantage.Core.Services
 				BrokerId = load.BrokerId,
 			});
 		}
-
-		public async Task<LoadBoardViewModel> GetLoadBoardAsync(Guid userId)
+		public async Task<LoadBoardViewModel> GetBrokerLoadBoardAsync(Guid userId)
 		{
 			var user = await userManager.Users
 				.FirstOrDefaultAsync(u => u.Id == userId);
@@ -142,7 +169,47 @@ namespace LoadVantage.Core.Services
 				CompanyName = user.CompanyName,
 				Position = user.Position,
 				CreatedLoads = createdLoads.ToList(),
-				PostedLoads = postedLoads.ToList(),
+				PostedLoads = postedLoads,
+				BookedLoads = bookedLoads.ToList(),
+				BilledLoads = billedLoads.ToList(),
+				Profile = profileModel
+			};
+		}
+
+		public async Task<LoadBoardViewModel> GetDispatcherLoadBoardAsync(Guid userId)
+		{
+			var user = await userManager.Users
+				.FirstOrDefaultAsync(u => u.Id == userId);
+
+			var createdLoads = await GetAllCreatedLoadsForBrokerAsync(userId);
+			var postedLoads = await GetAllPostedLoadsAsync(userId);
+			var bookedLoads = await GetAllBookedLoadsForBrokerAsync(userId);
+			var billedLoads = await GetAllBilledLoadsForBrokerAsync(userId);
+
+			var userImage = await context.UsersImages.SingleOrDefaultAsync(ui => ui.UserId == userId);
+
+
+			var profileModel = new ProfileViewModel
+			{
+				Username = user.UserName,
+				Email = user.Email,
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				CompanyName = user.CompanyName,
+				Position = user.Position,
+				PhoneNumber = user.PhoneNumber,
+				UserImageUrl = userImage?.ImageUrl
+			};
+
+			return new LoadBoardViewModel
+			{
+				UserId = userId,
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				CompanyName = user.CompanyName,
+				Position = user.Position,
+				CreatedLoads = createdLoads.ToList(),
+				PostedLoads = postedLoads,
 				BookedLoads = bookedLoads.ToList(),
 				BilledLoads = billedLoads.ToList(),
 				Profile = profileModel
