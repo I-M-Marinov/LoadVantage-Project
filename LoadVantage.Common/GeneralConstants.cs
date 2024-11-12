@@ -118,14 +118,11 @@ namespace LoadVantage.Common
 	        public const string ImageRemoveSuccessfully = "Profile image removed successfully.";
 	        public const string ImageUpdatedSuccessfully = "Profile image updated successfully.";
 
-	        public const string ImageWasNotAdded = "No image was added";
-	        public const string ImageMustBeSelected = "Please upload an image first.";
-			public const string ImageUploadFailed = "Failed to upload image.";
+            public const string ImageMustBeSelected = "Please upload an image first.";
+            public const string ImageUploadFailed = "Failed to upload image.";
 	        public const string ErrorUpdatingImage = "An error occurred while updating the image: ";
 	        public const string ErrorRemovingImage = "Error removing the old profile image: ";
 	        public const string ImageUrlExceedsLimit = "Image URL length exceeds limit.";
-
-
 
         }
     }
