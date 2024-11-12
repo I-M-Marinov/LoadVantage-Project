@@ -1,0 +1,81 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<LoadVantage.Core.Models.Load.LoadViewModel>
+
+	<table class="table datatable" id="postedLoadsTableContainer">
+		<thead>
+		<tr>
+			<th>Origin</th>
+			<th>State</th>
+			<th>Destination</th>
+			<th>State</th>
+			<th>Pickup Time</th>
+			<th>Delivery Time</th>
+			<th>Distance</th>
+			<th>Price</th>
+			<th data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Rate per Mile">RPM</th>
+			<th class="hidden-th">hidden</th>
+
+
+		</tr>
+		</thead>
+		<tbody >
+		@foreach (var load in Model)
+		{
+			<tr id="posted-load-@load.Id">
+				<td>@load.OriginCity</td>
+				<td>@load.OriginState</td>
+				<td>@load.DestinationCity</td>
+				<td>@load.DestinationState</td>
+				<td>@load.PickupTime.ToString("dd/MM/yyyy HH:mm")</td>
+				<td>@load.DeliveryTime.ToString("dd/MM/yyyy HH:mm")</td>
+				<td>@(load.Distance.HasValue ? Math.Round(load.Distance.Value) : 0)</td>
+				<td>@load.PostedPrice</td>
+				<td>@($"${(load.PostedPrice / (decimal)load.Distance!):F2}/mile")</td>
+				<td>
+					<form method="get" action="@Url.Action("LoadDetails", "Load")">
+						<input type="hidden" name="loadId" value="@load.Id" />
+						<button class="btn btn-warning view-button">
+							<i class="ri-clipboard-line"></i>
+							<span>View</span>
+						</button>
+					</form>
+				</td> 
+			</tr>
+		}
+
+		</tbody>
+	</table>
+
+<!-- Vendor JS Files -->
+<script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="~/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="~/assets/vendor/echarts/echarts.min.js"></script>
+<script src="~/assets/vendor/quill/quill.js"></script>
+<script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="~/assets/vendor/php-email-form/validate.js"></script>
+
+
+<!-- jQuery -->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<!-- jQuery Validation -->
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="~/assets/js/main.js"></script>
+<script src="~/js/site.js"></script>
+
+<script>
+
+
+	if (document.querySelector('.toggle-sidebar-btn')) {
+
+		document.querySelector('.toggle-sidebar-btn').addEventListener('click', function (e) {
+
+			document.body.classList.toggle('toggle-sidebar');
+		});
+	}
+
+</script>
