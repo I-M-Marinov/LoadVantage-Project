@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using LoadVantage.Core.Contracts;
+using LoadVantage.Core.Models.Image;
 using LoadVantage.Core.Models.Profile;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
@@ -42,7 +43,11 @@ namespace LoadVantage.Core.Services
 
             };
 
-            return profile;
+            profile.ImageFileUploadModel = new ImageFileUploadModel(); 
+            profile.ChangePasswordViewModel = new ChangePasswordViewModel();
+
+
+			return profile;
         }
         public async Task<ProfileViewModel> UpdateProfileInformation(ProfileViewModel model, Guid userId)
         {

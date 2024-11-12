@@ -39,6 +39,7 @@ namespace LoadVantage.Core.Models.Profile
 		public ChangePasswordViewModel? ChangePasswordViewModel { get; set; } 
 		public ImageFileUploadModel? ImageFileUploadModel { get; set; } 
 
+		// Custom validation for the different partial views
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
 			var results = new List<ValidationResult>();

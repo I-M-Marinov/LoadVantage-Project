@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Net;
 using LoadVantage.Core.Models.Image;
 using LoadVantage.Core.Models.Profile;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static LoadVantage.Common.GeneralConstants.UserImage;
 
 
@@ -15,6 +15,7 @@ using static LoadVantage.Common.GeneralConstants.UserImage;
 
 namespace LoadVantage.Core.Services
 {
+    [Authorize]
     public class UserService(UserManager<User> userManager, LoadVantageDbContext context, IImageService imageService) : IUserService
     {
         public async Task<User> GetUserByIdAsync(Guid userId)

@@ -242,8 +242,8 @@ namespace LoadVantage.Core.Services
             load.BilledLoad = new BilledLoad
             {
                 LoadId = load.Id,
-                BilledAmount = load.Price,
-                BilledDate = DateTime.Now
+				BilledAmount = load.Price,
+				BilledDate = DateTime.Now
             };
 
             context.Loads.Update(load);
