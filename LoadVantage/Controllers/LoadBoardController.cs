@@ -1,20 +1,34 @@
 ﻿using LoadVantage.Core.Contracts;
+using LoadVantage.Core.Models.Load;
 using LoadVantage.Core.Services;
 using LoadVantage.Extensions;
+using LoadVantage.Filters;
+using LoadVantage.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using static LoadVantage.Common.GeneralConstants.ActiveTabs;
 namespace LoadVantage.Controllers
 {
-	public class LoadBoardController(ILoadBoardService loadBoardService) : Controller
+	[Authorize]
+	public class LoadBoardController(ILoadBoardService loadBoardService, IUserService userService) : Controller
 	{
-
 		[HttpGet]
 		public async Task<IActionResult> LoadBoard()
 		{
-			Guid? userId = User.GetUserId();
-			var loadBoardInfo = await loadBoardService.GetLoadBoardAsync(userId.Value);
+			Guid userId = User.GetUserId()!.Value;
+			User user = userService.GetUserByIdAsync(userId).Result;
 
-			return View(loadBoardInfo);
+			if (user is Dispatcher)
+			{
+				TempData.SetActiveTab(PostedActiveTab);
+				 var loadBoardInfo = await loadBoardService.GetDispatcherLoadBoardAsync(userId);
+				 return View(loadBoardInfo);
+			}
+			else // Is Broker
+			{
+				 var loadBoardInfo = await loadBoardService.GetBrokerLoadBoardAsync(userId);
+				 return View(loadBoardInfo);
+			}
 
 		}
 
@@ -23,6 +37,14 @@ namespace LoadVantage.Controllers
 		public IActionResult ReturnToLoadBoard()
 		{
 			return RedirectToAction(nameof(LoadBoard));
+		}
+
+		[DispatcherOnly]
+		public IActionResult GetPostedLoadsTable(Guid userId)
+		{
+			IEnumerable<LoadViewModel> loads = loadBoardService.GetAllPostedLoadsAsync(userId).Result; 
+
+			return PartialView("_PostedLoadsTablePartial", loads);
 		}
 	}
 }
