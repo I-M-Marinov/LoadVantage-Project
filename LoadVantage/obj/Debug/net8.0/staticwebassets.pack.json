@@ -141,10 +141,6 @@
       "PackagePath": "staticwebassets\\assets\\js\\main.js"
     },
     {
-      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\js\\signalRconnections.js",
-      "PackagePath": "staticwebassets\\assets\\js\\signalRconnections.js"
-    },
-    {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\scss\\Readme.txt",
       "PackagePath": "staticwebassets\\assets\\scss\\Readme.txt"
     },

@@ -6,8 +6,8 @@
 @model LoadVantage.Core.Models.LoadBoard.LoadBoardViewModel
 
 @{
+	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
     ViewData["Title"] = $"{Model.Position} Load Board";
-    Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 
     var tempDataSuccessMessage = TempData.GetSuccessMessage();
     var tempDataErrorMessage = TempData.GetErrorMessage();
@@ -106,7 +106,6 @@
 								                    <td>$@load.PostedPrice</td>
 								                    <td title="Price per mile">@($"${(load.PostedPrice / (decimal)load.Distance):F2}/mile")</td>
 								                    <td>
-									                    <!-- Hidden -->
 									                    <form method="get" action="@Url.Action("LoadDetails", "Load")">
 										                    <input type="hidden" name="loadId" value="@load.Id"/>
 										                    <button class="btn btn-warning view-button">
@@ -123,13 +122,14 @@
 				                    </div>
 			                    </div>
 		                    }
-		                    <div class="tab-pane fade" id="pills-posted" role="tabpanel" aria-labelledby="pills-posted-tab">
-								<div class="table-responsive" id="postedLoadsTableContainer">
+			                    <div class="tab-pane fade" id="pills-posted" role="tabpanel" aria-labelledby="pills-posted-tab">
+									<div class="table-responsive" id="postedLoadsTableContainer">
 
-				                    @await Html.PartialAsync("_PostedLoadsTablePartial", Model.PostedLoads)
+					                    @await Html.PartialAsync("_PostedLoadsTablePartial", Model.PostedLoads)
 
+				                    </div>
 			                    </div>
-		                    </div>
+		                    
 		                    <div class="tab-pane fade" id="pills-booked" role="tabpanel" aria-labelledby="pills-booked-tab">
 			                    <div class="table-responsive">
 				                    <table class="table datatable">
@@ -206,30 +206,35 @@
         </div>
     </section>    <!-- LOAD BOARD START -->
 	
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-			var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-				return new bootstrap.Tooltip(tooltipTriggerEl);
-			});
-		});
 
-		document.addEventListener("DOMContentLoaded", function () {
-			var activeTab = "@tempDataActiveTab";
-			if (activeTab === "posted") { 
-				var postedTabButton = document.getElementById("pills-posted-tab");
-				if (postedTabButton) {
-					new bootstrap.Tab(postedTabButton).show();
-				}
-			} else {
-				var createdTabButton = document.getElementById("pills-created-tab"); // fallback to created tab
-				if (createdTabButton) {
-					new bootstrap.Tab(createdTabButton).show();
-				}
-			}
-		});
 
-	</script>
-
+	
 
 </main><!-- End #main -->
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+			return new bootstrap.Tooltip(tooltipTriggerEl);
+		});
+	});
+
+	document.addEventListener("DOMContentLoaded", function () {
+		var activeTab = "@tempDataActiveTab";
+		if (activeTab === "posted") {
+			var postedTabButton = document.getElementById("pills-posted-tab");
+			if (postedTabButton) {
+				new bootstrap.Tab(postedTabButton).show();
+			}
+		} else {
+			var createdTabButton = document.getElementById("pills-created-tab"); // fallback to created tab
+			if (createdTabButton) {
+				new bootstrap.Tab(createdTabButton).show();
+			}
+		}
+	});
+
+
+
+</script>

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "tb4T3167wsdhD7IxYoj9Y3AjUyFTJMc9L7WMlbYcyxE=",
+  "Hash": "9hu6JurmNjvgEXbLkM/u4h3Cc858/4fx6vAfCITUso0=",
   "Source": "LoadVantage",
   "BasePath": "_content/LoadVantage",
   "Mode": "Default",
@@ -1839,25 +1839,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\js\\main.js"
-    },
-    {
-      "Identity": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\js\\signalRconnections.js",
-      "SourceId": "LoadVantage",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\",
-      "BasePath": "_content/LoadVantage",
-      "RelativePath": "assets/js/signalRconnections.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\assets\\js\\signalRconnections.js"
     },
     {
       "Identity": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\scss\\_dashboard.scss",

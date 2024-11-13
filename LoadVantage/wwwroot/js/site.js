@@ -81,12 +81,18 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("weight").disabled = false;
 
             document.getElementById("editLoadButton").style.display = "none";
-            document.getElementById("postLoadBtn").style.display = "none";
+
+            const postLoadBtn = document.getElementById("postLoadBtn");
+
+            if (postLoadBtn)
+            { 
+                postLoadBtn.style.display = "none";
+            }
+
             document.getElementById("cancelLoadBtn").style.display = "none";
 
             document.getElementById("saveLoadButton").style.display = "inline-block";
             document.getElementById("cancelEditingButton").style.display = "inline-block";
-            document.getElementById("refreshLoadInfoButton").style.display = "inline-block";
 
             document.getElementById("isEditing").value = "true";
         }, 300);
@@ -129,12 +135,17 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("weight").disabled = true;
 
             document.getElementById("editLoadButton").style.display = "inline-block";
-            document.getElementById("postLoadBtn").style.display = "inline-block";
+
+            const postLoadBtn = document.getElementById("postLoadBtn");
+
+            if (postLoadBtn) {
+                postLoadBtn.style.display = "inline-block";
+            }
+
             document.getElementById("cancelLoadBtn").style.display = "inline-block";
 
             document.getElementById("saveLoadButton").style.display = "none";
             document.getElementById("cancelEditingButton").style.display = "none";
-            document.getElementById("refreshLoadInfoButton").style.display = "none";
 
         }, 300);
     }
@@ -206,6 +217,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    const saveLoadButton = document.getElementById("saveLoadButton");
+
+    if (saveLoadButton) {
+        saveLoadButton.addEventListener("click", function () {
+
+            const form = document.getElementById("loadDetailsForm");
+            const isValid = $(form).valid();
+
+            if (!isValid) {
+
+                showAndHideLoader();
+                return;
+            }
+
+            showLoader();
+
+        });
+    }
+});
+
+
 
 
 /*-------------------------------------------------------------------------------------
@@ -213,11 +246,13 @@ document.addEventListener("DOMContentLoaded", function () {
 --------------------------------------------------------------------------------------*/
 
 
+// Declare postedLoadsConnection globally
+var postedLoadsConnection;
 
 function initializePostedLoadsConnection() {
     if (!postedLoadsConnection) {
         postedLoadsConnection = new signalR.HubConnectionBuilder()
-            .withUrl("/loadhub")
+            .withUrl("/loadHub")
             .build();
 
         postedLoadsConnection.start()
@@ -233,8 +268,8 @@ function initializePostedLoadsConnection() {
             reloadPostedLoadsTable();
         });
 
-        postedLoadsConnection.on("ReceiveLoadUnpostedNotification", function (loadId) {
-            console.log("Changing status for load with ID: " + loadId);
+        postedLoadsConnection.on("ReloadPostedLoadsTable", function() {
+            console.log("Reloading the table... multiple loads status change / load's status changed");
             reloadPostedLoadsTable();
         });
     }
@@ -251,7 +286,46 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 window.addEventListener("beforeunload", () => {
-    if (postedLoadsConnection.state === "Connected") {
+    if (postedLoadsConnection && postedLoadsConnection.state === "Connected") {
         postedLoadsConnection.stop();
     }
 });
+
+/*-------------------------------------------------------------------------------------
+# TOGGLE SIDEBAR ON AND OFF THE SCREEN 
+--------------------------------------------------------------------------------------*/
+
+
+if (document.querySelector('.toggle-sidebar-btn')) {
+
+    document.querySelector('.toggle-sidebar-btn').addEventListener('click', function (e) {
+
+        document.body.classList.toggle('toggle-sidebar');
+    });
+}
+
+/*-------------------------------------------------------------------------------------
+# JQUERY DEBUGGING AND ENSURE VALIDATION ON THE CHANGE PASSWORD FORM AND THE UPDATE PROFILE FORM
+--------------------------------------------------------------------------------------*/
+
+// Debugging purposes only
+$(document).ready(function () {
+    console.log("jQuery is loaded!");
+});
+
+
+$("#changePasswordForm").submit(function (event) {
+    console.log("Submit event triggered");
+    if (!$(this).valid()) {
+        console.log("Form is invalid");
+        event.preventDefault();
+    }
+});
+
+$("#updateProfileForm").submit(function (event) {
+    if (!$(this).valid()) {
+        event.preventDefault();
+    }
+});
+
+

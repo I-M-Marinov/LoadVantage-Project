@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace LoadVantage.Controllers
 {
-	public class AccountController(
+    public class AccountController(
         UserManager<User> userManager,
         SignInManager<User> signInManager,
         RoleManager<Role> roleManager)
@@ -19,12 +19,12 @@ namespace LoadVantage.Controllers
     {
 
         [HttpGet]
-		[AllowAnonymous]
-		public IActionResult Register()
-		{
-			var model = new RegisterViewModel();
-			return View(model);
-		}
+        [AllowAnonymous]
+        public IActionResult Register()
+        {
+            var model = new RegisterViewModel();
+            return View(model);
+        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -37,17 +37,17 @@ namespace LoadVantage.Controllers
 
             if (!ValidPositions.Contains(model.Position))
             {
-	            ModelState.AddModelError("Position", InvalidPositionSelected);
-	            return View(model);
+                ModelState.AddModelError("Position", InvalidPositionSelected);
+                return View(model);
             }
 
-			var existingUser = await userManager.FindByEmailAsync(model.Email);
+            var existingUser = await userManager.FindByEmailAsync(model.Email);
             if (existingUser != null)
             {
-	            ModelState.AddModelError("Email", EmailAlreadyExists);
-	            return View(model);
+                ModelState.AddModelError("Email", EmailAlreadyExists);
+                return View(model);
             }
-            
+
             existingUser = await userManager.FindByEmailAsync(model.UserName);
             if (existingUser != null)
             {
@@ -67,25 +67,25 @@ namespace LoadVantage.Controllers
                 UserName = model.UserName,
                 Role = role!
             };
-            
+
 
             var result = await userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-	            await userManager.AddToRoleAsync(user, UserRoleName);
+                await userManager.AddToRoleAsync(user, UserRoleName);
                 await userManager.AddClaimAsync(user, new Claim("Position", user.Position ?? ""));
 
                 TempData.SetSuccessMessage(LoginWithNewAccount);
-				return RedirectToAction(nameof(Login));
+                return RedirectToAction(nameof(Login));
             }
 
             foreach (var error in result.Errors)
             {
-	            ModelState.AddModelError(string.Empty, error.Description);
+                ModelState.AddModelError(string.Empty, error.Description);
             }
 
-			return View(model);
+            return View(model);
         }
 
         [HttpGet]
@@ -93,7 +93,7 @@ namespace LoadVantage.Controllers
         public IActionResult Login()
         {
             var model = new LoginViewModel();
-			return View(model);
+            return View(model);
         }
 
         [HttpPost]
@@ -107,21 +107,21 @@ namespace LoadVantage.Controllers
 
             var user = await userManager.FindByNameAsync(model.UserName);
 
-	        if (user != null)
+            if (user != null)
             {
 
                 var result = await signInManager.PasswordSignInAsync(user, model.Password, false, false);
 
                 if (result.Succeeded)
                 {
-	               var claims =  GetMissingClaims(User.Claims, user.FirstName, user.LastName, user.UserName, user.Position);
+                    var claims = GetMissingClaims(User.Claims, user.FirstName, user.LastName, user.UserName, user.Position);
 
-	               if (claims.Count != 0)
-	               {
-		               await userManager.AddClaimsAsync(user, claims);
-	               }
+                    if (claims.Count != 0)
+                    {
+                        await userManager.AddClaimsAsync(user, claims);
+                    }
 
-	               await signInManager.SignInAsync(user, isPersistent: false);
+                    await signInManager.SignInAsync(user, isPersistent: false);
 
                     if (user is Administrator)
                         return RedirectToAction("AdminDashboard", "Admin"); // Redirect to admin dashboard
@@ -138,7 +138,8 @@ namespace LoadVantage.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Logout()
+        [Authorize]
+		public async Task<IActionResult> Logout()
         {
 	        await signInManager.SignOutAsync();
 	        TempData.SetSuccessMessage(LoggedOutOfAccount);
