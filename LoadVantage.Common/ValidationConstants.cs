@@ -64,8 +64,10 @@
 
 	        public const byte EmailMinLength = 7;
 	        public const byte EmailMaxLength = 50;
+	        public const string EmailRegexPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?$";
 
-	        public const byte FirstNameMinLength = 2;
+
+			public const byte FirstNameMinLength = 2;
 	        public const byte FirstNameMaxLength = 25;
 
 	        public const byte LastNameMinLength = 3;
@@ -76,10 +78,13 @@
 
 	        public const byte UserPhoneNumberMinLength = 7;
 	        public const byte UserPhoneNumberMaxLength = 15;
+	        public const string PhoneNumberRegexPattern = @"^\+?(\(\d{1,4}\)|\d{1,4})([-\s]?\d{1,4}){1,3}$";
 
-            // USER IMAGE 
 
-            public const int UserImageMaxLength = 1000;
+
+			// USER IMAGE 
+
+			public const int UserImageMaxLength = 1000;
             public const int UserImagePublicIdMaxLength = 1000;
 
 
@@ -89,9 +94,19 @@
 	        public const byte NewPasswordMinLength = 6;
 	        public const byte NewPasswordMaxLength = 30;
 
+	        public const string UsernameRequired = "Username is required.";
+	        public const string EmailAddressRequired = "Email address is required.";
+	        public const string FirstNameRequired = "First name is required.";
+	        public const string LastNameRequired = "Last name is required.";
+	        public const string CompanyNameRequired = "Company name is required.";
+	        public const string PhoneNumberRequired = "Phone number is required.";
+
+
 			public const string EmailLengthNotValid = "The length of the email must be between 7 and 50 characters.";
+			public const string EmailAddressNotValid = "Invalid email address format.";
             public const string CompanyNameLengthNotValid = "The length of the company name must be between 3 and 50 characters.";
             public const string UserPhoneNumberLengthNotValid = "The length of the phone number must be between 7 and 15 characters.";
+            public const string UserPhoneNumberEmailAddressNotValid = "Invalid phone number format - Accepted formats: (123) 456-7890 or +1-234-567-8900";
             public const string UserNameLengthNotValid = "The length of the username must be between 4 and 30 characters.";
             public const string FirstNameLengthNotValid = "The length of the firstname must be between 2 and 25 characters.";
             public const string LastNameLengthNotValid = "The length of the lastname must be between 3 and 25 characters.";

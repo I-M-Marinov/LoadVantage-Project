@@ -9,28 +9,32 @@ namespace LoadVantage.Core.Models.Profile
     public class ProfileViewModel :IValidatableObject
     {
         public  string Id { get; set; } = null!;
-        [Required(ErrorMessage = "Username is required.")]
+        [Required(ErrorMessage = UsernameRequired)]
         [StringLength(UserNameMaxLength, MinimumLength = UserNameMinLength, ErrorMessage = UserNameLengthNotValid)]
         public string Username { get; set; } = null!;
-        [Required(ErrorMessage = "Email address is required.")]
+        [Required(ErrorMessage = EmailAddressRequired)]
         [StringLength(EmailMaxLength, MinimumLength = EmailMinLength, ErrorMessage = EmailLengthNotValid)]
-        [EmailAddress]
-        public string Email { get; set; } = null!;
-        [Required(ErrorMessage = "First name is required.")]
+        [EmailAddress(ErrorMessage = EmailAddressNotValid)]
+        [RegularExpression(EmailRegexPattern, ErrorMessage = EmailAddressNotValid)]
+
+		public string Email { get; set; } = null!;
+        [Required(ErrorMessage = FirstNameRequired)]
         [StringLength(FirstNameMaxLength, MinimumLength = FirstNameMinLength, ErrorMessage = FirstNameLengthNotValid)]
         public  string FirstName { get; set; } = null!;
-        [Required(ErrorMessage = "Last name is required.")]
+        [Required(ErrorMessage = LastNameRequired)]
         [StringLength(LastNameMaxLength, MinimumLength = LastNameMinLength, ErrorMessage = LastNameLengthNotValid)]
 		public  string LastName { get; set; } = null!;
-        [Required(ErrorMessage = "Company name is required.")]
+        [Required(ErrorMessage = CompanyNameRequired)]
         [StringLength(CompanyNameMaxLength, MinimumLength = CompanyNameMinLength, ErrorMessage = CompanyNameLengthNotValid)]
         public  string CompanyName { get; set; } = null!;
         [Required]
         [StringLength(PositionMaxLength, MinimumLength = PositionMinLength, ErrorMessage = PositionLengthNotValid)]
         public  string Position { get; set; } = null!;
-        [Required(ErrorMessage = "Phone number is required.")]
+        [Required(ErrorMessage = PhoneNumberRequired)]
         [StringLength(UserPhoneNumberMaxLength, MinimumLength = UserPhoneNumberMinLength, ErrorMessage = UserPhoneNumberLengthNotValid)]
-        public  string PhoneNumber { get; set; } = null!;
+        [RegularExpression(PhoneNumberRegexPattern, ErrorMessage = UserPhoneNumberEmailAddressNotValid)]
+
+		public string PhoneNumber { get; set; } = null!;
         public string FullName => $"{FirstName} {LastName}";
 		[Url]
 		[StringLength(UserImageMaxLength, ErrorMessage = ImageUrlExceedsLimit)]
