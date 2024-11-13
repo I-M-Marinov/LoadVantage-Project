@@ -223,13 +223,11 @@ namespace LoadVantage.Controllers
             try
             {
                 await loadService.PostLoadAsync(load.Id);
-
-                TempData.SetActiveTab(PostedActiveTab); // navigate to the posted tab
-                TempData.SetSuccessMessage(LoadPostedSuccessfully);
-                
                 await loadHubContext.Clients.All.SendAsync("ReceiveLoadPostedNotification", loadId); // send a notification to all Dispatchers the load is posted using SignalR
 
-
+				TempData.SetActiveTab(PostedActiveTab); // navigate to the posted tab
+                TempData.SetSuccessMessage(LoadPostedSuccessfully);
+                
 				return RedirectToAction("LoadBoard", "LoadBoard");
 			}
             catch (Exception e)
@@ -270,8 +268,9 @@ namespace LoadVantage.Controllers
             try
             {
                 await loadService.UnpostLoadAsync(load.Id); // unpost the load
+                await loadHubContext.Clients.All.SendAsync("ReloadPostedLoadsTable"); // Send SignalR notification on the websocket to refresh the table ( Posted Loads ) to all Clients
 
-                TempData.SetSuccessMessage(LoadUnpostedSuccessfully);
+				TempData.SetSuccessMessage(LoadUnpostedSuccessfully);
 
 				return RedirectToAction("LoadBoard", "LoadBoard");
 			}
@@ -292,8 +291,10 @@ namespace LoadVantage.Controllers
 	        try
 	        {
 		        await loadService.UnpostAllLoadsAsync(brokerId); // unpost all the broker's loads
+		        await loadHubContext.Clients.All.SendAsync("ReloadPostedLoadsTable"); // Send SignalR notification on the websocket to refresh the table ( Posted Loads ) to all Clients
 
-		        TempData.SetSuccessMessage(LoadsUnpostedSuccessfully);
+
+				TempData.SetSuccessMessage(LoadsUnpostedSuccessfully);
 
 		        return RedirectToAction("LoadBoard", "LoadBoard");
 	        }
