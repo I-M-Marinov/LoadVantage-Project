@@ -3,16 +3,21 @@
 @using LoadVantage.Core.Models.Load;
 @using LoadVantage.Core.Models.Profile
 @using LoadVantage.Extensions
+@using LoadVantage.Infrastructure.Data.Models
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Dispatcher = LoadVantage.Infrastructure.Data.Models.Dispatcher
+@inject UserManager<User> UserManager
 @model LoadViewModel
 
 @{
-
 
     ViewData["Title"] = "Broker LoadBoard";
     Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 
     var isEditing = TempData["isEditing"] as bool? ?? false;
+
+    User user = User.GetUserAsync(UserManager).Result!;
 
 	var tempDataSuccessMessage = TempData.GetSuccessMessage();
 	var tempDataErrorMessage = TempData.GetErrorMessage();
@@ -36,8 +41,8 @@
 		<h1>Load</h1>
 		<nav>
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="#">Broker</a></li>
-                <li class="breadcrumb-item"><a href="#">LoadBoard</a></li>
+				<li class="breadcrumb-item"><a href="#">@user.Position</a></li>
+                <li class="breadcrumb-item"><a href="#">Load Board</a></li>
 				<li class="breadcrumb-item active">Load</li>
 			</ol>
 		</nav>
@@ -104,7 +109,7 @@
 					</div>
 				</div>
 
-			<form id="loadDetailsForm" asp-action="EditLoad" asp-controller="Load" method="post" class="row g-3">
+				<form id="loadDetailsForm" asp-action="EditLoad" asp-controller="Load" method="post" class="row g-3">
 					<input type="hidden" name="brokerId" value="@Model.BrokerId"/>
 					<input type="hidden" name="loadId" value="@Model.Id"/>
 					<input type="hidden" id="isEditing" name="isEditing" value="false"/>
@@ -189,117 +194,152 @@
 
 								</div>
 							</div>
+
 						</div>
+					
 					</div>
+					
+					@if (user is Broker)
+					{
+						<div class="text-center details-buttons-container">
+	
+							<button type="button" id="editLoadButton" class="btn btn-primary">
+								<i class="ri-edit-box-line"></i> Edit
+							</button>
 
-					<div class="text-center details-buttons-container gap-2 d-md-block">
-						<button type="button" id="editLoadButton" class="btn btn-primary">
-							<i class="ri-edit-box-line"></i> Edit
-						</button>
+							<button type="submit" id="saveLoadButton" class="btn btn-success" style="display: none;">
+								<i class="bx bxs-save"></i> Save
+							</button>
 
-						<button type="submit" id="saveLoadButton" class="btn btn-success" style="display: none;">
-							<i class="bx bxs-save"></i> Save
-						</button> 
+							<button type="button" id="cancelEditingButton" class="btn btn-secondary" style="display: none;">
+								<i class="bx bx-arrow-back"></i> Cancel
+							</button>
 
-						<button type="button" id="cancelEditingButton" class="btn btn-secondary" style="display: none;">
-							<i class="bx bx-arrow-back"></i> Cancel
-						</button>
-						
-
-					</div>
-				</form>
-				
-				
-				<div class="text-center details-buttons-container">
-
-					@{
-						switch (status)
-						{
-							case LoadStatus.Created:
-								<form asp-action="PostALoad" asp-controller="Load" method="post" id="postLoadForm">
-									@Html.AntiForgeryToken()
-									<input type="hidden" name="loadId" value="@Model.Id"/>
-									<button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
-										<i class="ri-file-list-line"></i> Post
-									</button>
-								</form>
-								break;
-							case LoadStatus.Available:
-								<form asp-action="UnpostALoad" asp-controller="Load" method="post" id="postLoadForm">
-									@Html.AntiForgeryToken()
-									<input type="hidden" name="loadId" value="@Model.Id"/>
-									<button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
-										<i class="ri-file-list-line"></i> Unpost
-									</button>
-								</form>
-
-								<form asp-action="UnpostAllLoads" asp-controller="Load" method="post" id="postLoadForm">
-									@Html.AntiForgeryToken()
-									<input type="hidden" name="brokerId" value="@Model.BrokerId"/>
-									<button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
-										<i class="ri-file-list-line"></i> Unpost All
-									</button>
-								</form>
-								break;
-							// case LoadStatus.Booked:
-							// 	<div class="load-status badge bg-warning">
-							// 		<i class="bi bi-bookmark me-1"></i> Booked
-							// 	</div>
-							// 	break;
-							// case LoadStatus.Delivered:
-							// 	<div class="load-status badge bg-info">
-							// 		<i class="bi bi-truck me-1"></i> Delivered
-							// 	</div>
-							// 	break;
-							// case LoadStatus.Cancelled:
-							// 	<div class="load-status badge bg-danger">
-							// 		<i class="bi bi-x-circle me-1"></i> Cancelled
-							// 	</div>
-							// 	break;
-						}
+						</div>
 					}
+				</form>
 
-					<form id="cancelLoadForm" asp-action="CancelLoad" asp-controller="Load" method="post" id="cancelLoadButton">
-						@Html.AntiForgeryToken()
-						<input type="hidden" name="loadId" value="@Model.Id"/>
-						<button type="submit" class="btn btn-outline-danger" id="cancelLoadBtn">
-							<i class="bx bxs-x-circle"></i> Cancel Load
-						</button>
-					</form>
+			<div class="d-flex justify-content-center">
+					<div class="text-center details-buttons-container gap-2">
 
-					<div class="modal fade" id="cancelConfirmationModal" tabindex="-1" aria-labelledby="cancelConfirmationModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="cancelConfirmationModalLabel">Confirm Cancellation</h5>
+						@{
+							switch (status)
+							{
+								case LoadStatus.Created:
+									@if (user is not Dispatcher)
+									{
+										<form asp-action="PostALoad" asp-controller="Load" method="post" id="postLoadForm">
+											@Html.AntiForgeryToken()
+											<input type="hidden" name="loadId" value="@Model.Id" />
+											<button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
+												<i class="ri-file-list-line"></i> Post
+											</button>
+										</form>
+									}
+									break;
+
+								case LoadStatus.Available:
+									@if (user is not Dispatcher)
+									{
+										<form asp-action="UnpostALoad" asp-controller="Load" method="post" id="unpostLoadFrom">
+											@Html.AntiForgeryToken()
+											<input type="hidden" name="loadId" value="@Model.Id" />
+											<button type="submit" class="btn btn-outline-warning" id="unpostLoadBtn">
+												<i class="ri-file-list-line"></i> Unpost
+											</button>
+										</form>
+
+										<form asp-action="UnpostAllLoads" asp-controller="Load" method="post" id="unpostAllLoadFrom">
+											@Html.AntiForgeryToken()
+											<input type="hidden" name="brokerId" value="@Model.BrokerId" />
+											<button type="submit" class="btn btn-outline-warning" id="unpostAllBtn">
+												<i class="ri-file-list-line"></i> Unpost All
+											</button>
+										</form>
+									}
+									
+									break;
+
+									// case LoadStatus.Booked:
+									// 	<div class="load-status badge bg-warning">
+									// 		<i class="bi bi-bookmark me-1"></i> Booked
+									// 	</div>
+									// 	break;
+									// case LoadStatus.Delivered:
+									// 	<div class="load-status badge bg-info">
+									// 		<i class="bi bi-truck me-1"></i> Delivered
+									// 	</div>
+									// 	break;
+									// case LoadStatus.Cancelled:
+									// 	<div class="load-status badge bg-danger">
+									// 		<i class="bi bi-x-circle me-1"></i> Cancelled
+									// 	</div>
+									// 	break;
+							}
+						}
+
+						<div class="text-center details-buttons-container">
+
+							@if (user is not Dispatcher)
+							{
+								<form id="cancelLoadForm" asp-action="CancelLoad" asp-controller="Load" method="post" id="cancelLoadButton">
+									@Html.AntiForgeryToken()
+									<input type="hidden" name="loadId" value="@Model.Id" />
+									<button type="submit" class="btn btn-outline-danger" id="cancelLoadBtn">
+										<i class="bx bxs-x-circle"></i> Cancel Load
+									</button>
+								</form>
+							
+
+								<div class="modal fade" id="cancelConfirmationModal" tabindex="-1" aria-labelledby="cancelConfirmationModalLabel" aria-hidden="true">
+									<div class="modal-dialog modal-dialog-centered">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="cancelConfirmationModalLabel">Confirm Cancellation</h5>
+											</div>
+											<i id="modal-icon" class="ri-error-warning-fill"></i>
+											<div class="modal-body">
+												Are you sure you want to cancel this load?
+											</div>
+											<div class="modal-footer-centered">
+												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Go Back</button>
+												<button type="button" class="btn btn-danger" id="confirmCancelBtn">Yes, Cancel</button>
+											</div>
+										</div>
+									</div>
 								</div>
-								<i id="modal-icon" class="ri-error-warning-fill"></i>
-								<div class="modal-body">
-									Are you sure you want to cancel this load?
-								</div>
-								<div class="modal-footer-centered">
-									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Go Back</button>
-									<button type="button" class="btn btn-danger" id="confirmCancelBtn">Yes, Cancel</button>
-								</div>
-							</div>
+							}
+							
+							<form asp-action="LoadDetails" asp-controller="Load" method="get" id="refreshLoadForm">
+								<input type="hidden" name="loadId" value="@Model.Id" />
+								<button id="refreshLoadInfoButton" class="btn btn-outline-info">
+									<i class="bx  bx-refresh"></i>
+								</button>
+							</form>
+							
+							@if (user is not Broker)
+							{
+								<form asp-action="LoadDetails" asp-controller="Load" method="get" id="refreshLoadForm">
+									<input type="hidden" name="loadId" value="@Model.Id" />
+									<button id="refreshLoadInfoButton" class="btn btn-outline-info">
+										<i class="bx  bx-refresh"></i>
+									</button>
+								</form>
+							}
+
+							<form asp-action="ReturnToLoadBoard" asp-controller="LoadBoard" method="post" id="backToLoadBoardButton">
+								@Html.AntiForgeryToken()
+								<button type="submit" class="btn btn-outline-info">
+									<i class="bx bxs-dashboard"></i> Back to LoadBoard
+								</button>
+							</form>
+
 						</div>
+
+
 					</div>
-
-					<form asp-action="ReturnToLoadBoard" asp-controller="LoadBoard" method="post" id="backToLoadBoardButton">
-						@Html.AntiForgeryToken()
-						<button type="submit" class="btn btn-outline-info">
-							<i class="bx bxs-dashboard"></i> Back to LoadBoard
-						</button>
-					</form>
-
-					<form asp-action="LoadDetails" asp-controller="Load" method="get" id="refreshLoadForm">
-						<input type="hidden" name="loadId" value="@Model.Id"/>
-						<button id="refreshLoadInfoButton" class="btn btn-outline-info" style="display: none;">
-							<i class="bx  bx-refresh"></i>
-							<span>Refresh Load Info</span>
-						</button>
-					</form>
 				</div>
+				
 			</div>
 		</div>
 
@@ -307,7 +347,8 @@
 </main><!-- End #main -->
 
 <script>
-	
+
+
 	document.addEventListener("DOMContentLoaded", function () {
 		var activeTab = "@tempDataActiveTab";
 			if (activeTab === "posted") { 
@@ -322,6 +363,16 @@
 				}
 			}
 		});
+
+
+	if (document.querySelector('.toggle-sidebar-btn')) {
+
+		document.querySelector('.toggle-sidebar-btn').addEventListener('click', function (e) {
+
+			document.body.classList.toggle('toggle-sidebar');
+		});
+	}
+
 
 </script>
 
