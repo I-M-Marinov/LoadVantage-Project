@@ -12,11 +12,12 @@ using System.Globalization;
 using Microsoft.Extensions.Logging;
 
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
+using Microsoft.AspNetCore.SignalR;
 
 
 namespace LoadVantage.Core.Services
 {
-    public class LoadStatusService(LoadVantageDbContext context, IDistanceCalculatorService distanceCalculatorService,UserManager<User> userManager, ILogger<LoadStatusService> logger) : ILoadStatusService
+    public class LoadStatusService(LoadVantageDbContext context, IDistanceCalculatorService distanceCalculatorService, ILogger<LoadStatusService> logger) : ILoadStatusService
     {
         public async Task<LoadViewModel> GetLoadByIdAsync(Guid loadId)
         {
@@ -138,7 +139,6 @@ namespace LoadVantage.Core.Services
 
             return true;
         }
-
         public async Task<bool> UnpostAllLoadsAsync(Guid brokerId)
         {
 			var allPostedLoads = await context.Loads

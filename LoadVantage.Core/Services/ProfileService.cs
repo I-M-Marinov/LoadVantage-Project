@@ -60,12 +60,12 @@ namespace LoadVantage.Core.Services
 
             if (userManager.Users.Any(u => u.Email == model.Email) && model.Email != user.Email)
             {
-                throw new Exception(EmailIsAlreadyTaken);
+                throw new InvalidDataException(EmailIsAlreadyTaken);
             }
 
             if (AreUserPropertiesEqual(user,model))
             {
-                throw new Exception(NoChangesMadeToProfile);
+                throw new InvalidOperationException(NoChangesMadeToProfile);
             }
 
             await UpdateUserClaimsAsync(user, model);
