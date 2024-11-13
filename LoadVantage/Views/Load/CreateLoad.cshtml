@@ -160,7 +160,13 @@
 
 </main><!-- End #main -->
 
-@section Scripts {
-	<partial name="_ValidationScriptsPartial" />
-}
+<script>
 
+	if (document.querySelector('.toggle-sidebar-btn')) {
+
+		document.querySelector('.toggle-sidebar-btn').addEventListener('click', function (e) {
+
+			document.body.classList.toggle('toggle-sidebar');
+		});
+	}
+</script>
