@@ -95,6 +95,15 @@
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+<!-- SignalR  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.5/signalr.min.js"></script>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<!-- jQuery Validation -->
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
 
 <!-- Vendor JS Files -->
 <script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -106,18 +115,14 @@
 <script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
 <script src="~/assets/vendor/php-email-form/validate.js"></script>
 
+
 <!-- Template Main JS File -->
 <script src="~/assets/js/main.js"></script>
 <script src="~/js/site.js"></script>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-
-<!-- jQuery Validation -->
-<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-
 <!-- Section for additional scripts -->
 @await RenderSectionAsync("Scripts", required: false)
+
 
 </body>
 

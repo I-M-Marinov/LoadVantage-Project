@@ -11,16 +11,15 @@
 @model LoadVantage.Core.Models.Profile.ProfileViewModel
 
 @{
-	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
-    var user = await User.GetUserAsync(UserManager);
-    var userImageUrl = DbContext.UsersImages.First(ui => ui.User == user).ImageUrl;
+	var user = await User.GetUserAsync(UserManager);
+	var userImageUrl = DbContext.UsersImages.First(ui => ui.User == user).ImageUrl;
 
-    if (userImageUrl == null)
-    {
-	    userImageUrl = DefaultImagePath;
-    }
+  if (userImageUrl == null)
+  {
+	  userImageUrl = DefaultImagePath;
+  }
 
-	var position = Model.Position;
+  var position = Model.Position;
 	
 }
 
@@ -232,10 +231,18 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                            <i class="bi bi-question-circle"></i>
-                            <span>Need Help?</span>
-                        </a>
+	                    <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+		                    <i class="ri  ri-question-fill"></i>
+		                    <span>Privacy Policy</span>
+	                    </a>
+						
+	                    <form method="get" action="@Url.Action("Logout", "Account")">
+		                    <input type="hidden" name="brokerId" value="@user.Id" />
+		                    <button type="submit" class="dropdown-item d-flex align-items-center">
+			                    <i class="bi bi-box-arrow-right"></i>
+			                    <span>Sign Out</span>
+		                    </button>
+	                    </form>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -258,4 +265,4 @@
     </nav><!-- End Icons Navigation -->
 
     </header><!-- End Header -->
-	
+

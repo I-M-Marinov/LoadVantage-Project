@@ -8,9 +8,7 @@
 @inject UserManager<User> UserManager
 @model ProfileViewModel
 
-@{
-    
-	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+@{ 
 	var user = await User.GetUserAsync(UserManager);
 
 }
