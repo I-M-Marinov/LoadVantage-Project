@@ -69,7 +69,6 @@ namespace LoadVantage.Controllers
 
             if (!ModelState.IsValid)
             {
-                TempData.SetActiveTab(ProfileEditActiveTab);
                 return View(model);
             }
 
@@ -98,13 +97,19 @@ namespace LoadVantage.Controllers
                 TempData.SetActiveTab(ProfileActiveTab);
                 return View(updatedModel);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
                 TempData.SetActiveTab(ProfileActiveTab);
-                TempData.SetErrorMessage(ex.Message);
+                TempData.SetSuccessMessage(ex.Message);
                 return View(model);
             }
-        }
+            catch (InvalidDataException ex)
+            {
+	            TempData.SetActiveTab(ProfileActiveTab);
+	            TempData.SetErrorMessage(ex.Message);
+	            return View(model);
+            }
+		}
 
         [HttpPost]
 		[ValidateAntiForgeryToken]
