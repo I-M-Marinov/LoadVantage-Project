@@ -236,10 +236,16 @@
         }
     });
 
-    // Debugging purposes only
-    $(document).ready(function () {
-        console.log("jQuery is loaded!");
-    });
+
+
+	if (document.querySelector('.toggle-sidebar-btn')) {
+
+		document.querySelector('.toggle-sidebar-btn').addEventListener('click', function (e) {
+
+			document.body.classList.toggle('toggle-sidebar');
+		});
+	}
+
 
 
     document.addEventListener("DOMContentLoaded", function () {
