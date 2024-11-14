@@ -1062,18 +1062,18 @@ h6 {
   max-width: 120px;
 }
 
-.profile .profile-card h2 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #2c384e;
-  margin: 10px 0 0 0;
+.profile .profile-card h2{
+    font-size: 20px;
+    font-weight: 700;
+    color: #4154f1;
+    margin: 10px 0 0 0;
 }
 
 .profile .profile-card h3 {
-  font-size: 18px;
+    font-size: 16px;
 }
 
-.profile .profile-card .social-links a {
+.profile .profile-card .social-links{
   font-size: 20px;
   display: inline-block;
   color: rgba(1, 41, 112, 0.5);
@@ -1082,13 +1082,17 @@ h6 {
   transition: 0.3s;
 }
 
-.profile .profile-card .social-links a:hover {
-  color: #012970;
+.profile .profile-card .social-links a:hover{
+    color: #012970;
+}
+
+.profile .loads-card .social-links p:hover {
+    color: #012970;
 }
 
 .profile .profile-overview .row {
-  margin-bottom: 20px;
-  font-size: 15px;
+    margin-bottom: 20px;
+    font-size: 15px;
 }
 
 .profile .profile-overview .card-title {

@@ -653,3 +653,37 @@ body {
 #refreshProfile{
     margin-top: 0.5em;
 }
+
+.profile .loads-card h2 {
+    font-size: 20px;
+    font-weight: 650;
+    color: #8c1db8;
+    margin: 10px 0 0 0;
+    text-align: center;
+}
+
+.social-links {
+    display: grid;
+    gap: 0.5em;
+    text-align: center;
+}
+
+.status-row, .count-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1em;
+}
+
+.profile-loads {
+    font-family: Nunito;
+    font-size: 1em;
+    padding: 0.5em;
+    color: black !important;
+}
+
+.count-row div {
+    font-size: 1.2em;
+    color: #056a8b;
+}
+
+
