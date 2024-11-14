@@ -89,11 +89,35 @@ namespace LoadVantage.Core.Services
 			}).ToList();
 		}
 
-
 		public async Task<IEnumerable<LoadViewModel>> GetAllBookedLoadsForBrokerAsync(Guid userId)
 		{
 			var bookedLoads = await context.Loads
 				.Where(load => load.BookedLoad != null && load.BrokerId == userId)
+				.ToListAsync();
+
+			return bookedLoads.Select(load => new LoadViewModel()
+			{
+				Id = load.Id,
+				OriginCity = load.OriginCity,
+				OriginState = load.OriginState,
+				DestinationCity = load.DestinationCity,
+				DestinationState = load.DestinationState,
+				PickupTime = load.PickupTime,
+				DeliveryTime = load.DeliveryTime,
+				PostedPrice = load.Price,
+				Distance = load.Distance,
+				Weight = load.Weight,
+				Status = load.Status.ToString(),
+				BrokerId = load.BrokerId,
+
+			});
+		}
+
+		public async Task<IEnumerable<LoadViewModel>> GetAllBookedLoadsForDispatcherAsync(Guid userId)
+		{
+			var bookedLoads = await context.Loads
+				.Include(l => l.BookedLoad)
+				.Where(load => load.BookedLoad!.DispatcherId == userId)
 				.ToListAsync();
 
 			return bookedLoads.Select(load => new LoadViewModel()
@@ -119,6 +143,31 @@ namespace LoadVantage.Core.Services
 			var billedLoads = await context.Loads
 				 .Where(load => load.BilledLoad != null && load.BrokerId == userId)
 				 .ToListAsync();
+
+			return billedLoads.Select(load => new LoadViewModel
+			{
+				Id = load.Id,
+				OriginCity = load.OriginCity,
+				OriginState = load.OriginState,
+				DestinationCity = load.DestinationCity,
+				DestinationState = load.DestinationState,
+				PickupTime = load.PickupTime,
+				DeliveryTime = load.DeliveryTime,
+				PostedPrice = load.Price,
+				Distance = load.Distance,
+				Weight = load.Weight,
+				Status = load.Status.ToString(),
+				BrokerId = load.BrokerId,
+			});
+		}
+
+		public async Task<IEnumerable<LoadViewModel>> GetAllBilledLoadsForDispatcherAsync(Guid userId)
+		{
+			var billedLoads = await context.Loads
+				.Include(l => l.BilledLoad)
+				.Include(l => l.BookedLoad)
+				.Where(load => load.BookedLoad != null && load.BookedLoad.DispatcherId == userId && load.Status == LoadStatus.Booked)
+				.ToListAsync();
 
 			return billedLoads.Select(load => new LoadViewModel
 			{
@@ -215,6 +264,96 @@ namespace LoadVantage.Core.Services
 				Profile = profileModel
 			};
 		}
+
+		public async Task<int> GetBookedLoadsCountForDispatcherAsync(Guid userId)
+		{
+			var dispatcherBilledLoadsCount = await context.Loads
+				.Where(load => load.BookedLoad.DispatcherId == userId && load.Status == LoadStatus.Booked)
+				.Select(load => new Load
+				{
+					Id = load.Id,
+					Status = load.Status
+				})
+				.ToArrayAsync();
+
+			return dispatcherBilledLoadsCount.Length;
+		}
+
+		public async Task<int> GetBilledLoadsCountForDispatcherAsync(Guid userId)
+		{
+			var dispatcherLoads = await context.Loads
+				.Where(load => load.BookedLoad.DispatcherId == userId && load.Status == LoadStatus.Delivered)
+				.Select(load => new Load
+				{
+					Id = load.Id,
+					Status = load.Status
+				})
+				.ToArrayAsync();
+
+			return dispatcherLoads.Length;
+		}
+
+		public async Task<int> GetCreatedLoadsCountForBrokerAsync(Guid userId)
+		{
+			var brokerLoads = await context.Loads
+				.Where(load => load.BrokerId == userId && load.Status == LoadStatus.Created)
+				.Select(load => new Load
+				{
+					Id = load.Id,
+					Status = load.Status
+				})
+				.ToArrayAsync();
+
+
+			return brokerLoads.Length;
+		}
+
+		public async Task<int> GetPostedLoadsCountForBrokerAsync(Guid userId)
+		{
+			var brokerLoads = await context.Loads
+				.Where(load => load.BrokerId == userId && load.Status == LoadStatus.Available)
+				.Select(load => new Load
+				{
+					Id = load.Id,
+					Status = load.Status
+				})
+				.ToArrayAsync();
+
+
+			return brokerLoads.Length;
+		}
+
+		public async Task<int> GetBookedLoadsCountForBrokerAsync(Guid userId)
+		{
+			var brokerLoads = await context.Loads
+				.Where(load => load.BrokerId == userId && load.Status == LoadStatus.Booked)
+				.Select(load => new Load
+				{
+					Id = load.Id,
+					Status = load.Status
+				})
+				.ToArrayAsync();
+
+
+			return brokerLoads.Length;
+		}
+
+		public async Task<int> GetBilledLoadsCountForBrokerAsync(Guid userId)
+		{
+			var brokerLoads = await context.Loads
+				.Where(load => load.BrokerId == userId && load.Status == LoadStatus.Delivered)
+				.Select(load => new Load
+				{
+					Id = load.Id,
+					Status = load.Status
+				})
+				.ToArrayAsync();
+
+
+			return brokerLoads.Length;
+		}
+
+
 	}
 	
 }
