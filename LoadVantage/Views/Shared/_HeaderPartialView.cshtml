@@ -231,16 +231,10 @@
                     </li>
 
                     <li>
-	                    <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-		                    <i class="ri  ri-question-fill"></i>
-		                    <span>Privacy Policy</span>
-	                    </a>
-						
-	                    <form method="get" action="@Url.Action("Logout", "Account")">
-		                    <input type="hidden" name="brokerId" value="@user.Id" />
+	                    <form method="get" action="@Url.Action("Privacy", "Home")">
 		                    <button type="submit" class="dropdown-item d-flex align-items-center">
-			                    <i class="bi bi-box-arrow-right"></i>
-			                    <span>Sign Out</span>
+			                    <i class="ri  ri-question-fill"></i>
+			                    <span>Privacy Policy</span>
 		                    </button>
 	                    </form>
                     </li>
