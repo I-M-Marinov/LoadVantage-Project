@@ -316,16 +316,6 @@
 									<i class="bx  bx-refresh"></i>
 								</button>
 							</form>
-							
-							@if (user is not Broker)
-							{
-								<form asp-action="LoadDetails" asp-controller="Load" method="get" id="refreshLoadForm">
-									<input type="hidden" name="loadId" value="@Model.Id" />
-									<button id="refreshLoadInfoButton" class="btn btn-outline-info">
-										<i class="bx  bx-refresh"></i>
-									</button>
-								</form>
-							}
 
 							<form asp-action="ReturnToLoadBoard" asp-controller="LoadBoard" method="post" id="backToLoadBoardButton">
 								@Html.AntiForgeryToken()
