@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-
+using LoadVantage.Common.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -25,7 +25,8 @@ namespace LoadVantage.Controllers
 	public class ProfileController(
 		UserManager<User> userManager,
 		IUserService userService,
-		IProfileService profileService)
+		IProfileService profileService,
+		ILoadBoardService loadBoardService)
 		: Controller
 	{
 
@@ -33,18 +34,23 @@ namespace LoadVantage.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);  // or any custom claim name you use for userId
+	        var user = User.GetUserAsync(userManager).Result;
 
-			if (userIdClaim == null)
-            {
-                // Handle the case where the userId is not found in the claims
-                return RedirectToAction("Login", "Account");
-            }
 
-            // Parse the userId to Guid (assuming the claim is stored as a valid GUID string)
-            var userId = Guid.Parse(userIdClaim.Value);
-            
-            ProfileViewModel? userProfileViewModel = await profileService.GetUserInformation(userId); // Fetch user information for the logged-in user only
+	        if (user is Broker)
+	        {
+		        ViewBag.CreatedLoadsCount = loadBoardService.GetCreatedLoadsCountForBrokerAsync(user.Id).Result;
+		        ViewBag.PostedLoadsCount = loadBoardService.GetPostedLoadsCountForBrokerAsync(user.Id).Result;
+		        ViewBag.BookedLoadsCount = loadBoardService.GetBookedLoadsCountForBrokerAsync(user.Id).Result;
+		        ViewBag.DeliveredLoadsCount = loadBoardService.GetBilledLoadsCountForBrokerAsync(user.Id).Result;
+			}
+	        else // user is Dispatcher
+	        {
+		        ViewBag.BookedLoadsCount = loadBoardService.GetBookedLoadsCountForDispatcherAsync(user.Id).Result;
+		        ViewBag.DeliveredLoadsCount = loadBoardService.GetBilledLoadsCountForDispatcherAsync(user.Id).Result;
+			}
+
+			ProfileViewModel? userProfileViewModel = await profileService.GetUserInformation(user.Id); // Fetch user information for the logged-in user only
             return View(userProfileViewModel);
 
         }
@@ -71,7 +77,6 @@ namespace LoadVantage.Controllers
             {
                 return View(model);
             }
-
 
             var isUsernameTaken = await profileService.IsUsernameTakenAsync(model.Username, userId);
             if (isUsernameTaken)
