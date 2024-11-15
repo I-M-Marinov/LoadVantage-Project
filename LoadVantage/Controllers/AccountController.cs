@@ -11,12 +11,19 @@ using System.Security.Claims;
 
 namespace LoadVantage.Controllers
 {
-    public class AccountController(
-        UserManager<User> userManager,
-        SignInManager<User> signInManager,
-        RoleManager<Role> roleManager)
-        : Controller
+    public class AccountController : Controller
     {
+        private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
+        private readonly RoleManager<Role> roleManager;
+
+        public AccountController(UserManager<User> _userManager, SignInManager<User> _signInManager, RoleManager<Role> _roleManager)
+		{
+            userManager = _userManager;
+            signInManager = _signInManager;
+            roleManager = _roleManager;
+        }
+
 
         [HttpGet]
         [AllowAnonymous]
