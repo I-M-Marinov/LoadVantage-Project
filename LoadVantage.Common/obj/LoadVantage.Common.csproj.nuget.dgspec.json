@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\LoadVantage.Common.csproj": {}
+    "C:\\Users\\Ivan Marinov\\Documents\\GitHub\\LoadVantage-Project\\LoadVantage.Common\\LoadVantage.Common.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\LoadVantage.Common.csproj": {
+    "C:\\Users\\Ivan Marinov\\Documents\\GitHub\\LoadVantage-Project\\LoadVantage.Common\\LoadVantage.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\LoadVantage.Common.csproj",
+        "projectUniqueName": "C:\\Users\\Ivan Marinov\\Documents\\GitHub\\LoadVantage-Project\\LoadVantage.Common\\LoadVantage.Common.csproj",
         "projectName": "LoadVantage.Common",
-        "projectPath": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\LoadVantage.Common.csproj",
-        "packagesPath": "C:\\Users\\Marinov\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Common\\obj\\",
+        "projectPath": "C:\\Users\\Ivan Marinov\\Documents\\GitHub\\LoadVantage-Project\\LoadVantage.Common\\LoadVantage.Common.csproj",
+        "packagesPath": "C:\\Users\\Ivan Marinov\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Ivan Marinov\\Documents\\GitHub\\LoadVantage-Project\\LoadVantage.Common\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Marinov\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Ivan Marinov\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -75,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

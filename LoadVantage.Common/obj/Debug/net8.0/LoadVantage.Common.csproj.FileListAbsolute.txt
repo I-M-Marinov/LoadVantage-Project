@@ -1,25 +1,13 @@
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Common\bin\Debug\net8.0\LoadVantage.Common.deps.json
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Common\bin\Debug\net8.0\LoadVantage.Common.dll
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Common\bin\Debug\net8.0\LoadVantage.Common.pdb
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.AssemblyInfoInputs.cache
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.AssemblyInfo.cs
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.csproj.CoreCompileInputs.cache
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.sourcelink.json
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.dll
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\refint\LoadVantage.Common.dll
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.pdb
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\ref\LoadVantage.Common.dll
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\bin\Debug\net8.0\LoadVantage.Common.deps.json
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\bin\Debug\net8.0\LoadVantage.Common.dll
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\bin\Debug\net8.0\LoadVantage.Common.pdb
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.AssemblyInfoInputs.cache
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.AssemblyInfo.cs
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.csproj.CoreCompileInputs.cache
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.sourcelink.json
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.dll
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\refint\LoadVantage.Common.dll
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.pdb
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\ref\LoadVantage.Common.dll
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.csproj.AssemblyReference.cache
+C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\bin\Debug\net8.0\LoadVantage.Common.deps.json
+C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\bin\Debug\net8.0\LoadVantage.Common.dll
+C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\bin\Debug\net8.0\LoadVantage.Common.pdb
+C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.csproj.AssemblyReference.cache
+C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.AssemblyInfoInputs.cache
+C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.AssemblyInfo.cs
+C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.csproj.CoreCompileInputs.cache
+C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.sourcelink.json
+C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.dll
+C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\refint\LoadVantage.Common.dll
+C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\LoadVantage.Common.pdb
+C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\obj\Debug\net8.0\ref\LoadVantage.Common.dll

@@ -4,15 +4,13 @@
 @using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
 @using Dispatcher = LoadVantage.Infrastructure.Data.Models.Dispatcher
-@inject UserManager<User> UserManager
 @model ProfileViewModel
 
 @{
     
     Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 
-    var user = await User.GetUserAsync(UserManager);
-    ViewData["Title"] = $"{user!.Position} Profile";
+    ViewData["Title"] = $"{Model.Position} Profile";
 
     var tempDataSuccessMessage = TempData.GetSuccessMessage();
     var tempDataErrorMessage = TempData.GetErrorMessage();
@@ -42,8 +40,8 @@
 				    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
 					    <img src=@Model.UserImageUrl alt="User Image" class="rounded-circle">
-					    <h2>@user.FullName</h2>
-					    <h3>@user.Position at @user.CompanyName</h3>
+					    <h2>@Model.FullName</h2>
+					    <h3>@Model.Position at @Model.CompanyName</h3>
 					    <div class="social-links mt-2">
                             
 					    </div>
@@ -56,7 +54,7 @@
 					    <h2>Loads</h2>
 					    <div class="social-links mt-2">
 						    <div class="status-row">
-							    @if (user is Broker)
+								@if (Model.Position is nameof(Broker))
 							    {
 								    <div class="badge bg-primary profile-loads">
 									    <i class="bi bi-star me-1"></i>Created
@@ -74,7 +72,7 @@
 							    </div>
 						    </div>
 						    <div class="count-row">
-								@if (user is Broker)
+								@if (Model.Position is nameof(Broker))
 								{
 								    <div>@ViewBag.CreatedLoadsCount</div>
 								    <div>@ViewBag.PostedLoadsCount</div>
@@ -87,19 +85,7 @@
 
 				    </div>
 			    </div>
-				
-			    @* 
-			   ri-number-0
-			   ri-number-1
-			   ri-number-2
-			   ri-number-3
-			   ri-number-4
-			   ri-number-5
-			   ri-number-6
-			   ri-number-7
-			   ri-number-8
-			   ri-number-9 
-				*@
+
 
 		    </div>
 
@@ -139,32 +125,32 @@
 
 							    <div class="row">
 								    <div class="col-lg-3 col-md-4 label">Full Name</div>
-								    <div class="col-lg-9 col-md-8">@user.FullName</div>
+								    <div class="col-lg-9 col-md-8">@Model.FullName</div>
 							    </div>
 
 							    <div class="row">
 								    <div class="col-lg-3 col-md-4 label">Company</div>
-								    <div class="col-lg-9 col-md-8">@user.CompanyName</div>
+									<div class="col-lg-9 col-md-8">@Model.CompanyName</div>
 							    </div>
 
 							    <div class="row">
 								    <div class="col-lg-3 col-md-4 label">Position</div>
-								    <div class="col-lg-9 col-md-8">@user.Position</div>
+									<div class="col-lg-9 col-md-8">@Model.Position</div>
 							    </div>
 
 							    <div class="row">
 								    <div class="col-lg-3 col-md-4 label">Username</div>
-								    <div class="col-lg-9 col-md-8">@user.UserName</div>
+									<div class="col-lg-9 col-md-8">@Model.Username</div>
 							    </div>
 								
 							    <div class="row">
 								    <div class="col-lg-3 col-md-4 label">Phone Number</div>
-								    <div class="col-lg-9 col-md-8">@user.PhoneNumber</div>
+									<div class="col-lg-9 col-md-8">@Model.PhoneNumber</div>
 							    </div>
 
 							    <div class="row">
 								    <div class="col-lg-3 col-md-4 label">Email</div>
-								    <div class="col-lg-9 col-md-8">@user.Email!.ToLower()</div>
+									<div class="col-lg-9 col-md-8">@Model.Email!.ToLower()</div>
 							    </div>
 
 

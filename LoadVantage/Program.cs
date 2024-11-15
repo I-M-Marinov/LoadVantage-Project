@@ -9,6 +9,7 @@ using LoadVantage.Infrastructure.Data.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using static LoadVantage.Infrastructure.Data.SeedData.SeedData;

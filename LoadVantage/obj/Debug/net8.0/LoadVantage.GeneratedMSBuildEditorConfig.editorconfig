@@ -17,115 +17,115 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LoadVantage
 build_property.RootNamespace = LoadVantage
-build_property.ProjectDir = C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\
+build_property.ProjectDir = C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage
+build_property.MSBuildProjectDirectory = C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/AdminDashboard.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/AdminDashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cQWRtaW5EYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Identity/Pages/Account/_ViewImports.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Areas/Identity/Pages/Account/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxfVmlld0ltcG9ydHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZhbGlkYXRpb25TY3JpcHRzUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Identity/Pages/_ViewImports.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Areas/Identity/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Identity/Pages/_ViewStart.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Account/Login.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Account/Register.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Home/Index.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Home/Privacy.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/LoadBoard/LoadBoard.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/LoadBoard/LoadBoard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hZEJvYXJkXExvYWRCb2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/LoadBoard/_PostedLoadsTablePartial.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/LoadBoard/_PostedLoadsTablePartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hZEJvYXJkXF9Qb3N0ZWRMb2Fkc1RhYmxlUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Load/CreateLoad.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Load/CreateLoad.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hZFxDcmVhdGVMb2FkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Load/LoadDetails.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Load/LoadDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9hZFxMb2FkRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Profile/Profile.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Profile/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Shared/Error.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Shared/_ChangePasswordPartialView.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Shared/_ChangePasswordPartialView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9DaGFuZ2VQYXNzd29yZFBhcnRpYWxWaWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Shared/_EditProfilePartialView.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Shared/_EditProfilePartialView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9FZGl0UHJvZmlsZVBhcnRpYWxWaWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Shared/_HeaderPartialView.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Shared/_HeaderPartialView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9IZWFkZXJQYXJ0aWFsVmlldy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Shared/_LoggedInLayout.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Shared/_LoggedInLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dnZWRJbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Shared/_LoginPartial.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Shared/_LoginPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Shared/_ProfileImagePartial.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Shared/_ProfileImagePartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Qcm9maWxlSW1hZ2VQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Shared/_SidebarPartialView.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Shared/_SidebarPartialView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TaWRlYmFyUGFydGlhbFZpZXcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/_ViewImports.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/_ViewStart.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Shared/_Layout.cshtml]
+[C:/Users/Ivan Marinov/Documents/GitHub/LoadVantage-Project/LoadVantage/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-563i4q1fca

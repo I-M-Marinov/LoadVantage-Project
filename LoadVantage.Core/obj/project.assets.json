@@ -7443,23 +7443,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Marinov\\.nuget\\packages\\": {},
+    "C:\\Users\\Ivan Marinov\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Core\\LoadVantage.Core.csproj",
+      "projectUniqueName": "C:\\Users\\Ivan Marinov\\Documents\\GitHub\\LoadVantage-Project\\LoadVantage.Core\\LoadVantage.Core.csproj",
       "projectName": "LoadVantage.Core",
-      "projectPath": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Core\\LoadVantage.Core.csproj",
-      "packagesPath": "C:\\Users\\Marinov\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Core\\obj\\",
+      "projectPath": "C:\\Users\\Ivan Marinov\\Documents\\GitHub\\LoadVantage-Project\\LoadVantage.Core\\LoadVantage.Core.csproj",
+      "packagesPath": "C:\\Users\\Ivan Marinov\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ivan Marinov\\Documents\\GitHub\\LoadVantage-Project\\LoadVantage.Core\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Marinov\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Ivan Marinov\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -7468,15 +7468,14 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj"
+            "C:\\Users\\Ivan Marinov\\Documents\\GitHub\\LoadVantage-Project\\LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\Ivan Marinov\\Documents\\GitHub\\LoadVantage-Project\\LoadVantage.Infrastructure\\LoadVantage.Infrastructure.csproj"
             }
           }
         }
@@ -7545,7 +7544,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

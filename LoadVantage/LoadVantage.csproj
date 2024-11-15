@@ -4,9 +4,10 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <LangVersion>12</LangVersion>
     <UserSecretsId>aspnet-LoadVantage-d35d6ab2-623d-43ce-8b2e-a0bcc67c4733</UserSecretsId>
   </PropertyGroup>
-
+		
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.13.1" />
     <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />

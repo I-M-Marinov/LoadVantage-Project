@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\LoadVantage",
+    "\\LoadVantage\\Views",
+    "\\LoadVantage\\Views\\Load"
   ],
+  "SelectedNode": "\\LoadVantage\\Views\\Load\\LoadDetails.cshtml",
   "PreviewInSolutionExplorer": false
 }
