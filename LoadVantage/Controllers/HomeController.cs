@@ -7,9 +7,16 @@ using Microsoft.AspNetCore.Identity;
 
 namespace LoadVantage.Controllers
 {
-	public class HomeController(ILogger<HomeController> logger, UserManager<User> userManager) : Controller
+	public class HomeController : Controller
 	{
-		private readonly ILogger<HomeController> _logger = logger;
+		private readonly ILogger<HomeController> logger;
+		private readonly UserManager<User> userManager;
+
+		public HomeController(ILogger<HomeController> _logger, UserManager<User> _userManager)
+		{
+			logger = _logger;
+			userManager = _userManager;
+		}
 
 		[AllowAnonymous]
         public async Task<IActionResult> Index()
