@@ -16,10 +16,22 @@ namespace LoadVantage.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]
-	public class LoadController(ILoadStatusService loadService, IHubContext<LoadHub> loadHubContext) : Controller
+	public class LoadController : Controller
     {
 
-        [HttpGet]
+	    private readonly ILoadStatusService loadService;
+	    private readonly IHubContext<LoadHub> loadHubContext;
+
+	    public LoadController(ILoadStatusService _loadService, IHubContext<LoadHub> _loadHubContext)
+	    
+	    {
+		    loadService = _loadService;
+		    loadHubContext = _loadHubContext;
+
+	    }
+
+		[HttpGet]
+
         public async Task<IActionResult> LoadDetails(Guid loadId)
         {
 
@@ -34,8 +46,8 @@ namespace LoadVantage.Controllers
 	                return NotFound("The load you are looking for does not exist");
                 }
 
-    //            if (userId != loadToShow.BrokerId)
-    //            {
+				//  if (userId != loadToShow.BrokerId)
+			    //{
 				//	return RedirectToAction("LoadBoard", "LoadBoard"); // If the load does not belong to the broker redirect him back to the LoadBoard
 				//}
 
