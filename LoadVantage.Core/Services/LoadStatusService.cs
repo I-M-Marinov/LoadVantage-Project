@@ -17,8 +17,19 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace LoadVantage.Core.Services
 {
-    public class LoadStatusService(LoadVantageDbContext context, IDistanceCalculatorService distanceCalculatorService, ILogger<LoadStatusService> logger) : ILoadStatusService
+    public class LoadStatusService : ILoadStatusService
     {
+	    public readonly ILogger<LoadStatusService> logger;
+	    public readonly LoadVantageDbContext context;
+	    public readonly IDistanceCalculatorService distanceCalculatorService;
+
+	    public LoadStatusService(LoadVantageDbContext _context, IDistanceCalculatorService distanceCalculatorServiceService, ILogger<LoadStatusService> _logger)
+	    {
+		    logger = _logger;
+            context = _context;
+            distanceCalculatorService = distanceCalculatorServiceService;
+	    }
+
         public async Task<LoadViewModel> GetLoadByIdAsync(Guid loadId)
         {
             var load = await context.Loads.FindAsync(loadId);

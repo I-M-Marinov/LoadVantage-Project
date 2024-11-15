@@ -13,11 +13,18 @@ using Microsoft.EntityFrameworkCore;
 namespace LoadVantage.Core.Services
 {
 	[Authorize]
-	public class LoadBoardService(LoadVantageDbContext context, UserManager<User> userManager) : ILoadBoardService
+	public class LoadBoardService : ILoadBoardService
 	{
+		private readonly LoadVantageDbContext dbContext;
+		private readonly UserManager<User> userManager;
+		public LoadBoardService(LoadVantageDbContext _context, UserManager<User> _userManager)
+		{
+			dbContext = _context;
+			userManager = _userManager;
+		}
 		public async Task<IEnumerable<LoadViewModel>> GetAllCreatedLoadsForBrokerAsync(Guid userId)
 		{
-			var createdLoads = await context.Loads
+			var createdLoads = await dbContext.Loads
 				.Where(load => load.Status == LoadStatus.Created && load.BrokerId == userId)
 				.OrderBy(l => l.PickupTime)
 				.ThenByDescending(l => l.OriginCity)
@@ -43,7 +50,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<IEnumerable<LoadViewModel>> GetAllPostedLoadsForBrokerAsync(Guid userId)
 		{
-			var postedLoads = await context.Loads
+			var postedLoads = await dbContext.Loads
 				.Where(load => load.Status == LoadStatus.Available && load.BrokerId == userId)
 				.ToListAsync();
 
@@ -66,7 +73,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<IEnumerable<LoadViewModel>> GetAllPostedLoadsAsync(Guid userId)
 		{
-			var postedLoads = await context.Loads
+			var postedLoads = await dbContext.Loads
 				.Include(load => load.PostedLoad)
 				.Where(load => load.Status == LoadStatus.Available)
 				.OrderByDescending(load => load.PostedLoad.PostedDate)
@@ -91,7 +98,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<IEnumerable<LoadViewModel>> GetAllBookedLoadsForBrokerAsync(Guid userId)
 		{
-			var bookedLoads = await context.Loads
+			var bookedLoads = await dbContext.Loads
 				.Where(load => load.BookedLoad != null && load.BrokerId == userId)
 				.ToListAsync();
 
@@ -115,7 +122,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<IEnumerable<LoadViewModel>> GetAllBookedLoadsForDispatcherAsync(Guid userId)
 		{
-			var bookedLoads = await context.Loads
+			var bookedLoads = await dbContext.Loads
 				.Include(l => l.BookedLoad)
 				.Where(load => load.BookedLoad!.DispatcherId == userId)
 				.ToListAsync();
@@ -140,7 +147,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<IEnumerable<LoadViewModel>> GetAllBilledLoadsForBrokerAsync(Guid userId)
 		{
-			var billedLoads = await context.Loads
+			var billedLoads = await dbContext.Loads
 				 .Where(load => load.BilledLoad != null && load.BrokerId == userId)
 				 .ToListAsync();
 
@@ -163,7 +170,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<IEnumerable<LoadViewModel>> GetAllBilledLoadsForDispatcherAsync(Guid userId)
 		{
-			var billedLoads = await context.Loads
+			var billedLoads = await dbContext.Loads
 				.Include(l => l.BilledLoad)
 				.Include(l => l.BookedLoad)
 				.Where(load => load.BookedLoad != null && load.BookedLoad.DispatcherId == userId && load.Status == LoadStatus.Booked)
@@ -195,7 +202,7 @@ namespace LoadVantage.Core.Services
 			var bookedLoads = await GetAllBookedLoadsForBrokerAsync(userId);
 			var billedLoads = await GetAllBilledLoadsForBrokerAsync(userId);
 
-			var userImage = await context.UsersImages.SingleOrDefaultAsync(ui => ui.UserId == userId);
+			var userImage = await dbContext.UsersImages.SingleOrDefaultAsync(ui => ui.UserId == userId);
 
 
 			var profileModel = new ProfileViewModel
@@ -235,7 +242,7 @@ namespace LoadVantage.Core.Services
 			var bookedLoads = await GetAllBookedLoadsForBrokerAsync(userId);
 			var billedLoads = await GetAllBilledLoadsForBrokerAsync(userId);
 
-			var userImage = await context.UsersImages.SingleOrDefaultAsync(ui => ui.UserId == userId);
+			var userImage = await dbContext.UsersImages.SingleOrDefaultAsync(ui => ui.UserId == userId);
 
 
 			var profileModel = new ProfileViewModel
@@ -267,7 +274,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<int> GetBookedLoadsCountForDispatcherAsync(Guid userId)
 		{
-			var dispatcherBilledLoadsCount = await context.Loads
+			var dispatcherBilledLoadsCount = await dbContext.Loads
 				.Where(load => load.BookedLoad.DispatcherId == userId && load.Status == LoadStatus.Booked)
 				.Select(load => new Load
 				{
@@ -281,7 +288,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<int> GetBilledLoadsCountForDispatcherAsync(Guid userId)
 		{
-			var dispatcherLoads = await context.Loads
+			var dispatcherLoads = await dbContext.Loads
 				.Where(load => load.BookedLoad.DispatcherId == userId && load.Status == LoadStatus.Delivered)
 				.Select(load => new Load
 				{
@@ -295,7 +302,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<int> GetCreatedLoadsCountForBrokerAsync(Guid userId)
 		{
-			var brokerLoads = await context.Loads
+			var brokerLoads = await dbContext.Loads
 				.Where(load => load.BrokerId == userId && load.Status == LoadStatus.Created)
 				.Select(load => new Load
 				{
@@ -310,7 +317,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<int> GetPostedLoadsCountForBrokerAsync(Guid userId)
 		{
-			var brokerLoads = await context.Loads
+			var brokerLoads = await dbContext.Loads
 				.Where(load => load.BrokerId == userId && load.Status == LoadStatus.Available)
 				.Select(load => new Load
 				{
@@ -325,7 +332,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<int> GetBookedLoadsCountForBrokerAsync(Guid userId)
 		{
-			var brokerLoads = await context.Loads
+			var brokerLoads = await dbContext.Loads
 				.Where(load => load.BrokerId == userId && load.Status == LoadStatus.Booked)
 				.Select(load => new Load
 				{
@@ -340,7 +347,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<int> GetBilledLoadsCountForBrokerAsync(Guid userId)
 		{
-			var brokerLoads = await context.Loads
+			var brokerLoads = await dbContext.Loads
 				.Where(load => load.BrokerId == userId && load.Status == LoadStatus.Delivered)
 				.Select(load => new Load
 				{
