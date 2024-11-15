@@ -3,15 +3,28 @@ using LoadVantage.Core.Models.Load;
 using LoadVantage.Core.Services;
 using LoadVantage.Extensions;
 using LoadVantage.Filters;
+using LoadVantage.Hubs;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
 namespace LoadVantage.Controllers
 {
 	[Authorize]
-	public class LoadBoardController(ILoadBoardService loadBoardService, IUserService userService) : Controller
+	public class LoadBoardController : Controller
 	{
+		private readonly IUserService userService;
+		private readonly ILoadBoardService loadBoardService;
+
+		public LoadBoardController(ILoadBoardService _loadBoardService, IUserService _userService)
+
+		{
+			loadBoardService = _loadBoardService;
+			userService = _userService;
+
+		}
+
 		[HttpGet]
 		public async Task<IActionResult> LoadBoard()
 		{
