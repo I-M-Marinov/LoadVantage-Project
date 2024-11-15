@@ -22,16 +22,24 @@ using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 namespace LoadVantage.Controllers
 {
 	[Authorize]
-	public class ProfileController(
-		UserManager<User> userManager,
-		IUserService userService,
-		IProfileService profileService,
-		ILoadBoardService loadBoardService)
-		: Controller
+	public class ProfileController : Controller
 	{
+		private readonly UserManager<User> userManager;
+		private readonly IUserService userService;
+		private readonly IProfileService profileService;
+		private readonly ILoadBoardService loadBoardService;
+
+		public ProfileController(UserManager<User> _userManager, IUserService _userService,
+			IProfileService _profileService, ILoadBoardService _loadBoardService)
+		{
+			userManager = _userManager;
+			userService = _userService;
+			profileService = _profileService;
+			loadBoardService = _loadBoardService;
+		}
 
 
-        [HttpGet]
+		[HttpGet]
         public async Task<IActionResult> Profile()
         {
 	        var user = User.GetUserAsync(userManager).Result;
