@@ -16,8 +16,19 @@ using static LoadVantage.Common.GeneralConstants.UserImage;
 namespace LoadVantage.Core.Services
 {
     [Authorize]
-    public class UserService(UserManager<User> userManager, LoadVantageDbContext context, IImageService imageService) : IUserService
+    public class UserService : IUserService
     {
+        private readonly UserManager<User> userManager;
+        private readonly LoadVantageDbContext context;
+        private readonly IImageService imageService;
+
+        public UserService(UserManager<User> _userManager, LoadVantageDbContext _context, IImageService _imageService)
+		{
+            userManager = _userManager;
+            context = _context;
+            imageService = _imageService;
+		}
+
         public async Task<User> GetUserByIdAsync(Guid userId)
         {
             return await userManager.FindByIdAsync(userId.ToString());

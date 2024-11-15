@@ -11,12 +11,19 @@ using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Core.Services
 {
-    public class ProfileService(
-	    LoadVantageDbContext context, 
-	    UserManager<User> userManager,
-		 SignInManager<User> signInManager) : IProfileService
+    public class ProfileService : IProfileService
     {
 
+        private readonly UserManager<User> userManager;
+        private readonly LoadVantageDbContext context;
+        private readonly SignInManager<User> signInManager;
+
+        public ProfileService(LoadVantageDbContext _context, UserManager<User> _userManager, SignInManager<User> _signInManager)
+		{
+            context = _context;
+            userManager = _userManager;
+            signInManager = _signInManager;
+        }
 
         public async Task<ProfileViewModel?> GetUserInformation(Guid userId)
         {
