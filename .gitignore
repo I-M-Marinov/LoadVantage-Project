@@ -1,2 +1,5 @@
 
 *.vsidx
+*.v2
+*.pdb
+*.dll
