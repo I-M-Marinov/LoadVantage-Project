@@ -44,6 +44,10 @@ namespace LoadVantage.Controllers
         {
 	        var user = User.GetUserAsync(userManager).Result;
 
+	        if (TempData.GetActiveTab() != null)
+	        {
+				TempData.SetActiveTab(ProfileEditActiveTab);
+	        }
 
 	        if (user is Broker)
 	        {
@@ -69,16 +73,24 @@ namespace LoadVantage.Controllers
         public async Task<IActionResult> Profile(ProfileViewModel model)
         {
 
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);  // or any custom claim name you use for userId
+	        var user = User.GetUserAsync(userManager).Result;
 
-            if (userIdClaim == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+			if (user is Broker)
+	        {
+		        ViewBag.CreatedLoadsCount = loadBoardService.GetCreatedLoadsCountForBrokerAsync(user.Id).Result;
+		        ViewBag.PostedLoadsCount = loadBoardService.GetPostedLoadsCountForBrokerAsync(user.Id).Result;
+		        ViewBag.BookedLoadsCount = loadBoardService.GetBookedLoadsCountForBrokerAsync(user.Id).Result;
+		        ViewBag.DeliveredLoadsCount = loadBoardService.GetBilledLoadsCountForBrokerAsync(user.Id).Result;
+	        }
+	        else // user is Dispatcher
+	        {
+		        ViewBag.BookedLoadsCount = loadBoardService.GetBookedLoadsCountForDispatcherAsync(user.Id).Result;
+		        ViewBag.DeliveredLoadsCount = loadBoardService.GetBilledLoadsCountForDispatcherAsync(user.Id).Result;
+	        }
 
-            var userId = Guid.Parse(userIdClaim.Value); 
-            ProfileViewModel? user = await profileService.GetUserInformation(userId);
-            model.UserImageUrl = user!.UserImageUrl;
+
+            ProfileViewModel? userProfileViewModel = await profileService.GetUserInformation(user.Id);
+            model.UserImageUrl = userProfileViewModel!.UserImageUrl;
 
 
             if (!ModelState.IsValid)
@@ -86,7 +98,7 @@ namespace LoadVantage.Controllers
                 return View(model);
             }
 
-            var isUsernameTaken = await profileService.IsUsernameTakenAsync(model.Username, userId);
+            var isUsernameTaken = await profileService.IsUsernameTakenAsync(model.Username, user.Id);
             if (isUsernameTaken)
             {
                 TempData.SetActiveTab(ProfileEditActiveTab);
@@ -96,9 +108,9 @@ namespace LoadVantage.Controllers
 
             try
             {
-                var updatedModel = await profileService.UpdateProfileInformation(model, userId);
+                var updatedModel = await profileService.UpdateProfileInformation(model, user.Id);
 
-                if (updatedModel.Id != userId.ToString()) // If the returned model from the method is with a different Id or Position return the View and add some messages 
+                if (updatedModel.Id != user.Id.ToString()) // If the returned model from the method is with a different Id or Position return the View and add some messages 
                 {
                     TempData.SetActiveTab(ProfileActiveTab);
                     ModelState.AddModelError(string.Empty, NoChangesMadeToProfile);
@@ -247,10 +259,10 @@ namespace LoadVantage.Controllers
 
 
 		[HttpGet]
-		public IActionResult RefreshEditProfile(ProfileViewModel model)
+		public IActionResult RefreshEditProfile()
 		{
 			TempData.SetActiveTab(ProfileEditActiveTab);
-			return View(nameof(Profile), model);
+			return RedirectToAction(nameof(Profile));
 		}
 
 
