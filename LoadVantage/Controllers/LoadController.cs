@@ -127,20 +127,28 @@ namespace LoadVantage.Controllers
                     return View("LoadDetails", model);
                 }
 
-                try
+                if (userId != model.BrokerId)
                 {
-                    await loadService.EditLoadAsync(loadId, model);
-
-                    if (userId != model.BrokerId)
-                    {
-						return RedirectToAction("LoadBoard", "LoadBoard"); // If the brokerId is not the same as logged user's id, redirect him back to the LoadBoard
-
-					}
-
-                    TempData["isEditing"] = false;
-                    TempData.SetSuccessMessage(LoadUpdatedSuccessfully);
+	                return RedirectToAction("LoadBoard", "LoadBoard"); // If the brokerId is not the same as logged user's id, redirect him back to the LoadBoard
 
                 }
+
+				try
+				{
+					var result = await loadService.EditLoadAsync(loadId, model);
+
+					if (result)
+	                {
+		                TempData["isEditing"] = false;
+		                TempData.SetSuccessMessage(LoadUpdatedSuccessfully);
+					}
+					else
+					{
+						TempData["isEditing"] = false;
+						TempData.SetErrorMessage(LoadWasNotUpdated);
+					}
+
+				}
                 catch (Exception e)
                 {
                     ModelState.AddModelError(string.Empty, ErrorUpdatingLoad + e.Message);
