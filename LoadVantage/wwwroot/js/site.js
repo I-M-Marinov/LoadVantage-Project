@@ -241,55 +241,93 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
 /*-------------------------------------------------------------------------------------
-# SIGNALR WEB SOCKET CONNECTION TO RETRIEVE ANY NEW POSTED LOADS 
+# SIGNALR WEB SOCKET CONNECTION TO RETRIEVE ANY NEW MESSAGES LOADS 
 --------------------------------------------------------------------------------------*/
 
+// Define a global connection variable
+let messageConnection = null;
 
-// Declare postedLoadsConnection globally
-var postedLoadsConnection;
+// Initialize SignalR and connect
+function initializeMessageNotifications() {
+    const messageNotificationCount = document.getElementById("messageNotificationCount");
+    const messageNotificationList = document.getElementById("messageNotificationList");
+    const messageCountDisplay = document.getElementById("messageCount");
 
-function initializePostedLoadsConnection() {
-    if (!postedLoadsConnection) {
-        postedLoadsConnection = new signalR.HubConnectionBuilder()
-            .withUrl("/loadHub")
+    // Check if connection already exists
+    if (!messageConnection) {
+        messageConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub") // Ensure this matches your SignalR hub URL
             .build();
 
-        postedLoadsConnection.start()
+                .start()
             .then(() => {
-                console.log("Connected to LoadHub.");
+                console.log("Connected to ChatHub.");
             })
             .catch(err => {
-                console.error("Error connecting to LoadHub: " + err);
+                console.error("Error connecting to ChatHub: " + err);
             });
 
-        postedLoadsConnection.on("ReceiveLoadPostedNotification", function (loadId) {
-            console.log("New load posted with ID: " + loadId);
-            reloadPostedLoadsTable();
+        // Listen for new message notifications
+        messageConnection.on("ReceiveMessageNotification", function (message) {
+            console.log("New message received: ", message);
+            addMessageNotification(message);
         });
 
-        postedLoadsConnection.on("ReloadPostedLoadsTable", function() {
-            console.log("Reloading the table... multiple loads status change / load's status changed");
-            reloadPostedLoadsTable();
+        // Listen for receiving messages in real-time
+        messageConnection.on("ReceiveMessage", function (message) {
+            console.log("Received message: ", message);
+            appendMessageToChat(message);
         });
     }
 }
 
-function reloadPostedLoadsTable() {
-    $.get("/LoadBoard/GetPostedLoadsTable", function (data) {
-        $("#postedLoadsTableContainer").html(data);
-    });
+// Send message via SignalR
+function sendMessage(receiverId, message) {
+    if (!message || !receiverId) return;
+
+    messageConnection.invoke("SendMessage", receiverId, message)
+        .then(() => {
+            console.log("Message sent successfully!");
+            appendMessageToChat(message);
+        })
+        .catch(err => {
+            console.error("Error sending message:", err);
+        });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    initializePostedLoadsConnection();
-});
+// Append the message to the chat window
+function appendMessageToChat(message) {
+    const chatMessages = document.getElementById("chat-messages");
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("message-item");
+    messageElement.innerHTML = `<strong>You:</strong> ${message}`;
+    chatMessages.appendChild(messageElement);
 
-window.addEventListener("beforeunload", () => {
-    if (postedLoadsConnection && postedLoadsConnection.state === "Connected") {
-        postedLoadsConnection.stop();
+    // Scroll to the latest message
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Handle the form submission for sending messages
+function handleSendMessage(event) {
+    event.preventDefault();
+
+    const messageInput = document.getElementById("message-input");
+    const receiverId = document.getElementById("receiverId").value;  // Make sure this input exists and has the receiver's ID
+
+    const message = messageInput.value;
+
+    if (message) {
+        sendMessage(receiverId, message);
+        messageInput.value = "";  // Clear input after sending
     }
-});
+}
+
+// Event listener for sending a message
+document.getElementById("chat-form").addEventListener("submit", handleSendMessage);
+
+
 
 /*-------------------------------------------------------------------------------------
 # TOGGLE SIDEBAR ON AND OFF THE SCREEN 
