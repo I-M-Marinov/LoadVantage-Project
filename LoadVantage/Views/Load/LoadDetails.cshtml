@@ -49,295 +49,333 @@
 	</div><!-- End Page Title -->
 	
 	
-	<div class="card">
-			@{
-				LoadStatus status = Enum.TryParse(typeof(LoadStatus), Model.Status, out var parsedStatus) 
-					? (LoadStatus)parsedStatus : LoadStatus.Created;
+<div class="card">
+@{
+	LoadStatus status = Enum.TryParse(typeof(LoadStatus), Model.Status, out var parsedStatus) 
+		? (LoadStatus)parsedStatus : LoadStatus.Created;
 
-				switch (status)
-				{
-					case LoadStatus.Created:
-						<div class="load-status badge bg-primary">
-							<i class="bi bi-star me-1"></i> @Model.Status
-						</div>
-						break;
-					case LoadStatus.Available:
-						<div class="load-status badge bg-success">
-							<i class="bi bi-check-circle me-1"></i> Available
-						</div>
-						break;
-					case LoadStatus.Booked:
-						<div class="load-status badge bg-warning">
-							<i class="bi bi-bookmark me-1"></i> Booked
-						</div>
-						break;
-					case LoadStatus.Delivered:
-						<div class="load-status badge bg-info">
-							<i class="bi bi-truck me-1"></i> Delivered
-						</div>
-						break;
-					case LoadStatus.Cancelled:
-						<div class="load-status badge bg-danger">
-							<i class="bi bi-x-circle me-1"></i> Cancelled
-						</div>
-						break;
-				}
-			}
-			<div class="card-body justify-content-center" style="dispay:flex;">
-				<h5 class="card-title">Viewing a load</h5>
+	switch (status)
+	{
+		case LoadStatus.Created:
+			<div class="load-status badge bg-primary">
+				<i class="bi bi-star me-1"></i> @Model.Status
+			</div>
+			break;
+		case LoadStatus.Available:
+			<div class="load-status badge bg-success">
+				<i class="bi bi-check-circle me-1"></i> Available
+			</div>
+			break;
+		case LoadStatus.Booked:
+			<div class="load-status badge bg-warning">
+				<i class="bi bi-bookmark me-1"></i> Booked
+			</div>
+			break;
+		case LoadStatus.Delivered:
+			<div class="load-status badge bg-info">
+				<i class="bi bi-truck me-1"></i> Delivered
+			</div>
+			break;
+		case LoadStatus.Cancelled:
+			<div class="load-status badge bg-danger">
+				<i class="bi bi-x-circle me-1"></i> Cancelled
+			</div>
+			break;
+	}
+}
+<div class="card-body justify-content-center" style="dispay:flex;">
+<h5 class="card-title">Viewing a load</h5>
 
-			@if (!string.IsNullOrEmpty(tempDataSuccessMessage))
-			{
-				<div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@tempDataSuccessMessage</div>
-			}
+@if (!string.IsNullOrEmpty(tempDataSuccessMessage))
+{
+	<div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@tempDataSuccessMessage</div>
+}
 
-			@if (!string.IsNullOrEmpty(tempDataErrorMessage))
-			{
-				<div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@tempDataErrorMessage</div>
-			}
+@if (!string.IsNullOrEmpty(tempDataErrorMessage))
+{
+	<div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@tempDataErrorMessage</div>
+}
 
-				<div class="spinner-container">
-					<div id="loader" class="spinner" style="display: none;">
+<div class="spinner-container">
+	<div id="loader" class="spinner" style="display: none;">
 
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
 
-					</div>
+	</div>
+</div>
+
+<form id="loadDetailsForm" asp-action="EditLoad" asp-controller="Load" method="post" class="row g-3">
+	<input type="hidden" name="brokerId" value="@Model.BrokerId"/>
+	<input type="hidden" name="loadId" value="@Model.Id"/>
+	<input type="hidden" id="isEditing" name="isEditing" value="false"/>
+	@Html.AntiForgeryToken()
+					
+	<div class="col-12 d-flex justify-content-center mb-2" style="margin-bottom: -0.5rem !important;">
+		<span asp-validation-for="OriginState" class="badge badge-danger mb-1" style="margin-right: 15em;"></span> <!-- Validation message for the ORIGIN STATE above the input -->
+
+		<span asp-validation-for="DestinationState" class="badge badge-danger mb-1" style="margin-right: -17em;"></span> <!-- Validation message for the DESTINATION STATE above the input -->
+	</div>
+
+
+	<div class="col-12 d-flex justify-content-center mb-2">
+		<div class="d-flex centered-row flex-wrap justify-content-center">
+			<div class="col-md-3">
+				<div class="form-floating">
+					<input type="hidden" asp-for="Id"/>
+					<input type="text" class="form-control" id="originCity" placeholder="Origin City" name="OriginCity" value="@Model.OriginCity" @(isEditing ? "" : "disabled") required/>
+					<label for="originCity">Origin City</label>
+					<span asp-validation-for="OriginCity" class="badge badge-danger mt-1"></span>
+
+				</div>
+			</div>
+			<div class="col-md-1">
+				<div class="form-floating">
+					<input type="text" class="form-control" id="originState" placeholder="State" name="OriginState" value="@Model.OriginState" @(isEditing ? "" : "disabled") required />
+					<label for="originState">State</label>
 				</div>
 
-				<form id="loadDetailsForm" asp-action="EditLoad" asp-controller="Load" method="post" class="row g-3">
-					<input type="hidden" name="brokerId" value="@Model.BrokerId"/>
-					<input type="hidden" name="loadId" value="@Model.Id"/>
-					<input type="hidden" id="isEditing" name="isEditing" value="false"/>
-					@Html.AntiForgeryToken()
-					
-					<div class="col-12 d-flex justify-content-center mb-2" style="margin-bottom: -0.5rem !important;">
-						<span asp-validation-for="OriginState" class="badge badge-danger mb-1" style="margin-right: 15em;"></span> <!-- Validation message for the ORIGIN STATE above the input -->
-
-						<span asp-validation-for="DestinationState" class="badge badge-danger mb-1" style="margin-right: -17em;"></span> <!-- Validation message for the DESTINATION STATE above the input -->
-					</div>
-
-
-					<div class="col-12 d-flex justify-content-center mb-2">
-						<div class="d-flex centered-row flex-wrap justify-content-center">
-							<div class="col-md-3">
-								<div class="form-floating">
-									<input type="hidden" asp-for="Id"/>
-									<input type="text" class="form-control" id="originCity" placeholder="Origin City" name="OriginCity" value="@Model.OriginCity" @(isEditing ? "" : "disabled") required/>
-									<label for="originCity">Origin City</label>
-									<span asp-validation-for="OriginCity" class="badge badge-danger mt-1"></span>
-
-								</div>
-							</div>
-							<div class="col-md-1">
-								<div class="form-floating">
-									<input type="text" class="form-control" id="originState" placeholder="State" name="OriginState" value="@Model.OriginState" @(isEditing ? "" : "disabled") required />
-									<label for="originState">State</label>
-								</div>
-
-							</div>
-							<div class="col-md-3">
-								<div class="form-floating">
-									<input type="text" class="form-control" id="destinationCity" placeholder="Origin City" name="DestinationCity" value="@Model.DestinationCity" @(isEditing ? "" : "disabled") required />
-									<label for="destinationCity">Destination City</label>
-									<span asp-validation-for="DestinationCity" class="badge badge-danger mt-1"></span>
-								</div>
-							</div>
-							<div class="col-md-1">
-								<div class="form-floating">
-									<input type="text" class="form-control" id="destinationState" placeholder="State" name="DestinationState" value="@Model.DestinationState" @(isEditing ? "" : "disabled") required />
-									<label for="destinationState">State</label>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-12 d-flex justify-content-center mb-2">
-						<div class="d-flex centered-row flex-wrap justify-content-center">
-							<div class="col-md-5">
-								<div class="form-floating">
-									<input type="text" class="form-control" id="pickupTime" placeholder="Pickup Time" name="PickupTime" value="@Model.PickupTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") required />
-									<label for="pickupTime">Pickup Time</label>
-									<span asp-validation-for="PickupTime" class="badge badge-danger mt-1"></span>
-								</div>
-							</div>
-							<div class="col-md-5">
-								<div class="form-floating">
-									<input type="text" class="form-control" id="deliveryTime" placeholder="Delivery Time" name="DeliveryTime" value="@Model.DeliveryTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") required />
-									<label for="deliveryTime">Delivery Time</label>
-									<span asp-validation-for="DeliveryTime" class="badge badge-danger mt-1"></span>
-
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-12 d-flex justify-content-center mb-2">
-						<div class="d-flex centered-row flex-wrap justify-content-center">
-							<div class="col-md-3">
-								<div class="form-floating">
-									<input type="text" class="form-control" id="price" placeholder="Price" name="PostedPrice" value="@Model.PostedPrice" @(isEditing ? "" : "disabled") required />
-									<label for="price">Price</label>
-									<span asp-validation-for="PostedPrice" class="badge badge-danger mt-1"></span>
-
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="form-floating">
-									<input type="text" class="form-control" id="weight" placeholder="Weight" name="Weight" value="@Model.Weight" @(isEditing ? "" : "disabled") required />
-									<label for="weight">Weight in lbs</label>
-									<span asp-validation-for="Weight" class="badge badge-danger mt-1"></span>
-
-								</div>
-							</div>
-
-						</div>
-					
-					</div>
-					
-					@if (user is Broker)
-					{
-						<div class="text-center details-buttons-container">
-	
-							<button type="button" id="editLoadButton" class="btn btn-primary">
-								<i class="ri-edit-box-line"></i> Edit
-							</button>
-
-							<button type="submit" id="saveLoadButton" class="btn btn-success" style="display: none;">
-								<i class="bx bxs-save"></i> Save
-							</button>
-
-							<button type="button" id="cancelEditingButton" class="btn btn-secondary" style="display: none;">
-								<i class="bx bx-arrow-back"></i> Cancel
-							</button>
-
-						</div>
-					}
-				</form>
-
-			<div class="d-flex justify-content-center">
-					<div class="text-center details-buttons-container gap-2">
-
-						@{
-							switch (status)
-							{
-								case LoadStatus.Created:
-									@if (user is not Dispatcher)
-									{
-										<form asp-action="PostALoad" asp-controller="Load" method="post" id="postLoadForm">
-											@Html.AntiForgeryToken()
-											<input type="hidden" name="loadId" value="@Model.Id" />
-											<button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
-												<i class="ri-file-list-line"></i> Post
-											</button>
-										</form>
-									}
-									break;
-
-								case LoadStatus.Available:
-									@if (user is not Dispatcher)
-									{
-										<form asp-action="UnpostALoad" asp-controller="Load" method="post" id="unpostLoadFrom">
-											@Html.AntiForgeryToken()
-											<input type="hidden" name="loadId" value="@Model.Id" />
-											<button type="submit" class="btn btn-outline-warning" id="unpostLoadBtn">
-												<i class="ri-file-list-line"></i> Unpost
-											</button>
-										</form>
-
-										<form asp-action="UnpostAllLoads" asp-controller="Load" method="post" id="unpostAllLoadFrom">
-											@Html.AntiForgeryToken()
-											<input type="hidden" name="brokerId" value="@Model.BrokerId" />
-											<button type="submit" class="btn btn-outline-warning" id="unpostAllBtn">
-												<i class="ri-file-list-line"></i> Unpost All
-											</button>
-										</form>
-									}
-									
-									break;
-
-									// case LoadStatus.Booked:
-									// 	<div class="load-status badge bg-warning">
-									// 		<i class="bi bi-bookmark me-1"></i> Booked
-									// 	</div>
-									// 	break;
-									// case LoadStatus.Delivered:
-									// 	<div class="load-status badge bg-info">
-									// 		<i class="bi bi-truck me-1"></i> Delivered
-									// 	</div>
-									// 	break;
-									// case LoadStatus.Cancelled:
-									// 	<div class="load-status badge bg-danger">
-									// 		<i class="bi bi-x-circle me-1"></i> Cancelled
-									// 	</div>
-									// 	break;
-							}
-						}
-
-						<div class="text-center details-buttons-container">
-
-							@if (user is not Dispatcher)
-							{
-								<form id="cancelLoadForm" asp-action="CancelLoad" asp-controller="Load" method="post" id="cancelLoadButton">
-									@Html.AntiForgeryToken()
-									<input type="hidden" name="loadId" value="@Model.Id" />
-									<button type="submit" class="btn btn-outline-danger" id="cancelLoadBtn">
-										<i class="bx bxs-x-circle"></i> Cancel Load
-									</button>
-								</form>
-							
-
-								<div class="modal fade" id="cancelConfirmationModal" tabindex="-1" aria-labelledby="cancelConfirmationModalLabel" aria-hidden="true">
-									<div class="modal-dialog modal-dialog-centered">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h5 class="modal-title" id="cancelConfirmationModalLabel">Confirm Cancellation</h5>
-											</div>
-											<i id="modal-icon" class="ri-error-warning-fill"></i>
-											<div class="modal-body">
-												Are you sure you want to cancel this load?
-											</div>
-											<div class="modal-footer-centered">
-												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Go Back</button>
-												<button type="button" class="btn btn-danger" id="confirmCancelBtn">Yes, Cancel</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							}
-							
-							<form asp-action="LoadDetails" asp-controller="Load" method="get" id="refreshLoadForm">
-								<input type="hidden" name="loadId" value="@Model.Id" />
-								<button id="refreshLoadInfoButton" class="btn btn-outline-info">
-									<i class="bx  bx-refresh"></i>
-								</button>
-							</form>
-
-							<form asp-action="ReturnToLoadBoard" asp-controller="LoadBoard" method="post" id="backToLoadBoardButton">
-								@Html.AntiForgeryToken()
-								<button type="submit" class="btn btn-outline-info">
-									<i class="bx bxs-dashboard"></i> Back to LoadBoard
-								</button>
-							</form>
-
-						</div>
-
-
-					</div>
+			</div>
+			<div class="col-md-3">
+				<div class="form-floating">
+					<input type="text" class="form-control" id="destinationCity" placeholder="Origin City" name="DestinationCity" value="@Model.DestinationCity" @(isEditing ? "" : "disabled") required />
+					<label for="destinationCity">Destination City</label>
+					<span asp-validation-for="DestinationCity" class="badge badge-danger mt-1"></span>
 				</div>
-				
+			</div>
+			<div class="col-md-1">
+				<div class="form-floating">
+					<input type="text" class="form-control" id="destinationState" placeholder="State" name="DestinationState" value="@Model.DestinationState" @(isEditing ? "" : "disabled") required />
+					<label for="destinationState">State</label>
+				</div>
 			</div>
 		</div>
+	</div>
+
+	<div class="col-12 d-flex justify-content-center mb-2">
+		<div class="d-flex centered-row flex-wrap justify-content-center">
+			<div class="col-md-5">
+				<div class="form-floating">
+					<input type="text" class="form-control" id="pickupTime" placeholder="Pickup Time" name="PickupTime" value="@Model.PickupTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") required />
+					<label for="pickupTime">Pickup Time</label>
+					<span asp-validation-for="PickupTime" class="badge badge-danger mt-1"></span>
+				</div>
+			</div>
+			<div class="col-md-5">
+				<div class="form-floating">
+					<input type="text" class="form-control" id="deliveryTime" placeholder="Delivery Time" name="DeliveryTime" value="@Model.DeliveryTime.ToString("dd/MM/yyyy HH:mm")" @(isEditing ? "" : "disabled") required />
+					<label for="deliveryTime">Delivery Time</label>
+					<span asp-validation-for="DeliveryTime" class="badge badge-danger mt-1"></span>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-12 d-flex justify-content-center mb-2">
+		<div class="d-flex centered-row flex-wrap justify-content-center">
+			<div class="col-md-3">
+				<div class="form-floating">
+					<input type="text" class="form-control" id="price" placeholder="Price" name="PostedPrice" value="@Model.PostedPrice" @(isEditing ? "" : "disabled") required />
+					<label for="price">Price</label>
+					<span asp-validation-for="PostedPrice" class="badge badge-danger mt-1"></span>
+
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="form-floating">
+					<input type="text" class="form-control" id="weight" placeholder="Weight" name="Weight" value="@Model.Weight" @(isEditing ? "" : "disabled") required />
+					<label for="weight">Weight in lbs</label>
+					<span asp-validation-for="Weight" class="badge badge-danger mt-1"></span>
+
+				</div>
+			</div>
+
+		</div>
+					
+	</div>
+					
+	@if (user is Broker)
+	{
+		<div class="text-center details-buttons-container">
+	
+			<button type="button" id="editLoadButton" class="btn btn-primary">
+				<i class="ri-edit-box-line"></i> Edit
+			</button>
+
+			<button type="submit" id="saveLoadButton" class="btn btn-success" style="display: none;">
+				<i class="bx bxs-save"></i> Save
+			</button>
+
+			<button type="button" id="cancelEditingButton" class="btn btn-secondary" style="display: none;">
+				<i class="bx bx-arrow-back"></i> Cancel
+			</button>
+
+		</div>
+	}
+</form>
+
+<div class="d-flex justify-content-center">
+	<div class="text-center details-buttons-container gap-2">
+
+		@{
+			switch (status)
+			{
+				case LoadStatus.Created:
+					@if (user is not Dispatcher)
+					{
+						<form asp-action="PostALoad" asp-controller="Load" method="post" id="postLoadForm">
+							@Html.AntiForgeryToken()
+							<input type="hidden" name="loadId" value="@Model.Id" />
+							<button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
+								<i class="ri-file-list-line"></i> Post
+							</button>
+						</form>
+					}
+					break;
+
+				case LoadStatus.Available:
+					@if (user is not Dispatcher)
+					{
+						<form asp-action="UnpostALoad" asp-controller="Load" method="post" id="unpostLoadFrom">
+							@Html.AntiForgeryToken()
+							<input type="hidden" name="loadId" value="@Model.Id" />
+							<button type="submit" class="btn btn-outline-warning" id="unpostLoadBtn">
+								<i class="ri-file-list-line"></i> Unpost
+							</button>
+						</form>
+
+						<form asp-action="UnpostAllLoads" asp-controller="Load" method="post" id="unpostAllLoadFrom">
+							@Html.AntiForgeryToken()
+							<input type="hidden" name="brokerId" value="@Model.BrokerId" />
+							<button type="submit" class="btn btn-outline-warning" id="unpostAllBtn">
+								<i class="ri-file-list-line"></i> Unpost All
+							</button>
+						</form>
+					}
+									
+					break;
+
+				// case LoadStatus.Booked:
+				// 	<div class="load-status badge bg-warning">
+				// 		<i class="bi bi-bookmark me-1"></i> Booked
+				// 	</div>
+				// 	break;
+				// case LoadStatus.Delivered:
+				// 	<div class="load-status badge bg-info">
+				// 		<i class="bi bi-truck me-1"></i> Delivered
+				// 	</div>
+				// 	break;
+				// case LoadStatus.Cancelled:
+				// 	<div class="load-status badge bg-danger">
+				// 		<i class="bi bi-x-circle me-1"></i> Cancelled
+				// 	</div>
+				// 	break;
+			}
+		}
+
+		<div class="text-center details-buttons-container">
+
+			@if (user is not Dispatcher)
+			{
+				<form id="cancelLoadForm" asp-action="CancelLoad" asp-controller="Load" method="post" id="cancelLoadButton">
+					@Html.AntiForgeryToken()
+					<input type="hidden" name="loadId" value="@Model.Id" />
+					<button type="submit" class="btn btn-outline-danger" id="cancelLoadBtn">
+						<i class="bx bxs-x-circle"></i> Cancel Load
+					</button>
+				</form>
+							
+
+				<div class="modal fade" id="cancelConfirmationModal" tabindex="-1" aria-labelledby="cancelConfirmationModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="cancelConfirmationModalLabel">Confirm Cancellation</h5>
+							</div>
+							<i id="modal-icon" class="ri-error-warning-fill"></i>
+							<div class="modal-body">
+								Are you sure you want to cancel this load?
+							</div>
+							<div class="modal-footer-centered">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Go Back</button>
+								<button type="button" class="btn btn-danger" id="confirmCancelBtn">Yes, Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+							
+			@if (user is not Broker)
+			{
+				<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatModal">
+					Open Chat
+				</button>
+			}
+							
+			<form asp-action="LoadDetails" asp-controller="Load" method="get" id="refreshLoadForm">
+				<input type="hidden" name="loadId" value="@Model.Id" />
+				<button id="refreshLoadInfoButton" class="btn btn-outline-info">
+					<i class="bx  bx-refresh"></i>
+				</button>
+			</form>
+
+			<form asp-action="ReturnToLoadBoard" asp-controller="LoadBoard" method="post" id="backToLoadBoardButton">
+				@Html.AntiForgeryToken()
+				<button type="submit" class="btn btn-outline-info">
+					<i class="bx bxs-dashboard"></i> Back to LoadBoard
+				</button>
+			</form>
+
+		</div>
+
+
+	</div>
+</div>
+				
+</div>
+</div>
+
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="chatModalLabel">Chat</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div id="chat-container">
+					<div id="chat-messages" class="messages">
+						<!-- Messages will be dynamically loaded here -->
+					</div>
+					<div id="chat-input">
+						<form id="chat-form">
+							<input type="hidden" id="receiverId" value="@Model.BrokerId" />
+							<div class="input-group">
+								<input type="text" id="message-input" class="form-control" placeholder="Type your message..." required />
+								<button type="submit" class="btn btn-primary">Send</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 
 </main><!-- End #main -->
 
 <script>
-
+	
+	document.addEventListener("DOMContentLoaded", function () {
+		initializeMessageNotifications();
+	});
 
 	document.addEventListener("DOMContentLoaded", function () {
 		var activeTab = "@tempDataActiveTab";
@@ -362,8 +400,8 @@
 			document.body.classList.toggle('toggle-sidebar');
 		});
 	}
-
-
+	
+	
 </script>
 
 
