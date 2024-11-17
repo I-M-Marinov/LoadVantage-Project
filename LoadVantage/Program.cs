@@ -1,7 +1,7 @@
 using System.Threading.RateLimiting;
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Services;
-using LoadVantage.Hubs;
+using LoadVantage.Core.Hubs;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Contracts;
 using LoadVantage.Infrastructure.Data.Models;
@@ -77,6 +77,7 @@ builder.Services.AddScoped<IGeocodeService, GeocodeService>();								// Add the
 builder.Services.AddScoped<IDistanceCalculatorService, DistanceCalculatorService>();		// Add the Distance Calculator Service
 builder.Services.AddScoped<ILoadStatusService, LoadStatusService>();						// Add the Load Status Service 
 builder.Services.AddScoped<ILoadBoardService, LoadBoardService>();							// Add the LoadBoard Service 
+builder.Services.AddScoped<IChatService, ChatService>();							// Add the LoadBoard Service 
 builder.Services.AddSignalR();																// Add SignalR
 
 
@@ -166,6 +167,7 @@ app.UseEndpoints(endpoints =>
 	    defaults: new { controller = "Load", action = "LoadDetails" });
 
 	endpoints.MapHub<LoadHub>("/loadHub");
+	endpoints.MapHub<LoadHub>("/chatHub");
 
 	// Default route mapping
 	endpoints.MapControllerRoute(
