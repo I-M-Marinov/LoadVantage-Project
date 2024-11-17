@@ -310,17 +310,20 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                         destination = locations[random.Next(locations.Count)];
                     } while (origin == destination); // Ensure origin and destination are different
 
-                    loads.Add(new Load
+                    var now = DateTime.Now;
+                    var createdDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0); // specifically set seconds to 00
+
+					loads.Add(new Load
                     {
                         Id = Guid.NewGuid(),
-                        CreatedDate = DateTime.Now,
+                        CreatedDate = createdDate,
                         OriginCity = origin.City,
                         OriginState = origin.State,
                         DestinationCity = destination.City,
                         DestinationState = destination.State,
-                        PickupTime = DateTime.Now.AddDays(random.Next(1, 10)), // Pickup date 1 to 10 days from now
-                        DeliveryTime = DateTime.Now.AddDays(random.Next(11, 20)), // Delivery date 11 to 20 days from now
-                        Distance = 0,
+						PickupTime = createdDate.AddDays(random.Next(1, 5)),
+						DeliveryTime = createdDate.AddDays(random.Next(6, 11)),
+						Distance = 0,
                         Price = random.Next(1000, 7500), // Random price 
                         Weight = random.Next(500, 48000), // Random weight 
                         Status = LoadStatus.Created
