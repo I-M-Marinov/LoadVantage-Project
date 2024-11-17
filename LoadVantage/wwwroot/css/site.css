@@ -687,3 +687,31 @@ body {
 }
 
 
+/*-------------------------------------------------------------------------------------
+# CHAT MODAL 
+--------------------------------------------------------------------------------------*/
+
+#chat-container {
+    max-width: 100%;
+}
+
+.messages {
+    min-height: 250px;
+    max-height: 600px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    margin-top: 2em;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+#chat-input {
+    display: flex;
+    gap: 10px;
+}
+
+#message-input {
+    flex: 1;
+}
+
+
