@@ -234,6 +234,58 @@
 			}
 		}
 	});
+	
+	
+	/*-------------------------------------------------------------------------------------
+	# SIGNALR WEB SOCKET CONNECTION TO RETRIEVE ANY NEW POSTED LOADS
+	--------------------------------------------------------------------------------------*/
+
+
+	// Declare postedLoadsConnection globally
+	var postedLoadsConnection;
+
+	function initializePostedLoadsConnection() {
+		if (!postedLoadsConnection) {
+			postedLoadsConnection = new signalR.HubConnectionBuilder()
+				.withUrl("/loadHub")
+				.build();
+
+			postedLoadsConnection.start()
+				.then(() => {
+					console.log("Connected to LoadHub.");
+				})
+				.catch(err => {
+					console.error("Error connecting to LoadHub: " + err);
+				});
+
+			postedLoadsConnection.on("ReceiveLoadPostedNotification", function (loadId) {
+				console.log("New load posted with ID: " + loadId);
+				reloadPostedLoadsTable();
+			});
+
+			postedLoadsConnection.on("ReloadPostedLoadsTable", function () {
+				console.log("Reloading the table... multiple loads status change / load's status changed");
+				reloadPostedLoadsTable();
+			});
+		}
+	}
+
+	function reloadPostedLoadsTable() {
+		$.get("/LoadBoard/GetPostedLoadsTable", function (data) {
+			$("#postedLoadsTableContainer").html(data);
+		});
+	}
+
+	document.addEventListener("DOMContentLoaded", function () {
+		initializePostedLoadsConnection();
+	});
+
+	window.addEventListener("beforeunload", () => {
+		if (postedLoadsConnection && postedLoadsConnection.state === "Connected") {
+			postedLoadsConnection.stop();
+		}
+	});
+
 
 
 
