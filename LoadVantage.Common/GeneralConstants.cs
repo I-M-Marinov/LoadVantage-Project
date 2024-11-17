@@ -89,6 +89,7 @@ namespace LoadVantage.Common
 
             public const string LoadCreatedSuccessfully = "Load was created successfully.";
             public const string LoadUpdatedSuccessfully = "Load was updated successfully.";
+            public const string LoadWasNotUpdated = "No changes were made to the load.";
             public const string LoadCancelledSuccessfully = "Load was cancelled successfully.";
             public const string LoadPostedSuccessfully = "Load was posted successfully.";
             public const string LoadUnpostedSuccessfully = "Load was unposted successfully.";

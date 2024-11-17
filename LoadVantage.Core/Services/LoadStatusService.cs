@@ -193,8 +193,22 @@ namespace LoadVantage.Core.Services
             // If any changes in the Destination City or State
             bool destinationChanged = load.DestinationCity != destinationFormattedCity || load.DestinationState != destinationFormattedState; 
 
-            // Update properties
-            load.Id = loadId;
+            bool pickupTimeChanged = load.PickupTime != model.PickupTime;
+            bool deliveryTimeChanged = load.DeliveryTime != model.DeliveryTime;
+            bool priceChanged = load.Price != model.PostedPrice;
+            bool weightChanged = load.Weight != model.Weight;
+
+            bool changes = originChanged || destinationChanged || 
+                             pickupTimeChanged || deliveryTimeChanged ||
+                             priceChanged || weightChanged;
+
+            if (!changes)
+            {
+	             return false;
+            }
+
+			// Update properties
+			load.Id = loadId;
             load.OriginCity = originFormattedCity;
             load.OriginState = originFormattedState;
             load.DestinationCity = destinationFormattedCity;
