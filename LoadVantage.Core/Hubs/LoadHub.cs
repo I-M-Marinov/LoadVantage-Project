@@ -1,9 +1,11 @@
 ﻿using LoadVantage.Core.Models.Load;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 
-namespace LoadVantage.Hubs
+namespace LoadVantage.Core.Hubs
 {
-	using Microsoft.AspNetCore.SignalR;
 
+	[Authorize]
 	public class LoadHub : Hub
 	{
 		public async Task SendLoadPostedNotification(LoadViewModel load)
