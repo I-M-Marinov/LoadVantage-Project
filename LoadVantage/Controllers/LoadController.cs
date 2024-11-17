@@ -9,7 +9,7 @@ using LoadVantage.Filters;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
-using LoadVantage.Hubs;
+using LoadVantage.Core.Hubs;
 using Microsoft.AspNetCore.SignalR;
 
 namespace LoadVantage.Controllers

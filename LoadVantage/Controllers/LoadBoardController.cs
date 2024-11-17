@@ -3,7 +3,6 @@ using LoadVantage.Core.Models.Load;
 using LoadVantage.Core.Services;
 using LoadVantage.Extensions;
 using LoadVantage.Filters;
-using LoadVantage.Hubs;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
