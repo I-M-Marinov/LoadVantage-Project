@@ -312,9 +312,9 @@
 							
 			@if (user is not Broker)
 			{
-				<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatModal">
-					Open Chat
-				</button>
+				<a asp-action="ChatWindow" asp-controller="Chat" asp-route-brokerId="@Model.BrokerId" class="btn btn-primary">
+					Chat with Broker
+				</a>
 			}
 							
 			<form asp-action="LoadDetails" asp-controller="Load" method="get" id="refreshLoadForm">
@@ -340,42 +340,11 @@
 </div>
 </div>
 
-<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="chatModalLabel">Chat</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<div id="chat-container">
-					<div id="chat-messages" class="messages">
-						<!-- Messages will be dynamically loaded here -->
-					</div>
-					<div id="chat-input">
-						<form id="chat-form">
-							<input type="hidden" id="receiverId" value="@Model.BrokerId" />
-							<div class="input-group">
-								<input type="text" id="message-input" class="form-control" placeholder="Type your message..." required />
-								<button type="submit" class="btn btn-primary">Send</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-
-</main><!-- End #main -->
+	</main><!-- End #main -->
 
 <script>
 	
-	document.addEventListener("DOMContentLoaded", function () {
-		initializeMessageNotifications();
-	});
+
 
 	document.addEventListener("DOMContentLoaded", function () {
 		var activeTab = "@tempDataActiveTab";
@@ -400,8 +369,8 @@
 			document.body.classList.toggle('toggle-sidebar');
 		});
 	}
-	
-	
+
+
 </script>
 
 
