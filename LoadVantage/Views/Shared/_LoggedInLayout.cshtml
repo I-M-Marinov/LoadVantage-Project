@@ -35,10 +35,17 @@
 		
 
 	<div class="container">
-	            @RenderBody()
-	    </div>
+		@RenderBody()
+	</div>
+	
+	<footer id="footer" class="footer">
+		<div class="copyright">
+			&copy; 2024 - LoadVantage - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+		</div>
 
-		<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+	</footer><!-- End Footer -->
+
+	<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
 	<!-- SignalR  -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.5/signalr.min.js"></script>
