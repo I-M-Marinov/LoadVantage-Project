@@ -16,3 +16,21 @@ C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Core\obj\
 C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\refint\LoadVantage.Core.dll
 C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\LoadVantage.Core.pdb
 C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\ref\LoadVantage.Core.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\bin\Debug\net8.0\LoadVantage.Core.deps.json
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\bin\Debug\net8.0\LoadVantage.Core.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\bin\Debug\net8.0\LoadVantage.Core.pdb
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\bin\Debug\net8.0\LoadVantage.Common.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\bin\Debug\net8.0\LoadVantage.Infrastructure.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\bin\Debug\net8.0\LoadVantage.Infrastructure.pdb
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\bin\Debug\net8.0\LoadVantage.Common.pdb
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\LoadVantage.Core.csproj.AssemblyReference.cache
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\LoadVantage.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\LoadVantage.Core.AssemblyInfoInputs.cache
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\LoadVantage.Core.AssemblyInfo.cs
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\LoadVantage.Core.csproj.CoreCompileInputs.cache
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\LoadVantage.Core.sourcelink.json
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\LoadVant.913ACA91.Up2Date
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\LoadVantage.Core.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\refint\LoadVantage.Core.dll
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\LoadVantage.Core.pdb
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Core\obj\Debug\net8.0\ref\LoadVantage.Core.dll

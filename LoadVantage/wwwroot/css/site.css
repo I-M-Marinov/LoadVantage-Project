@@ -691,7 +691,7 @@ body {
 # CHAT MODAL 
 --------------------------------------------------------------------------------------*/
 
-#chat-container {
+/*#chat-container {
     max-width: 100%;
 }
 
@@ -712,6 +712,21 @@ body {
 
 #message-input {
     flex: 1;
+}*/
+
+/*-------------------------------------------------------------------------------------
+# CHAT WINDOW CSS 
+--------------------------------------------------------------------------------------*/
+
+
+#chatWindow {
+    display: none;
+    transition: opacity 0.3s ease-in-out;
 }
+
+    #chatWindow.show {
+        display: block;
+        opacity: 1;
+    }
 
 

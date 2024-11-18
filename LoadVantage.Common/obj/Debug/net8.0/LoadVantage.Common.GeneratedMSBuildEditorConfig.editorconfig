@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LoadVantage.Common
-build_property.ProjectDir = C:\Users\Ivan Marinov\Documents\GitHub\LoadVantage-Project\LoadVantage.Common\
+build_property.ProjectDir = C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage.Common\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

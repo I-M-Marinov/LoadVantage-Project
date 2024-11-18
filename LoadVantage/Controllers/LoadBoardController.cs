@@ -54,7 +54,7 @@ namespace LoadVantage.Controllers
 		[DispatcherOnly]
 		public IActionResult GetPostedLoadsTable(Guid userId)
 		{
-			IEnumerable<LoadViewModel> loads = loadBoardService.GetAllPostedLoadsAsync(userId).Result; 
+			IEnumerable<LoadViewModel> loads = loadBoardService.GetAllPostedLoadsAsync(userId).Result;
 
 			return PartialView("_PostedLoadsTablePartial", loads);
 		}

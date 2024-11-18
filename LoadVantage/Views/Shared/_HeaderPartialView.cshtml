@@ -124,28 +124,26 @@
 
             </li><!-- End Notification Nav -->
 
-	        <li class="nav-item dropdown">
+            <li class="nav-item dropdown">
+	            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+		            <i class="bi bi-chat-left-text"></i>
+		            <span id="loadNotificationCount" class="badge bg-success badge-number"></span>
+	            </a><!-- End Messages Icon -->
 
-		        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-			        <i class="bi bi-chat-left-text"></i>
-			        <span id="loadNotificationCount" class="badge bg-success badge-number">0</span>
-		        </a><!-- End Messages Icon -->
-
-		        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages" id="loadNotificationList">
-			        <li class="dropdown-header">
-				        You have <span id="notificationCount">0</span> new notifications
-				        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-			        </li>
-			        <li>
-				        <hr class="dropdown-divider">
-			        </li>
-			        <!-- Notifications will be dynamically added here -->
-			        <li class="dropdown-footer">
-				        <a href="#">Show all notifications</a>
-			        </li>
-		        </ul><!-- End Messages Dropdown Items -->
-
-	        </li><!-- End Messages Nav -->
+	            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages" id="loadNotificationList">
+		            <li class="dropdown-header">
+			            You have <span id="notificationCount">0</span> new notifications
+			            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+		            </li>
+		            <li>
+			            <hr class="dropdown-divider">
+		            </li>
+		            <!-- Notifications will be dynamically added here -->
+		            <li class="dropdown-footer">
+			            <a href="#">Show all notifications</a>
+		            </li>
+	            </ul><!-- End Messages Dropdown Items -->
+            </li><!-- End Messages Nav -->
 
 
             <li class="nav-item dropdown pe-3">
@@ -216,5 +214,121 @@
         </ul>
     </nav><!-- End Icons Navigation -->
 
-    </header><!-- End Header -->
+</header><!-- End Header -->
 
+@* <script>
+
+
+    let messageConnection = null;
+
+    function initializeMessageNotifications() {
+        // Establish SignalR connection
+        if (!messageConnection) {
+            messageConnection = new signalR.HubConnectionBuilder()
+                .withUrl("/chatHub")
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+
+            messageConnection.start()
+                .then(() => {
+                    console.log("Connected to ChatHub.");
+                })
+                .catch(err => {
+                    console.error("Error connecting to ChatHub:", err.toString());
+                });
+
+            // Handle received messages
+            messageConnection.on("ReceiveMessage", function (message) {
+                console.log("Received message: ", message);
+                appendMessageToChat(message);
+            });
+
+            // Handle received notifications
+            messageConnection.on("ReceiveNotification", function (notification) {
+                console.log("Received notification: ", notification);
+                displayNotification(notification);
+            });
+
+            // Handle disconnection
+            messageConnection.onclose(async () => {
+                console.log("Disconnected from ChatHub. Attempting to reconnect...");
+                try {
+                    await messageConnection.start();
+                    console.log("Reconnected to ChatHub.");
+                } catch (err) {
+                    console.error("Reconnection failed:", err.toString());
+                }
+            });
+        }
+    }
+
+    // Append a new message to the chat
+    function appendMessageToChat(message) {
+        const chatMessages = document.getElementById("chat-messages");
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("message-item");
+        messageElement.textContent = `You: ${message}`;
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Display a notification (customize as needed)
+    function displayNotification(notification) {
+        // Find the dropdown list where the notifications are added
+        const notificationList = document.getElementById("loadNotificationList");
+
+        // Create a new list item for the notification
+        const newNotification = document.createElement("li");
+        newNotification.classList.add("notification-item");
+        newNotification.textContent = notification;  // Customize this if needed
+
+        // Insert the new notification item before the footer
+        notificationList.insertBefore(newNotification, notificationList.querySelector(".dropdown-footer"));
+
+        // Optionally, update the notification count in the header
+        const notificationCountElement = document.getElementById("notificationCount");
+        notificationCountElement.textContent = parseInt(notificationCountElement.textContent) + 1;
+    }
+
+    // Handle the form submission for sending a message
+    function handleSendMessage(event) {
+        event.preventDefault();
+
+        const messageInput = document.getElementById("message-input");
+        const receiverId = document.getElementById("receiverId");
+        const message = messageInput.value;
+
+        if (message) {
+            // The message is sent by a form submission to the controller action (handled server-side)
+            // The controller will then trigger SignalR notification for real-time updates
+            document.getElementById("chat-form").submit(); // Submit the form to trigger the controller action
+            messageInput.value = ""; // Clear input after sending
+        }
+    }
+
+    // Attach form submission handler
+    window.onload = function () {
+        document.getElementById("chat-form").addEventListener("submit", handleSendMessage);
+    };
+
+    function reloadChatWindow(receiverId) {
+        $.ajax({
+            url: '/Chat/GetChatWindow',  // This should match your controller's action
+            type: 'GET',
+            data: { receiverId: receiverId },
+            success: function (data) {
+                // Replace the current chat window content with the new content
+                $('#chat-window').html(data);
+            },
+            error: function (error) {
+                console.error("Error loading chat window:", error);
+            }
+        });
+    }
+	
+	// document.addEventListener("DOMContentLoaded", function () {
+   // 	initializeMessageNotifications();
+   // });
+
+</script>
+ *@
