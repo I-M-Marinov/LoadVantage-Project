@@ -22,6 +22,7 @@ namespace LoadVantage.Infrastructure.Data
         public DbSet<PostedLoad> PostedLoads { get; set; }
         public DbSet<BilledLoad> BilledLoads { get; set; }
         public DbSet<UserImage> UsersImages { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -58,6 +59,23 @@ namespace LoadVantage.Infrastructure.Data
                 .HasOne(l => l.BilledLoad)
                 .WithOne(b => b.Load)
                 .HasForeignKey<BilledLoad>(b => b.LoadId);
+
+            modelBuilder.Entity<User>()
+	            .HasOne(bu => bu.UserImage) 
+	            .WithOne(ui => ui.User)    
+	            .HasForeignKey<UserImage>(ui => ui.UserId); 
+
+			modelBuilder.Entity<ChatMessage>()
+	            .HasOne(cm => cm.Sender)
+	            .WithMany(u => u.SentMessages)
+	            .HasForeignKey(cm => cm.SenderId)
+	            .OnDelete(DeleteBehavior.Restrict); // Prevents cascading deletes
+
+            modelBuilder.Entity<ChatMessage>()
+	            .HasOne(cm => cm.Receiver)
+	            .WithMany(u => u.ReceivedMessages)
+	            .HasForeignKey(cm => cm.ReceiverId)
+	            .OnDelete(DeleteBehavior.Restrict); // Prevents cascading deletes
 		}
     }
 }

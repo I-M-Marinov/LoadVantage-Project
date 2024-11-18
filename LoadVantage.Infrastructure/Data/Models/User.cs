@@ -41,7 +41,16 @@ namespace LoadVantage.Infrastructure.Data.Models
             [StringLength(UserPhoneNumberMaxLength)]
             public override string? PhoneNumber { get; set; } = null!;
 
-        }
+			[Required]
+			public Guid? UserImageId { get; set; }
+
+			[ForeignKey(nameof(UserImageId))]
+			public UserImage? UserImage { get; set; }
+
+		public ICollection<ChatMessage> SentMessages { get; set; } = new List<ChatMessage>();
+			public ICollection<ChatMessage> ReceivedMessages { get; set; } = new List<ChatMessage>();
+
+	}
 }
 
 

@@ -31,11 +31,6 @@ namespace LoadVantage.Infrastructure.Data.Models
         [StringLength(CompanyNameMaxLength)]
         public string? CompanyName { get; set; }
 
-        [Required]
-        public Guid? UserImageId { get; set; }
-
-        [ForeignKey(nameof(UserImageId))]
-        public UserImage? UserImage { get; set; }
 
 		public string FullName => $"{FirstName} {LastName}"; // FullName combines FirstName and LastName
 
