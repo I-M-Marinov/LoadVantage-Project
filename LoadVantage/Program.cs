@@ -77,7 +77,7 @@ builder.Services.AddScoped<IGeocodeService, GeocodeService>();								// Add the
 builder.Services.AddScoped<IDistanceCalculatorService, DistanceCalculatorService>();		// Add the Distance Calculator Service
 builder.Services.AddScoped<ILoadStatusService, LoadStatusService>();						// Add the Load Status Service 
 builder.Services.AddScoped<ILoadBoardService, LoadBoardService>();							// Add the LoadBoard Service 
-builder.Services.AddScoped<IChatService, ChatService>();							// Add the LoadBoard Service 
+builder.Services.AddScoped<IChatService, ChatService>();									// Add the Chat Service 
 builder.Services.AddSignalR();																// Add SignalR
 
 
