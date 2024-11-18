@@ -6,17 +6,24 @@ namespace LoadVantage.Core.Hubs
 	[Authorize]
 	public class ChatHub : Hub
 	{
-		// Send a message to a specific user
 		public async Task SendMessage(string receiverId, string message)
 		{
-			// Send message to the receiver
-			await Clients.User(receiverId).SendAsync("ReceiveMessage", message);
+			if (string.IsNullOrWhiteSpace(message))
+			{
+				throw new ArgumentException("Message cannot be empty.", nameof(message));
+			}
+
+			await Clients.User(receiverId).SendAsync("ReceiveMessage", new { Message = message });
 		}
 
-		// Send a notification to all connected clients
-		public async Task SendNotification(string user, string notification)
+		public async Task SendNotification(string receiverId, string notification)
 		{
-			await Clients.All.SendAsync("ReceiveNotification", user, notification);
+			if (string.IsNullOrWhiteSpace(notification))
+			{
+				throw new ArgumentException("Notification cannot be empty.", nameof(notification));
+			}
+
+			await Clients.User(receiverId).SendAsync("ReceiveNotification", notification);
 		}
 	}
 }
