@@ -1,4 +1,5 @@
-﻿using LoadVantage.Core.Models.Profile;
+﻿using LoadVantage.Core.Models.Chat;
+using LoadVantage.Core.Models.Profile;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Http;
 
@@ -8,6 +9,7 @@ namespace LoadVantage.Core.Contracts
     {
         Task<User> GetUserByIdAsync(Guid userId);
         Task<ProfileViewModel> GetUserInformation(Guid userId);
+        Task<BrokerChatViewModel> GetChatBrokerInfoAsync(Guid brokerId);
 		Task<IEnumerable<User>> GetAllUsersAsync();
         Task<IEnumerable<User>> GetDispatchersAsync();
         Task<IEnumerable<User>> GetBrokersAsync();

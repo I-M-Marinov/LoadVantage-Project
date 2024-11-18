@@ -9,6 +9,8 @@ using LoadVantage.Core.Models.Profile;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using static LoadVantage.Common.GeneralConstants.UserImage;
+using LoadVantage.Core.Models.Chat;
+
 
 
 #nullable disable
@@ -29,7 +31,25 @@ namespace LoadVantage.Core.Services
             imageService = _imageService;
 		}
 
-        public async Task<User> GetUserByIdAsync(Guid userId)
+		public async Task<BrokerChatViewModel> GetChatBrokerInfoAsync(Guid brokerId)
+		{
+			var broker = await context.Users
+				.Include(u => u.UserImage) 
+				.Where(u => u.Id == brokerId)
+				.Select(u => new BrokerChatViewModel
+				{
+                    Id = u.Id,
+					FullName = u.FullName,
+					ProfilePictureUrl = u.UserImage.ImageUrl, 
+					PhoneNumber = u.PhoneNumber, 
+					Company = u.CompanyName 
+				})
+				.FirstOrDefaultAsync();
+
+			return broker;
+		}
+
+		public async Task<User> GetUserByIdAsync(Guid userId)
         {
             return await userManager.FindByIdAsync(userId.ToString());
         }
