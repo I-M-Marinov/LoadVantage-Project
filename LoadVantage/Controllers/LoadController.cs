@@ -46,11 +46,6 @@ namespace LoadVantage.Controllers
 	                return NotFound("The load you are looking for does not exist");
                 }
 
-				//  if (userId != loadToShow.BrokerId)
-			    //{
-				//	return RedirectToAction("LoadBoard", "LoadBoard"); // If the load does not belong to the broker redirect him back to the LoadBoard
-				//}
-
                 return View(loadToShow);
             }
             catch (Exception e)
