@@ -239,9 +239,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
-
-
 /*-------------------------------------------------------------------------------------
 # TOGGLE SIDEBAR ON AND OFF THE SCREEN 
 --------------------------------------------------------------------------------------*/
@@ -279,4 +276,70 @@ $("#updateProfileForm").submit(function (event) {
     }
 });
 
+/*-------------------------------------------------------------------------------------
+# GET UNREAD MESSAGES AND THEIR COUNT
+--------------------------------------------------------------------------------------*/
+
+
+function updateUnreadCount() {
+    $.get('/Chat/GetUnreadMessages', function (data) {
+        const unreadCount = data.unreadCount;
+        const unreadMessages = data.messages;
+
+        $('#notificationCount').text(unreadCount);
+        $('#loadNotificationCount').text(unreadCount);
+
+        const notificationList = document.getElementById('loadNotificationList');
+        notificationList.innerHTML = ''; 
+
+        unreadMessages.forEach((message) => {
+            const notificationItem = document.createElement('li');
+            notificationItem.classList.add('message-item');
+            notificationItem.innerHTML = `
+                <a href="#" onclick="openChat('${message.senderId}', '${message.receiverId}')">
+                    <div class="message-body">
+                        <h6 class="message-title">${message.content}</h6>
+                        <p class="message-time">${new Date(message.timestamp).toLocaleTimeString()}</p>
+                    </div>
+                </a>
+            `;
+            notificationList.appendChild(notificationItem);
+        });
+    }).fail(function (error) {
+        console.error("Error fetching unread messages:", error);
+    });
+}
+
+function addNotification(chatMessage) {
+    if (!chatMessage.senderId || !chatMessage.receiverId) {
+        console.error("Invalid chat message data:", chatMessage);
+        return;
+    }
+
+    const notificationList = document.getElementById('loadNotificationList');
+    const notificationItem = document.createElement('li');
+    notificationItem.classList.add('message-item');
+    notificationItem.innerHTML = `
+        <a href="#" onclick="openChat('${chatMessage.senderId}', '${chatMessage.receiverId}')">
+            <div class="message-body">
+                <h6 class="message-title">${chatMessage.content}</h6>
+                <p class="message-time">${new Date(chatMessage.timestamp).toLocaleTimeString()}</p>
+            </div>
+        </a>
+    `;
+    notificationList.appendChild(notificationItem);
+}
+
+function openChat(senderId, receiverId) {
+    $.post('/Chat/MarkMessageAsRead',
+        { senderId: senderId, receiverId: receiverId },
+        function () {
+            console.log("Messages marked as read.");
+            updateUnreadCount(); 
+        }
+    ).fail(function (error) {
+        console.error("Error marking messages as read:", error);
+    });
+
+}
 
