@@ -63,12 +63,20 @@
 
 			</li>
 
-
-			<a asp-action="ChatWindow" asp-controller="Chat" asp-route-brokerId="@Model.Id" class="btn btn-primary">
-				Chat with Broker
-			</a>
-			
 		}
+
+		<li class="nav-item">
+
+
+			<form method="get" action="@Url.Action("ChatWindow", "Chat")">
+				<input type="hidden" name="brokerId" value="@user.Id" />
+				<button type="submit" class="nav-link collapsed" id="chat-nav">
+					<i class="bx bxs-chat"></i>
+					<span>Chat</span>
+				</button>
+			</form>
+
+		</li>
 
 		<!-- End Profile Page Nav -->
 
