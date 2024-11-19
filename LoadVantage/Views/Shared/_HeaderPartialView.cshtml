@@ -132,16 +132,14 @@
 
 	            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages" id="loadNotificationList">
 		            <li class="dropdown-header">
+			            <input type="hidden" id="userId" value="@user.Id.ToString()" />
 			            You have <span id="notificationCount">0</span> new notifications
 			            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
 		            </li>
 		            <li>
 			            <hr class="dropdown-divider">
 		            </li>
-		            <!-- Notifications will be dynamically added here -->
-		            <li class="dropdown-footer">
-			            <a href="#">Show all notifications</a>
-		            </li>
+
 	            </ul><!-- End Messages Dropdown Items -->
             </li><!-- End Messages Nav -->
 
@@ -332,3 +330,17 @@
 
 </script>
  *@
+ 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+	
+    $(document).ready(function () {
+        updateUnreadCount();
+
+        // Optional: Auto-refresh every 30 seconds
+        setInterval(updateUnreadCount, 10000);
+    });
+
+
+</script>
