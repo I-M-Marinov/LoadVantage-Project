@@ -1,0 +1,12 @@
+﻿@model LoadVantage.Core.Models.Chat.UserChatViewModel
+
+<div class="card-body">
+	<div class="d-flex align-items-center">
+		<img src="@Model.ProfilePictureUrl" alt="@Model.FullName" class="profile-img rounded-circle" style="width: 5em; height: 5em;" />
+		<div class="ms-3">
+			<h5 class="card-title">@Model.FullName</h5>
+			<p class="card-text">Phone: @Model.PhoneNumber</p>
+			<p class="card-text">Company: @Model.Company</p>
+		</div>
+	</div>
+</div>
