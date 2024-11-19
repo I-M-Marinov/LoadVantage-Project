@@ -1,0 +1,67 @@
+﻿@using LoadVantage.Extensions
+@model IEnumerable<LoadVantage.Core.Models.Chat.ChatMessageViewModel>
+
+@foreach (var message in Model)
+{
+	var isReceived = message.ReceiverId == User.GetUserId().Value;
+	var isRead = message.IsRead ? "read" : ""; // Add 'read' class if the message is read.
+
+	<div class="chat-message @(isReceived ? "received" : "sent") @isRead" 
+	     data-message-id="@message.Id"
+	     data-sender-id="@message.SenderId.ToString()"
+	     data-receiver-id="@message.ReceiverId.ToString()"
+	     data-is-received="@isReceived">
+
+		<div class="message-content">
+			<p>@message.Content</p>
+		</div>
+		<div class="message-timestamp">
+			<span>@message.Timestamp.ToString("hh:mm tt")</span>
+		</div>
+	</div>
+}
+
+
+
+<script>
+
+	$('.chat-message').click(function () {
+		const messageId = $(this).data('message-id');
+		const senderId = $(this).data('sender-id');
+		const receiverId = $(this).data('receiver-id');
+		const isReceived = $(this).data('is-received');
+
+		// Only mark as read if it's a received message
+		if (isReceived) {
+			markMessagesAsRead(senderId, receiverId);
+		}
+	});
+
+	function markMessagesAsRead(senderId, receiverId) {
+		console.log(`Marking messages from ${senderId} to ${receiverId} as read`);
+
+		const receivedMessages = document.querySelectorAll(
+				`.chat-message[data-sender-id="${senderId}"][data-receiver-id="${receiverId}"]:not(.read)`
+			);
+		$.ajax({
+			type: "POST",
+			url: "/Chat/MarkMessageAsRead",
+			data: { senderId: senderId, receiverId: receiverId },
+			headers: {
+				'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+			},
+			success: function () {
+
+				receivedMessages.forEach(message => {
+					message.classList.add('read');
+
+				}); console.log("Messages marked as read.");
+
+			},
+			error: function (xhr) {
+				console.error("Error marking messages as read:", xhr.responseText);
+			}
+		});
+	}
+
+</script>
