@@ -10,10 +10,11 @@ namespace LoadVantage.Core.Models.Chat
 {
 	public class ChatViewModel
 	{
-		public IEnumerable<ChatUserViewModel> Users { get; set; } 
+		public List<UserChatViewModel> Users { get; set; } 
 		public Guid? CurrentChatUserId { get; set; }
-		public IEnumerable<ChatMessageViewModel> Messages { get; set; }
-		public BrokerChatViewModel BrokerInfo { get; set; }
+		public List<ChatMessageViewModel> Messages { get; set; }
+		public UserChatViewModel BrokerInfo { get; set; }
+
 	}
-	
+
 }
