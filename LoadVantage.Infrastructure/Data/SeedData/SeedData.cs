@@ -187,7 +187,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     Email = "broker2@gmail.com",
                     FirstName = "Donald",
                     LastName = "Duck",
-                    CompanyName = "Lake Shore Freight Co.",
+                    CompanyName = "Rabbit Season Ltd.",
                     PhoneNumber = "+1-300-852-7391",
                     Position = BrokerPositionName,
                     Role = userRole!,
