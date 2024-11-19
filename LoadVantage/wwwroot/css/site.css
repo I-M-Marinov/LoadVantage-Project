@@ -724,9 +724,89 @@ body {
     transition: opacity 0.3s ease-in-out;
 }
 
-    #chatWindow.show {
-        display: block;
-        opacity: 1;
-    }
+#chatWindow.show {
+    display: block;
+    opacity: 1;
+}
+
+/*-------------------------------------------------------------------------------------
+# MESSAGES PARTIAL CSS
+--------------------------------------------------------------------------------------*/
+.chat-card {
+    background: rgb(178,75,246);
+    background: linear-gradient(243deg, rgba(178,75,246,0.41780462184873945) 0%, rgba(69,248,252,1) 100%);
+}
+
+.chat-message {
+    font-family: Nunito;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column; 
+    margin-bottom: 0.2em;
+}
+
+.message-content {
+    padding: 5px;
+    background-color: #f1f1f1; 
+    border-radius: 0.25em;
+    max-width: 65%; 
+    word-wrap: break-word; 
+}
+
+.chat-message.sent {
+    margin-right: 1em;
+}
+
+.chat-message.received {
+    margin-left: 1em;
+    background-color: #faf9df;
+    border-radius: 0.5em;
+    padding: 0.5em;
+}
+
+.chat-message.sent .message-content {
+
+    background-color: #0d6efd;
+    color: ghostwhite;
+    align-self: flex-end; 
+}
+
+.chat-message.received .message-content {
+    background-color: #9e3dc4; 
+    color: ghostwhite;
+    align-self: flex-start; 
+}
+
+#chat-messages-container {
+    overflow: scroll; 
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+
+/* Hide scrollbar for webkit browsers (Chrome, Safari, etc.) */
+
+#chat-messages-container::-webkit-scrollbar {
+    display: none;
+}
+
+.message-timestamp {
+    font-size: 0.8em;
+    color: #757575;
+    margin-top: 2px;
+}
+
+.chat-message.sent .message-timestamp {
+    text-align: right; 
+    align-self: flex-end;
+}
+
+.chat-message.received .message-timestamp {
+    text-align: left; 
+    align-self: flex-start; 
+}
 
 
+
+.chat-message.received.read {
+    background-color: transparent; 
+}
