@@ -783,30 +783,34 @@ h6 {
 
 #loadboard-nav,
 #profile-nav,
-#create-load-nav {
+#create-load-nav,
+#chat-nav {
     display: flex !important;
     align-content: center !important;
     align-items: center !important;
     width: 100% !important;
 }
 
-#loadboard-nav:hover,
-#profile-nav:hover,
-#create-load-nav:hover {
-    width: 100% !important;
-}
+    #loadboard-nav:hover,
+    #profile-nav:hover,
+    #create-load-nav:hover,
+    #chat-nav:hover{
+        width: 100% !important;
+    }
 
-#loadboard-nav span,
-#profile-nav span,
-#create-load-nav span {
-    font-weight: 700 !important;
-}
+    #loadboard-nav span,
+    #profile-nav span,
+    #create-load-nav span,
+    #chat-nav span{
+        font-weight: 700 !important;
+    }
 
-#loadboard-nav:active,
-#profile-nav:active,
-#create-load-nav:active {
-    width: 100% !important;
-}
+    #loadboard-nav:active,
+    #profile-nav:active,
+    #create-load-nav:active,
+    #chat-nav:active{
+        width: 100% !important;
+    }
 
 .ri-account-pin-box-fill,
 .ri-truck-fill,
