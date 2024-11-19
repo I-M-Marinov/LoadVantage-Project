@@ -167,7 +167,7 @@ app.UseEndpoints(endpoints =>
 	    defaults: new { controller = "Load", action = "LoadDetails" });
 
 	endpoints.MapHub<LoadHub>("/loadHub");
-	endpoints.MapHub<LoadHub>("/chatHub");
+	endpoints.MapHub<ChatHub>("/chatHub");
 
 	// Default route mapping
 	endpoints.MapControllerRoute(
