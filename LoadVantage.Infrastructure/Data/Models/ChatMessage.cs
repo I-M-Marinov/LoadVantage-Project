@@ -10,7 +10,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 	public class ChatMessage
 	{
 		[Required]
-		public Guid Id { get; set; } = Guid.NewGuid();
+		public Guid Id { get; set; } 
 
 		[Required]
 		public Guid SenderId { get; set; }
