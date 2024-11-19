@@ -9,7 +9,7 @@ namespace LoadVantage.Core.Contracts
     {
         Task<User> GetUserByIdAsync(Guid userId);
         Task<ProfileViewModel> GetUserInformation(Guid userId);
-        Task<BrokerChatViewModel> GetChatBrokerInfoAsync(Guid brokerId);
+        Task<UserChatViewModel> GetChatUserInfoAsync(Guid brokerId);
 		Task<IEnumerable<User>> GetAllUsersAsync();
         Task<IEnumerable<User>> GetDispatchersAsync();
         Task<IEnumerable<User>> GetBrokersAsync();

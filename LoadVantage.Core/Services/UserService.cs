@@ -31,12 +31,12 @@ namespace LoadVantage.Core.Services
             imageService = _imageService;
 		}
 
-		public async Task<BrokerChatViewModel> GetChatBrokerInfoAsync(Guid brokerId)
+		public async Task<UserChatViewModel> GetChatUserInfoAsync(Guid userId)
 		{
 			var broker = await context.Users
 				.Include(u => u.UserImage) 
-				.Where(u => u.Id == brokerId)
-				.Select(u => new BrokerChatViewModel
+				.Where(u => u.Id == userId)
+				.Select(u => new UserChatViewModel
 				{
                     Id = u.Id,
 					FullName = u.FullName,
@@ -44,6 +44,7 @@ namespace LoadVantage.Core.Services
 					PhoneNumber = u.PhoneNumber, 
 					Company = u.CompanyName 
 				})
+				.AsNoTracking()
 				.FirstOrDefaultAsync();
 
 			return broker;
