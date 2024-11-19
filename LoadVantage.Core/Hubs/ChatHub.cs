@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure.Messaging;
+using LoadVantage.Core.Models.Chat;
+using LoadVantage.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace LoadVantage.Core.Hubs
@@ -6,24 +9,21 @@ namespace LoadVantage.Core.Hubs
 	[Authorize]
 	public class ChatHub : Hub
 	{
-		public async Task SendMessage(string receiverId, string message)
+		public async Task SendMessage(string senderId, string receiverId, string message)
 		{
-			if (string.IsNullOrWhiteSpace(message))
+			var chatMessageViewModel = new ChatMessageViewModel
 			{
-				throw new ArgumentException("Message cannot be empty.", nameof(message));
-			}
+				SenderId = Guid.Parse(senderId),
+				ReceiverId = Guid.Parse(receiverId),
+				Content = message,
+				Timestamp = DateTime.UtcNow
+			};
 
-			await Clients.User(receiverId).SendAsync("ReceiveMessage", new { Message = message });
+
+			// Send the message to both users
+			await Clients.User(senderId).SendAsync("ReceiveMessage", chatMessageViewModel);
+			await Clients.User(receiverId).SendAsync("ReceiveMessage", chatMessageViewModel);
 		}
 
-		public async Task SendNotification(string receiverId, string notification)
-		{
-			if (string.IsNullOrWhiteSpace(notification))
-			{
-				throw new ArgumentException("Notification cannot be empty.", nameof(notification));
-			}
-
-			await Clients.User(receiverId).SendAsync("ReceiveNotification", notification);
-		}
 	}
 }
