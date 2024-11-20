@@ -31,5 +31,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 		[ForeignKey(nameof(TruckId))]
 		public virtual Truck? Truck { get; set; }
 		public bool IsAvailable { get; set; } = true;
+		public string FullName => $"{FirstName} {LastName}"; // FullName combines FirstName and LastName
+
 	}
 }
