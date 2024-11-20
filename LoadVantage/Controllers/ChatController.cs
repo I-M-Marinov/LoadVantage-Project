@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Hubs;
 using LoadVantage.Core.Models.Chat;
 using LoadVantage.Extensions;
-using LoadVantage.Infrastructure.Data;
+using LoadVantage.Infrastructure.Data.Models;
+using static LoadVantage.Common.GeneralConstants.TempMessages;
 
 namespace LoadVantage.Controllers
 {
@@ -51,7 +51,8 @@ namespace LoadVantage.Controllers
 					SenderId = m.SenderId,
 					ReceiverId = m.ReceiverId,
 					Content = m.Content,
-					Timestamp = m.Timestamp
+					Timestamp = m.Timestamp,
+					IsRead = m.IsRead
 					
 				}).ToList(),
 				BrokerInfo = brokerInfo
@@ -61,12 +62,41 @@ namespace LoadVantage.Controllers
 		}
 
 
+		[HttpGet]
+		public async Task<IActionResult> ChatWithBrokerWindow(Guid brokerId)
+		{
+			ChatViewModel model = await BuildChatViewModel(brokerId);
+			return View("ChatWindow", model);
+		}
+
 
 		[HttpGet]
-		public async Task<IActionResult> ChatWindow(Guid brokerId)
+		public async Task<IActionResult> ChatWindow()
 		{
-			var model = await BuildChatViewModel(brokerId);
-			return View(model);
+			var currentUserId = User.GetUserId().Value; 
+
+			ChatMessage? lastChat = await chatService.GetLastChatAsync(currentUserId);
+
+			if (lastChat == null)
+			{
+				ViewData["Message"] = NoRecentChats;
+				return View();
+			}
+
+			var model = new ChatViewModel();
+
+			if (lastChat.SenderId == currentUserId)
+			{
+				model = await BuildChatViewModel(lastChat.ReceiverId);
+
+			}
+			else if (lastChat.ReceiverId == currentUserId)
+			{
+				model = await BuildChatViewModel(lastChat.SenderId);
+
+			}
+
+			return View("ChatWindow", model);
 		}
 
 
@@ -88,6 +118,31 @@ namespace LoadVantage.Controllers
 				Timestamp = m.Timestamp,
 				IsRead = m.IsRead
 			}).ToList());
+		}
+
+
+
+		[HttpGet]
+		public async Task<IActionResult> GetUnreadMessages()
+		{
+			var (unreadMessages, unreadCount) = await chatService.GetUnreadMessagesAsync(User.GetUserId().Value);
+
+			return Json(new { messages = unreadMessages, unreadCount = unreadCount });
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> GetUserInfo(Guid userId)
+		{
+			var userInfo = await userService.GetChatUserInfoAsync(userId); // Fetch user details
+			return PartialView("_ChatUserInfoPartial", userInfo);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> MarkMessageAsRead(Guid senderId, Guid receiverId)
+		{
+			await chatService.MarkMessagesAsReadAsync(senderId, receiverId);
+			return Ok();
 		}
 
 		private async Task<ChatViewModel> BuildChatViewModel(Guid brokerId)
@@ -116,23 +171,5 @@ namespace LoadVantage.Controllers
 				BrokerInfo = userInfo
 			};
 		}
-
-		[HttpGet]
-		public async Task<IActionResult> GetUnreadMessages()
-		{
-			var (unreadMessages, unreadCount) = await chatService.GetUnreadMessagesAsync(User.GetUserId().Value);
-
-			return Json(new { messages = unreadMessages, unreadCount = unreadCount });
-		}
-
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> MarkMessageAsRead(Guid senderId, Guid receiverId)
-		{
-			await chatService.MarkMessagesAsReadAsync(senderId, receiverId);
-			return Ok();
-		}
-
-
 	}
 }
