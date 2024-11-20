@@ -9,6 +9,7 @@ using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data.Contracts;
 
 using System.Globalization;
+using LoadVantage.Core.Models.LoadBoard;
 using Microsoft.Extensions.Logging;
 
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
@@ -258,7 +259,7 @@ namespace LoadVantage.Core.Services
 
             if (load == null || load.Status != LoadStatus.Available)
             {
-                return false; // Only allow booking if the load is "Available"
+                return false; // Only allow booking if the load is "Available" or it exists in the DB
             }
 
             // Update status and add BookedLoad record
@@ -269,11 +270,11 @@ namespace LoadVantage.Core.Services
                 LoadId = load.Id,
                 DispatcherId = dispatcherId,
                 BrokerId = load.BrokerId,
-                BookedDate = DateTime.UtcNow,
+                BookedDate = DateTime.UtcNow.ToLocalTime(),
                 DriverId = null // assign a driver later
             };
 
-            context.Loads.Update(load);
+            await context.BookedLoads.AddAsync(load.BookedLoad);
             await context.SaveChangesAsync();
 
             return true;
@@ -323,15 +324,49 @@ namespace LoadVantage.Core.Services
         }
         public async Task<LoadViewModel?> GetLoadDetailsAsync(Guid loadId)
         {
-            var load = await context.Loads
-                .FirstOrDefaultAsync(l => l.Id == loadId);
+	        var load = await context.Loads
+		        .Include(l => l.BookedLoad) 
+		        .ThenInclude(bl => bl.Dispatcher)
+		        .Include(l => l.BookedLoad.Driver) 
+		        .ThenInclude(d => d.Truck) 
+		        .Include(l => l.BilledLoad) 
+		        .FirstOrDefaultAsync(l => l.Id == loadId);
 
-            if (load == null)
+			if (load == null)
             { 
                 throw new Exception(LoadCouldNotBeRetrieved);
             }
 
-            var loadViewModel = new LoadViewModel
+            var dispatcherInfo = load.BookedLoad?.Driver != null
+	            ? new DispatcherInfoViewModel
+				{
+					DispatcherName = load.BookedLoad.Dispatcher.FullName,
+					DispatcherEmail = load.BookedLoad.Dispatcher.Email,
+					DispatcherPhone = load.BookedLoad.Dispatcher.PhoneNumber
+				}
+	            : new DispatcherInfoViewModel
+				{
+					DispatcherName = null,
+					DispatcherEmail = null,
+					DispatcherPhone = null
+	            };
+
+			var driverInfo = load.BookedLoad?.Driver != null
+				? new DriverInfoViewModel
+				{
+					DriverName = load.BookedLoad.Driver.FullName,
+					DriverTruckNumber = load.BookedLoad.Driver.Truck?.TruckNumber, // Safely access Truck
+					DriverLicenseNumber = load.BookedLoad.Driver.LicenseNumber
+				}
+				: new DriverInfoViewModel
+				{
+					DriverName = null,
+					DriverTruckNumber = null,
+					DriverLicenseNumber = null
+				};
+
+
+			var loadViewModel = new LoadViewModel
             {
                 Id = load.Id,
                 OriginCity = load.OriginCity,
@@ -345,8 +380,10 @@ namespace LoadVantage.Core.Services
                 Weight = load.Weight,
                 Status = load.Status.ToString(),
                 BrokerId = load.BrokerId,
-                DispatcherId = null
-            };
+                DispatcherId = null,
+                DispatcherInfo = dispatcherInfo,
+				DriverInfo = driverInfo
+			};
 
             return loadViewModel;
 
@@ -358,6 +395,8 @@ namespace LoadVantage.Core.Services
 
             return (formattedCity, formattedState);
         }
-    }
+
+
+	}
 
 }  
