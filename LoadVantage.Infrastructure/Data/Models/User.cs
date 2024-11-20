@@ -47,7 +47,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 			[ForeignKey(nameof(UserImageId))]
 			public UserImage? UserImage { get; set; }
 
-		public ICollection<ChatMessage> SentMessages { get; set; } = new List<ChatMessage>();
+			public ICollection<ChatMessage> SentMessages { get; set; } = new List<ChatMessage>();
 			public ICollection<ChatMessage> ReceivedMessages { get; set; } = new List<ChatMessage>();
 
 	}

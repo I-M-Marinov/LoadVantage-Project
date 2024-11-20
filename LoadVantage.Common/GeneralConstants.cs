@@ -1,4 +1,6 @@
 ﻿
+using static Microsoft.AspNetCore.Internal.AwaitableThreadPool;
+
 namespace LoadVantage.Common
 {
 	public static class GeneralConstants
@@ -21,6 +23,7 @@ namespace LoadVantage.Common
 		{
 			public const string LoginWithNewAccount = "Login with your new account";
 			public const string LoggedOutOfAccount = "You have been logged out of your account";
+			public const string NoRecentChats = "You have no recent chats.";
 		}
 
         public static class SecretString
@@ -38,7 +41,6 @@ namespace LoadVantage.Common
 
             // LOAD 
 
-            public const string LoadInformationCouldNotBeRetrieved = "Error retrieving the load information.";
             public const string LoadCouldNotBeRetrieved = "Load could not be retrieved.";
             public const string LoadIdInvalid = "Load id is not valid.";
             public const string ErrorCancellingLoad = "There was an error cancelling the load";
@@ -51,29 +53,22 @@ namespace LoadVantage.Common
 
             public const string LoadIsNotInCorrectStatus = "This load cannot be posted. It is not with status \"Created\"";
             public const string LoadIsAlreadyPosted = "This load is already posted.";
-            public const string LoadIsNotPosted = "This load is not posted yet.";
             public const string ErrorPostingLoad = "An error occured and the load was not posted.";
             public const string ErrorUnpostingLoad = "An error occured and the load was not unposted.";
             public const string ErrorUnpostingLoads = "An error occured and the loads were not unposted.";
 
-            // USER
+            public const string UnableToBookTheLoad = "Unable to book the load.It may no longer be available.";
+            public const string UnableToMarkLoadDelivered = "Unable to mark the load as delivered. It may not be in the correct status";
 
-            public const string UserCannotBeNull = "User cannot be null.";
+			// USER
+
+			public const string UserCannotBeNull = "User cannot be null.";
 			public const string UserNotFound = "The user was not found.";
             public const string UserProfileUpdateFailed = "Failed to update user profile.";
             public const string ErrorUpdatingProfile = "An error occurred while updating the profile.";
             public const string UserNameIsAlreadyTaken = "The username is already taken.";
             public const string EmailIsAlreadyTaken = "The email is already taken.";
             public const string CurrentAndNewPasswordCannotMatch = "The new password cannot be the same as the current password.";
-
-            // BROKER 
-
-            public const string BrokerInformationNotRetrieved = "Broker information could not be retrieved.";
-
-            // NOT ALLOWED
-
-            public const string IdCannotBeChanged = "The Id cannot be changed.";
-            public const string PositionCannotBeChanged = "The Position cannot be changed.";
 
             // PROFILE 
 
@@ -95,9 +90,12 @@ namespace LoadVantage.Common
             public const string LoadUnpostedSuccessfully = "Load was unposted successfully.";
             public const string LoadsUnpostedSuccessfully = "All loads were unposted successfully.";
 
-            // PROFILE
+            public const string LoadWasBookSuccessfully = "Load was booked successfully!";
+            public const string LoadWasDeliveredSuccessfully = "Load was delivered successfully!";
 
-            public const string ProfileUpdatedSuccessfully = "Your profile was updated successfully.";
+			// PROFILE
+
+			public const string ProfileUpdatedSuccessfully = "Your profile was updated successfully.";
             public const string PasswordUpdatedSuccessfully = "Your password has been changed successfully.";
 
 
@@ -110,6 +108,7 @@ namespace LoadVantage.Common
 
 	        public const string CreatedActiveTab = "created";
 	        public const string PostedActiveTab = "posted";
+	        public const string BookedActiveTab = "booked";
 
 
             // PROFILE TABS 
