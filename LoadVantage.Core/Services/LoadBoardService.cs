@@ -98,11 +98,18 @@ namespace LoadVantage.Core.Services
 
 		public async Task<IEnumerable<LoadViewModel>> GetAllBookedLoadsForBrokerAsync(Guid userId)
 		{
+			// Retrieve the booked loads for the broker
 			var bookedLoads = await dbContext.Loads
-				.Where(load => load.BookedLoad != null && load.BrokerId == userId)
+				.Where(load => load.BookedLoad != null && load.BookedLoad.BrokerId == userId)
+				.Include(load => load.BookedLoad) 
+				.ThenInclude(bookedLoad => bookedLoad.Dispatcher) 
+				.Include(load => load.BookedLoad)
+				.ThenInclude(bookedLoad => bookedLoad.Driver) 
+				.ThenInclude(driver => driver.Truck) 
 				.ToListAsync();
 
-			return bookedLoads.Select(load => new LoadViewModel()
+			// Select and map to LoadViewModel
+			var loadViewModels = bookedLoads.Select(load => new LoadViewModel
 			{
 				Id = load.Id,
 				OriginCity = load.OriginCity,
@@ -117,8 +124,30 @@ namespace LoadVantage.Core.Services
 				Status = load.Status.ToString(),
 				BrokerId = load.BrokerId,
 
-			});
+				// Include Dispatcher Info if available
+				DispatcherInfo = load.BookedLoad.DispatcherId != null
+					? new DispatcherInfoViewModel
+					{
+						DispatcherName = load.BookedLoad.Dispatcher.FullName,
+						DispatcherEmail = load.BookedLoad.Dispatcher.Email,
+						DispatcherPhone = load.BookedLoad.Dispatcher.PhoneNumber
+					}
+					: null,
+
+				// Include Driver Info if available
+				DriverInfo = load.BookedLoad.DriverId != null
+					? new DriverInfoViewModel
+					{
+						DriverName = load.BookedLoad.Driver.FullName,
+						DriverTruckNumber = load.BookedLoad.Driver.Truck.TruckNumber,
+						DriverLicenseNumber = load.BookedLoad.Driver.LicenseNumber
+					}
+					: null
+			}).ToList();
+
+			return loadViewModels;
 		}
+
 
 		public async Task<IEnumerable<LoadViewModel>> GetAllBookedLoadsForDispatcherAsync(Guid userId)
 		{
@@ -141,6 +170,8 @@ namespace LoadVantage.Core.Services
 				Weight = load.Weight,
 				Status = load.Status.ToString(),
 				BrokerId = load.BrokerId,
+				DispatcherId = load.BookedLoad.DispatcherId,
+				DriverId = load.BookedLoad.DriverId
 
 			});
 		}
@@ -217,7 +248,7 @@ namespace LoadVantage.Core.Services
 				UserImageUrl = userImage?.ImageUrl
 			};
 
-			return new LoadBoardViewModel
+			var loadBoardViewModel = new LoadBoardViewModel
 			{
 				UserId = userId,
 				FirstName = user.FirstName,
@@ -230,6 +261,8 @@ namespace LoadVantage.Core.Services
 				BilledLoads = billedLoads.ToList(),
 				Profile = profileModel
 			};
+
+			return loadBoardViewModel;
 		}
 
 		public async Task<LoadBoardViewModel> GetDispatcherLoadBoardAsync(Guid userId)
@@ -239,7 +272,7 @@ namespace LoadVantage.Core.Services
 
 			var createdLoads = await GetAllCreatedLoadsForBrokerAsync(userId);
 			var postedLoads = await GetAllPostedLoadsAsync(userId);
-			var bookedLoads = await GetAllBookedLoadsForBrokerAsync(userId);
+			var bookedLoads = await GetAllBookedLoadsForDispatcherAsync(userId);
 			var billedLoads = await GetAllBilledLoadsForBrokerAsync(userId);
 
 			var userImage = await dbContext.UsersImages.SingleOrDefaultAsync(ui => ui.UserId == userId);
