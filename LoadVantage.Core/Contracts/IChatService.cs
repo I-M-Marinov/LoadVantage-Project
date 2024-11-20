@@ -15,5 +15,6 @@ namespace LoadVantage.Core.Contracts
 		Task SendMessageAsync(Guid senderId, Guid receiverId, string content);
 		Task<(List<ChatMessage> Messages, int UnreadCount)> GetUnreadMessagesAsync(Guid userId);
 		Task MarkMessagesAsReadAsync(Guid senderId, Guid receiverId);
+		Task<ChatMessage?> GetLastChatAsync(Guid userId);
 	}
 }

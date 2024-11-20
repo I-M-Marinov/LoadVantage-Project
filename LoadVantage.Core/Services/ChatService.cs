@@ -6,6 +6,7 @@ using LoadVantage.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using LoadVantage.Infrastructure.Data.Models;
 using Azure.Messaging;
+using System;
 
 namespace LoadVantage.Core.Services
 {
@@ -51,7 +52,6 @@ namespace LoadVantage.Core.Services
 
 			return users;
 		}
-
 
 		public async Task<IEnumerable<ChatMessageViewModel>> GetMessagesAsync(Guid receiverId, Guid senderId)
 		{
@@ -129,6 +129,16 @@ namespace LoadVantage.Core.Services
 			}
 
 			await context.SaveChangesAsync();
+		}
+
+		public async Task<ChatMessage?> GetLastChatAsync(Guid userId)
+		{
+			ChatMessage? result = await context.ChatMessages
+				.Where(c => c.SenderId == userId || c.ReceiverId == userId)
+				.OrderByDescending(cm => cm.Timestamp) 
+				.FirstOrDefaultAsync();
+
+			return result;
 		}
 
 	}
