@@ -61,9 +61,11 @@ namespace LoadVantage.Core.Models.Load
         public string? Status { get; set; }
 		public Guid BrokerId { get; set; }
         public Guid? DispatcherId { get; set; }
+        public Guid? DriverId { get; set; }
         public DateTime? BookedDate { get; set; } // Nullable for posted/billed
         public DateTime? BilledDate { get; set; } // Nullable for posted/booked
 
-
+        public DriverInfoViewModel? DriverInfo { get; set; }
+        public DispatcherInfoViewModel? DispatcherInfo { get; set; }
 	}
 }
