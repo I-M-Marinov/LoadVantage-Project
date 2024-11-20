@@ -1,5 +1,8 @@
 html {
     font-size: 14px;
+    overflow: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 
@@ -433,7 +436,8 @@ body {
 
 .create-load-buttons-container button,
 .details-buttons-container button,
-.btn btn-outline-danger {
+.btn btn-outline-danger,
+#chatWithBrokerBtn {
     font-family: Nunito;
     font-size: 0.90rem;
     font-weight: 700;
@@ -523,6 +527,25 @@ body {
 }
 
 /*-------------------------------------------------------------------------------------
+# REFRESH BUTTON ON THE RIGHT BOTTOM CORNER EDIT PROFILE SECTION IN THE EDIT VIEW
+--------------------------------------------------------------------------------------*/
+
+#refreshProfileoButton {
+    position: absolute;
+    bottom: 0.75em;
+    right: 0.75em;
+    width: 2em;
+    height: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#refreshProfileoButton i {
+    font-size: 24px;
+    margin-top: 0.25rem;
+}
+    /*-------------------------------------------------------------------------------------
 # FADE OUT EFFECT FOR THE SUCCESS AND ERROR MESSAGES 
 --------------------------------------------------------------------------------------*/
     #success-message,
@@ -686,34 +709,6 @@ body {
     color: #056a8b;
 }
 
-
-/*-------------------------------------------------------------------------------------
-# CHAT MODAL 
---------------------------------------------------------------------------------------*/
-
-/*#chat-container {
-    max-width: 100%;
-}
-
-.messages {
-    min-height: 250px;
-    max-height: 600px;
-    overflow-y: auto;
-    margin-bottom: 10px;
-    margin-top: 2em;
-    border: 1px solid #ccc;
-    padding: 10px;
-}
-
-#chat-input {
-    display: flex;
-    gap: 10px;
-}
-
-#message-input {
-    flex: 1;
-}*/
-
 /*-------------------------------------------------------------------------------------
 # CHAT WINDOW CSS 
 --------------------------------------------------------------------------------------*/
@@ -735,13 +730,36 @@ body {
 .chat-card {
     background: rgb(178,75,246);
     background: linear-gradient(243deg, rgba(178,75,246,0.41780462184873945) 0%, rgba(69,248,252,1) 100%);
+    font-family: Nunito;
+}
+
+#chat-user {
+    border: 2px black solid;
+    margin-bottom: 0.5em;
+}
+
+#chat-user:hover {
+    transform: scale(1.05);
+}
+
+#chat-user a span {
+    font-weight: 650;
+}
+
+
+#chat-user.active{
+    background-color: #8219eb;
+}
+
+#chat-user.active a span {
+    color: ghostwhite;
 }
 
 .chat-message {
     font-family: Nunito;
     font-weight: 600;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     margin-bottom: 0.2em;
 }
 
@@ -810,3 +828,27 @@ body {
 .chat-message.received.read {
     background-color: transparent; 
 }
+
+#noChatsContainer{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 2em;
+}
+
+
+#booking-details {
+    bottom: -1.5rem;
+    left: 0.5rem;
+    font-size: 12px;
+    width: 15rem;
+    z-index: 1050;
+}
+
+#booking-details h5{
+    font-size: 13px;
+}
+
+
+
