@@ -1,12 +1,10 @@
 ﻿using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Load;
-using LoadVantage.Core.Services;
 using LoadVantage.Extensions;
 using LoadVantage.Filters;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
 namespace LoadVantage.Controllers
 {
@@ -21,7 +19,6 @@ namespace LoadVantage.Controllers
 		{
 			loadBoardService = _loadBoardService;
 			userService = _userService;
-
 		}
 
 		[HttpGet]

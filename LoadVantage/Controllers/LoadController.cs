@@ -16,21 +16,21 @@ namespace LoadVantage.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]
-	public class LoadController : Controller
+    public class LoadController : Controller
     {
 
-	    private readonly ILoadStatusService loadService;
-	    private readonly IHubContext<LoadHub> loadHubContext;
+        private readonly ILoadStatusService loadService;
+        private readonly IHubContext<LoadHub> loadHubContext;
 
-	    public LoadController(ILoadStatusService _loadService, IHubContext<LoadHub> _loadHubContext)
-	    
-	    {
-		    loadService = _loadService;
-		    loadHubContext = _loadHubContext;
+        public LoadController(ILoadStatusService _loadService, IHubContext<LoadHub> _loadHubContext)
 
-	    }
+        {
+            loadService = _loadService;
+            loadHubContext = _loadHubContext;
 
-		[HttpGet]
+        }
+
+        [HttpGet]
 
         public async Task<IActionResult> LoadDetails(Guid loadId)
         {
@@ -43,7 +43,7 @@ namespace LoadVantage.Controllers
 
                 if (loadToShow == null)
                 {
-	                return NotFound("The load you are looking for does not exist");
+                    return NotFound("The load you are looking for does not exist");
                 }
 
                 return View(loadToShow);
@@ -59,11 +59,11 @@ namespace LoadVantage.Controllers
         [BrokerOnly]
         public IActionResult CreateLoad()
         {
-	        Guid? userId = User.GetUserId();
-			var model = new LoadViewModel
+            Guid? userId = User.GetUserId();
+            var model = new LoadViewModel
             {
                 BrokerId = userId.Value
-			};
+            };
 
             return View(model);
         }
@@ -86,9 +86,9 @@ namespace LoadVantage.Controllers
 
             if (userId != model.BrokerId)
             {
-				return RedirectToAction("LoadBoard", "LoadBoard"); // If the brokerId is not the same as logged user's id, redirect him back to the LoadBoard
+                return RedirectToAction("LoadBoard", "LoadBoard"); // If the brokerId is not the same as logged user's id, redirect him back to the LoadBoard
 
-			}
+            }
 
             try
             {
@@ -96,7 +96,7 @@ namespace LoadVantage.Controllers
 
                 TempData.SetSuccessMessage(LoadCreatedSuccessfully);
 
-				return RedirectToAction("LoadDetails",  new { loadId });
+                return RedirectToAction("LoadDetails", new { loadId });
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace LoadVantage.Controllers
         [ValidateAntiForgeryToken]
         [BrokerOnly]
 
-		public async Task<IActionResult> EditLoad(LoadViewModel model, bool isEditing, Guid loadId)
+        public async Task<IActionResult> EditLoad(LoadViewModel model, bool isEditing, Guid loadId)
         {
 
             Guid? userId = User.GetUserId();
@@ -124,26 +124,26 @@ namespace LoadVantage.Controllers
 
                 if (userId != model.BrokerId)
                 {
-	                return RedirectToAction("LoadBoard", "LoadBoard"); // If the brokerId is not the same as logged user's id, redirect him back to the LoadBoard
+                    return RedirectToAction("LoadBoard", "LoadBoard"); // If the brokerId is not the same as logged user's id, redirect him back to the LoadBoard
 
                 }
 
-				try
-				{
-					var result = await loadService.EditLoadAsync(loadId, model);
+                try
+                {
+                    var result = await loadService.EditLoadAsync(loadId, model);
 
-					if (result)
-	                {
-		                TempData["isEditing"] = false;
-		                TempData.SetSuccessMessage(LoadUpdatedSuccessfully);
-					}
-					else
-					{
-						TempData["isEditing"] = false;
-						TempData.SetErrorMessage(LoadWasNotUpdated);
-					}
+                    if (result)
+                    {
+                        TempData["isEditing"] = false;
+                        TempData.SetSuccessMessage(LoadUpdatedSuccessfully);
+                    }
+                    else
+                    {
+                        TempData["isEditing"] = false;
+                        TempData.SetErrorMessage(LoadWasNotUpdated);
+                    }
 
-				}
+                }
                 catch (Exception e)
                 {
                     ModelState.AddModelError(string.Empty, ErrorUpdatingLoad + e.Message);
@@ -161,7 +161,7 @@ namespace LoadVantage.Controllers
         [ValidateAntiForgeryToken]
         [BrokerOnly]
 
-		public async Task<IActionResult> CancelLoad(Guid loadId)
+        public async Task<IActionResult> CancelLoad(Guid loadId)
         {
             TempData["isEditing"] = false;
 
@@ -179,14 +179,14 @@ namespace LoadVantage.Controllers
             {
                 if (userId != load.BrokerId)
                 {
-					return RedirectToAction("LoadBoard", "LoadBoard"); // If the load's broker is not the same as logged user, redirect him back to the LoadBoard
-				}
+                    return RedirectToAction("LoadBoard", "LoadBoard"); // If the load's broker is not the same as logged user, redirect him back to the LoadBoard
+                }
 
                 await loadService.CancelLoadAsync(loadId);
 
                 TempData.SetSuccessMessage(LoadCancelledSuccessfully);
-				return RedirectToAction("LoadBoard", "LoadBoard");
-			}
+                return RedirectToAction("LoadBoard", "LoadBoard");
+            }
             catch (Exception e)
             {
                 TempData.SetErrorMessage(ErrorCancellingLoad + e.Message);
@@ -199,7 +199,7 @@ namespace LoadVantage.Controllers
         [ValidateAntiForgeryToken]
         [BrokerOnly]
 
-		public async Task<IActionResult> PostALoad(Guid loadId)
+        public async Task<IActionResult> PostALoad(Guid loadId)
         {
             Guid? userId = User.GetUserId();
 
@@ -211,15 +211,15 @@ namespace LoadVantage.Controllers
             if (loadId == Guid.Empty)
             {
                 TempData.SetErrorMessage(LoadIdInvalid);
-				return RedirectToAction("LoadBoard", "LoadBoard");
-			}
+                return RedirectToAction("LoadBoard", "LoadBoard");
+            }
 
             LoadViewModel load = await loadService.GetLoadByIdAsync(loadId);
 
             if (userId != load.BrokerId)
             {
-				return RedirectToAction("LoadBoard", "LoadBoard"); // If the load's broker is not the same as logged user, redirect him back to the LoadBoard
-			}
+                return RedirectToAction("LoadBoard", "LoadBoard"); // If the load's broker is not the same as logged user, redirect him back to the LoadBoard
+            }
 
             if (load.Status != LoadStatus.Created.ToString())
             {
@@ -240,11 +240,11 @@ namespace LoadVantage.Controllers
                 await loadService.PostLoadAsync(load.Id);
                 await loadHubContext.Clients.All.SendAsync("ReceiveLoadPostedNotification", loadId); // send a notification to all Dispatchers the load is posted using SignalR
 
-				TempData.SetActiveTab(PostedActiveTab); // navigate to the posted tab
+                TempData.SetActiveTab(PostedActiveTab); // navigate to the posted tab
                 TempData.SetSuccessMessage(LoadPostedSuccessfully);
-                
-				return RedirectToAction("LoadBoard", "LoadBoard");
-			}
+
+                return RedirectToAction("LoadBoard", "LoadBoard");
+            }
             catch (Exception e)
             {
                 TempData.SetErrorMessage(ErrorPostingLoad + e.Message);
@@ -256,7 +256,7 @@ namespace LoadVantage.Controllers
         [ValidateAntiForgeryToken]
         [BrokerOnly]
 
-		public async Task<IActionResult> UnpostALoad(Guid loadId)
+        public async Task<IActionResult> UnpostALoad(Guid loadId)
         {
             Guid? userId = User.GetUserId();
 
@@ -269,15 +269,15 @@ namespace LoadVantage.Controllers
             {
                 TempData.SetErrorMessage(LoadIdInvalid);
                 return RedirectToAction("LoadBoard", "LoadBoard");
-			}
+            }
 
             LoadViewModel load = await loadService.GetLoadByIdAsync(loadId);
 
 
             if (userId != load.BrokerId)
             {
-				return RedirectToAction("LoadBoard", "LoadBoard"); // If the load's broker is not the same as logged user, redirect him back to the LoadBoard
-			}
+                return RedirectToAction("LoadBoard", "LoadBoard"); // If the load's broker is not the same as logged user, redirect him back to the LoadBoard
+            }
 
 
             try
@@ -285,10 +285,10 @@ namespace LoadVantage.Controllers
                 await loadService.UnpostLoadAsync(load.Id); // unpost the load
                 await loadHubContext.Clients.All.SendAsync("ReloadPostedLoadsTable"); // Send SignalR notification on the websocket to refresh the table ( Posted Loads ) to all Clients
 
-				TempData.SetSuccessMessage(LoadUnpostedSuccessfully);
+                TempData.SetSuccessMessage(LoadUnpostedSuccessfully);
 
-				return RedirectToAction("LoadBoard", "LoadBoard");
-			}
+                return RedirectToAction("LoadBoard", "LoadBoard");
+            }
             catch (Exception e)
             {
                 TempData.SetErrorMessage(ErrorUnpostingLoad + e.Message);
@@ -303,23 +303,77 @@ namespace LoadVantage.Controllers
         public async Task<IActionResult> UnpostAllLoads(Guid brokerId)
         {
 
+            try
+            {
+                await loadService.UnpostAllLoadsAsync(brokerId); // unpost all the broker's loads
+                await loadHubContext.Clients.All.SendAsync("ReloadPostedLoadsTable"); // Send SignalR notification on the websocket to refresh the table ( Posted Loads ) to all Clients
+
+
+                TempData.SetSuccessMessage(LoadsUnpostedSuccessfully);
+
+                return RedirectToAction("LoadBoard", "LoadBoard");
+            }
+            catch (Exception e)
+            {
+                TempData.SetErrorMessage(ErrorUnpostingLoads);
+                return RedirectToAction("LoadBoard", "LoadBoard");
+            }
+
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DispatcherOnly]
+
+        public async Task<IActionResult> BookALoad(Guid loadId)
+        {
+	        var dispatcherId = User.GetUserId().Value; 
+
 	        try
 	        {
-		        await loadService.UnpostAllLoadsAsync(brokerId); // unpost all the broker's loads
-		        await loadHubContext.Clients.All.SendAsync("ReloadPostedLoadsTable"); // Send SignalR notification on the websocket to refresh the table ( Posted Loads ) to all Clients
+		        var success = await loadService.BookLoadAsync(loadId, dispatcherId);
 
+		        if (!success)
+		        {
+                    TempData.SetErrorMessage(UnableToBookTheLoad);
+					return RedirectToAction("LoadDetails", new { id = loadId });
+		        }
 
-				TempData.SetSuccessMessage(LoadsUnpostedSuccessfully);
-
-		        return RedirectToAction("LoadBoard", "LoadBoard");
-	        }
-	        catch (Exception e)
-	        {
-		        TempData.SetErrorMessage(ErrorUnpostingLoads);
+                TempData.SetSuccessMessage(LoadWasBookSuccessfully);
 				return RedirectToAction("LoadBoard", "LoadBoard");
 			}
-
-
+	        catch (Exception ex)
+	        {
+		        TempData["Error"] = $"An error occurred: {ex.Message}";
+		        return RedirectToAction("LoadDetails", new { id = loadId });
+	        }
 		}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DispatcherOnly]
+
+        public async Task<IActionResult> DeliverALoad(Guid loadId)
+        {
+	        try
+	        {
+		        var success = await loadService.LoadDeliveredAsync(loadId);
+
+		        if (!success)
+		        {
+			        TempData.SetErrorMessage(UnableToMarkLoadDelivered);
+			        return RedirectToAction("LoadDetails", new { id = loadId });
+		        }
+
+		        TempData.SetSuccessMessage(LoadWasDeliveredSuccessfully);
+		        return RedirectToAction("LoadBoard", "LoadBoard");
+	        }
+	        catch (Exception ex)
+	        {
+		        TempData["Error"] = $"An error occurred: {ex.Message}";
+		        return RedirectToAction("LoadDetails", new { id = loadId });
+	        }
+        }
 	}
 }
