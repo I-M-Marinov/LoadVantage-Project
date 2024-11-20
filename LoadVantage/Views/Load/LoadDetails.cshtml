@@ -114,7 +114,7 @@
 	<input type="hidden" name="loadId" value="@Model.Id"/>
 	<input type="hidden" id="isEditing" name="isEditing" value="false"/>
 	@Html.AntiForgeryToken()
-					
+						
 	<div class="col-12 d-flex justify-content-center mb-2" style="margin-bottom: -0.5rem !important;">
 		<span asp-validation-for="OriginState" class="badge badge-danger mb-1" style="margin-right: 15em;"></span> <!-- Validation message for the ORIGIN STATE above the input -->
 
@@ -196,13 +196,16 @@
 			</div>
 
 		</div>
-					
+						
 	</div>
-					
+		
+		
+
+						
 	@if (user is Broker)
 	{
 		<div class="text-center details-buttons-container">
-	
+		
 			<button type="button" id="editLoadButton" class="btn btn-primary">
 				<i class="ri-edit-box-line"></i> Edit
 			</button>
@@ -257,7 +260,7 @@
 							</button>
 						</form>
 					}
-									
+										
 					break;
 
 				// case LoadStatus.Booked:
@@ -312,9 +315,21 @@
 							
 			@if (user is not Broker)
 			{
-				<a asp-action="ChatWindow" asp-controller="Chat" asp-route-brokerId="@Model.BrokerId" class="btn btn-primary">
-					Chat with Broker
+				<a asp-action="ChatWithBrokerWindow" asp-controller="Chat" asp-route-brokerId="@Model.BrokerId" class="btn btn-outline-primary" id="chatWithBrokerBtn">
+					<i class="bi bi-chat-text-fill"></i> Chat with Broker 
 				</a>
+
+				if (Model.Status == LoadStatus.Available.ToString())
+				{
+					<form asp-action="BookALoad" asp-controller="Load" method="post" id="bookLoadForm">
+						@Html.AntiForgeryToken()
+						<input type="hidden" name="loadId" value="@Model.Id"/>
+						<button id="bookLoadButton" class="btn btn-outline-success">
+							<i class="bi bi-bookmark-check-fill"></i> Book this load 
+						</button>
+					</form>
+				}
+				
 			}
 							
 			<form asp-action="LoadDetails" asp-controller="Load" method="get" id="refreshLoadForm">
@@ -330,17 +345,56 @@
 					<i class="bx bxs-dashboard"></i> Back to LoadBoard
 				</button>
 			</form>
-
+				
+				
 		</div>
-
+		@if (Model.Status == LoadStatus.Booked.ToString() && user is Broker)
+		{
+			<button class="btn btn-outline-info" data-bs-toggle="collapse" data-bs-target="#bookingDetails">
+				<i class="ri-more-2-fill"></i>
+				Details
+			</button>
+		}
 
 	</div>
 </div>
 				
 </div>
+	
+<div id="bookingDetails" class="collapse show">
+
+	@if (Model.Status == LoadStatus.Booked.ToString() && user is Broker)
+	{
+		<div class="card position-absolute responsive" id="booking-details" >
+			<div class="card-body">
+				<h5 class="card-title">Dispatcher Info</h5>
+				<p class="card-text">
+					<strong>Name:</strong> @Model.DispatcherInfo?.DispatcherName <br />
+					<strong>Email:</strong> @Model.DispatcherInfo?.DispatcherEmail<br />
+					<strong>Phone:</strong> @Model.DispatcherInfo?.DispatcherPhone
+				</p>
+				<hr />
+				@if (Model.DriverInfo.DriverName != null)
+				{
+					<h5 class="card-title">Driver Info</h5>
+					<p class="card-text">
+						<strong>Name:</strong> @Model.DriverInfo?.DriverName <br />
+						<strong>Truck Number:</strong> @Model.DriverInfo?.DriverTruckNumber <br />
+						<strong>License:</strong> @Model.DriverInfo?.DriverLicenseNumber
+					</p>
+				}
+			</div>
+			<button class="badge-info" data-bs-toggle="collapse" data-bs-target="#bookingDetails">
+				hide
+			</button>
+			</div>
+	}
 </div>
 
-	</main><!-- End #main -->
+
+</div>
+
+</main><!-- End #main -->
 
 <script>
 	
