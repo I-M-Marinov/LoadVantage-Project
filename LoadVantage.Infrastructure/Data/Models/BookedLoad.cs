@@ -30,7 +30,6 @@ namespace LoadVantage.Infrastructure.Data.Models
         [Required]
         public DateTime BookedDate { get; set; } = DateTime.Now; 
 
-        [Required]
 		public Guid? DriverId { get; set; }
 
 		[ForeignKey(nameof(DriverId))]
