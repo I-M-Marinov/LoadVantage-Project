@@ -682,6 +682,7 @@ h6 {
     padding: 0;
     margin: 0;
     list-style: none;
+    height: 59px !important;
 }
 
 .sidebar-nav .nav-item {
@@ -777,49 +778,77 @@ h6 {
 }
 
 
-/*.nav-item form{
-    width: 100%;
-}*/
-
 #loadboard-nav,
 #profile-nav,
 #create-load-nav,
-#chat-nav {
+#chat-nav,
+#truck-nav {
     display: flex !important;
-    align-content: center !important;
+   justify-content: flex-start !important;
     align-items: center !important;
     width: 100% !important;
 }
 
-    #loadboard-nav:hover,
-    #profile-nav:hover,
-    #create-load-nav:hover,
-    #chat-nav:hover{
-        width: 100% !important;
-    }
+#loadboard-nav:hover,
+#profile-nav:hover,
+#create-load-nav:hover,
+#chat-nav:hover,
+#truck-nav:hover{
+    width: 100% !important;
+}
 
-    #loadboard-nav span,
-    #profile-nav span,
-    #create-load-nav span,
-    #chat-nav span{
-        font-weight: 700 !important;
-    }
+#loadboard-nav span,
+#profile-nav span,
+#create-load-nav span,
+#chat-nav span,
+#truck-nav span,{
+    font-weight: 700 !important;
+}
 
-    #loadboard-nav:active,
-    #profile-nav:active,
-    #create-load-nav:active,
-    #chat-nav:active{
-        width: 100% !important;
-    }
+#loadboard-nav:active,
+#profile-nav:active,
+#create-load-nav:active,
+#chat-nav:active{
+    width: 100% !important;
+}
 
 .ri-account-pin-box-fill,
 .ri-truck-fill,
-.ri-treasure-map-line {
+.bxs-chat {
     margin-right: 3em !important;
 }
 
 .ri-treasure-map-line {
     margin-right: 2em !important;
+}
+
+
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    height: 60px;
+    padding: 10px 20px;
+    font-size: 15px;
+    line-height: 1.5;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+    white-space: nowrap;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.sidebar form {
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar form span {
+    font-weight: 700 !important;
+}
+
+.sidebar .nav-link i {
+    font-size: 25px;
 }
 
 /*--------------------------------------------------------------
