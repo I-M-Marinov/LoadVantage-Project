@@ -141,8 +141,10 @@
 						                    <th>State</th>
 						                    <th>Pickup Time</th>
 						                    <th>Delivery Time</th>
+						                    <th>Price</th>
 						                    <th>Distance</th>
-						                    <th>Status</th>
+						                    <th>Driver</th>
+						                    <th class="hidden-th">hidden</th>
 					                    </tr>
 					                    </thead>
 					                    <tbody>
@@ -155,8 +157,18 @@
 							                    <td>@load.DestinationState</td>
 							                    <td>@load.PickupTime.ToString("dd/MM/yyyy HH:mm")</td>
 							                    <td>@load.DeliveryTime.ToString("dd/MM/yyyy HH:mm")</td>
-							                    <td>@($"${(load.PostedPrice / (decimal)load.Distance):F2}/mile")</td>
-							                    <td>@load.Status</td>
+							                    <td>$@load.PostedPrice</td>
+							                    <td>@(load.Distance.HasValue ? Math.Round(load.Distance.Value) : 0)</td>
+							                    <td>@load.DriverId</td>
+							                    <td>
+								                    <form method="get" action="@Url.Action("LoadDetails", "Load")">
+									                    <input type="hidden" name="loadId" value="@load.Id"/>
+									                    <button class="btn btn-warning view-button">
+										                    <i class="ri-clipboard-line"></i>
+										                    <span>View</span>
+									                    </button>
+								                    </form>
+							                    </td>
 						                    </tr>
 					                    }
 
@@ -222,10 +234,16 @@
 
 	document.addEventListener("DOMContentLoaded", function () {
 		var activeTab = "@tempDataActiveTab";
+
 		if (activeTab === "posted") {
 			var postedTabButton = document.getElementById("pills-posted-tab");
 			if (postedTabButton) {
 				new bootstrap.Tab(postedTabButton).show();
+			}
+		} else if (activeTab === "booked") {
+			var bookedTabButton = document.getElementById("pills-booked-tab");
+			if (bookedTabButton) {
+				new bootstrap.Tab(bookedTabButton).show();
 			}
 		} else {
 			var createdTabButton = document.getElementById("pills-created-tab"); // fallback to created tab
@@ -234,6 +252,7 @@
 			}
 		}
 	});
+
 	
 	
 	/*-------------------------------------------------------------------------------------
