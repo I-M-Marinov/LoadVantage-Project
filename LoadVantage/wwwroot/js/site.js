@@ -281,65 +281,95 @@ $("#updateProfileForm").submit(function (event) {
 --------------------------------------------------------------------------------------*/
 
 
-function updateUnreadCount() {
-    $.get('/Chat/GetUnreadMessages', function (data) {
-        const unreadCount = data.unreadCount;
-        const unreadMessages = data.messages;
+//function updateUnreadCount() {
+//    $.get('/Chat/GetUnreadMessages', function (data) {
 
-        $('#notificationCount').text(unreadCount);
-        $('#loadNotificationCount').text(unreadCount);
+//        let unreadCount = 0;
 
-        const notificationList = document.getElementById('loadNotificationList');
-        notificationList.innerHTML = ''; 
+//        if (data.unreadCount != null) {
+//            unreadCount = data.unreadCount;
 
-        unreadMessages.forEach((message) => {
-            const notificationItem = document.createElement('li');
-            notificationItem.classList.add('message-item');
-            notificationItem.innerHTML = `
-                <a href="#" onclick="openChat('${message.senderId}', '${message.receiverId}')">
-                    <div class="message-body">
-                        <h6 class="message-title">${message.content}</h6>
-                        <p class="message-time">${new Date(message.timestamp).toLocaleTimeString()}</p>
-                    </div>
-                </a>
-            `;
-            notificationList.appendChild(notificationItem);
-        });
-    }).fail(function (error) {
-        console.error("Error fetching unread messages:", error);
-    });
-}
+//        } 
+//        const unreadMessages = data.messages;
 
-function addNotification(chatMessage) {
-    if (!chatMessage.senderId || !chatMessage.receiverId) {
-        console.error("Invalid chat message data:", chatMessage);
-        return;
-    }
+//        // Update the notification counts
+//        document.getElementById('notificationCount').textContent = unreadCount;
+//        document.getElementById('loadNotificationCount').textContent = unreadCount;
 
-    const notificationList = document.getElementById('loadNotificationList');
-    const notificationItem = document.createElement('li');
-    notificationItem.classList.add('message-item');
-    notificationItem.innerHTML = `
-        <a href="#" onclick="openChat('${chatMessage.senderId}', '${chatMessage.receiverId}')">
-            <div class="message-body">
-                <h6 class="message-title">${chatMessage.content}</h6>
-                <p class="message-time">${new Date(chatMessage.timestamp).toLocaleTimeString()}</p>
-            </div>
-        </a>
-    `;
-    notificationList.appendChild(notificationItem);
-}
+//        // Clear the current notification list
+//        const notificationList = document.getElementById('loadNotificationList');
+//        notificationList.innerHTML = ''; // Clear existing items
 
-function openChat(senderId, receiverId) {
-    $.post('/Chat/MarkMessageAsRead',
-        { senderId: senderId, receiverId: receiverId },
-        function () {
-            console.log("Messages marked as read.");
-            updateUnreadCount(); 
-        }
-    ).fail(function (error) {
-        console.error("Error marking messages as read:", error);
-    });
+//        // Add new notifications
+//        unreadMessages.forEach((message) => {
+//            const notificationItem = createNotificationItem(message);
+//            notificationList.appendChild(notificationItem);
+//        });
+//    }).fail(function (error) {
+//        console.error("Error fetching unread messages:", error);
+//    });
+//}
 
-}
+//function createNotificationItem(chatMessage) {
+//    // Validate message data
+//    if (!chatMessage.senderId || !chatMessage.receiverId) {
+//        console.error("Invalid chat message data:", chatMessage);
+//        return null;
+//    }
+
+//    // Create list item
+//    const notificationItem = document.createElement('li');
+//    notificationItem.classList.add('message-item');
+
+//    // Create link
+//    const link = document.createElement('a');
+//    link.href = '#';
+//    link.classList.add('notification-link'); // Optional class for styling
+//    link.dataset.senderId = chatMessage.senderId; // Store sender ID
+//    link.dataset.receiverId = chatMessage.receiverId; // Store receiver ID
+
+//    // Attach click event to the link
+//    link.addEventListener('click', function (event) {
+//        event.preventDefault(); // Prevent default link behavior
+//        openChat(chatMessage.senderId, chatMessage.receiverId);
+//    });
+
+//    // Create message body
+//    const messageBody = document.createElement('div');
+//    messageBody.classList.add('message-body');
+
+//    // Create title
+//    const messageTitle = document.createElement('h6');
+//    messageTitle.classList.add('message-title');
+//    messageTitle.textContent = chatMessage.content;
+
+//    // Create timestamp
+//    const messageTime = document.createElement('p');
+//    messageTime.classList.add('message-time');
+//    messageTime.textContent = new Date(chatMessage.timestamp).toLocaleTimeString();
+
+//    // Append title and timestamp to the body
+//    messageBody.appendChild(messageTitle);
+//    messageBody.appendChild(messageTime);
+
+//    // Append body to the link
+//    link.appendChild(messageBody);
+
+//    // Append the link to the notification item
+//    notificationItem.appendChild(link);
+
+//    return notificationItem;
+//}
+
+//function openChat(senderId, receiverId) {
+//    $.post('/Chat/ChatWithBrokerWindow',
+//        { senderId: senderId, receiverId: receiverId },
+//        function () {
+//            console.log("Messages marked as read.");
+//            updateUnreadCount(); // Refresh unread count after marking messages
+//        }
+//    ).fail(function (error) {
+//        console.error("Error marking messages as read:", error);
+//    });
+//}
 
