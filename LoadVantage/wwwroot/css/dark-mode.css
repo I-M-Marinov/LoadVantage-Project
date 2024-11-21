@@ -174,3 +174,7 @@ input{
 .btn {
     color: black !important;
 }
+
+#editTruckForm input{
+    color: black !important;
+}

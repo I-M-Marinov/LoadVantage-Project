@@ -837,6 +837,9 @@ body {
     margin-top: 2em;
 }
 
+/*-------------------------------------------------------------------------------------
+# BOOKING DETAILS CARD IN THE LOAD DETAILS VIEW ( DISPATCHER AND DRIVER BASIC INFO ) 
+--------------------------------------------------------------------------------------*/
 
 #booking-details {
     bottom: -1.5rem;
@@ -850,5 +853,120 @@ body {
     font-size: 13px;
 }
 
+#pills-tab {
+    margin-top: 0.75em;
+}
 
+#pills-created-tab,
+#pills-posted-tab,
+#pills-booked-tab,
+#pills-billed-tab {
+    background: white;
+    color: #121112 !important;
+    margin-right: 0.2em;
+    transition: opacity 0.50s ease;
+}
 
+.nav-link.active {
+    background: linear-gradient(to left, #8360c3, #4cddf1) !important;
+}
+
+#pills-created-tab:hover,
+#pills-posted-tab:hover,
+#pills-booked-tab:hover,
+#pills-billed-tab:hover {
+    background: linear-gradient(to left, #4cddf1, #8360c3) !important;
+    background-color: #fff !important;
+    color: ghostwhite !important;
+}
+
+#loadboard-nav,
+#profile-nav,
+#create-load-nav,
+#chat-nav,
+#truck-nav,
+#driver-nav {
+    background: linear-gradient(to left, #8360c3, #4cddf1);
+    color: #262424 !important;
+    border-radius: 1em;
+    box-shadow: 25px 0 20px -20px rgba(0, 0, 0, 0.45), -25px 0 20px -20px rgba(0, 0, 0, 0.45);
+    transition: opacity 0.25s ease-out;
+}
+
+#loadboard-nav:hover,
+#profile-nav:hover,
+#create-load-nav:hover,
+#chat-nav:hover,
+#truck-nav:hover,
+#driver-nav:hover {
+    background-color: #fff !important;
+    color: white !important;
+    transition: opacity 0.25s ease-out;
+    border-bottom: 4px solid #0d6efd !important;
+    border-top: 4px solid #8c1db8 !important;
+    box-shadow: 0px 4px 8px -2px rgba(9, 30, 66, 0.25), 0px 0px 0px 1px rgba(9, 30, 66, 0.08);
+    transform: scale(1.05);
+}
+
+/*-------------------------------------------------------------------------------------
+# TOGGLE DARK THEME ON AND OFF BUTTON 
+--------------------------------------------------------------------------------------*/
+
+/* From Uiverse.io by Emil190313 */
+
+.toggle {
+    background-color: purple;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 50px 20px rgba(0, 0, 0, 0.1);
+    line-height: 1;
+}
+
+.input {
+    display: none;
+}
+
+.icon {
+    grid-column: 1 / 1;
+    grid-row: 1 / 1;
+    transition: transform 500ms;
+}
+
+.icon--moon {
+    transition-delay: 200ms;
+    color: black;
+}
+
+.icon--sun {
+    transform: scale(0);
+    color: yellow;
+}
+
+#dark-mode-toggle:checked + .icon--moon {
+    transform: rotate(360deg) scale(0);
+}
+
+#dark-mode-toggle:checked ~ .icon--sun {
+    transition-delay: 200ms;
+    transform: scale(1) rotate(360deg);
+}
+
+/*-------------------------------------------------------------------------------------
+# ADD TRUCK MODAL CSS 
+--------------------------------------------------------------------------------------*/
+
+#truckNumberLabel{
+    margin-top: 2em;
+}
+
+/*-------------------------------------------------------------------------------------
+# EDIT TRUCK MODAL CSS
+--------------------------------------------------------------------------------------*/
+
+#editedTruckNumberLabel {
+    margin-top: 2em;
+}
