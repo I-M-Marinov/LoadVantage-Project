@@ -1,0 +1,232 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Extensions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model LoadVantage.Core.Models.Truck.TrucksViewModel
+
+
+@{
+    
+	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+	ViewData["Title"] = "Trucks";
+
+	var tempDataSuccessMessage = TempData.GetSuccessMessage();
+	var tempDataErrorMessage = TempData.GetErrorMessage();
+}
+
+<!-- ======= Header ======= -->
+@await Html.PartialAsync("_HeaderPartialView", Model.Profile)
+
+<!-- ======= Sidebar ======= -->
+@await Html.PartialAsync("_SidebarPartialView", Model.Profile)
+
+<main id="main" class="main">
+
+	<div class="pagetitle">
+		<h1>Trucks</h1>
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTruckModal">
+			Add Truck
+		</button>	
+		
+	
+	</div>
+	
+	<!-- Add Truck Modal -->
+	<div class="modal fade" id="addTruckModal" tabindex="-1" aria-labelledby="addTruckModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form asp-action="AddTruck" asp-controller="Truck" method="post">
+					@Html.AntiForgeryToken()
+					<div class="modal-header">
+						<h5 class="modal-title" id="addTruckModalLabel">Adding a truck</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="mb-3">
+							<label asp-for="NewTruck.TruckNumber" class="form-label text-center" id="truckNumberLabel">Truck Number</label>
+							<input asp-for="NewTruck.TruckNumber" class="form-control">
+							<span asp-validation-for="NewTruck.TruckNumber" class="badge badge-danger mt-1"></span>
+						</div>
+						<div class="mb-3">
+							<label asp-for="NewTruck.Make" class="form-label text-center">Make</label>
+							<input asp-for="NewTruck.Make" class="form-control">
+							<span asp-validation-for="NewTruck.Make" class="badge badge-danger mt-1"></span>
+						</div>
+						<div class="mb-3">
+							<label asp-for="NewTruck.Model" class="form-label text-center">Model</label>
+							<input asp-for="NewTruck.Model" class="form-control">
+							<span asp-validation-for="NewTruck.Model" class="badge badge-danger mt-1"></span>
+						</div>
+						<div class="mb-3">
+							<label asp-for="NewTruck.IsAvailable" class="form-label text-center">Availability</label>
+							<select asp-for="NewTruck.IsAvailable" class="form-select">
+								<option value="true">Available</option>
+								<option value="false">Not Available</option>
+							</select>
+							<span asp-validation-for="NewTruck.IsAvailable" class="badge badge-danger mt-1"></span>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-outline-primary">Save Truck</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Edit Truck Modal -->
+
+	<div class="modal fade" id="editTruckModal" tabindex="-1" role="dialog" aria-labelledby="editTruckModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="editTruckModalLabel">Edit Truck</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form asp-action="EditTruck" asp-controller="Truck" method="post">
+						@Html.AntiForgeryToken()
+
+						<div class="form-group">
+							<label asp-for="EditedTruck.TruckNumber" class="control-label"></label>
+							<input name="EditedTruck.TruckNumber" asp-for="EditedTruck.TruckNumber" class="form-control" />
+							<span asp-validation-for="EditedTruck.TruckNumber" class="badge badge-danger mt-1"></span>
+						</div>
+
+						<div class="form-group">
+							<label asp-for="EditedTruck.Make" class="control-label"></label>
+							<input name="EditedTruck.Make" asp-for="EditedTruck.Make" class="form-control" />
+							<span asp-validation-for="EditedTruck.Make" class="badge badge-danger mt-1"></span>
+						</div>
+
+						<div class="form-group">
+							<label asp-for="EditedTruck.Model" class="control-label"></label>
+							<input name="EditedTruck.Model" asp-for="EditedTruck.Model" class="form-control" />
+							<span asp-validation-for="EditedTruck.Model" class="badge badge-danger mt-1"></span>
+						</div>
+
+						<div class="form-group">
+							<label asp-for="EditedTruck.DriverName" class="control-label"></label>
+							<input name="EditedTruck.DriverName" asp-for="EditedTruck.DriverName" class="form-control" />
+							<span asp-validation-for="EditedTruck.DriverName" class="badge badge-danger mt-1"></span>
+						</div>
+
+						<div class="form-group">
+							<label asp-for="EditedTruck.IsAvailable" class="control-label"></label>
+							<input name="EditedTruck.IsAvailable" asp-for="EditedTruck.IsAvailable" type="checkbox" class="form-check-input" />
+							<span asp-validation-for="EditedTruck.IsAvailable" class="badge badge-danger mt-1"></span>
+						</div>
+
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-success">Save</button>
+							<input type="hidden" name="EditedTruck.Id" asp-for="EditedTruck.Id" />
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="card">
+		
+		@if (!string.IsNullOrEmpty(tempDataSuccessMessage))
+		{
+			<div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@tempDataSuccessMessage</div>
+		}
+
+		@if (!string.IsNullOrEmpty(tempDataErrorMessage))
+		{
+			<div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@tempDataErrorMessage</div>
+		}
+
+		<div class="card-body">
+			<div class="table-responsive" id="trucks-table">
+				<h5 class="card-title">Truck List</h5>
+				<table class="table table-bordered table-hover table-sm">
+					<thead>
+					<tr>
+						<th class="text-center" scope="col">Truck Number</th>
+						<th class="text-center" scope="col">Make</th>
+						<th class="text-center" scope="col">Model</th>
+						<th class="text-center" scope="col">Driver</th>
+						<th class="text-center" scope="col">Available</th>
+						<th class="text-center" scope="col">Actions</th>
+					</tr>
+					</thead>
+					<tbody>
+					@foreach (var truck in Model.Trucks)
+					{
+						<tr>
+							<td class="text-center">@truck.TruckNumber</td>
+							<td class="text-center">@truck.Make</td>
+							<td class="text-center">@truck.Model</td>
+							<td class="text-center">@(truck.DriverName ?? "N/A")</td>
+							<td class="text-center">@(truck.IsAvailable ? "Yes" : "No")</td>
+							<td class="text-center">
+							<button type="button" class="btn btn-outline-primary edit-truck-btn btn-sm" data-id="@truck.Id">Edit</button>
+							<a href="#" class="btn btn-outline-danger btn-sm" id="truckDeleteBtn">Delete</a>
+							</td>
+						</tr>
+					}
+
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+</main>
+
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+<script>
+
+	// Populate the Edit Truck Form 
+
+	document.addEventListener("DOMContentLoaded", function () {
+		document.addEventListener("click", function (event) {
+			if (event.target && event.target.matches(".edit-truck-btn")) {
+				const truckId = event.target.getAttribute("data-id");
+
+				fetch(`/Truck/GetTruckDetails?id=${truckId}`)
+					.then(response => response.json())
+					.then(truck => {
+						document.querySelector("#editTruckModal input[name='EditedTruck.Id']").value = truck.id;
+						document.querySelector("#editTruckModal input[name='EditedTruck.TruckNumber']").value = truck.truckNumber;
+						document.querySelector("#editTruckModal input[name='EditedTruck.Make']").value = truck.make;
+						document.querySelector("#editTruckModal input[name='EditedTruck.Model']").value = truck.model;
+						document.querySelector("#editTruckModal input[name='EditedTruck.DriverName']").value = truck.driverName;
+						document.querySelector("#editTruckModal input[name='EditedTruck.IsAvailable']").checked = truck.isAvailable;
+
+						const modal = new bootstrap.Modal(document.getElementById("editTruckModal"));
+						modal.show();
+					})
+					.catch(error => console.error("Error loading truck details:", error));
+			}
+		});
+	});
+
+	
+
+	if (document.querySelector('.toggle-sidebar-btn')) {
+
+		document.querySelector('.toggle-sidebar-btn').addEventListener('click', function (e) {
+
+			document.body.classList.toggle('toggle-sidebar');
+		});
+	}
+
+
+
+</script>
+
