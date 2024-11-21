@@ -26,7 +26,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 
 		public string LicenseNumber { get; set; } = null!;
 
-		public int? TruckId { get; set; }
+		public Guid? TruckId { get; set; }
 
 		[ForeignKey(nameof(TruckId))]
 		public virtual Truck? Truck { get; set; }
