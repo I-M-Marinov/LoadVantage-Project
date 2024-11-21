@@ -59,6 +59,7 @@ builder.Services.AddIdentity<User, Role>(options =>
 	.AddEntityFrameworkStores<LoadVantageDbContext>() 
 	.AddDefaultTokenProviders();
 
+// =============== CORS ============== // 
 
 builder.Services.AddCors(options =>
 {
@@ -68,6 +69,7 @@ builder.Services.AddCors(options =>
 			.AllowAnyHeader());
 });
 
+// =============== Register all services ============== // 
 
 builder.Services.AddScoped<IImageService, ImageService>();									// Add the Image Service 
 builder.Services.AddScoped<IProfileService, ProfileService>();                              // Add the Profile Service 
@@ -78,6 +80,7 @@ builder.Services.AddScoped<IDistanceCalculatorService, DistanceCalculatorService
 builder.Services.AddScoped<ILoadStatusService, LoadStatusService>();						// Add the Load Status Service 
 builder.Services.AddScoped<ILoadBoardService, LoadBoardService>();							// Add the LoadBoard Service 
 builder.Services.AddScoped<IChatService, ChatService>();									// Add the Chat Service 
+builder.Services.AddScoped<ITruckService, TruckService>();									// Add the Truck Service 
 builder.Services.AddSignalR();																// Add SignalR
 
 
@@ -165,6 +168,11 @@ app.UseEndpoints(endpoints =>
 	    name: "load",
 	    pattern: "Load/{action}/{id?}",
 	    defaults: new { controller = "Load", action = "LoadDetails" });
+
+	endpoints.MapControllerRoute(
+		name: "truck",
+		pattern: "Truck/{action}/{id?}",
+		defaults: new { controller = "Truck", action = "ShowTrucks" });
 
 	endpoints.MapHub<LoadHub>("/loadHub");
 	endpoints.MapHub<ChatHub>("/chatHub");
