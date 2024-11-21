@@ -1,0 +1,176 @@
+﻿/* dark-mode.css */
+body {
+    background-color: #121212 !important;
+    color: #ffffff !important;
+}
+
+header, .navbar, .sidebar {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+}
+
+button, input, select, textarea {
+    color: #ffffff !important;
+}
+
+a {
+    color: #90caf9 !important;
+}
+
+h1, h2, h3, h4, h5, h6, h7, h8 {
+    color: white !important;
+}
+
+.card,
+.panel,
+.dropdown-menu,
+.dropdown-menu-arrow.notifications.show::before,
+.dropdown-menu-arrow.messages.show::before,
+.dropdown-menu-arrow.profile.show::before,
+.card-title {
+    background-color: #1e1e1e !important;
+    border-color: #333333 !important;
+    color: #ffffff !important;
+}
+
+img {
+    -webkit-box-shadow: -4px 6px 52px 16px rgba(189,62,189,0.9);
+    -moz-box-shadow: -4px 6px 52px 16px rgba(189,62,189,0.9);
+    box-shadow: -4px 6px 52px 16px rgba(189,62,189,0.9);
+}
+
+
+.logo img,
+.broker-info.card img,
+.nav-item.dropdown img,
+.img-fluid {
+    box-shadow: none !important;
+}
+
+#chat-user img {
+    box-shadow: none !important;
+}
+
+
+
+.col-lg-3.col-md-4{
+    color: white !important;
+}
+
+.card,
+.card-title {
+    background-color: #333333 !important;
+}
+
+.card {
+    border-color: #808080 !important;
+}
+
+label {
+    color: black;
+}
+
+.form-control {
+    background-color: #dddddd !important;
+    color: white !important;
+}
+
+.search-bar search-form {
+    background-color: #808080 !important;
+    color: black !important;
+}
+
+form.search-form {
+    background-color: #dddddd !important;
+}
+
+
+.search-bar input {
+    color: black !important;
+}
+
+.modal-body,
+.modal-title,
+.modal-header {
+    color: black !important;
+}
+
+.dropdown-item:hover {
+    background-color: #808080;
+    color: black !important;
+}
+
+
+input{
+    color: black;
+}
+
+.message-content{
+    border: 2px black solid;
+}
+
+.datatable-sorter{
+    color: black !important;
+}
+.datatable-selector {
+    background-color: #1e1e1e !important;
+    color: white !important;
+}
+
+.datatable-pagination-list li button {
+    color: black !important;
+}
+
+#editLoadButton,
+#saveLoadButton,
+#cancelEditingButton {
+    background: #333333;
+    color: #ffffff !important;
+}
+
+
+
+.badge-info {
+    background: #333333;
+    color: #ffffff !important;
+}
+
+.count-row div{
+    color: white !important;
+}
+
+.status-row div {
+    color: #333333 !important;
+}
+
+.col-form-label {
+    color: white !important;
+}
+
+.form-floating label {
+    color: black !important;
+}
+
+.view-button span,
+.view-button i,
+.load-status {
+    color: black !important;
+}
+
+.input-group input {
+    background-color: #bbbbbb !important;
+    border: 2px #0094ff solid !important;
+    color: black !important;
+}
+
+.row.mb-3 input{
+    color: black !important;
+}
+
+.rounded-circle {
+    background-color: #dddddd !important;
+}
+
+.btn {
+    color: black !important;
+}
