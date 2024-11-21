@@ -35,7 +35,7 @@ namespace LoadVantage.Core.Models.Account
         public string LastName { get; set; } = null!;
 
         [Required]
-        [Display(Name = "Name of the company where the user works")]
+        [Display(Name = "Company name")]
         public string Company { get; set; } = null!;
 
         [Required]
