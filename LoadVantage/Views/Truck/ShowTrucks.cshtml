@@ -81,16 +81,14 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="editTruckModalLabel">Edit Truck</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form asp-action="EditTruck" asp-controller="Truck" method="post">
+					<form asp-action="EditTruck" asp-controller="Truck" method="post" id="editTruckForm">
 						@Html.AntiForgeryToken()
 
 						<div class="form-group">
-							<label asp-for="EditedTruck.TruckNumber" class="control-label"></label>
+							<label asp-for="EditedTruck.TruckNumber" class="control-label" id="editedTruckNumberLabel"></label>
 							<input name="EditedTruck.TruckNumber" asp-for="EditedTruck.TruckNumber" class="form-control" />
 							<span asp-validation-for="EditedTruck.TruckNumber" class="badge badge-danger mt-1"></span>
 						</div>
