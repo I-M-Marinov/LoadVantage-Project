@@ -289,7 +289,7 @@ $("#updateProfileForm").submit(function (event) {
 //        if (data.unreadCount != null) {
 //            unreadCount = data.unreadCount;
 
-//        } 
+//        }
 //        const unreadMessages = data.messages;
 
 //        // Update the notification counts
@@ -372,4 +372,8 @@ $("#updateProfileForm").submit(function (event) {
 //        console.error("Error marking messages as read:", error);
 //    });
 //}
+
+
+
+
 

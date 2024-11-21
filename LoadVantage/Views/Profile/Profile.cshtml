@@ -54,7 +54,7 @@
 					    <h2>Loads</h2>
 					    <div class="social-links mt-2">
 						    <div class="status-row">
-								@if (Model.Position is nameof(Broker))
+							    @if (Model.Position is nameof(Broker))
 							    {
 								    <div class="badge bg-primary profile-loads">
 									    <i class="bi bi-star me-1"></i>Created
@@ -72,8 +72,8 @@
 							    </div>
 						    </div>
 						    <div class="count-row">
-								@if (Model.Position is nameof(Broker))
-								{
+							    @if (Model.Position is nameof(Broker))
+							    {
 								    <div>@ViewBag.CreatedLoadsCount</div>
 								    <div>@ViewBag.PostedLoadsCount</div>
 							    }
@@ -85,7 +85,6 @@
 
 				    </div>
 			    </div>
-
 
 		    </div>
 

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "9hu6JurmNjvgEXbLkM/u4h3Cc858/4fx6vAfCITUso0=",
+  "Hash": "hUXUUl3IK1GGfZIGwR3xZzNlQZ/19T7b8NT2ABjrfOg=",
   "Source": "LoadVantage",
   "BasePath": "_content/LoadVantage",
   "Mode": "Default",
@@ -11073,6 +11073,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\vendor\\tinymce\\tinymce.min.js"
+    },
+    {
+      "Identity": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\dark-mode.css",
+      "SourceId": "LoadVantage",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\",
+      "BasePath": "_content/LoadVantage",
+      "RelativePath": "css/dark-mode.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\dark-mode.css"
     },
     {
       "Identity": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\site.css",

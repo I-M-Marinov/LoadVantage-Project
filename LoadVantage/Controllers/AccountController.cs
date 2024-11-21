@@ -11,6 +11,7 @@ using System.Security.Claims;
 
 namespace LoadVantage.Controllers
 {
+    
     public class AccountController : Controller
     {
         private readonly UserManager<User> userManager;

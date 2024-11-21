@@ -5,8 +5,7 @@ using LoadVantage.Core.Models.Chat;
 using LoadVantage.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using LoadVantage.Infrastructure.Data.Models;
-using Azure.Messaging;
-using System;
+
 
 namespace LoadVantage.Core.Services
 {
