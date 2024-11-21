@@ -74,8 +74,13 @@ namespace LoadVantage.Common
 
             public const string NoChangesMadeToProfile = "No changes were made to your profile.";
 
+            // TRUCK 
 
-		}
+            public const string TruckWasNotCreated = "The truck was not created successfully.";
+            public const string TruckCreateError = "Error ! Truck was not created.";
+
+
+        }
 
 		public static class SuccessMessages
         {
@@ -98,8 +103,11 @@ namespace LoadVantage.Common
 			public const string ProfileUpdatedSuccessfully = "Your profile was updated successfully.";
             public const string PasswordUpdatedSuccessfully = "Your password has been changed successfully.";
 
+            // TRUCK 
 
-        }
+            public const string TruckWasAddedSuccessfully = "The truck was added successfully to your fleet";
+
+		}
 
         public static class ActiveTabs
         {
