@@ -18,8 +18,5 @@ namespace LoadVantage.Core.Models.Account
         [Display(Name = "Username")]
         public string UserName { get; set; } = null!;
 
-
-        [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
     }
 }
