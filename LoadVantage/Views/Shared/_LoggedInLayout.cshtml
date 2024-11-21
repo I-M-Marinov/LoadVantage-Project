@@ -4,6 +4,57 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - LoadVantage</title>
+	
+    <style>
+        body {
+            visibility: hidden;
+            transition: visibility 0s 0.3s, background-color 0.3s ease, color 0.3s ease;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButton = document.getElementById('dark-mode-toggle');
+            const darkModeStylesheetId = 'dark-mode-stylesheet';
+
+            const savedTheme = localStorage.getItem('darkMode');
+
+            if (savedTheme === 'enabled') {
+                enableDarkMode();
+            } else {
+                document.body.style.visibility = 'visible'; 
+            }
+
+            toggleButton.addEventListener('click', function () {
+                if (document.getElementById(darkModeStylesheetId)) {
+                    disableDarkMode();
+                } else {
+                    enableDarkMode();
+                }
+            });
+
+            function enableDarkMode() {
+                const link = document.createElement('link');
+                link.id = darkModeStylesheetId;
+                link.rel = 'stylesheet';
+                link.href = '/css/dark-mode.css';  
+                document.head.appendChild(link);
+                localStorage.setItem('darkMode', 'enabled');
+                document.body.style.visibility = 'visible'; 
+            }
+
+            function disableDarkMode() {
+                const darkModeCSS = document.getElementById(darkModeStylesheetId);
+                if (darkModeCSS) {
+                    darkModeCSS.remove();
+                }
+                localStorage.setItem('darkMode', 'disabled');
+                document.body.style.visibility = 'visible'; 
+            }
+        });
+    </script>
+
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
@@ -31,53 +82,53 @@
 
 </head>
 
-	<body style="background: rgb(131,58,180);background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(29,255,253,1) 100%, rgba(252,176,69,1) 100%); ">
+<body style="background: rgb(131,58,180);background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(29,255,253,1) 100%, rgba(252,176,69,1) 100%); ">
 		
 
-	<div class="container">
-		@RenderBody()
+<div class="container">
+	@RenderBody()
+</div>
+	
+<footer id="footer" class="footer">
+	<div class="copyright">
+		&copy; 2024 - LoadVantage - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 	</div>
+
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- SignalR  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.5/signalr.min.js"></script>
 	
-	<footer id="footer" class="footer">
-		<div class="copyright">
-			&copy; 2024 - LoadVantage - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-		</div>
+<!-- jQuery -->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-	</footer><!-- End Footer -->
-
-	<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-	<!-- SignalR  -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.5/signalr.min.js"></script>
-	
-	<!-- jQuery -->
-	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-
-	<!-- jQuery Validation -->
-	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+<!-- jQuery Validation -->
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
 
 		
-	<!-- Vendor JS Files -->
-	<script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
-	<script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<script src="~/assets/vendor/chart.js/chart.umd.js"></script>
-	<script src="~/assets/vendor/echarts/echarts.min.js"></script>
-	<script src="~/assets/vendor/quill/quill.js"></script>
-	<script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
-	<script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
-	<script src="~/assets/vendor/php-email-form/validate.js"></script>
+<!-- Vendor JS Files -->
+<script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="~/assets/vendor/echarts/echarts.min.js"></script>
+<script src="~/assets/vendor/quill/quill.js"></script>
+<script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="~/assets/vendor/php-email-form/validate.js"></script>
 
 
-	<!-- Template Main JS File -->
-	<script src="~/assets/js/main.js"></script>
-	<script src="~/js/site.js"></script>
+<!-- Template Main JS File -->
+<script src="~/assets/js/main.js"></script>
+<script src="~/js/site.js"></script>
 
 
-	<!-- Section for additional scripts -->
-	@await RenderSectionAsync("Scripts", required: false)
+<!-- Section for additional scripts -->
+@await RenderSectionAsync("Scripts", required: false)
 
-    </body>
+</body>
 
 </html>
