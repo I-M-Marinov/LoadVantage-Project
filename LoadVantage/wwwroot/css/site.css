@@ -880,17 +880,12 @@ body {
     color: ghostwhite !important;
 }
 
-#loadboard-nav,
-#profile-nav,
-#create-load-nav,
-#chat-nav,
-#truck-nav,
-#driver-nav {
-    background: linear-gradient(to left, #8360c3, #4cddf1);
-    color: #262424 !important;
-    border-radius: 1em;
-    box-shadow: 25px 0 20px -20px rgba(0, 0, 0, 0.45), -25px 0 20px -20px rgba(0, 0, 0, 0.45);
-    transition: opacity 0.25s ease-out;
+#loadboard-nav, #profile-nav, #create-load-nav, #chat-nav, #truck-nav, #driver-nav {
+background: linear-gradient(to left, #8360c3, #4cddf1);
+color: #262424 !important;
+border-radius: 1em;
+box-shadow: 25px 0 20px -20px rgba(0, 0, 0, 0.45), -25px 0 20px -20px rgba(0, 0, 0, 0.45);
+transition: opacity 0.25s ease-out;
 }
 
 #loadboard-nav:hover,
@@ -956,17 +951,92 @@ body {
 }
 
 /*-------------------------------------------------------------------------------------
-# ADD TRUCK MODAL CSS 
+# TRUCK VIEW ( SHOW TRUCKS VIEW ) 
 --------------------------------------------------------------------------------------*/
 
-#truckNumberLabel{
-    margin-top: 2em;
+.trucks {
+    font-family: Nunito;
 }
 
+#trucks-table{
+    margin-top: 2em;
+}
 /*-------------------------------------------------------------------------------------
-# EDIT TRUCK MODAL CSS
+# ADD AND EDIT TRUCK MODALS CSS 
 --------------------------------------------------------------------------------------*/
+#addTruckForm div label {
+    background-color: #5a99f5;
+    font-weight: 600;
+    border-bottom: 2px #8c1db8 solid;
+    border-start-end-radius: 0.5em;
+}
+
+#addTruckForm .modal-body{
+    margin-bottom: 0 !important;
+}
+
+#truckNumberLabel {
+    margin-top: 3em;
+}
+
+#editTruckForm div label {
+    margin-top: 1rem;
+    background-color: #5a99f5;
+    font-weight: 600;
+    border-bottom: 2px #8c1db8 solid;
+    margin-bottom: 0.5em;
+}
 
 #editedTruckNumberLabel {
-    margin-top: 2em;
+    margin-top: 2em !important;
+}
+
+.larger-checkbox {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+    cursor: pointer;
+    margin-bottom: 0.5em;
+}
+
+.larger-checkbox:checked {
+    background-color: darkgreen !important;
+}
+
+#editTruckForm .modal-footer,
+#addTruckForm .modal-footer {
+    justify-content: center;
+    align-items: center;
+}
+
+#addTruckForm .modal-body,
+#editTruckModal .modal-body{
+    margin-bottom: 0 !important;
+}
+
+
+/*-------------------------------------------------------------------------------------
+# TRUCK IS AVAILABLE OR NOT BADGES 
+--------------------------------------------------------------------------------------*/
+.truck-success {
+    background-color: #28a745;
+    color: ghostwhite !important;
+    border: 1px black solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.truck-danger {
+    background-color: #dc3545;
+    color: ghostwhite !important;
+    border: 1px black solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.truck-success i,
+.truck-danger i {
+    color: black;
+    font-size: 1rem;
 }
