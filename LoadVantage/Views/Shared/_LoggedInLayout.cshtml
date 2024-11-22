@@ -6,13 +6,13 @@
     <title>@ViewData["Title"] - LoadVantage</title>
 	
     <style>
-        body {
+        body.loading {
             visibility: hidden;
-            transition: visibility 0s 0.3s, background-color 0.3s ease, color 0.3s ease;
         }
     </style>
 
     <script>
+
         document.addEventListener('DOMContentLoaded', function () {
             const toggleButton = document.getElementById('dark-mode-toggle');
             const darkModeStylesheetId = 'dark-mode-stylesheet';
@@ -85,13 +85,13 @@
 <body style="background: rgb(131,58,180);background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(29,255,253,1) 100%, rgba(252,176,69,1) 100%); ">
 		
 
-<div class="container">
+<div class="container loading" >
 	@RenderBody()
 </div>
 	
 <footer id="footer" class="footer">
 	<div class="copyright">
-		&copy; 2024 - LoadVantage - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+		&copy; 2024 - LoadVantage 
 	</div>
 
 </footer><!-- End Footer -->
@@ -125,6 +125,13 @@
 <script src="~/assets/js/main.js"></script>
 <script src="~/js/site.js"></script>
 
+
+<script>
+
+    window.addEventListener('load', () => {
+        document.body.classList.remove('loading');
+    });
+</script>
 
 <!-- Section for additional scripts -->
 @await RenderSectionAsync("Scripts", required: false)
