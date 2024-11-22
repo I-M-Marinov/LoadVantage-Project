@@ -373,7 +373,3 @@ $("#updateProfileForm").submit(function (event) {
 //    });
 //}
 
-
-
-
-
