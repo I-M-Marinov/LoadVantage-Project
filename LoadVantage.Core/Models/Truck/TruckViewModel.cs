@@ -26,6 +26,12 @@ namespace LoadVantage.Core.Models.Truck
 
 		public string Model { get; set; } = null!;
 
+		[Required(ErrorMessage = TruckYearRequired)]
+		[Display(Name = "Year")]
+		[Range(TruckYearMinValue, TruckYearMaxValue, ErrorMessage = TruckYearInvalid)]
+
+		public string Year { get; set; } = null!;
+
 		[Display(Name = "Driver Name")]
 		public string? DriverName { get; set; }
 
