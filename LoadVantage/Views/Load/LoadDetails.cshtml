@@ -350,7 +350,7 @@
 		</div>
 		@if (Model.Status == LoadStatus.Booked.ToString() && user is Broker)
 		{
-			<button class="btn btn-outline-info" data-bs-toggle="collapse" data-bs-target="#bookingDetails">
+			<button id="dispatcherDriverDetailsbtn" class="btn btn-outline-info" data-bs-toggle="collapse" data-bs-target="#bookingDetails">
 				<i class="ri-more-2-fill"></i>
 				Details
 			</button>
@@ -402,18 +402,24 @@
 
 	document.addEventListener("DOMContentLoaded", function () {
 		var activeTab = "@tempDataActiveTab";
-			if (activeTab === "posted") { 
-				var postedTabButton = document.getElementById("pills-posted-tab");
-				if (postedTabButton) {
-					new bootstrap.Tab(postedTabButton).show();
-				}
-			} else {
-				var createdTabButton = document.getElementById("pills-created-tab"); // fallback to created tab 
-				if (createdTabButton) {
-					new bootstrap.Tab(createdTabButton).show();
-				}
+
+		if (activeTab === "posted") {
+			var postedTabButton = document.getElementById("pills-posted-tab");
+			if (postedTabButton) {
+				new bootstrap.Tab(postedTabButton).show();
 			}
-		});
+		} else if (activeTab === "booked") {
+			var bookedTabButton = document.getElementById("pills-booked-tab");
+			if (bookedTabButton) {
+				new bootstrap.Tab(bookedTabButton).show();
+			}
+		} else {
+			var createdTabButton = document.getElementById("pills-created-tab"); // fallback to created tab
+			if (createdTabButton) {
+				new bootstrap.Tab(createdTabButton).show();
+			}
+		}
+	});
 
 
 	if (document.querySelector('.toggle-sidebar-btn')) {
