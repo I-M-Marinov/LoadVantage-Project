@@ -10,6 +10,8 @@ using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
 using LoadVantage.Core.Hubs;
+using LoadVantage.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 
 namespace LoadVantage.Controllers
@@ -18,16 +20,17 @@ namespace LoadVantage.Controllers
     [Route("[controller]/[action]")]
     public class LoadController : Controller
     {
-
-        private readonly ILoadStatusService loadService;
+	    private readonly UserManager<User> userManager;
+		private readonly ILoadStatusService loadService;
         private readonly IHubContext<LoadHub> loadHubContext;
 
-        public LoadController(ILoadStatusService _loadService, IHubContext<LoadHub> _loadHubContext)
+        public LoadController(ILoadStatusService _loadService, IHubContext<LoadHub> _loadHubContext, UserManager<User> _userManager)
 
-        {
+
+		{
             loadService = _loadService;
             loadHubContext = _loadHubContext;
-
+            userManager = _userManager;
         }
 
         [HttpGet]
@@ -35,8 +38,12 @@ namespace LoadVantage.Controllers
         public async Task<IActionResult> LoadDetails(Guid loadId)
         {
 
-            Guid? userId = User.GetUserId();
+            User user = User.GetUserAsync(userManager).Result;
 
+            if (user is null)
+            {
+	            return RedirectToAction("Login", "Account");
+			}
             try
             {
                 var loadToShow = await loadService.GetLoadDetailsAsync(loadId);
@@ -45,6 +52,16 @@ namespace LoadVantage.Controllers
                 {
                     return NotFound("The load you are looking for does not exist");
                 }
+
+                //if (loadToShow.BrokerId != user.Id && (loadToShow.DispatcherId != user.Id || loadToShow.Status != LoadStatus.Booked.ToString()))
+                //{
+                //    return NotFound("Load was not found.");
+                //}
+
+                //if (loadToShow.DispatcherId != user.Id || loadToShow.Status == LoadStatus.Created.ToString() && user is Dispatcher)
+                //{
+                //    return NotFound("Load was not found.");
+                //}
 
                 return View(loadToShow);
             }
