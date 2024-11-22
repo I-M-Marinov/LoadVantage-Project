@@ -1,6 +1,5 @@
 ﻿using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Truck;
-using LoadVantage.Core.Services;
 using LoadVantage.Extensions;
 using LoadVantage.Filters;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +16,8 @@ namespace LoadVantage.Controllers
 
 		private readonly ITruckService truckService;
 
-		public TruckController(ITruckService _truckService)
+
+        public TruckController(ITruckService _truckService)
 		{
 			truckService = _truckService;
 		}
@@ -89,7 +89,7 @@ namespace LoadVantage.Controllers
 			Guid userId = User.GetUserId()!.Value;
 
 			ModelState.Clear(); // Clear any other model state errors found 
-			var result = TryValidateModel(model.EditedTruck); // Validate just the truck  
+			TryValidateModel(model.EditedTruck); // Validate just the truck  
 
 			if (!ModelState.IsValid)
 			{
@@ -101,14 +101,15 @@ namespace LoadVantage.Controllers
 				var editedTruck = model.EditedTruck;
 
 				await truckService.UpdateTruckAsync(editedTruck);
-				TempData.SetSuccessMessage("Truck was updated successfully.");
+				TempData.SetSuccessMessage(TruckWasUpdatedSuccessfully);
+
 				return RedirectToAction("ShowTrucks",new {userid = userId});
 			}
 			catch (KeyNotFoundException ex)
 			{
 				TempData["ErrorMessage"] = ex.Message;
-				return RedirectToAction("ShowTrucks");
-			}
+                return NotFound(TruckDoesNotExist);
+            }
 			catch (Exception ex)
 			{
 				TempData["ErrorMessage"] = "Error updating the truck: " + ex.Message;
@@ -116,31 +117,26 @@ namespace LoadVantage.Controllers
 			}
 		}
 
-		//// GET: Truck/Delete/5
-		//public async Task<IActionResult> Delete(Guid id)
-		//{
-		//	var truck = await truckService.GetTruckByIdAsync(id);
-		//	if (truck == null)
-		//	{
-		//		return NotFound();
-		//	}
-		//	return View(truck); // Ensure a corresponding view exists.
-		//}
 
-		//// POST: Truck/Delete/5
-		//[HttpPost, ActionName("Delete")]
-		//[ValidateAntiForgeryToken]
-		//public async Task<IActionResult> DeleteConfirmed(Guid id)
-		//{
-		//	try
-		//	{
-		//		await truckService.DeleteTruckAsync(id);
-		//	}
-		//	catch (KeyNotFoundException)
-		//	{
-		//		return NotFound();
-		//	}
-		//	return RedirectToAction(nameof(Index));
-		//}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[DispatcherOnly]
+
+		public async Task<IActionResult> DeleteTruck(Guid id)
+		{
+            Guid userId = User.GetUserId()!.Value;
+
+            try
+            {
+				await truckService.DeleteTruckAsync(id);
+                TempData.SetSuccessMessage(TruckWasRemovedSuccessfully);
+                return RedirectToAction("ShowTrucks", new { userid = userId });
+
+            }
+			catch (KeyNotFoundException)
+			{
+				return NotFound(TruckDoesNotExist);
+			}
+		}
 	}
 }
