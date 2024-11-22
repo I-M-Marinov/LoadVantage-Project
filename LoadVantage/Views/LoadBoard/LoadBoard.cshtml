@@ -72,7 +72,7 @@
 			                    <button class="nav-link" id="pills-billed-tab" data-bs-toggle="pill" data-bs-target="#pills-billed" type="button" role="tab" aria-controls="pills-billed" aria-selected="false">Billed Loads</button>
 		                    </li>
 	                    </ul>
-	                    <div class="tab-content " id="myTabContent">
+	                    <div class="tab-content" id="myTabContent">
 		                    @if (Model.Profile.Position == nameof(Broker))
 		                    {
 			                    <div class="tab-pane fade show active" id="pills-created" role="tabpanel" aria-labelledby="pills-created-tab">
@@ -104,7 +104,7 @@
 								                    <td>@load.DeliveryTime.ToString("dd/MM/yyyy HH:mm")</td>
 								                    <td>@(load.Distance.HasValue ? Math.Round(load.Distance.Value) : 0)</td>
 								                    <td>$@load.PostedPrice</td>
-								                    <td title="Price per mile">@($"${(load.PostedPrice / (decimal)load.Distance):F2}/mile")</td>
+								                    <td title="Price per mile">@($"${(load.PostedPrice / (decimal)load.Distance):F2}")</td>
 								                    <td>
 									                    <form method="get" action="@Url.Action("LoadDetails", "Load")">
 										                    <input type="hidden" name="loadId" value="@load.Id"/>
@@ -198,7 +198,7 @@
 							                    <td>@load.OriginState</td>
 							                    <td>@load.DestinationCity</td>
 							                    <td>@load.DestinationState</td>
-							                    <td>@($"${(load.PostedPrice / (decimal)load.Distance):F2}/mile")</td>
+							                    <td>@($"${(load.PostedPrice / (decimal)load.Distance):F2}")</td>
 							                    <td>@load.BilledAmount</td>
 							                    <td>@load.BilledDate</td>
 						                    </tr>
@@ -219,8 +219,6 @@
     </section>    <!-- LOAD BOARD START -->
 	
 
-
-	
 
 </main><!-- End #main -->
 
@@ -307,5 +305,5 @@
 
 
 
-
 </script>
+

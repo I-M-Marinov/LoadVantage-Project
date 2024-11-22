@@ -30,7 +30,7 @@
 			<td>@load.DeliveryTime.ToString("dd/MM/yyyy HH:mm")</td>
 			<td>@(load.Distance.HasValue ? Math.Round(load.Distance.Value) : 0)</td>
 			<td>@load.PostedPrice</td>
-			<td>@($"${(load.PostedPrice / (decimal)load.Distance!):F2}/mile")</td>
+			<td>@($"${(load.PostedPrice / (decimal)load.Distance!):F2}")</td>
 			<td>
 				<form method="get" action="@Url.Action("LoadDetails", "Load")">
 					<input type="hidden" name="loadId" value="@load.Id" />
