@@ -133,11 +133,13 @@
 	        public const string TruckNumberRequired = "The truck number is required.";
 	        public const string TruckMakeRequired = "The truck make is required.";
 	        public const string TruckModelRequired = "The truck model is required.";
+	        public const string TruckYearRequired = "The truck production year is required.";
 	        public const string AvailabilityRequired = "Availability is required.";
 
 	        public const string TruckNumberInvalid = "Truck number must be 3-7 characters long and contain only letters and digits.";
 	        public const string TruckMakeInvalid = "Truck make must be between 2 and 30 characters.";
 	        public const string TruckModelInvalid = "Truck model must be between 1 and 50 characters.";
+	        public const string TruckYearInvalid = "Truck year must be between 1990 and 2024.";
 			public const string TruckNumberRegexPattern = @"^[a-zA-Z0-9]{3,7}$";
 
 			public const byte TruckMakeMinLength = 2;
@@ -145,6 +147,9 @@
 
 			public const byte TruckModelMinLength = 1;
 			public const byte TruckModelMaxLength = 50;
+
+			public const int TruckYearMinValue = 1990;
+			public const int TruckYearMaxValue = 2024; 
 
 		}
 	}
