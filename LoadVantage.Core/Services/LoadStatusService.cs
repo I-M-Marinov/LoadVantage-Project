@@ -326,9 +326,9 @@ namespace LoadVantage.Core.Services
         {
 	        var load = await context.Loads
 		        .Include(l => l.BookedLoad) 
-		        .ThenInclude(bl => bl.Dispatcher)
-		        .Include(l => l.BookedLoad.Driver) 
-		        .ThenInclude(d => d.Truck) 
+		        .ThenInclude(bl => bl!.Dispatcher)
+		        .Include(l => l.BookedLoad!.Driver) 
+		        .ThenInclude(d => d!.Truck) 
 		        .Include(l => l.BilledLoad) 
 		        .FirstOrDefaultAsync(l => l.Id == loadId);
 
@@ -337,7 +337,7 @@ namespace LoadVantage.Core.Services
                 throw new Exception(LoadCouldNotBeRetrieved);
             }
 
-            var dispatcherInfo = load.BookedLoad?.Driver != null
+            var dispatcherInfo = load.BookedLoad?.Dispatcher != null
 	            ? new DispatcherInfoViewModel
 				{
 					DispatcherName = load.BookedLoad.Dispatcher.FullName,
@@ -380,7 +380,7 @@ namespace LoadVantage.Core.Services
                 Weight = load.Weight,
                 Status = load.Status.ToString(),
                 BrokerId = load.BrokerId,
-                DispatcherId = null,
+                DispatcherId = load.BookedLoad?.DispatcherId,
                 DispatcherInfo = dispatcherInfo,
 				DriverInfo = driverInfo
 			};
