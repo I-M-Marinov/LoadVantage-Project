@@ -18,6 +18,9 @@ namespace LoadVantage.Infrastructure.Data.Models
 		public string Model { get; set; } = null!;
 
 		[Required]
+		public int Year { get; set; } 
+
+		[Required]
 		public Guid DispatcherId { get; set; }
 		[ForeignKey(nameof(DispatcherId))]
 		public virtual Dispatcher Dispatcher { get; set; } = null!;
