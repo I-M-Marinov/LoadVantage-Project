@@ -1,4 +1,4 @@
-﻿/* dark-mode.css */
+﻿ dark-mode.css 
 body {
     background-color: #121212 !important;
     color: #ffffff !important;
@@ -109,9 +109,6 @@ input{
     border: 2px black solid;
 }
 
-.datatable-sorter{
-    color: black !important;
-}
 .datatable-selector {
     background-color: #1e1e1e !important;
     color: white !important;
@@ -119,13 +116,6 @@ input{
 
 .datatable-pagination-list li button {
     color: black !important;
-}
-
-#editLoadButton,
-#saveLoadButton,
-#cancelEditingButton {
-    background: #333333;
-    color: #ffffff !important;
 }
 
 
@@ -177,4 +167,53 @@ input{
 
 #editTruckForm input{
     color: black !important;
+}
+
+#refreshLoadForm,
+#refreshLoadInfoButton,
+#cancelLoadBtn,
+#editLoadButton,
+#saveLoadButton,
+#cancelEditingButton,
+#backToLoadBoardButton button,
+#dispatcherDriverDetailsbtn,
+#postLoadBtn,
+#createLoadButton,
+#resetFormButton,
+#chatWithBrokerBtn {
+    background: #333333 !important;
+    color: #ffffff !important;
+}
+
+.datatable-sorter {
+    color: black !important;
+}
+
+.datatable-input {
+    color: black !important;
+}
+
+.datatable-dropdown label {
+    color: ghostwhite !important;
+}
+
+#deliveryTime,
+#pickupTime,
+#originCity,
+#originState,
+#destinationCity,
+#destinationState,
+#price,
+#postedPrice,
+#weight {
+    color: black !important;
+}
+
+#addTruckForm .modal-body {
+    margin-bottom: 0.2em !important;
+}
+
+#saveProfileButton {
+    background: #333333 !important;
+    color: #1a00ff !important;
 }
