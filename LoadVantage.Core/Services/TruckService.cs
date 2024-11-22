@@ -1,15 +1,12 @@
-﻿using LoadVantage.Core.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Profile;
 using LoadVantage.Core.Models.Truck;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
+
 
 namespace LoadVantage.Core.Services
 {
@@ -34,16 +31,20 @@ namespace LoadVantage.Core.Services
 			ProfileViewModel profile = await profileService.GetUserInformation(user.Id);
 
 			var trucks = await context.Trucks
-				.Include(t => t.Driver) 
+				.Include(t => t.Driver)
+				.Where(t => t.IsActive)
 				.Select(t => new TruckViewModel
 				{
 					Id = t.Id,
 					TruckNumber = t.TruckNumber,
 					Make = t.Make,
 					Model = t.Model,
+					Year = t.Year.ToString(),
 					DriverName = t.Driver != null ? t.Driver.FullName : "N/A",
 					IsAvailable = t.IsAvailable
 				})
+				.OrderBy(t => t.TruckNumber)
+				.ThenBy(t => t.IsAvailable)
 				.ToListAsync();
 
 			var trucksViewModel = new TrucksViewModel
@@ -51,7 +52,6 @@ namespace LoadVantage.Core.Services
 				Profile = profile,
 				Trucks = trucks,
 				NewTruck = new TruckViewModel() 
-
 			};
 
 			return trucksViewModel;
@@ -61,6 +61,7 @@ namespace LoadVantage.Core.Services
 		{
 			var truck = await context.Trucks
 				.Include(t => t.Driver)
+                .Where(t => t.IsActive)
 				.FirstOrDefaultAsync(t => t.Id == id);
 
 			if (truck == null) return null;
@@ -71,6 +72,7 @@ namespace LoadVantage.Core.Services
 				TruckNumber = truck.TruckNumber,
 				Make = truck.Make,
 				Model = truck.Model,
+				Year = truck.Year.ToString(),
 				DriverName = truck.Driver?.FullName,
 				IsAvailable = truck.IsAvailable
 			};
@@ -85,6 +87,7 @@ namespace LoadVantage.Core.Services
 				TruckNumber = model.TruckNumber,
 				Make = model.Make,
 				Model = model.Model,
+				Year = int.Parse(model.Year),
 				DispatcherId = userId,
 				DriverId = null,
 				IsAvailable = true,
@@ -99,11 +102,15 @@ namespace LoadVantage.Core.Services
 		{
 			var truck = await context.Trucks.FindAsync(model.Id);
 
-			if (truck == null) throw new KeyNotFoundException("Truck not found.");
+			if (truck == null)
+			{
+				throw new KeyNotFoundException("Truck not found.");
+			}
 
 			truck.TruckNumber = model.TruckNumber;
 			truck.Make = model.Make;
 			truck.Model = model.Model;
+			truck.Year = int.Parse(model.Year);
 			truck.IsAvailable = model.IsAvailable;
 
 			context.Trucks.Update(truck);
@@ -114,9 +121,14 @@ namespace LoadVantage.Core.Services
 		{
 			var truck = await context.Trucks.FindAsync(id);
 
-			if (truck == null) throw new KeyNotFoundException("Truck not found.");
+            if (truck == null)
+            {
+                throw new KeyNotFoundException("Truck not found.");
+            }
 
-			context.Trucks.Remove(truck);
+            truck.IsAvailable = false; // set availability to false before decommissioning the truck 
+			truck.IsActive = false; // Soft delete 
+
 			await context.SaveChangesAsync();
 		}
 
