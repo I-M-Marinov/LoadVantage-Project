@@ -1,13 +1,13 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using LoadVantage.Common.Enums
+@using LoadVantage.Core.Contracts
 @using LoadVantage.Core.Models.Load;
 @using LoadVantage.Core.Models.Profile
 @using LoadVantage.Extensions
 @using LoadVantage.Infrastructure.Data.Models
-@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Dispatcher = LoadVantage.Infrastructure.Data.Models.Dispatcher
-@inject UserManager<User> UserManager
+@inject IUserService UserService
 @model LoadViewModel
 
 @{
@@ -17,7 +17,7 @@
 
     var isEditing = TempData["isEditing"] as bool? ?? false;
 
-    User user = User.GetUserAsync(UserManager).Result!;
+    var user = UserService.GetCurrentUserAsync().Result;
 
 	var tempDataSuccessMessage = TempData.GetSuccessMessage();
 	var tempDataErrorMessage = TempData.GetErrorMessage();
@@ -26,13 +26,13 @@
 }
 
 <!-- ======= Header ======= -->
-
-@await Html.PartialAsync("_HeaderPartialView", new ProfileViewModel())
+@await Html.PartialAsync("_HeaderPartialView", new ProfileViewModel { Position = user.Position })
 
 <!-- End Header -->
-
 <!-- ======= Sidebar ======= -->
-@await Html.PartialAsync("_SidebarPartialView", new ProfileViewModel())
+@await Html.PartialAsync("_SidebarPartialView", new ProfileViewModel { Position = user.Position });
+
+<!-- End Sidebar -->
 
 
 <main id="main" class="main">
@@ -229,7 +229,7 @@
 			switch (status)
 			{
 				case LoadStatus.Created:
-					@if (user is not Dispatcher)
+					@if (user is Broker)
 					{
 						<form asp-action="PostALoad" asp-controller="Load" method="post" id="postLoadForm">
 							@Html.AntiForgeryToken()
@@ -242,7 +242,7 @@
 					break;
 
 				case LoadStatus.Available:
-					@if (user is not Dispatcher)
+					@if (user is Broker)
 					{
 						<form asp-action="UnpostALoad" asp-controller="Load" method="post" id="unpostLoadFrom">
 							@Html.AntiForgeryToken()
@@ -263,27 +263,42 @@
 										
 					break;
 
-				// case LoadStatus.Booked:
-				// 	<div class="load-status badge bg-warning">
-				// 		<i class="bi bi-bookmark me-1"></i> Booked
-				// 	</div>
-				// 	break;
+				case LoadStatus.Booked:
+
+					@if (user is Broker)
+					{
+						<form asp-action="CancelBooking" asp-controller="Load" method="post" id="cancelCarrierForm">
+							@Html.AntiForgeryToken()
+							<input type="hidden" name="loadId" value="@Model.Id" />
+							<button type="submit" class="btn btn-outline-danger" id="cancelCarrierBtn">
+							<i class="bi bi-exclamation-diamond"></i> Cancel Carrier
+							</button>
+						</form>
+					}
+
+					@if (user is Dispatcher)
+					{
+						<form asp-action="ReturnLoadToBroker" asp-controller="Load" method="post" id="returnLoadtoBrokerForm">
+							@Html.AntiForgeryToken()
+							<input type="hidden" name="loadId" value="@Model.Id" />
+							<button type="submit" class="btn btn-outline-danger" id="returnLoadToBrokerBtn">
+							<i class="bi bi-emoji-frown"></i> Return the Load
+							</button>
+						</form>
+					}
+					break;
 				// case LoadStatus.Delivered:
 				// 	<div class="load-status badge bg-info">
 				// 		<i class="bi bi-truck me-1"></i> Delivered
 				// 	</div>
 				// 	break;
-				// case LoadStatus.Cancelled:
-				// 	<div class="load-status badge bg-danger">
-				// 		<i class="bi bi-x-circle me-1"></i> Cancelled
-				// 	</div>
-				// 	break;
+
 			}
 		}
 
 		<div class="text-center details-buttons-container">
 
-			@if (user is not Dispatcher)
+			@if (user is Broker)
 			{
 				<form id="cancelLoadForm" asp-action="CancelLoad" asp-controller="Load" method="post" id="cancelLoadButton">
 					@Html.AntiForgeryToken()
