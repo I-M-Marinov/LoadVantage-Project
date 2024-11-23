@@ -1,42 +1,60 @@
 using LoadVantage.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using LoadVantage.Core.Contracts;
+using LoadVantage.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
+
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly ILogger<HomeController> logger;
-		private readonly UserManager<User> userManager;
+		private readonly IUserService userService;
 
-		public HomeController(ILogger<HomeController> _logger, UserManager<User> _userManager)
+		public HomeController(IUserService _userService)
 		{
-			logger = _logger;
-			userManager = _userManager;
+			userService = _userService;
 		}
 
 		[AllowAnonymous]
         public async Task<IActionResult> Index()
 		{
-            var username = User.FindFirst("UserName")?.Value;
+			if (!User.Identity!.IsAuthenticated)
+			{
+				return View(); 
+			}
 
-            if (username != null)
+			var username = User.FindFirst("UserName")?.Value;
+
+			if (string.IsNullOrEmpty(username))
+			{
+				TempData.SetErrorMessage(InvalidSession);
+				return RedirectToAction("Login", "Account"); 
+			}
+
+            var user = await userService.FindUserByUsernameAsync(username);
+
+            if (user == null)
             {
-                var user = await userManager.FindByNameAsync(username);
-
-                if (User.Identity!.IsAuthenticated)
-                {
-					if (user is Administrator)
-						return RedirectToAction("AdminDashboard", "Admin"); // Redirect to admin dashboard
-					if (user is Dispatcher || user is Broker)
-						return RedirectToAction("Profile", "Profile"); // Redirect to Profile page
-				}
+				TempData.SetErrorMessage(UserAccountNotFound);
+	            return RedirectToAction("Login", "Account"); 
             }
 
-			return View();
+            if (user is Administrator)
+            {
+	            return RedirectToAction("AdminDashboard", "Admin"); 
+            }
+            else if (user is Dispatcher || user is Broker)
+            {
+	            return RedirectToAction("Profile", "Profile");
+            }
+
+            TempData.SetErrorMessage(NoPermissionToView);
+            return RedirectToAction("Register", "Account");
 		}
 
         [AllowAnonymous]
