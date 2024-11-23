@@ -1,16 +1,14 @@
-﻿@using LoadVantage.Extensions
+﻿@using LoadVantage.Core.Contracts
 @using LoadVantage.Infrastructure.Data
-@using LoadVantage.Infrastructure.Data.Models
-@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using static LoadVantage.Common.GeneralConstants.UserImage;
-@inject UserManager<User> UserManager
+@inject IUserService UserService
 @inject LoadVantageDbContext DbContext
 
 @model LoadVantage.Core.Models.Profile.ProfileViewModel
 
 @{
-	var user = await User.GetUserAsync(UserManager);
+	var user = UserService.GetCurrentUserAsync().Result;
 	var userImageUrl = DbContext.UsersImages.First(ui => ui.User == user).ImageUrl;
 
   if (userImageUrl == null)

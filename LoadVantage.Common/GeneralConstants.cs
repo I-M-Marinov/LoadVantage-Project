@@ -41,7 +41,8 @@ namespace LoadVantage.Common
 
             // LOAD 
 
-            public const string LoadCouldNotBeRetrieved = "Load could not be retrieved.";
+            public const string LoadDoesNotExist = "The load you are looking for does not exist.";
+			public const string LoadCouldNotBeRetrieved = "Load could not be retrieved.";
             public const string LoadIdInvalid = "Load id is not valid.";
             public const string ErrorCancellingLoad = "There was an error cancelling the load";
 
@@ -58,25 +59,31 @@ namespace LoadVantage.Common
             public const string ErrorUnpostingLoads = "An error occured and the loads were not unposted.";
 
             public const string UnableToBookTheLoad = "Unable to book the load.It may no longer be available.";
-            public const string UnableToMarkLoadDelivered = "Unable to mark the load as delivered. It may not be in the correct status";
+            public const string UnableToMarkLoadDelivered = "Unable to mark the load as delivered. Ensure the load is in the Booked status.";
 
 			// USER
 
+			public const string UserAccountNotFound = "Account was not found.";
 			public const string UserCannotBeNull = "User cannot be null.";
 			public const string UserNotFound = "The user was not found.";
             public const string UserProfileUpdateFailed = "Failed to update user profile.";
-            public const string ErrorUpdatingProfile = "An error occurred while updating the profile.";
             public const string UserNameIsAlreadyTaken = "The username is already taken.";
             public const string EmailIsAlreadyTaken = "The email is already taken.";
             public const string CurrentAndNewPasswordCannotMatch = "The new password cannot be the same as the current password.";
 
-            // PROFILE 
+            // SESSION
 
-            public const string NoChangesMadeToProfile = "No changes were made to your profile.";
+            public const string InvalidSession = "Your session is invalid. Please log in again.";
 
-            // TRUCK 
+			// PROFILE 
 
-            public const string TruckWasNotCreated = "The truck was not created successfully.";
+			public const string NoChangesMadeToProfile = "No changes were made to your profile.";
+
+			public const string NoPermissionToView = "You do not have permission to access this system. Please register an account.";
+
+			// TRUCK 
+
+			public const string TruckWasNotCreated = "The truck was not created successfully.";
             public const string TruckCreateError = "Error ! Truck was not created.";
             public const string TruckDoesNotExist = "The truck you are looking for does not exist";
 
