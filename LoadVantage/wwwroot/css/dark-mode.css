@@ -180,9 +180,18 @@ input{
 #postLoadBtn,
 #createLoadButton,
 #resetFormButton,
-#chatWithBrokerBtn {
+#chatWithBrokerBtn,
+#unpostLoadBtn,
+#unpostAllBtn,
+#cancelCarrierBtn,
+#returnLoadToBrokerBtn,
+#bookLoadButton {
     background: #333333 !important;
     color: #ffffff !important;
+}
+
+#chatWithBrokerBtn:hover{
+    border: 2px solid #1a00ff !important;
 }
 
 .datatable-sorter {
