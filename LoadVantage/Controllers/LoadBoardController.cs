@@ -24,18 +24,17 @@ namespace LoadVantage.Controllers
 		[HttpGet]
 		public async Task<IActionResult> LoadBoard()
 		{
-			Guid userId = User.GetUserId()!.Value;
-			User user = userService.GetUserByIdAsync(userId).Result;
+			User? user = userService.GetCurrentUserAsync().Result;
 
 			if (user is Dispatcher)
 			{
 				TempData.SetActiveTab(PostedActiveTab);
-				 var loadBoardInfo = await loadBoardService.GetDispatcherLoadBoardAsync(userId);
+				 var loadBoardInfo = await loadBoardService.GetDispatcherLoadBoardAsync(user.Id);
 				 return View(loadBoardInfo);
 			}
 			else // Is Broker
 			{
-				 var loadBoardInfo = await loadBoardService.GetBrokerLoadBoardAsync(userId);
+				 var loadBoardInfo = await loadBoardService.GetBrokerLoadBoardAsync(user.Id);
 				 return View(loadBoardInfo);
 			}
 
