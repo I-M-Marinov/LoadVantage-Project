@@ -1,8 +1,12 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Core.Contracts
 @using LoadVantage.Core.Models.Profile
 @using LoadVantage.Extensions
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model LoadVantage.Core.Models.Load.LoadViewModel;
+@using LoadVantage.Core.Models.Load;
+@inject IUserService UserService
+
+@model LoadViewModel;
 
 @{
     ViewData["Title"] = "Create a Load";
@@ -11,16 +15,20 @@
     var tempDataSuccessMessage = TempData.GetSuccessMessage();
     var tempDataErrorMessage = TempData.GetErrorMessage();
 
+    var user = UserService.GetCurrentUserAsync().Result;
+
 }
 
 <!-- ======= Header ======= -->
-
-@await Html.PartialAsync("_HeaderPartialView", new ProfileViewModel())
+@await Html.PartialAsync("_HeaderPartialView", new ProfileViewModel { Position = user.Position })
 
 <!-- End Header -->
 
 <!-- ======= Sidebar ======= -->
-@await Html.PartialAsync("_SidebarPartialView", new ProfileViewModel())
+
+@await Html.PartialAsync("_SidebarPartialView", new ProfileViewModel { Position = user.Position });
+
+<!-- End Sidebar -->
 
 <main id="main" class="main">
 
