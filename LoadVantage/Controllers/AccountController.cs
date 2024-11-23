@@ -8,19 +8,20 @@ using static LoadVantage.Common.GeneralConstants.UserRoles;
 using static LoadVantage.Common.GeneralConstants.TempMessages;
 using static LoadVantage.Common.ValidationConstants;
 using System.Security.Claims;
+using LoadVantage.Core.Contracts;
 
 namespace LoadVantage.Controllers
 {
     
     public class AccountController : Controller
     {
-        private readonly UserManager<User> userManager;
+        private readonly IUserService userService;
         private readonly SignInManager<User> signInManager;
         private readonly RoleManager<Role> roleManager;
 
-        public AccountController(UserManager<User> _userManager, SignInManager<User> _signInManager, RoleManager<Role> _roleManager)
+        public AccountController(IUserService _userService, SignInManager<User> _signInManager, RoleManager<Role> _roleManager)
 		{
-            userManager = _userManager;
+            userService = _userService;
             signInManager = _signInManager;
             roleManager = _roleManager;
         }
@@ -49,14 +50,15 @@ namespace LoadVantage.Controllers
                 return View(model);
             }
 
-            var existingUser = await userManager.FindByEmailAsync(model.Email);
+            var existingUser = await userService.FindUserByEmailAsync(model.Email);
+
             if (existingUser != null)
             {
                 ModelState.AddModelError("Email", EmailAlreadyExists);
                 return View(model);
             }
 
-            existingUser = await userManager.FindByEmailAsync(model.UserName);
+            existingUser = await userService.FindUserByUsernameAsync(model.UserName);
             if (existingUser != null)
             {
                 ModelState.AddModelError("Username", UserNameAlreadyExists);
@@ -77,12 +79,15 @@ namespace LoadVantage.Controllers
             };
 
 
-            var result = await userManager.CreateAsync(user, model.Password);
+            var result = await userService.CreateUserAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-                await userManager.AddToRoleAsync(user, UserRoleName);
-                await userManager.AddClaimAsync(user, new Claim("Position", user.Position ?? ""));
+                await userService.AssignUserRoleAsync(user, UserRoleName);
+                await userService.AddUserClaimAsync(user, new Claim("Position", user.Position ?? ""));
+                await userService.AddUserClaimAsync(user, new Claim("FirstName", user.FirstName ?? ""));
+                await userService.AddUserClaimAsync(user, new Claim("LastName", user.LastName ?? ""));
+                await userService.AddUserClaimAsync(user, new Claim("UserName", user.UserName ?? ""));
 
                 TempData.SetSuccessMessage(LoginWithNewAccount);
                 return RedirectToAction(nameof(Login));
@@ -113,7 +118,7 @@ namespace LoadVantage.Controllers
                 return View(model);
             }
 
-            var user = await userManager.FindByNameAsync(model.UserName);
+            var user = await userService.FindUserByUsernameAsync(model.UserName);
 
             if (user != null)
             {
@@ -126,7 +131,7 @@ namespace LoadVantage.Controllers
 
                     if (claims.Count != 0)
                     {
-                        await userManager.AddClaimsAsync(user, claims);
+                        await userService.AddUserClaimsAsync(user, claims);
                     }
 
                     await signInManager.SignInAsync(user, isPersistent: false);
