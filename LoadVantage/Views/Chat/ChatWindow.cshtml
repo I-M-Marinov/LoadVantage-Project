@@ -1,7 +1,11 @@
-﻿@using LoadVantage.Core.Models.Profile
-@using LoadVantage.Extensions
+﻿@using LoadVantage.Core.Contracts
+@using LoadVantage.Core.Models.Profile
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model LoadVantage.Core.Models.Chat.ChatViewModel
+@using LoadVantage.Core.Models.Chat;
+@using LoadVantage.Extensions
+@inject IUserService UserService
+
+@model ChatViewModel
 
 @{
 	ViewData["Title"] = "Chats";
@@ -10,17 +14,19 @@
 	var tempDataSuccessMessage = TempData.GetSuccessMessage();
 	var tempDataErrorMessage = TempData.GetErrorMessage();
 
+	var user = UserService.GetCurrentUserAsync().Result;
+
 }
 
 
 <!-- ======= Header ======= -->
-@await Html.PartialAsync("_HeaderPartialView", new ProfileViewModel())
+@await Html.PartialAsync("_HeaderPartialView", new ProfileViewModel { Position = user.Position })
 
-
+<!-- End Header -->
 <!-- ======= Sidebar ======= -->
-@await Html.PartialAsync("_SidebarPartialView", new ProfileViewModel())
+@await Html.PartialAsync("_SidebarPartialView", new ProfileViewModel { Position = user.Position });
 
-
+<!-- End Sidebar -->
 
 <main id="main" class="main">
 
@@ -64,13 +70,13 @@
 						<div class="col-md-4 col-lg-3">
 							<h5>Recent Conversations:</h5>
 							<ul class="list-group">
-								@foreach (var user in Model.Users)
+								@foreach (var chatUser in Model.Users)
 								{
-									<li class="list-group-item @(user.Id == Model.CurrentChatUserId ? "active" : "")" id="chat-user">
-										<a asp-action="GetMessages" asp-controller="Chat" asp-route-chatUserId="@user.Id"
+									<li class="list-group-item @(chatUser.Id == Model.CurrentChatUserId ? "active" : "")" id="chat-user">
+										<a asp-action="GetMessages" asp-controller="Chat" asp-route-chatUserId="@chatUser.Id"
 										   class="chat-user-link d-flex align-items-center">
-											<img src="@user.ProfilePictureUrl" class="chat-user-image rounded-circle" style="width: 4em; height: 4em;" />
-											<span class="ms-3">@user.FullName</span>
+											<img src="@chatUser.ProfilePictureUrl" class="chat-user-image rounded-circle" style="width: 4em; height: 4em;" />
+											<span class="ms-3">@chatUser.FullName</span>
 										</a>
 									</li>
 								}
