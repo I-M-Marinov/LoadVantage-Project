@@ -606,11 +606,21 @@ body {
     border-top: 3px solid #8c1db8 !important;
 }
 
+.label {
+    display: flex;
+    align-items: center; 
+    gap: 1rem; 
+}
+
+.label i {
+    font-size: 1.5em;
+    margin-left: 0.3em;
+    color: #0d6efd;
+}
 /*-------------------------------------------------------------------------------------
 # CONFIRM CANCEL MODAL 
 --------------------------------------------------------------------------------------*/
-
-.modal-footer-centered button{
+.modal-footer-centered button {
     margin-bottom: 1em;
 }
 
@@ -871,6 +881,10 @@ body {
     background: linear-gradient(to left, #8360c3, #4cddf1) !important;
 }
 
+/*.card-body{
+    margin-top: 2em;
+}*/
+
 #pills-created-tab:hover,
 #pills-posted-tab:hover,
 #pills-booked-tab:hover,
@@ -959,7 +973,7 @@ transition: opacity 0.25s ease-out;
 }
 
 #trucks-table{
-    margin-top: 2em;
+    margin-top: 2em !important;
 }
 /*-------------------------------------------------------------------------------------
 # ADD AND EDIT TRUCK MODALS CSS 
