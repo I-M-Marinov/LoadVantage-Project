@@ -1,17 +1,10 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using LoadVantage.Core.Models.Profile
-@using LoadVantage.Extensions
 @using LoadVantage.Infrastructure.Data.Models
-@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Dispatcher = LoadVantage.Infrastructure.Data.Models.Dispatcher
-@inject UserManager<User> UserManager
+
 @model ProfileViewModel
-
-@{ 
-	var user = await User.GetUserAsync(UserManager);
-
-}
 
 
 <!-- ======= Sidebar ======= -->
@@ -24,7 +17,7 @@
 		<li class="nav-item loadboard-nav">
 
 			<form method="get" action="@Url.Action("LoadBoard", "LoadBoard")">
-				<input type="hidden" name="userId" value="@user.Id" />
+				<input type="hidden" name="userId" value="@Model.Id" />
 				<button type="submit" class="nav-link collapsed" id="loadboard-nav">
 					<i class="bx bxs-dashboard"></i>
 					<span>Load Board</span>
@@ -38,7 +31,7 @@
 	 
 
 			<form method="get" action="@Url.Action("Profile", "Profile")">
-				<input type="hidden" name="userId" value="@user.Id" />
+				<input type="hidden" name="userId" value="@Model.Id" />
 				<button type="submit" class="nav-link collapsed" id="profile-nav">
 					<i class="ri-account-pin-box-line"></i>
 					<span>Profile</span>
@@ -47,14 +40,14 @@
 
 		</li>
     
-		@if (user is Broker)
+		@if (Model.Position is nameof(Broker))
 		{
 
 			<li class="nav-item create-load-nav">
 	 
 
 				<form method="get" action="@Url.Action("CreateLoad", "Load")">
-					<input type="hidden" name="userId" value="@user.Id" />
+					<input type="hidden" name="userId" value="@Model.Id" />
 					<button type="submit" class="nav-link collapsed" id="create-load-nav">
 						<i class="ri-treasure-map-line"></i>
 						<span>Create a load</span>
@@ -78,13 +71,13 @@
 
 		</li>
 		
-		@if (user is Dispatcher)
+		@if (Model.Position is nameof(Dispatcher))
 		{
 			<li class="nav-item trucks-nav">
 
 
 				<form method="get" action="@Url.Action("ShowTrucks", "Truck")">
-					<input type="hidden" name="userId" value="@user.Id" />
+					<input type="hidden" name="userId" value="@Model.Id" />
 					<button type="submit" class="nav-link collapsed" id="truck-nav">
 						<i class="ri-truck-line"></i>
 						<span>Trucks</span>
