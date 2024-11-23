@@ -1,9 +1,10 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using LoadVantage.Extensions
 @using LoadVantage.Infrastructure.Data.Models
-@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model LoadVantage.Core.Models.LoadBoard.LoadBoardViewModel
+@using LoadVantage.Core.Models.LoadBoard;
+
+@model LoadBoardViewModel
 
 @{
 	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";

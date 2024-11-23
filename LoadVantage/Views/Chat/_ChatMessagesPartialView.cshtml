@@ -1,5 +1,7 @@
 ﻿@using LoadVantage.Extensions
-@model IEnumerable<LoadVantage.Core.Models.Chat.ChatMessageViewModel>
+@using LoadVantage.Core.Models.Chat;
+
+@model IEnumerable<ChatMessageViewModel>
 
 @foreach (var message in Model)
 {
