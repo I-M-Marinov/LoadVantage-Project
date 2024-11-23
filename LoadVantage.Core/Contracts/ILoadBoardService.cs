@@ -1,7 +1,6 @@
-﻿using LoadVantage.Core.Models.Load;
+﻿using LoadVantage.Common.Enums;
+using LoadVantage.Core.Models.Load;
 using LoadVantage.Core.Models.LoadBoard;
-using LoadVantage.Infrastructure.Data.Models;
-using System.Threading.Tasks;
 
 namespace LoadVantage.Core.Contracts
 {
@@ -16,12 +15,9 @@ namespace LoadVantage.Core.Contracts
 		Task<IEnumerable<LoadViewModel>> GetAllBilledLoadsForDispatcherAsync(Guid userId);
 		Task<LoadBoardViewModel> GetBrokerLoadBoardAsync(Guid userId);
 		Task<LoadBoardViewModel> GetDispatcherLoadBoardAsync(Guid userId);
-		Task<int> GetBookedLoadsCountForDispatcherAsync(Guid userId);
-		Task<int> GetBilledLoadsCountForDispatcherAsync(Guid userId);
-		Task<int> GetCreatedLoadsCountForBrokerAsync(Guid userId);
-		Task<int> GetPostedLoadsCountForBrokerAsync(Guid userId);
-		Task<int> GetBookedLoadsCountForBrokerAsync(Guid userId);
-		Task<int> GetBilledLoadsCountForBrokerAsync(Guid userId);
+		Task<Dictionary<LoadStatus, int>> GetLoadCountsForBrokerAsync(Guid brokerId);
+		Task<Dictionary<LoadStatus, int>> GetLoadCountsForDispatcherAsync(Guid dispatcherId);
+		Task<Dictionary<string, Dictionary<LoadStatus, int>>> GetLoadCountsForUserAsync(Guid userId, string userPosition);
 
 
     }

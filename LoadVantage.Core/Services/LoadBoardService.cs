@@ -17,11 +17,13 @@ namespace LoadVantage.Core.Services
 	{
 		private readonly LoadVantageDbContext dbContext;
 		private readonly UserManager<User> userManager;
+
 		public LoadBoardService(LoadVantageDbContext _context, UserManager<User> _userManager)
 		{
 			dbContext = _context;
 			userManager = _userManager;
 		}
+
 		public async Task<IEnumerable<LoadViewModel>> GetAllCreatedLoadsForBrokerAsync(Guid userId)
 		{
 			var createdLoads = await dbContext.Loads
@@ -101,11 +103,11 @@ namespace LoadVantage.Core.Services
 			// Retrieve the booked loads for the broker
 			var bookedLoads = await dbContext.Loads
 				.Where(load => load.BookedLoad != null && load.BookedLoad.BrokerId == userId)
-				.Include(load => load.BookedLoad) 
-				.ThenInclude(bookedLoad => bookedLoad.Dispatcher) 
 				.Include(load => load.BookedLoad)
-				.ThenInclude(bookedLoad => bookedLoad.Driver) 
-				.ThenInclude(driver => driver.Truck) 
+				.ThenInclude(bookedLoad => bookedLoad.Dispatcher)
+				.Include(load => load.BookedLoad)
+				.ThenInclude(bookedLoad => bookedLoad.Driver)
+				.ThenInclude(driver => driver.Truck)
 				.ToListAsync();
 
 			// Select and map to LoadViewModel
@@ -148,7 +150,6 @@ namespace LoadVantage.Core.Services
 			return loadViewModels;
 		}
 
-
 		public async Task<IEnumerable<LoadViewModel>> GetAllBookedLoadsForDispatcherAsync(Guid userId)
 		{
 			var bookedLoads = await dbContext.Loads
@@ -179,8 +180,8 @@ namespace LoadVantage.Core.Services
 		public async Task<IEnumerable<LoadViewModel>> GetAllBilledLoadsForBrokerAsync(Guid userId)
 		{
 			var billedLoads = await dbContext.Loads
-				 .Where(load => load.BilledLoad != null && load.BrokerId == userId)
-				 .ToListAsync();
+				.Where(load => load.BilledLoad != null && load.BrokerId == userId)
+				.ToListAsync();
 
 			return billedLoads.Select(load => new LoadViewModel
 			{
@@ -204,7 +205,9 @@ namespace LoadVantage.Core.Services
 			var billedLoads = await dbContext.Loads
 				.Include(l => l.BilledLoad)
 				.Include(l => l.BookedLoad)
-				.Where(load => load.BookedLoad != null && load.BookedLoad.DispatcherId == userId && load.Status == LoadStatus.Booked)
+				.Where(load =>
+					load.BookedLoad != null && load.BookedLoad.DispatcherId == userId &&
+					load.Status == LoadStatus.Booked)
 				.ToListAsync();
 
 			return billedLoads.Select(load => new LoadViewModel
@@ -223,6 +226,7 @@ namespace LoadVantage.Core.Services
 				BrokerId = load.BrokerId,
 			});
 		}
+
 		public async Task<LoadBoardViewModel> GetBrokerLoadBoardAsync(Guid userId)
 		{
 			var user = await userManager.Users
@@ -305,95 +309,64 @@ namespace LoadVantage.Core.Services
 			};
 		}
 
-		public async Task<int> GetBookedLoadsCountForDispatcherAsync(Guid userId)
+		public async Task<Dictionary<LoadStatus, int>> GetLoadCountsForBrokerAsync(Guid brokerId)
 		{
-			var dispatcherBilledLoadsCount = await dbContext.Loads
-				.Where(load => load.BookedLoad.DispatcherId == userId && load.Status == LoadStatus.Booked)
-				.Select(load => new Load
+			var loadCounts = await dbContext.Loads
+				.Where(load => load.BrokerId == brokerId)
+				.AsNoTracking()
+				.GroupBy(load => load.Status)
+				.Select(group => new
 				{
-					Id = load.Id,
-					Status = load.Status
+					Status = group.Key,
+					Count = group.Count()
 				})
-				.ToArrayAsync();
+				.ToDictionaryAsync(result => result.Status, result => result.Count);
 
-			return dispatcherBilledLoadsCount.Length;
+			return loadCounts;
 		}
 
-		public async Task<int> GetBilledLoadsCountForDispatcherAsync(Guid userId)
+		public async Task<Dictionary<LoadStatus, int>> GetLoadCountsForDispatcherAsync(Guid dispatcherId)
 		{
-			var dispatcherLoads = await dbContext.Loads
-				.Where(load => load.BookedLoad.DispatcherId == userId && load.Status == LoadStatus.Delivered)
-				.Select(load => new Load
+			var loadCounts = await dbContext.Loads
+				.Include(l => l.BookedLoad)
+				.Include(l => l.BilledLoad)
+				.Where(load => load.BookedLoad!.DispatcherId == dispatcherId)
+				.AsNoTracking()
+				.GroupBy(load => load.Status)
+				.Select(group => new
 				{
-					Id = load.Id,
-					Status = load.Status
+					Status = group.Key,
+					Count = group.Count()
 				})
-				.ToArrayAsync();
+				.ToDictionaryAsync(result => result.Status, result => result.Count);
 
-			return dispatcherLoads.Length;
+			return loadCounts;
 		}
 
-		public async Task<int> GetCreatedLoadsCountForBrokerAsync(Guid userId)
+		public async Task<Dictionary<string, Dictionary<LoadStatus, int>>> GetLoadCountsForUserAsync(Guid userId,
+			string userPosition)
 		{
-			var brokerLoads = await dbContext.Loads
-				.Where(load => load.BrokerId == userId && load.Status == LoadStatus.Created)
-				.Select(load => new Load
+
+			if (userPosition == nameof(Broker))
+			{
+				var brokerLoadCounts = await GetLoadCountsForBrokerAsync(userId);
+				return new Dictionary<string, Dictionary<LoadStatus, int>>
 				{
-					Id = load.Id,
-					Status = load.Status
-				})
-				.ToArrayAsync();
-
-
-			return brokerLoads.Length;
-		}
-
-		public async Task<int> GetPostedLoadsCountForBrokerAsync(Guid userId)
-		{
-			var brokerLoads = await dbContext.Loads
-				.Where(load => load.BrokerId == userId && load.Status == LoadStatus.Available)
-				.Select(load => new Load
+					{ nameof(Broker), brokerLoadCounts }
+				};
+			}
+			else if (userPosition == nameof(Dispatcher))
+			{
+				var dispatcherLoadCounts = await GetLoadCountsForDispatcherAsync(userId);
+				return new Dictionary<string, Dictionary<LoadStatus, int>>
 				{
-					Id = load.Id,
-					Status = load.Status
-				})
-				.ToArrayAsync();
-
-
-			return brokerLoads.Length;
+					{ nameof(Dispatcher), dispatcherLoadCounts }
+				};
+			}
+			else
+			{
+				throw new ArgumentException("Invalid user type");
+			}
 		}
-
-		public async Task<int> GetBookedLoadsCountForBrokerAsync(Guid userId)
-		{
-			var brokerLoads = await dbContext.Loads
-				.Where(load => load.BrokerId == userId && load.Status == LoadStatus.Booked)
-				.Select(load => new Load
-				{
-					Id = load.Id,
-					Status = load.Status
-				})
-				.ToArrayAsync();
-
-
-			return brokerLoads.Length;
-		}
-
-		public async Task<int> GetBilledLoadsCountForBrokerAsync(Guid userId)
-		{
-			var brokerLoads = await dbContext.Loads
-				.Where(load => load.BrokerId == userId && load.Status == LoadStatus.Delivered)
-				.Select(load => new Load
-				{
-					Id = load.Id,
-					Status = load.Status
-				})
-				.ToArrayAsync();
-
-
-			return brokerLoads.Length;
-		}
-
-
 	}
-	
 }

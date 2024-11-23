@@ -279,7 +279,63 @@ namespace LoadVantage.Core.Services
 
             return true;
         }
-        public async Task<bool> LoadDeliveredAsync(Guid loadId)
+        public async Task<bool> CancelLoadBookingAsync(Guid loadId, Guid? userId)
+        {
+	        var load = await context.Loads
+		        .Include(l => l.BookedLoad)
+		        .FirstOrDefaultAsync(l => l.Id == loadId);
+
+	        if (load == null)
+	        {
+		        throw new Exception("Load not found.");
+	        }
+
+	        if (load.BrokerId != userId)
+	        {
+		        throw new UnauthorizedAccessException("You do not have permission to cancel the carrier for this load.");
+	        }
+
+	        if (load.BookedLoad == null || load.Status != LoadStatus.Booked)
+	        {
+		        throw new InvalidOperationException("This load is not currently booked.");
+	        }
+
+	        context.BookedLoads.Remove(load.BookedLoad); // Remove the BookedLoad entity 
+			load.Status = LoadStatus.Available; // Set status back to Available (Posted) to repost the truck
+
+			var result = await context.SaveChangesAsync();
+
+	        return result > 0; // Return true if there were affected rows returned from the DB
+        }
+        public async Task<bool> ReturnLoadBackToBroker(Guid loadId, Guid? userId)
+        {
+	        var load = await context.Loads
+		        .Include(l => l.BookedLoad)
+		        .FirstOrDefaultAsync(l => l.Id == loadId);
+
+	        if (load == null)
+	        {
+		        throw new Exception("Load not found.");
+	        }
+
+	        if (load.BookedLoad?.DispatcherId != userId)
+	        {
+		        throw new UnauthorizedAccessException("You do not have permission to cancel this booking.");
+	        }
+
+	        if (load.BookedLoad == null || load.Status != LoadStatus.Booked)
+	        {
+		        throw new InvalidOperationException("This load is not currently booked.");
+	        }
+
+			context.BookedLoads.Remove(load.BookedLoad); // Remove the BookedLoad entity 
+			load.Status = LoadStatus.Available; // Set status back to Available (Posted) to repost the truck
+
+			var result = await context.SaveChangesAsync();
+
+			return result > 0; // Return true if there were affected rows returned from the DB
+		}
+		public async Task<bool> LoadDeliveredAsync(Guid loadId)
         {
             var load = await context.Loads
                 .Include(l => l.BookedLoad)
@@ -307,24 +363,37 @@ namespace LoadVantage.Core.Services
         }
         public async Task<bool> CancelLoadAsync(Guid loadId)
         {
-            var load = await context.Loads.FindAsync(loadId);
+	        var load = await context.Loads
+		        .Include(l => l.BookedLoad)
+		        .FirstOrDefaultAsync(l => l.Id == loadId);
 
-            if (load == null)
+			if (load == null)
             {
                 return false;
             }
 
-            // Update status to cancelled (soft delete)
+            if (load.Status == LoadStatus.Booked)
+            {
+	            await CancelLoadBookingAsync(loadId, load.BrokerId); // Cancel the carrier first if the load is in Booked Status
+			}
+			// Update status to cancelled (soft delete)
 
-            load.Status = LoadStatus.Cancelled;
+			load.Status = LoadStatus.Cancelled;
             context.Loads.Update(load);
             await context.SaveChangesAsync();
 
             return true;
         }
-        public async Task<LoadViewModel?> GetLoadDetailsAsync(Guid loadId)
+        public async Task<LoadViewModel?> GetLoadDetailsAsync(Guid loadId, Guid userId)
         {
-	        var load = await context.Loads
+	        var userAllowedToView = await CanUserViewLoadAsync(userId, loadId);
+
+			if (!userAllowedToView)
+	        {
+		        return null;
+	        }
+
+			var load = await context.Loads
 		        .Include(l => l.BookedLoad) 
 		        .ThenInclude(bl => bl!.Dispatcher)
 		        .Include(l => l.BookedLoad!.Driver) 
@@ -337,33 +406,8 @@ namespace LoadVantage.Core.Services
                 throw new Exception(LoadCouldNotBeRetrieved);
             }
 
-            var dispatcherInfo = load.BookedLoad?.Dispatcher != null
-	            ? new DispatcherInfoViewModel
-				{
-					DispatcherName = load.BookedLoad.Dispatcher.FullName,
-					DispatcherEmail = load.BookedLoad.Dispatcher.Email,
-					DispatcherPhone = load.BookedLoad.Dispatcher.PhoneNumber
-				}
-	            : new DispatcherInfoViewModel
-				{
-					DispatcherName = null,
-					DispatcherEmail = null,
-					DispatcherPhone = null
-	            };
-
-			var driverInfo = load.BookedLoad?.Driver != null
-				? new DriverInfoViewModel
-				{
-					DriverName = load.BookedLoad.Driver.FullName,
-					DriverTruckNumber = load.BookedLoad.Driver.Truck?.TruckNumber, // Safely access Truck
-					DriverLicenseNumber = load.BookedLoad.Driver.LicenseNumber
-				}
-				: new DriverInfoViewModel
-				{
-					DriverName = null,
-					DriverTruckNumber = null,
-					DriverLicenseNumber = null
-				};
+			var dispatcherInfo = CreateDispatcherInfo(load.BookedLoad);
+			var driverInfo = CreateDriverInfo(load.BookedLoad);
 
 
 			var loadViewModel = new LoadViewModel
@@ -395,6 +439,67 @@ namespace LoadVantage.Core.Services
 
             return (formattedCity, formattedState);
         }
+		private async Task<bool> CanUserViewLoadAsync(Guid userId, Guid loadId)
+		{
+			var load = await context.Loads
+				.Include(l => l.BookedLoad) 
+				.FirstOrDefaultAsync(l => l.Id == loadId);
+
+			if (load == null || load.Status == LoadStatus.Cancelled)
+			{
+				return false;
+			}
+			
+			if (load.BrokerId == userId)
+			{
+				return true; // Brokers can always see their own loads 
+			}
+
+			if (load.BookedLoad?.DispatcherId == userId)
+			{
+				return load.Status == LoadStatus.Booked || load.Status == LoadStatus.Delivered;
+			}
+
+			return load.Status == LoadStatus.Available; // General rule for Available loads
+		}
+		private DispatcherInfoViewModel CreateDispatcherInfo(BookedLoad? bookedLoad)
+		{
+			if (bookedLoad?.Dispatcher == null)
+			{
+				return new DispatcherInfoViewModel
+				{
+					DispatcherName = null,
+					DispatcherEmail = null,
+					DispatcherPhone = null
+				};
+			}
+
+			return new DispatcherInfoViewModel
+			{
+				DispatcherName = bookedLoad.Dispatcher.FullName,
+				DispatcherEmail = bookedLoad.Dispatcher.Email,
+				DispatcherPhone = bookedLoad.Dispatcher.PhoneNumber
+			};
+		}
+		private DriverInfoViewModel CreateDriverInfo(BookedLoad? bookedLoad)
+		{
+			if (bookedLoad?.Driver == null)
+			{
+				return new DriverInfoViewModel
+				{
+					DriverName = null,
+					DriverTruckNumber = null,
+					DriverLicenseNumber = null
+				};
+			}
+
+			return new DriverInfoViewModel
+			{
+				DriverName = bookedLoad.Driver.FullName,
+				DriverTruckNumber = bookedLoad.Driver.Truck?.TruckNumber,
+				DriverLicenseNumber = bookedLoad.Driver.LicenseNumber
+			};
+		}
 
 
 	}
