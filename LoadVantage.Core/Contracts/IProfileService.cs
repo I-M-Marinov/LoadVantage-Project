@@ -10,9 +10,7 @@ namespace LoadVantage.Core.Contracts
     {
         Task<ProfileViewModel?> GetUserInformation(Guid userId);
         Task<ProfileViewModel> UpdateProfileInformation(ProfileViewModel model, Guid userId);
-        Task<bool> IsUsernameTakenAsync(string username, Guid currentUserId);
         Task UpdateUserClaimsAsync(User user, ProfileViewModel model);
         Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword);
-
     }
 }
