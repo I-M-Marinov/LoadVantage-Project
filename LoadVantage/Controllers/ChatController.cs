@@ -73,9 +73,9 @@ namespace LoadVantage.Controllers
 		[HttpGet]
 		public async Task<IActionResult> ChatWindow()
 		{
-			var currentUserId = User.GetUserId().Value; 
+			var currentUser = await userService.GetCurrentUserAsync();
 
-			ChatMessage? lastChat = await chatService.GetLastChatAsync(currentUserId);
+			ChatMessage? lastChat = await chatService.GetLastChatAsync(currentUser.Id);
 
 			if (lastChat == null)
 			{
@@ -85,12 +85,12 @@ namespace LoadVantage.Controllers
 
 			var model = new ChatViewModel();
 
-			if (lastChat.SenderId == currentUserId)
+			if (lastChat.SenderId == currentUser.Id)
 			{
 				model = await BuildChatViewModel(lastChat.ReceiverId);
 
 			}
-			else if (lastChat.ReceiverId == currentUserId)
+			else if (lastChat.ReceiverId == currentUser.Id)
 			{
 				model = await BuildChatViewModel(lastChat.SenderId);
 
@@ -103,10 +103,10 @@ namespace LoadVantage.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetMessages(Guid chatUserId)
 		{
-			var currentUserId = User.GetUserId().Value; // Get the current logged-in user ID
+			var currentUser = await userService.GetCurrentUserAsync();
 
 			// Fetch messages between the current user and the selected chat user
-			var messages = await chatService.GetMessagesAsync(currentUserId, chatUserId);
+			var messages = await chatService.GetMessagesAsync(currentUser.Id, chatUserId);
 
 			// Map messages to the view model
 			return PartialView("_ChatMessagesPartialView", messages.Select(m => new ChatMessageViewModel
@@ -125,7 +125,9 @@ namespace LoadVantage.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetUnreadMessages()
 		{
-			var (unreadMessages, unreadCount) = await chatService.GetUnreadMessagesAsync(User.GetUserId().Value);
+			var currentUser = await userService.GetCurrentUserAsync();
+
+			var (unreadMessages, unreadCount) = await chatService.GetUnreadMessagesAsync(currentUser.Id);
 
 			return Json(new { messages = unreadMessages, unreadCount = unreadCount });
 		}
@@ -147,12 +149,12 @@ namespace LoadVantage.Controllers
 
 		private async Task<ChatViewModel> BuildChatViewModel(Guid brokerId)
 		{
-			var currentUserId = User.GetUserId().Value;
+			var currentUser = await userService.GetCurrentUserAsync();
 
 			// Fetch chat users, messages, and broker info
-			var chatUsers = await chatService.GetChatUsersAsync(currentUserId);
+			var chatUsers = await chatService.GetChatUsersAsync(currentUser.Id);
 			var userInfo = await userService.GetChatUserInfoAsync(brokerId);
-			var messages = await chatService.GetMessagesAsync(currentUserId, brokerId);
+			var messages = await chatService.GetMessagesAsync(currentUser.Id, brokerId);
 
 			// Build the ChatViewModel
 			return new ChatViewModel
