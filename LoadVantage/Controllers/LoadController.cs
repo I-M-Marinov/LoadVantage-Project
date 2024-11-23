@@ -20,54 +20,43 @@ namespace LoadVantage.Controllers
     [Route("[controller]/[action]")]
     public class LoadController : Controller
     {
-	    private readonly UserManager<User> userManager;
+	    private readonly IUserService userService;
 		private readonly ILoadStatusService loadService;
-        private readonly IHubContext<LoadHub> loadHubContext;
+        private readonly IHubContext<LoadHub> loadHub;
 
-        public LoadController(ILoadStatusService _loadService, IHubContext<LoadHub> _loadHubContext, UserManager<User> _userManager)
-
-
+        public LoadController(ILoadStatusService _loadService, IUserService _userService, IHubContext<LoadHub> _loadHub)
 		{
-            loadService = _loadService;
-            loadHubContext = _loadHubContext;
-            userManager = _userManager;
-        }
+			userService = _userService;
+			loadService = _loadService;
+			loadHub = _loadHub;
+		}
 
         [HttpGet]
 
         public async Task<IActionResult> LoadDetails(Guid loadId)
         {
 
-            User user = User.GetUserAsync(userManager).Result;
+	        User? user = await userService.GetCurrentUserAsync();
 
-            if (user is null)
+			if (user == null)
             {
 	            return RedirectToAction("Login", "Account");
 			}
+
             try
             {
-                var loadToShow = await loadService.GetLoadDetailsAsync(loadId);
+                var loadToShow = await loadService.GetLoadDetailsAsync(loadId,user.Id);
 
                 if (loadToShow == null)
                 {
-                    return NotFound("The load you are looking for does not exist");
+                    return NotFound("You do not have permission to see this load.");
                 }
-
-                //if (loadToShow.BrokerId != user.Id && (loadToShow.DispatcherId != user.Id || loadToShow.Status != LoadStatus.Booked.ToString()))
-                //{
-                //    return NotFound("Load was not found.");
-                //}
-
-                //if (loadToShow.DispatcherId != user.Id || loadToShow.Status == LoadStatus.Created.ToString() && user is Dispatcher)
-                //{
-                //    return NotFound("Load was not found.");
-                //}
 
                 return View(loadToShow);
             }
             catch (Exception e)
             {
-                TempData.SetErrorMessage(ErrorRetrievingDetailsForLoad + " " + e.Message);
+                TempData.SetErrorMessage(e.Message);
                 return RedirectToAction("LoadDetails", new { loadId });
             }
         }
@@ -76,11 +65,12 @@ namespace LoadVantage.Controllers
         [BrokerOnly]
         public IActionResult CreateLoad()
         {
-            Guid? userId = User.GetUserId();
-            var model = new LoadViewModel
+	        Guid? userId = User.GetUserId();
+
+			var model = new LoadViewModel
             {
                 BrokerId = userId.Value
-            };
+			};
 
             return View(model);
         }
@@ -95,7 +85,6 @@ namespace LoadVantage.Controllers
 
             Guid? userId = User.GetUserId();
 
-
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -104,7 +93,6 @@ namespace LoadVantage.Controllers
             if (userId != model.BrokerId)
             {
                 return RedirectToAction("LoadBoard", "LoadBoard"); // If the brokerId is not the same as logged user's id, redirect him back to the LoadBoard
-
             }
 
             try
@@ -255,7 +243,7 @@ namespace LoadVantage.Controllers
             try
             {
                 await loadService.PostLoadAsync(load.Id);
-                await loadHubContext.Clients.All.SendAsync("ReceiveLoadPostedNotification", loadId); // send a notification to all Dispatchers the load is posted using SignalR
+                await loadHub.Clients.All.SendAsync("ReceiveLoadPostedNotification", loadId); // send a notification to all Dispatchers the load is posted using SignalR
 
                 TempData.SetActiveTab(PostedActiveTab); // navigate to the posted tab
                 TempData.SetSuccessMessage(LoadPostedSuccessfully);
@@ -300,7 +288,7 @@ namespace LoadVantage.Controllers
             try
             {
                 await loadService.UnpostLoadAsync(load.Id); // unpost the load
-                await loadHubContext.Clients.All.SendAsync("ReloadPostedLoadsTable"); // Send SignalR notification on the websocket to refresh the table ( Posted Loads ) to all Clients
+                await loadHub.Clients.All.SendAsync("ReloadPostedLoadsTable"); // Send SignalR notification on the websocket to refresh the table ( Posted Loads ) to all Clients
 
                 TempData.SetSuccessMessage(LoadUnpostedSuccessfully);
 
@@ -323,7 +311,7 @@ namespace LoadVantage.Controllers
             try
             {
                 await loadService.UnpostAllLoadsAsync(brokerId); // unpost all the broker's loads
-                await loadHubContext.Clients.All.SendAsync("ReloadPostedLoadsTable"); // Send SignalR notification on the websocket to refresh the table ( Posted Loads ) to all Clients
+                await loadHub.Clients.All.SendAsync("ReloadPostedLoadsTable"); // Send SignalR notification on the websocket to refresh the table ( Posted Loads ) to all Clients
 
 
                 TempData.SetSuccessMessage(LoadsUnpostedSuccessfully);
@@ -345,11 +333,11 @@ namespace LoadVantage.Controllers
 
         public async Task<IActionResult> BookALoad(Guid loadId)
         {
-	        var dispatcherId = User.GetUserId().Value; 
+	        var userId = User.GetUserId().Value; 
 
 	        try
 	        {
-		        var success = await loadService.BookLoadAsync(loadId, dispatcherId);
+		        var success = await loadService.BookLoadAsync(loadId, userId);
 
 		        if (!success)
 		        {
@@ -358,16 +346,67 @@ namespace LoadVantage.Controllers
 		        }
 
                 TempData.SetSuccessMessage(LoadWasBookSuccessfully);
-				return RedirectToAction("LoadBoard", "LoadBoard");
+                return RedirectToAction("LoadDetails", new { loadId });
 			}
-	        catch (Exception ex)
+			catch (Exception ex)
 	        {
-		        TempData["Error"] = $"An error occurred: {ex.Message}";
+		        TempData.SetErrorMessage(UnableToBookTheLoad); 
 		        return RedirectToAction("LoadDetails", new { id = loadId });
 	        }
 		}
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [BrokerOnly]
+
+		public async Task<IActionResult> CancelBooking(Guid loadId)
+        {
+	        Guid? userId = User.GetUserId();
+
+			if (userId == null)
+			{
+				return Unauthorized();
+			}
+
+			try
+	        {
+		        var success = await loadService.CancelLoadBookingAsync(loadId, userId.Value);
+
+		        if (success)
+		        {
+			        TempData.SetSuccessMessage("The load is reposted again looking for a carrier."); 
+		        }
+		        else
+		        {
+                    TempData.SetErrorMessage("Failed to cancel the carrier. Please try again.");
+		        }
+	        }
+	        catch (Exception ex)
+	        {
+                TempData.SetErrorMessage(ex.Message);
+	        }
+
+	        return RedirectToAction("LoadDetails", new { loadId });
+        }
+
+        [HttpPost]
+        [DispatcherOnly]
+        public async Task<IActionResult> ReturnLoadToBroker(Guid loadId)
+        {
+	        Guid? userId = User.GetUserId();
+
+	        bool success = await loadService.ReturnLoadBackToBroker(loadId, userId);
+
+	        if (success)
+	        {
+                TempData.SetSuccessMessage("Load was successfully returned to the broker.");
+                return RedirectToAction("LoadDetails", new { loadId });
+	        }
+
+			return NotFound("Unable to cancel the booking. Please check the load's status.");
+        }
+
+		[HttpPost]
         [ValidateAntiForgeryToken]
         [DispatcherOnly]
 
