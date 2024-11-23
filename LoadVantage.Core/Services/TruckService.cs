@@ -57,14 +57,17 @@ namespace LoadVantage.Core.Services
 			return trucksViewModel;
 		}
 
-		public async Task<TruckViewModel> GetTruckByIdAsync(Guid id)
+		public async Task<TruckViewModel?> GetTruckByIdAsync(Guid id)
 		{
 			var truck = await context.Trucks
-				.Include(t => t.Driver)
-                .Where(t => t.IsActive)
-				.FirstOrDefaultAsync(t => t.Id == id);
+				.Where(t => t.IsActive && t.Id == id)  
+				.Include(t => t.Driver)  
+				.FirstOrDefaultAsync();
 
-			if (truck == null) return null;
+			if (truck == null)
+			{
+				return null;
+			}
 
 			TruckViewModel model = new TruckViewModel
 			{

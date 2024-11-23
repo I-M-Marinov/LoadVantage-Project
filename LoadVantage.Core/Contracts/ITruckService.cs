@@ -14,11 +14,10 @@ namespace LoadVantage.Core.Contracts
 		/// </summary>
 		Task<TrucksViewModel> GetAllTrucksAsync(Guid userId);
 
-
 		/// <summary>
 		/// Retrieves a specific truck by its ID.
 		/// </summary>
-		Task<TruckViewModel> GetTruckByIdAsync(Guid id);
+		Task<TruckViewModel?> GetTruckByIdAsync(Guid id);
 
 		/// <summary>
 		/// Adds a new truck to the DB.
@@ -29,8 +28,6 @@ namespace LoadVantage.Core.Contracts
 		/// Updates an existing truck.
 		/// </summary>
 		Task UpdateTruckAsync(TruckViewModel truck);
-
-
 
 		/// <summary>
 		/// Deletes a truck by its ID.
