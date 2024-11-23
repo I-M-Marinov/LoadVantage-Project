@@ -11,6 +11,7 @@ using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 namespace LoadVantage.Controllers
 {
 	[Authorize]
+	[DispatcherOnly]
 	public class TruckController : Controller
 	{
 
@@ -23,7 +24,6 @@ namespace LoadVantage.Controllers
 		}
 
 		[HttpGet]
-		[DispatcherOnly]
 		public async Task<IActionResult> ShowTrucks(Guid userId)
 		{
 			var trucks = await truckService.GetAllTrucksAsync(userId);
@@ -35,7 +35,6 @@ namespace LoadVantage.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[DispatcherOnly]
 		public async Task<IActionResult> AddTruck(TrucksViewModel trucksViewModel)
 		{
 			Guid userId = User.GetUserId()!.Value;
@@ -83,7 +82,6 @@ namespace LoadVantage.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[DispatcherOnly]
 		public async Task<IActionResult> EditTruck(TrucksViewModel model)
 		{
 			Guid userId = User.GetUserId()!.Value;
@@ -120,7 +118,6 @@ namespace LoadVantage.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[DispatcherOnly]
 
 		public async Task<IActionResult> DeleteTruck(Guid id)
 		{
