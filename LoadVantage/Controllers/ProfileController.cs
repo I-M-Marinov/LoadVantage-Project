@@ -24,15 +24,13 @@ namespace LoadVantage.Controllers
 	[Authorize]
 	public class ProfileController : Controller
 	{
-		private readonly UserManager<User> userManager;
 		private readonly IUserService userService;
 		private readonly IProfileService profileService;
 		private readonly ILoadBoardService loadBoardService;
 
-		public ProfileController(UserManager<User> _userManager, IUserService _userService,
+		public ProfileController(IUserService _userService,
 			IProfileService _profileService, ILoadBoardService _loadBoardService)
 		{
-			userManager = _userManager;
 			userService = _userService;
 			profileService = _profileService;
 			loadBoardService = _loadBoardService;
@@ -42,24 +40,30 @@ namespace LoadVantage.Controllers
 		[HttpGet]
         public async Task<IActionResult> Profile()
         {
-	        var user = User.GetUserAsync(userManager).Result;
+	        var user = await userService.GetCurrentUserAsync();
 
 	        if (TempData.GetActiveTab() != null)
 	        {
 				TempData.SetActiveTab(ProfileEditActiveTab);
 	        }
 
-	        if (user is Broker)
+	        var loadCounts = await loadBoardService.GetLoadCountsForUserAsync(user.Id, user.Position);
+
+			if (user is Broker)
 	        {
-		        ViewBag.CreatedLoadsCount = loadBoardService.GetCreatedLoadsCountForBrokerAsync(user.Id).Result;
-		        ViewBag.PostedLoadsCount = loadBoardService.GetPostedLoadsCountForBrokerAsync(user.Id).Result;
-		        ViewBag.BookedLoadsCount = loadBoardService.GetBookedLoadsCountForBrokerAsync(user.Id).Result;
-		        ViewBag.DeliveredLoadsCount = loadBoardService.GetBilledLoadsCountForBrokerAsync(user.Id).Result;
+				var brokerLoadCounts = loadCounts[nameof(Broker)];
+
+				ViewBag.CreatedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Created, 0);
+				ViewBag.PostedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Available, 0);
+				ViewBag.BookedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Booked, 0);
+				ViewBag.DeliveredLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Delivered, 0);
 			}
 	        else // user is Dispatcher
 	        {
-		        ViewBag.BookedLoadsCount = loadBoardService.GetBookedLoadsCountForDispatcherAsync(user.Id).Result;
-		        ViewBag.DeliveredLoadsCount = loadBoardService.GetBilledLoadsCountForDispatcherAsync(user.Id).Result;
+				var dispatcherLoadCounts = loadCounts[nameof(Dispatcher)];
+
+				ViewBag.BookedLoadsCount = dispatcherLoadCounts.GetValueOrDefault(LoadStatus.Booked, 0);
+				ViewBag.DeliveredLoadsCount = dispatcherLoadCounts.GetValueOrDefault(LoadStatus.Delivered, 0);
 			}
 
 			ProfileViewModel? userProfileViewModel = await profileService.GetUserInformation(user.Id); // Fetch user information for the logged-in user only
@@ -72,24 +76,28 @@ namespace LoadVantage.Controllers
 
         public async Task<IActionResult> Profile(ProfileViewModel model)
         {
+	        var user = await userService.GetCurrentUserAsync();
 
-	        var user = User.GetUserAsync(userManager).Result;
+	        var loadCounts = await loadBoardService.GetLoadCountsForUserAsync(user.Id, user.Position);
 
-			if (user is Broker)
+	        if (user is Broker)
 	        {
-		        ViewBag.CreatedLoadsCount = loadBoardService.GetCreatedLoadsCountForBrokerAsync(user.Id).Result;
-		        ViewBag.PostedLoadsCount = loadBoardService.GetPostedLoadsCountForBrokerAsync(user.Id).Result;
-		        ViewBag.BookedLoadsCount = loadBoardService.GetBookedLoadsCountForBrokerAsync(user.Id).Result;
-		        ViewBag.DeliveredLoadsCount = loadBoardService.GetBilledLoadsCountForBrokerAsync(user.Id).Result;
+		        var brokerLoadCounts = loadCounts[nameof(Broker)];
+
+		        ViewBag.CreatedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Created, 0);
+		        ViewBag.PostedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Available, 0);
+		        ViewBag.BookedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Booked, 0);
+		        ViewBag.DeliveredLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Delivered, 0);
 	        }
 	        else // user is Dispatcher
 	        {
-		        ViewBag.BookedLoadsCount = loadBoardService.GetBookedLoadsCountForDispatcherAsync(user.Id).Result;
-		        ViewBag.DeliveredLoadsCount = loadBoardService.GetBilledLoadsCountForDispatcherAsync(user.Id).Result;
+		        var dispatcherLoadCounts = loadCounts[nameof(Dispatcher)];
+
+		        ViewBag.BookedLoadsCount = dispatcherLoadCounts.GetValueOrDefault(LoadStatus.Booked, 0);
+		        ViewBag.DeliveredLoadsCount = dispatcherLoadCounts.GetValueOrDefault(LoadStatus.Delivered, 0);
 	        }
 
-
-            ProfileViewModel? userProfileViewModel = await profileService.GetUserInformation(user.Id);
+			ProfileViewModel? userProfileViewModel = await profileService.GetUserInformation(user.Id);
             model.UserImageUrl = userProfileViewModel!.UserImageUrl;
 
 
@@ -98,28 +106,20 @@ namespace LoadVantage.Controllers
                 return View(model);
             }
 
-            var isUsernameTaken = await profileService.IsUsernameTakenAsync(model.Username, user.Id);
-            if (isUsernameTaken)
-            {
-                TempData.SetActiveTab(ProfileEditActiveTab);
-                ModelState.AddModelError("Username", UserNameIsAlreadyTaken);
-                return View(model);
-            }
-
             try
             {
                 var updatedModel = await profileService.UpdateProfileInformation(model, user.Id);
 
-                if (updatedModel.Id != user.Id.ToString()) // If the returned model from the method is with a different Id or Position return the View and add some messages 
+                if (updatedModel.Id != user.Id.ToString()) 
                 {
                     TempData.SetActiveTab(ProfileActiveTab);
-                    ModelState.AddModelError(string.Empty, NoChangesMadeToProfile);
+                    ModelState.AddModelError(string.Empty, NoChangesMadeToProfile); // tell the user no changes were made 
 
                     return View(updatedModel);
                 }
 
-                TempData.SetSuccessMessage(ProfileUpdatedSuccessfully);
                 TempData.SetActiveTab(ProfileActiveTab);
+                TempData.SetSuccessMessage(ProfileUpdatedSuccessfully);
                 return View(updatedModel);
             }
             catch (InvalidOperationException ex)
@@ -141,8 +141,8 @@ namespace LoadVantage.Controllers
 
 		public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
 		{
+			var user = await userService.GetCurrentUserAsync();
 
-			User? user = await User.GetUserAsync(userManager);
             ProfileViewModel? profileModel = await profileService.GetUserInformation(user.Id);
 
             profileModel.ChangePasswordViewModel = model;
@@ -184,7 +184,7 @@ namespace LoadVantage.Controllers
 
 			try
 			{
-				var profile = await userService.GetUserInformation(userId);
+				var profile = await profileService.GetUserInformation(userId);
 
 				profile.ImageFileUploadModel = new ImageFileUploadModel();
 
@@ -240,7 +240,7 @@ namespace LoadVantage.Controllers
 
 		public async Task<IActionResult> DeleteProfileImage()
 		{
-			User user = User.GetUserAsync(userManager).Result!;
+			var user = await userService.GetCurrentUserAsync();
 
 			try
 			{
