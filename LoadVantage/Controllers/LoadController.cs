@@ -10,8 +10,8 @@ using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
 using LoadVantage.Core.Hubs;
+using LoadVantage.Core.Models.Profile;
 using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 
 namespace LoadVantage.Controllers
@@ -20,12 +20,14 @@ namespace LoadVantage.Controllers
     [Route("[controller]/[action]")]
     public class LoadController : Controller
     {
-	    private readonly IUserService userService;
+	    private readonly IProfileService profileService;
+		private readonly IUserService userService;
 		private readonly ILoadStatusService loadService;
         private readonly IHubContext<LoadHub> loadHub;
 
-        public LoadController(ILoadStatusService _loadService, IUserService _userService, IHubContext<LoadHub> _loadHub)
+        public LoadController(IProfileService _profileService, ILoadStatusService _loadService, IUserService _userService, IHubContext<LoadHub> _loadHub)
 		{
+			profileService = _profileService;
 			userService = _userService;
 			loadService = _loadService;
 			loadHub = _loadHub;
@@ -63,13 +65,16 @@ namespace LoadVantage.Controllers
 
         [HttpGet]
         [BrokerOnly]
-        public IActionResult CreateLoad()
+        public async Task<IActionResult> CreateLoad()
         {
-	        Guid? userId = User.GetUserId();
+	        Guid userId = User.GetUserId()!.Value;
+	        var profile = await profileService.GetUserInformation(userId);
+
 
 			var model = new LoadViewModel
             {
-                BrokerId = userId.Value
+                BrokerId = userId,
+                UserProfile = profile
 			};
 
             return View(model);
