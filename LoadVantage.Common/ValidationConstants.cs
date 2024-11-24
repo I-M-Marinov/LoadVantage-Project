@@ -140,7 +140,8 @@
 	        public const string TruckMakeInvalid = "Truck make must be between 2 and 30 characters.";
 	        public const string TruckModelInvalid = "Truck model must be between 1 and 50 characters.";
 	        public const string TruckYearInvalid = "Truck year must be between 1990 and 2024.";
-			public const string TruckNumberRegexPattern = @"^[a-zA-Z0-9]{3,7}$";
+
+	        public const string TruckNumberRegexPattern = @"^[a-zA-Z0-9]{3,7}$";
 
 			public const byte TruckMakeMinLength = 2;
 			public const byte TruckMakeMaxLength = 30;
@@ -150,6 +151,28 @@
 
 			public const int TruckYearMinValue = 1990;
 			public const int TruckYearMaxValue = 2024; 
+
+		}
+
+        public static class DriverValidations
+        {
+
+	        public const string DriverFirstNameRequired = "The driver's first name is required.";
+	        public const string DriverLastNameRequired = "The driver's last name is required.";
+	        public const string DriverLicenseNumberRequired = "The driver's license number is required.";
+
+	        public const string DriverFirstNameInvalid = "Driver's first name must be between 2 and 25 characters.";
+	        public const string DriverLastNameInvalid = "Driver's last name must be between 3 and 25 characters.";
+	        public const string DriverLicenseNumberInvalid = "Driver's license number must be between 8 and 15 characters and no special characters.";
+	       
+
+			public const byte DriverFirstNameMinLength = 2;
+	        public const byte DriverFirstNameMaxLength = 25;
+
+	        public const byte DriverLastNameMinLength = 3;
+	        public const byte DriverLastNameMaxLength = 25;
+
+	        public const string DriverLicenceNumberRegexPattern = @"^[A-Za-z0-9]{8,15}$";
 
 		}
 	}

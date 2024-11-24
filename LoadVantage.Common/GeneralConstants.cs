@@ -85,10 +85,16 @@ namespace LoadVantage.Common
 
 			public const string TruckWasNotCreated = "The truck was not created successfully.";
             public const string TruckCreateError = "Error ! Truck was not created.";
-            public const string TruckDoesNotExist = "The truck you are looking for does not exist";
+            public const string TruckDoesNotExist = "The truck you are looking for does not exist.";
+
+			// DRIVER
+
+			public const string DriverWasNotCreated = "The driver was not created successfully.";
+			public const string DriverCreateError = "Error ! Driver was not created.";
+			public const string DriverDoesNotExist = "The driver you are looking for does not exist.";
 
 
-        }
+		}
 
 		public static class SuccessMessages
         {
@@ -113,12 +119,16 @@ namespace LoadVantage.Common
 
             // TRUCK 
 
-            public const string TruckWasAddedSuccessfully = "The truck was added successfully to your fleet";
+            public const string TruckWasAddedSuccessfully = "The truck was added successfully to your fleet.";
             public const string TruckWasUpdatedSuccessfully = "Truck was updated successfully.";
             public const string TruckWasRemovedSuccessfully = "Truck was removed/decommissioned from your fleet successfully.";
 
+            // DRIVER 
 
-        }
+            public const string DriverWasAddedSuccessfully = "The driver was added to your company successfully.";
+            public const string DriverWasUpdatedSuccessfully = "The driver was updated successfully.";
+            public const string DriverWasFiredSuccessfully = "The driver was fired successfully.";
+		}
 
         public static class ActiveTabs
         {
