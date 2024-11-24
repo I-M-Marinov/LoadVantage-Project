@@ -15,18 +15,18 @@ namespace LoadVantage.Core.Services
 
 		private readonly LoadVantageDbContext context;
 		private readonly IProfileService profileService;
-		private readonly UserManager<User> userManager;
+		private readonly IUserService userService;
 
-		public TruckService(LoadVantageDbContext _context, IProfileService _profileService, UserManager<User> _userManager)
+		public TruckService(LoadVantageDbContext _context, IProfileService _profileService, IUserService _userService)
 		{
 			context = _context;
 			profileService = _profileService;
-			userManager = _userManager;
+			userService = _userService;
 		}
 
 		public async Task<TrucksViewModel> GetAllTrucksAsync(Guid userId)
 		{
-			var user = await userManager.FindByIdAsync(userId.ToString());
+			var user = await userService.GetUserByIdAsync(userId);
 
 			ProfileViewModel profile = await profileService.GetUserInformation(user.Id);
 
