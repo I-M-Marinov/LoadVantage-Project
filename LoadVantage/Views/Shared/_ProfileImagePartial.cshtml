@@ -9,8 +9,8 @@
 	<div class="d-flex flex-row justify-content-center">
 		<img class="img-fluid img-thumbnail" src="@Model.UserImageUrl" alt="Profile" id="profileImagePreview" />
 
-		@Html.ValidationSummary(true)
-
+@* 		@Html.ValidationSummary(true)
+ *@
 		<div class="d-flex flex-row align-items-center">
 			<div class="row ml-3">
 				<form id="imageUploadForm" asp-controller="Profile" asp-action="UpdateProfileImage" enctype="multipart/form-data" method="post">
