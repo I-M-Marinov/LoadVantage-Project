@@ -1,0 +1,289 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Extensions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Core.Models.Driver;
+
+@model DriversViewModel
+
+@{
+
+	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+	ViewData["Title"] = "Drivers";
+
+	var tempDataSuccessMessage = TempData.GetSuccessMessage();
+	var tempDataErrorMessage = TempData.GetErrorMessage();
+}
+
+<!-- ======= Header ======= -->
+@await Html.PartialAsync("_HeaderPartialView", Model.Profile)
+
+<!-- ======= Sidebar ======= -->
+@await Html.PartialAsync("_SidebarPartialView", Model.Profile)
+
+<main id="main" class="main drivers">
+
+	<div class="pagetitle">
+		<h1>Drivers</h1>
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDriverModal">
+			<i class="bi bi-person-plus-fill"></i>
+			Add Driver
+		</button>
+
+
+	</div>
+
+	<!-- Add Driver Modal -->
+	<div class="modal fade" id="addDriverModal" tabindex="-1" aria-labelledby="addDriverModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form asp-action="AddDriver" asp-controller="Driver" method="post" id="addDriverForm">
+					@Html.AntiForgeryToken()
+					<div class="modal-header">
+						<h5 class="modal-title" id="addDriverModalLabel">Adding a new driver</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="mb-3">
+							<label asp-for="NewDriver.FirstName" class="form-label text-center d-block" id="driverFirstNameLabel">First Name</label>
+							<input asp-for="NewDriver.FirstName" class="form-control text-center">
+							<span asp-validation-for="NewDriver.FirstName" class="badge badge-danger mt-1"></span>
+						</div>
+						<div class="mb-3">
+							<label asp-for="NewDriver.LastName" class="form-label text-center d-block">Last Name</label>
+							<input asp-for="NewDriver.LastName" class="form-control text-center">
+							<span asp-validation-for="NewDriver.LastName" class="badge badge-danger mt-1"></span>
+						</div>
+						<div class="mb-3">
+							<label asp-for="NewDriver.LicenseNumber" class="form-label text-center d-block">License Number</label>
+							<input asp-for="NewDriver.LicenseNumber" class="form-control text-center">
+							<span asp-validation-for="NewDriver.LicenseNumber" class="badge badge-danger mt-1"></span>
+						</div>
+						<div class="mb-3">
+							<label asp-for="NewDriver.IsAvailable" class="form-label text-center d-block">Available ?</label>
+							<input name="NewDriver.IsAvailable" asp-for="NewDriver.IsAvailable" type="checkbox" class="form-check-input d-block mx-auto larger-checkbox" />
+							<span asp-validation-for="NewDriver.IsAvailable" class="badge badge-danger mt-1"></span>
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-success text-center d-block">Add</button>
+						<button type="button" class="btn btn-secondary text-center d-block" data-bs-dismiss="modal">Close</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Confirm Firing of a Driver Modal -->
+
+	<div class="modal fade" id="fireDriverModal" tabindex="-1" aria-labelledby="fireDriverModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="fireDriverModalLabel">Confirm Deletion</h5>
+				</div>
+				<i id="modal-icon" class="ri-delete-bin-fill text-danger" style="font-size: 2rem; text-align: center; display: block; margin: 1rem auto;"></i>
+				<div class="modal-body text-center">
+					Are you sure you want to fire this driver?
+					<br>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<form asp-action="FireDriver" asp-controller="Driver" method="post">
+						@Html.AntiForgeryToken()
+						<input type="hidden" name="id" id="fireDriverId" />
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Go Back</button>
+						<button type="submit" class="btn btn-danger">Yes, I Confirm</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Edit Driver Modal -->
+
+	<div class="modal fade" id="editDriverModal" tabindex="-1" role="dialog" aria-labelledby="editDriverModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="editDriverModalLabel">Editing a driver</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form asp-action="EditDriver" asp-controller="Driver" method="post" id="editDriverForm">
+						@Html.AntiForgeryToken()
+
+						<div class="form-group">
+							<label asp-for="EditedDriver.FirstName" class="control-label text-center d-block" id="editedDriverFirstNameLabel"></label>
+							<input name="EditedDriver.FirstName" asp-for="EditedDriver.FirstName" class="form-control text-center" />
+							<span asp-validation-for="EditedDriver.FirstName" class="badge badge-danger mt-1"></span>
+						</div>
+
+						<div class="form-group">
+							<label asp-for="EditedDriver.LastName" class="control-label text-center d-block"></label>
+							<input name="EditedDriver.LastName" asp-for="EditedDriver.LastName" class="form-control text-center" />
+							<span asp-validation-for="EditedDriver.LastName" class="badge badge-danger mt-1"></span>
+						</div>
+
+						<div class="form-group">
+							<label asp-for="EditedDriver.LicenseNumber" class="control-label text-center d-block"></label>
+							<input name="EditedDriver.LicenseNumber" asp-for="EditedDriver.LicenseNumber" class="form-control text-center" />
+							<span asp-validation-for="EditedDriver.LicenseNumber" class="badge badge-danger mt-1"></span>
+						</div>
+
+						<div class="form-group">
+							<label asp-for="EditedDriver.IsAvailable" class="control-label text-center d-block">Available ?</label>
+							<input name="EditedDriver.IsAvailable" asp-for="EditedDriver.IsAvailable" type="checkbox" class="form-check-input d-block mx-auto larger-checkbox" />
+							<span asp-validation-for="EditedDriver.IsAvailable" class="badge badge-danger mt-1"></span>
+						</div>
+
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-success">Save</button>
+							<input type="hidden" name="EditedDriver.Id" asp-for="EditedDriver.Id" />
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="card">
+
+		<div class="card-body position-relative">
+			@if (!string.IsNullOrEmpty(tempDataSuccessMessage))
+			{
+				<div class="badge badge-danger mt-1 position-absolute top-0 start-50 translate-middle-x w-75" id="success-message">@tempDataSuccessMessage</div>
+			}
+
+			@if (!string.IsNullOrEmpty(tempDataErrorMessage))
+			{
+				<div class="badge badge-danger mt-1 position-absolute top-0 start-50 translate-middle-x w-75" id="error-message">@tempDataErrorMessage</div>
+			}
+			<div class="table-responsive mt-4" id="drivers-table">
+				<h5 class="card-title">Driver List</h5>
+				<table class="table table-bordered table-hover table-sm">
+					<thead>
+						<tr>
+							<th class="text-center" scope="col">First Name</th>
+							<th class="text-center" scope="col">Last Name</th>
+							<th class="text-center" scope="col">License Number</th>
+							<th class="text-center" scope="col">Truck Number</th>
+							<th class="text-center" scope="col">Available</th>
+							<th class="text-center" scope="col">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var driver in Model.Drivers)
+						{
+							<tr>
+								<td class="text-center">@driver.FirstName</td>
+								<td class="text-center">@driver.LastName</td>
+								<td class="text-center">@driver.LicenseNumber</td>
+								<td class="text-center">@driver.TruckNumber</td>
+								<td class="text-center">
+									<span class="badge @(driver.IsAvailable ? "driver-success" : "driver-danger")">
+										<i class="@(driver.IsAvailable ? "bi bi-patch-check" : "bi bi-patch-exclamation")"></i>
+									</span>
+								</td>
+								<td class="text-center">
+									<button type="button" class="btn btn-outline-primary edit-driver-btn btn-sm" data-id="@driver.Id">Edit</button>
+									<button type="button" class="btn btn-outline-danger btn-sm fire-driver-btn" data-driver-id="@driver.Id">Fire</button>
+								</td>
+							</tr>
+						}
+
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+</main>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+<script>
+
+	// Populate the Edit Driver Form
+
+	document.addEventListener("DOMContentLoaded", function () {
+		document.addEventListener("click", async function (event) {
+			if (event.target && event.target.matches(".edit-driver-btn")) {
+				const driverId = event.target.getAttribute("data-id");
+
+				try {
+					const response = await fetch(`/Driver/GetDriverDetails?id=${driverId}`);
+					const driver = await response.json();
+					const modalElement = document.getElementById("editDriverModal");
+
+					if (modalElement) {
+
+						const firstNameInput = modalElement.querySelector("input[name='EditedDriver.FirstName']");
+						const lastNameInput = modalElement.querySelector("input[name='EditedDriver.LastName']");
+						const licenseNumberInput = modalElement.querySelector("input[name='EditedDriver.LicenseNumber']");
+						const isAvailableInput = modalElement.querySelector("input[name='EditedDriver.IsAvailable']");
+						const idInput = modalElement.querySelector("input[name='EditedDriver.Id']");
+
+				
+						firstNameInput.value = driver.firstName;
+						lastNameInput.value = driver.lastName;
+						licenseNumberInput.value = driver.licenseNumber;
+						isAvailableInput.checked = driver.isAvailable;
+						idInput.value = driver.id;
+
+						const modal = new bootstrap.Modal(modalElement);
+						modal.show();
+					} 
+				} catch (error) {
+					console.error("Error loading the driver details:", error);
+				}
+			}
+		});
+	});
+
+
+
+
+
+
+	if (document.querySelector('.toggle-sidebar-btn')) {
+
+		document.querySelector('.toggle-sidebar-btn').addEventListener('click', function (e) {
+
+			document.body.classList.toggle('toggle-sidebar');
+		});
+	}
+
+
+	/*-------------------------------------------------------------------------------------
+	# SELECTING THE FIRE DRIVER BUTTON AND SHOWING THE MODAL ON CLICK
+	--------------------------------------------------------------------------------------*/
+	document.addEventListener('DOMContentLoaded', () => {
+
+		const fireModalElement = document.getElementById('fireDriverModal');
+		if (fireModalElement) {
+			const fireModal = new bootstrap.Modal(fireModalElement);
+			const fireButtons = document.querySelectorAll('.fire-driver-btn');
+			const fireDriverIdInput = document.getElementById('fireDriverId');
+
+			fireButtons.forEach(button => {
+				button.addEventListener('click', event => {
+					event.preventDefault();
+					const driverId = button.getAttribute('data-driver-id');
+					fireDriverIdInput.value = driverId;
+					fireModal.show();
+				});
+			});
+		}
+	});
+
+
+
+</script>
+
