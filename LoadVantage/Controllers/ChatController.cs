@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 
 using LoadVantage.Core.Contracts;
-using LoadVantage.Core.Hubs;
 using LoadVantage.Core.Models.Chat;
 using LoadVantage.Extensions;
 using LoadVantage.Infrastructure.Data.Models;
@@ -15,12 +14,14 @@ namespace LoadVantage.Controllers
 	{
 		private readonly IChatService chatService;
 		private readonly IUserService userService;
+		private readonly IProfileService profileService;
 
 
-		public ChatController(IChatService _chatService, IUserService _userService)
+		public ChatController(IChatService _chatService, IUserService _userService, IProfileService _profileService)
 		{
 		    chatService = _chatService;
 		    userService = _userService;
+		    profileService = _profileService;
 		}
 
 		[HttpPost]
@@ -33,13 +34,15 @@ namespace LoadVantage.Controllers
 			{
 				return RedirectToAction("ChatWindow", new { receiverId });
 			}
-			
-			await chatService.SendMessageAsync(currentUserId, receiverId, messageContent);
 
+
+			await chatService.SendMessageAsync(currentUserId, receiverId, messageContent);
 
 			var chatUsers = await chatService.GetChatUsersAsync(currentUserId);
 			var messages = await chatService.GetMessagesAsync(currentUserId, receiverId);
 			var brokerInfo = await userService.GetChatUserInfoAsync(receiverId);
+			var profile = await profileService.GetUserInformation(currentUserId);
+
 
 			var model = new ChatViewModel
 			{
@@ -55,12 +58,12 @@ namespace LoadVantage.Controllers
 					IsRead = m.IsRead
 					
 				}).ToList(),
-				BrokerInfo = brokerInfo
+				UserInfo = brokerInfo,
+				Profile = profile
 			};
 
 			return View("ChatWindow", model);
 		}
-
 
 		[HttpGet]
 		public async Task<IActionResult> ChatWithBrokerWindow(Guid brokerId)
@@ -68,7 +71,6 @@ namespace LoadVantage.Controllers
 			ChatViewModel model = await BuildChatViewModel(brokerId);
 			return View("ChatWindow", model);
 		}
-
 
 		[HttpGet]
 		public async Task<IActionResult> ChatWindow()
@@ -99,7 +101,6 @@ namespace LoadVantage.Controllers
 			return View("ChatWindow", model);
 		}
 
-
 		[HttpGet]
 		public async Task<IActionResult> GetMessages(Guid chatUserId)
 		{
@@ -119,8 +120,6 @@ namespace LoadVantage.Controllers
 				IsRead = m.IsRead
 			}).ToList());
 		}
-
-
 
 		[HttpGet]
 		public async Task<IActionResult> GetUnreadMessages()
@@ -147,20 +146,21 @@ namespace LoadVantage.Controllers
 			return Ok();
 		}
 
-		private async Task<ChatViewModel> BuildChatViewModel(Guid brokerId)
+		private async Task<ChatViewModel> BuildChatViewModel(Guid userId)
 		{
 			var currentUser = await userService.GetCurrentUserAsync();
-
-			// Fetch chat users, messages, and broker info
+			
+			// Fetch chat users, messages, and user info and the current user's profile 
 			var chatUsers = await chatService.GetChatUsersAsync(currentUser.Id);
-			var userInfo = await userService.GetChatUserInfoAsync(brokerId);
-			var messages = await chatService.GetMessagesAsync(currentUser.Id, brokerId);
+			var userInfo = await userService.GetChatUserInfoAsync(userId);
+			var messages = await chatService.GetMessagesAsync(currentUser.Id, userId);
+			var profile = await profileService.GetUserInformation(currentUser.Id);
 
 			// Build the ChatViewModel
-			return new ChatViewModel
+			var chatViewModel = new ChatViewModel
 			{
-				Users = chatUsers,
-				CurrentChatUserId = brokerId,
+				Users = chatUsers ?? new List<UserChatViewModel>(),
+				CurrentChatUserId = userId,
 				Messages = messages.Select(m => new ChatMessageViewModel
 				{
 					Id = m.Id,
@@ -170,8 +170,11 @@ namespace LoadVantage.Controllers
 					Timestamp = m.Timestamp,
 					IsRead = m.IsRead
 				}).ToList(),
-				BrokerInfo = userInfo
+				UserInfo = userInfo,
+				Profile = profile
 			};
+
+			return chatViewModel;
 		}
 	}
 }
