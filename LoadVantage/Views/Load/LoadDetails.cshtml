@@ -7,7 +7,6 @@
 @using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Dispatcher = LoadVantage.Infrastructure.Data.Models.Dispatcher
-@inject IUserService UserService
 @model LoadViewModel
 
 @{
@@ -17,8 +16,6 @@
 
     var isEditing = TempData["isEditing"] as bool? ?? false;
 
-    var user = UserService.GetCurrentUserAsync().Result;
-
 	var tempDataSuccessMessage = TempData.GetSuccessMessage();
 	var tempDataErrorMessage = TempData.GetErrorMessage();
 	var tempDataActiveTab = TempData.GetActiveTab();
@@ -26,11 +23,11 @@
 }
 
 <!-- ======= Header ======= -->
-@await Html.PartialAsync("_HeaderPartialView", new ProfileViewModel { Position = user.Position })
+@await Html.PartialAsync("_HeaderPartialView", Model.UserProfile)
 
 <!-- End Header -->
 <!-- ======= Sidebar ======= -->
-@await Html.PartialAsync("_SidebarPartialView", new ProfileViewModel { Position = user.Position });
+@await Html.PartialAsync("_SidebarPartialView", Model.UserProfile);
 
 <!-- End Sidebar -->
 
@@ -41,7 +38,7 @@
 		<h1>Load</h1>
 		<nav>
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="#">@user.Position</a></li>
+				<li class="breadcrumb-item"><a href="#">@Model.UserProfile.Position</a></li>
                 <li class="breadcrumb-item"><a href="#">Load Board</a></li>
 				<li class="breadcrumb-item active">Load</li>
 			</ol>
@@ -202,7 +199,7 @@
 		
 
 						
-	@if (user is Broker)
+	@if (@Model.UserProfile.Position is nameof(Broker))
 	{
 		<div class="text-center details-buttons-container">
 		
@@ -229,7 +226,7 @@
 			switch (status)
 			{
 				case LoadStatus.Created:
-					@if (user is Broker)
+					@if (@Model.UserProfile.Position is nameof(Broker))
 					{
 						<form asp-action="PostALoad" asp-controller="Load" method="post" id="postLoadForm">
 							@Html.AntiForgeryToken()
@@ -242,7 +239,7 @@
 					break;
 
 				case LoadStatus.Available:
-					@if (user is Broker)
+					@if (@Model.UserProfile.Position is nameof(Broker))
 					{
 						<form asp-action="UnpostALoad" asp-controller="Load" method="post" id="unpostLoadFrom">
 							@Html.AntiForgeryToken()
@@ -265,7 +262,7 @@
 
 				case LoadStatus.Booked:
 
-					@if (user is Broker)
+					@if (@Model.UserProfile.Position is nameof(Broker))
 					{
 						<form asp-action="CancelBooking" asp-controller="Load" method="post" id="cancelCarrierForm">
 							@Html.AntiForgeryToken()
@@ -276,7 +273,7 @@
 						</form>
 					}
 
-					@if (user is Dispatcher)
+					@if (@Model.UserProfile.Position is nameof(Dispatcher))
 					{
 						<form asp-action="ReturnLoadToBroker" asp-controller="Load" method="post" id="returnLoadtoBrokerForm">
 							@Html.AntiForgeryToken()
@@ -298,7 +295,7 @@
 
 		<div class="text-center details-buttons-container">
 
-			@if (user is Broker)
+			@if (@Model.UserProfile.Position is nameof(Broker))
 			{
 				<form id="cancelLoadForm" asp-action="CancelLoad" asp-controller="Load" method="post" id="cancelLoadButton">
 					@Html.AntiForgeryToken()
@@ -328,7 +325,7 @@
 				</div>
 			}
 							
-			@if (user is not Broker)
+			@if (@Model.UserProfile.Position is nameof(Dispatcher))
 			{
 				<a asp-action="ChatWithBrokerWindow" asp-controller="Chat" asp-route-brokerId="@Model.BrokerId" class="btn btn-outline-primary" id="chatWithBrokerBtn">
 					<i class="bi bi-chat-text-fill"></i> Chat with Broker 
@@ -363,7 +360,7 @@
 				
 				
 		</div>
-		@if (Model.Status == LoadStatus.Booked.ToString() && user is Broker)
+		@if (Model.Status == LoadStatus.Booked.ToString() && Model.UserProfile.Position == nameof(Broker))
 		{
 			<button id="dispatcherDriverDetailsbtn" class="btn btn-outline-info" data-bs-toggle="collapse" data-bs-target="#bookingDetails">
 				<i class="ri-more-2-fill"></i>
@@ -378,7 +375,7 @@
 	
 <div id="bookingDetails" class="collapse show">
 
-	@if (Model.Status == LoadStatus.Booked.ToString() && user is Broker)
+			@if (Model.Status == LoadStatus.Booked.ToString() && Model.UserProfile.Position == nameof(Broker))
 	{
 		<div class="card position-absolute responsive" id="booking-details" >
 			<div class="card-body">
