@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿
 using Microsoft.EntityFrameworkCore;
 
 using LoadVantage.Common.Enums;
@@ -9,23 +9,23 @@ using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data.Contracts;
 
 using System.Globalization;
-using LoadVantage.Core.Models.LoadBoard;
 using Microsoft.Extensions.Logging;
 
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
-using Microsoft.AspNetCore.SignalR;
 
 
 namespace LoadVantage.Core.Services
 {
     public class LoadStatusService : ILoadStatusService
     {
+	    public readonly IProfileService profileService;
 	    public readonly ILogger<LoadStatusService> logger;
 	    public readonly LoadVantageDbContext context;
 	    public readonly IDistanceCalculatorService distanceCalculatorService;
 
-	    public LoadStatusService(LoadVantageDbContext _context, IDistanceCalculatorService distanceCalculatorServiceService, ILogger<LoadStatusService> _logger)
+	    public LoadStatusService(IProfileService _profileService, LoadVantageDbContext _context, IDistanceCalculatorService distanceCalculatorServiceService, ILogger<LoadStatusService> _logger)
 	    {
+		    profileService = _profileService;
 		    logger = _logger;
             context = _context;
             distanceCalculatorService = distanceCalculatorServiceService;
@@ -408,6 +408,8 @@ namespace LoadVantage.Core.Services
 
 			var dispatcherInfo = CreateDispatcherInfo(load.BookedLoad);
 			var driverInfo = CreateDriverInfo(load.BookedLoad);
+            var userProfile = await profileService.GetUserInformation(userId);
+
 
 
 			var loadViewModel = new LoadViewModel
@@ -426,7 +428,8 @@ namespace LoadVantage.Core.Services
                 BrokerId = load.BrokerId,
                 DispatcherId = load.BookedLoad?.DispatcherId,
                 DispatcherInfo = dispatcherInfo,
-				DriverInfo = driverInfo
+				DriverInfo = driverInfo,
+                UserProfile = userProfile
 			};
 
             return loadViewModel;
