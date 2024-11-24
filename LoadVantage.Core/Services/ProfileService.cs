@@ -76,7 +76,7 @@ namespace LoadVantage.Core.Services
 
 			if (await IsEmailTakenAsync(model.Email, user.Id))
 			{
-				throw new InvalidDataException(EmailIsAlreadyTaken);
+				throw new InvalidOperationException(EmailIsAlreadyTaken);
 			}
 
 			if (await IsUsernameTakenAsync(model.Username, user.Id))
@@ -86,7 +86,7 @@ namespace LoadVantage.Core.Services
 
 			if (AreUserPropertiesEqual(user, model))
 			{
-				throw new InvalidOperationException(NoChangesMadeToProfile);
+				throw new Exception(NoChangesMadeToProfile);
 			}
 
 			await UpdateUserClaimsAsync(user, model);

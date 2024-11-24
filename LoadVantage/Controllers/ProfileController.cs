@@ -41,32 +41,9 @@ namespace LoadVantage.Controllers
         public async Task<IActionResult> Profile()
         {
 	        var user = await userService.GetCurrentUserAsync();
+			await GetLoadCounts(user);
 
-	        if (TempData.GetActiveTab() != null)
-	        {
-				TempData.SetActiveTab(ProfileEditActiveTab);
-	        }
-
-	        var loadCounts = await loadBoardService.GetLoadCountsForUserAsync(user.Id, user.Position);
-
-			if (user is Broker)
-	        {
-				var brokerLoadCounts = loadCounts[nameof(Broker)];
-
-				ViewBag.CreatedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Created, 0);
-				ViewBag.PostedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Available, 0);
-				ViewBag.BookedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Booked, 0);
-				ViewBag.DeliveredLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Delivered, 0);
-			}
-	        else // user is Dispatcher
-	        {
-				var dispatcherLoadCounts = loadCounts[nameof(Dispatcher)];
-
-				ViewBag.BookedLoadsCount = dispatcherLoadCounts.GetValueOrDefault(LoadStatus.Booked, 0);
-				ViewBag.DeliveredLoadsCount = dispatcherLoadCounts.GetValueOrDefault(LoadStatus.Delivered, 0);
-			}
-
-			ProfileViewModel? userProfileViewModel = await profileService.GetUserInformation(user.Id); // Fetch user information for the logged-in user only
+			ProfileViewModel? userProfileViewModel = await profileService.GetUserInformation(user.Id); 
             return View(userProfileViewModel);
 
         }
@@ -77,25 +54,7 @@ namespace LoadVantage.Controllers
         public async Task<IActionResult> Profile(ProfileViewModel model)
         {
 	        var user = await userService.GetCurrentUserAsync();
-
-	        var loadCounts = await loadBoardService.GetLoadCountsForUserAsync(user.Id, user.Position);
-
-	        if (user is Broker)
-	        {
-		        var brokerLoadCounts = loadCounts[nameof(Broker)];
-
-		        ViewBag.CreatedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Created, 0);
-		        ViewBag.PostedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Available, 0);
-		        ViewBag.BookedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Booked, 0);
-		        ViewBag.DeliveredLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Delivered, 0);
-	        }
-	        else // user is Dispatcher
-	        {
-		        var dispatcherLoadCounts = loadCounts[nameof(Dispatcher)];
-
-		        ViewBag.BookedLoadsCount = dispatcherLoadCounts.GetValueOrDefault(LoadStatus.Booked, 0);
-		        ViewBag.DeliveredLoadsCount = dispatcherLoadCounts.GetValueOrDefault(LoadStatus.Delivered, 0);
-	        }
+	        await GetLoadCounts(user);
 
 			ProfileViewModel? userProfileViewModel = await profileService.GetUserInformation(user.Id);
             model.UserImageUrl = userProfileViewModel!.UserImageUrl;
@@ -122,18 +81,28 @@ namespace LoadVantage.Controllers
                 TempData.SetSuccessMessage(ProfileUpdatedSuccessfully);
                 return View(updatedModel);
             }
-            catch (InvalidOperationException ex)
+			catch (Exception ex) when (ex is InvalidDataException || ex is InvalidOperationException)
+			{
+				TempData.SetActiveTab(ProfileEditActiveTab);
+
+				if (ex is InvalidDataException)
+				{
+					ModelState.AddModelError("username", ex.Message); // Invalid username
+				}
+				else if (ex is InvalidOperationException)
+				{
+					ModelState.AddModelError("email", ex.Message); // Invalid email
+				}
+
+				return View(model);
+			}
+			catch (Exception ex)
             {
                 TempData.SetActiveTab(ProfileActiveTab);
-                TempData.SetSuccessMessage(ex.Message);
-                return View(model);
+                TempData.SetSuccessMessage(NoChangesMadeToProfile); // tell the user no changes were made 
+				return View(model);
             }
-            catch (InvalidDataException ex)
-            {
-	            TempData.SetActiveTab(ProfileActiveTab);
-	            TempData.SetErrorMessage(ex.Message);
-	            return View(model);
-            }
+           
 		}
 
         [HttpPost]
@@ -171,6 +140,7 @@ namespace LoadVantage.Controllers
 				errors += error.Description;
 			}
 
+			await GetLoadCounts(user);
 			TempData.SetErrorMessage(errors);
 			TempData.SetActiveTab(ProfileChangePasswordActiveTab); // navigate to the change password tab
 			return View("Profile",  profileModel); // Redirect to the profile page and pass the Model for the password form  
@@ -214,7 +184,7 @@ namespace LoadVantage.Controllers
 					.ToList();
 
 				TempData.SetErrorMessage(string.Join(", ", errors));
-				TempData.SetActiveTab(ProfileEditActiveTab);
+				TempData.SetActiveTab(ProfileChangePictureActiveTab);
 				return RedirectToAction("Profile", model);
 			}
 
@@ -230,7 +200,7 @@ namespace LoadVantage.Controllers
             catch (Exception ex)
 			{
 				ModelState.AddModelError("Image", ErrorUpdatingImage + ex.Message);
-				TempData.SetActiveTab(ProfileEditActiveTab);
+				TempData.SetActiveTab(ProfileChangePictureActiveTab);
                 return RedirectToAction("Profile", model);
 			}
         }
@@ -263,6 +233,28 @@ namespace LoadVantage.Controllers
 		{
 			TempData.SetActiveTab(ProfileEditActiveTab);
 			return RedirectToAction(nameof(Profile));
+		}
+
+		private async Task GetLoadCounts(User user)
+		{
+			var loadCounts = await loadBoardService.GetLoadCountsForUserAsync(user.Id, user.Position);
+
+			if (user is Broker)
+			{
+				var brokerLoadCounts = loadCounts[nameof(Broker)];
+
+				ViewBag.CreatedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Created, 0);
+				ViewBag.PostedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Available, 0);
+				ViewBag.BookedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Booked, 0);
+				ViewBag.DeliveredLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Delivered, 0);
+			}
+			else // user is Dispatcher
+			{
+				var dispatcherLoadCounts = loadCounts[nameof(Dispatcher)];
+
+				ViewBag.BookedLoadsCount = dispatcherLoadCounts.GetValueOrDefault(LoadStatus.Booked, 0);
+				ViewBag.DeliveredLoadsCount = dispatcherLoadCounts.GetValueOrDefault(LoadStatus.Delivered, 0);
+			}
 		}
 
 
