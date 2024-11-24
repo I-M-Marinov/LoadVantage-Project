@@ -1,22 +1,8 @@
-﻿@using LoadVantage.Core.Contracts
-@using LoadVantage.Infrastructure.Data
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using static LoadVantage.Common.GeneralConstants.UserImage;
-@inject IUserService UserService
-@inject LoadVantageDbContext DbContext
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Core.Models.Profile;
 
-@model LoadVantage.Core.Models.Profile.ProfileViewModel
+@model ProfileViewModel
 
-@{
-	var user = UserService.GetCurrentUserAsync().Result;
-	var userImageUrl = DbContext.UsersImages.First(ui => ui.User == user).ImageUrl;
-
-  if (userImageUrl == null)
-  {
-	  userImageUrl = DefaultImagePath;
-  }
-
-}
 
 <header id="header" class="header fixed-top d-flex align-items-center">
 
@@ -167,7 +153,7 @@
 
 				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages" id="loadNotificationList">
 					<li class="dropdown-header">
-						<input type="hidden" id="userId" value="@user.Id.ToString()"/>
+						<input type="hidden" id="userId" value="@Model.Id" />
 						You have <span id="notificationCount">0</span> new notifications
 						<a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
 					</li>
@@ -182,14 +168,14 @@
 			<li class="nav-item dropdown pe-3">
 
 				<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-					<img src=@userImageUrl alt="User Image" class="rounded-circle">
-					<span class="d-none d-md-block dropdown-toggle ps-2">@user!.FirstName[0].@user.LastName</span>
+					<img src=@Model.UserImageUrl alt="User Image" class="rounded-circle">
+					<span class="d-none d-md-block dropdown-toggle ps-2">@Model!.FirstName[0].@Model.LastName</span>
 				</a><!-- End Profile Iamge Icon -->
 				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
 
 					<li class="dropdown-header">
-						<h6>@user.FullName</h6>
-						<span>@user.Position</span>
+						<h6>@Model.FullName</h6>
+						<span>@Model.Position</span>
 					</li>
 					<li>
 						<hr class="dropdown-divider">
@@ -198,7 +184,7 @@
 					<li>
 
 						<form method="get" action="@Url.Action("Profile", "Profile")">
-							<input type="hidden" name="userId" value="@user.Id"/>
+							<input type="hidden" name="userId" value="@Model.Id"/>
 							<button type="submit" class="dropdown-item d-flex align-items-center">
 								<i class="bi bi-person"></i>
 								<span>My Profile</span>
@@ -233,7 +219,7 @@
 
 					<li>
 						<form method="get" action="@Url.Action("Logout", "Account")">
-							<input type="hidden" name="brokerId" value="@user.Id"/>
+							<input type="hidden" name="brokerId" value="@Model.Id" />
 							<button type="submit" class="dropdown-item d-flex align-items-center">
 								<i class="bi bi-box-arrow-right"></i>
 								<span>Sign Out</span>
