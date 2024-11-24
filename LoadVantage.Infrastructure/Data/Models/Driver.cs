@@ -9,7 +9,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 	public class Driver
 	{
 		[Key]
-		public Guid DriverId { get; set; } = new Guid();
+		public Guid DriverId { get; set; }
 
 		[Required]
 		[StringLength(FirstNameMaxLength)]
@@ -30,7 +30,13 @@ namespace LoadVantage.Infrastructure.Data.Models
 
 		[ForeignKey(nameof(TruckId))]
 		public virtual Truck? Truck { get; set; }
+
+		public Guid? DispatcherId { get; set; }
+
+		[ForeignKey(nameof(DispatcherId))]
+		public virtual Dispatcher? Dispatcher { get; set; }
 		public bool IsAvailable { get; set; } = true;
+		public bool IsFired { get; set; } = false;
 		public string FullName => $"{FirstName} {LastName}"; // FullName combines FirstName and LastName
 
 	}

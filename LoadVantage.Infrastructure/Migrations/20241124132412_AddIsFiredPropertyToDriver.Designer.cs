@@ -4,6 +4,7 @@ using LoadVantage.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoadVantage.Infrastructure.Migrations
 {
     [DbContext(typeof(LoadVantageDbContext))]
-    partial class LoadVantageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241124132412_AddIsFiredPropertyToDriver")]
+    partial class AddIsFiredPropertyToDriver
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -620,15 +623,13 @@ namespace LoadVantage.Infrastructure.Migrations
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Driver", b =>
                 {
-                    b.HasOne("LoadVantage.Infrastructure.Data.Models.Dispatcher", "Dispatcher")
+                    b.HasOne("LoadVantage.Infrastructure.Data.Models.Dispatcher", null)
                         .WithMany("Drivers")
                         .HasForeignKey("DispatcherId");
 
                     b.HasOne("LoadVantage.Infrastructure.Data.Models.Truck", "Truck")
                         .WithOne("Driver")
                         .HasForeignKey("LoadVantage.Infrastructure.Data.Models.Driver", "TruckId");
-
-                    b.Navigation("Dispatcher");
 
                     b.Navigation("Truck");
                 });
