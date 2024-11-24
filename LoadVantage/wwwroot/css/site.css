@@ -1031,7 +1031,8 @@ transition: opacity 0.25s ease-out;
 /*-------------------------------------------------------------------------------------
 # TRUCK IS AVAILABLE OR NOT BADGES 
 --------------------------------------------------------------------------------------*/
-.truck-success {
+.truck-success,
+.driver-success{
     background-color: #28a745;
     color: ghostwhite !important;
     border: 1px black solid;
@@ -1040,7 +1041,8 @@ transition: opacity 0.25s ease-out;
     align-items: center;
 }
 
-.truck-danger {
+.truck-danger,
+.driver-danger{
     background-color: #dc3545;
     color: ghostwhite !important;
     border: 1px black solid;
@@ -1050,7 +1052,9 @@ transition: opacity 0.25s ease-out;
 }
 
 .truck-success i,
-.truck-danger i {
+.truck-danger i,
+.driver-success i,
+.driver-danger i{
     color: black;
     font-size: 1rem;
 }
