@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using LoadVantage.Core.Models.Profile;
 using LoadVantage.Core.ValidationAttributes;
 using static LoadVantage.Common.ValidationConstants.LoadValidations;
 
@@ -65,6 +66,7 @@ namespace LoadVantage.Core.Models.Load
         public DateTime? BookedDate { get; set; } // Nullable for posted/billed
         public DateTime? BilledDate { get; set; } // Nullable for posted/booked
 
+        public ProfileViewModel UserProfile { get; set; }
         public DriverInfoViewModel? DriverInfo { get; set; }
         public DispatcherInfoViewModel? DispatcherInfo { get; set; }
 	}
