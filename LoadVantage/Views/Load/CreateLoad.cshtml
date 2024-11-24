@@ -1,10 +1,7 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using LoadVantage.Core.Contracts
-@using LoadVantage.Core.Models.Profile
 @using LoadVantage.Extensions
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using LoadVantage.Core.Models.Load;
-@inject IUserService UserService
 
 @model LoadViewModel;
 
@@ -15,18 +12,15 @@
     var tempDataSuccessMessage = TempData.GetSuccessMessage();
     var tempDataErrorMessage = TempData.GetErrorMessage();
 
-    var user = UserService.GetCurrentUserAsync().Result;
-
 }
 
 <!-- ======= Header ======= -->
-@await Html.PartialAsync("_HeaderPartialView", new ProfileViewModel { Position = user.Position })
+@await Html.PartialAsync("_HeaderPartialView", Model.UserProfile)
 
 <!-- End Header -->
 
 <!-- ======= Sidebar ======= -->
-
-@await Html.PartialAsync("_SidebarPartialView", new ProfileViewModel { Position = user.Position });
+@await Html.PartialAsync("_SidebarPartialView", Model.UserProfile);
 
 <!-- End Sidebar -->
 
@@ -177,4 +171,17 @@
 			document.body.classList.toggle('toggle-sidebar');
 		});
 	}
+
+	// RESET BUTTON
+
+	document.getElementById("resetFormButton").addEventListener("click", function (event) {
+		event.preventDefault(); 
+
+		const form = document.getElementById("creteLoadForm");
+		form.reset(); 
+
+		const validationMessages = form.querySelectorAll(".badge-danger");
+		validationMessages.forEach(msg => msg.textContent = "");
+
+	});
 </script>
