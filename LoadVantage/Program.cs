@@ -53,7 +53,7 @@ builder.Services.AddIdentity<User, Role>(options =>
 		options.Password.RequireNonAlphanumeric = false;
 		options.Password.RequireUppercase = false;
 		options.Lockout.MaxFailedAccessAttempts = 5;
-		options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+		options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); 
 		options.User.RequireUniqueEmail = true; // Unique email address 
 	})
 	.AddEntityFrameworkStores<LoadVantageDbContext>() 
@@ -81,9 +81,10 @@ builder.Services.AddScoped<ILoadStatusService, LoadStatusService>();						// Add
 builder.Services.AddScoped<ILoadBoardService, LoadBoardService>();							// Add the LoadBoard Service 
 builder.Services.AddScoped<IChatService, ChatService>();									// Add the Chat Service 
 builder.Services.AddScoped<ITruckService, TruckService>();									// Add the Truck Service 
-builder.Services.AddSignalR();																// Add SignalR
+builder.Services.AddScoped<IDriverService, DriverService>();								// Add the Driver Service 
+builder.Services.AddSignalR();                                                              // Add SignalR
 
-
+// =================================================== // 
 
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
@@ -173,6 +174,11 @@ app.UseEndpoints(endpoints =>
 		name: "truck",
 		pattern: "Truck/{action}/{id?}",
 		defaults: new { controller = "Truck", action = "ShowTrucks" });
+
+	endpoints.MapControllerRoute(
+		name: "driver",
+		pattern: "Driver/{action}/{id?}",
+		defaults: new { controller = "Driver", action = "ShowDrivers" });
 
 	endpoints.MapHub<LoadHub>("/loadHub");
 	endpoints.MapHub<ChatHub>("/chatHub");
