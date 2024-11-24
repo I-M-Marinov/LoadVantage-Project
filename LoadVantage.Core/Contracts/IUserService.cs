@@ -50,7 +50,7 @@ namespace LoadVantage.Core.Contracts
 		/// </summary>
 		Task<ProfileViewModel> GetUserInformation(Guid userId);
 		/// <summary>
-		/// Gets the User information and maps some of it the model for the char section
+		/// Gets the User information and maps some of it the model for the chat section
 		/// </summary>
 		Task<UserChatViewModel> GetChatUserInfoAsync(Guid brokerId);
 		/// <summary>

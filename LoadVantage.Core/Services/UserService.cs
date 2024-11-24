@@ -205,7 +205,6 @@ namespace LoadVantage.Core.Services
 
 	        return user;
         }
-
 		public async Task UpdateUserImageAsync(Guid userId, IFormFile file)
         {
             var userImage = await context.UsersImages
