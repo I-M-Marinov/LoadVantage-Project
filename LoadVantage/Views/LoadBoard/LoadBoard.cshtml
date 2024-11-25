@@ -70,7 +70,7 @@
 			                    <button class="nav-link" id="pills-booked-tab" data-bs-toggle="pill" data-bs-target="#pills-booked" type="button" role="tab" aria-controls="pills-booked" aria-selected="false">Booked Loads</button>
 		                    </li>
 		                    <li class="nav-item" role="presentation">
-			                    <button class="nav-link" id="pills-billed-tab" data-bs-toggle="pill" data-bs-target="#pills-billed" type="button" role="tab" aria-controls="pills-billed" aria-selected="false">Billed Loads</button>
+			                    <button class="nav-link" id="pills-billed-tab" data-bs-toggle="pill" data-bs-target="#pills-billed" type="button" role="tab" aria-controls="pills-billed" aria-selected="false">Delivered Loads</button>
 		                    </li>
 	                    </ul>
 	                    <div class="tab-content" id="myTabContent">
@@ -133,80 +133,16 @@
 		                    
 		                    <div class="tab-pane fade" id="pills-booked" role="tabpanel" aria-labelledby="pills-booked-tab">
 			                    <div class="table-responsive">
-				                    <table class="table datatable">
-					                    <thead>
-					                    <tr>
-						                    <th>Origin</th>
-						                    <th>State</th>
-						                    <th>Destination</th>
-						                    <th>State</th>
-						                    <th>Pickup Time</th>
-						                    <th>Delivery Time</th>
-						                    <th>Price</th>
-						                    <th>Distance</th>
-						                    <th>Driver</th>
-						                    <th class="hidden-th">hidden</th>
-					                    </tr>
-					                    </thead>
-					                    <tbody>
-					                    @foreach (var load in Model.BookedLoads)
-					                    {
-						                    <tr>
-							                    <td>@load.OriginCity</td>
-							                    <td>@load.OriginState</td>
-							                    <td>@load.DestinationCity</td>
-							                    <td>@load.DestinationState</td>
-							                    <td>@load.PickupTime.ToString("dd/MM/yyyy HH:mm")</td>
-							                    <td>@load.DeliveryTime.ToString("dd/MM/yyyy HH:mm")</td>
-							                    <td>$@load.PostedPrice</td>
-							                    <td>@(load.Distance.HasValue ? Math.Round(load.Distance.Value) : 0)</td>
-							                    <td>@load.DriverId</td>
-							                    <td>
-								                    <form method="get" action="@Url.Action("LoadDetails", "Load")">
-									                    <input type="hidden" name="loadId" value="@load.Id"/>
-									                    <button class="btn btn-warning view-button">
-										                    <i class="ri-clipboard-line"></i>
-										                    <span>View</span>
-									                    </button>
-								                    </form>
-							                    </td>
-						                    </tr>
-					                    }
 
-					                    </tbody>
-				                    </table>
+				                    @await Html.PartialAsync("_BookedLoadsTablePartial", Model.BookedLoads)
+
 			                    </div>
 		                    </div>
 		                    <div class="tab-pane fade" id="pills-billed" role="tabpanel" aria-labelledby="pills-billed-tab">
 			                    <div class="table-responsive">
-				                    <table class="table datatable">
-					                    <thead>
-					                    <tr>
-						                    <th>Origin</th>
-						                    <th>State</th>
-						                    <th>Destination</th>
-						                    <th>State</th>
-						                    <th>Distance</th>
-						                    <th>Price</th>
-						                    <th>Billed On</th>
-					                    </tr>
-					                    </thead>
-					                    <tbody>
-					                    @foreach (var load in Model.BilledLoads)
-					                    {
-						                    <tr>
-							                    <td>@load.OriginCity</td>
-							                    <td>@load.OriginState</td>
-							                    <td>@load.DestinationCity</td>
-							                    <td>@load.DestinationState</td>
-							                    <td>@($"${(load.PostedPrice / (decimal)load.Distance):F2}")</td>
-							                    <td>@load.BilledAmount</td>
-							                    <td>@load.BilledDate</td>
-						                    </tr>
-					                    }
 
-					                    </tbody>
-				                    </table>
+									@await Html.PartialAsync("_DeliveredLoadsTablePartial", Model.DeliveredLoads)
+
 			                    </div>
 		                    </div>
 
