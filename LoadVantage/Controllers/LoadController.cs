@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
-using LoadVantage.Common.Enums;
+using LoadVantage.Core.Hubs;
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Load;
+using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Extensions;
 using LoadVantage.Filters;
+using LoadVantage.Common.Enums;
+
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
-using LoadVantage.Core.Hubs;
-using LoadVantage.Core.Models.Profile;
-using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.SignalR;
+
 
 namespace LoadVantage.Controllers
 {
     [Authorize]
-    [Route("[controller]/[action]")]
     public class LoadController : Controller
     {
 	    private readonly IProfileService profileService;
@@ -87,10 +87,11 @@ namespace LoadVantage.Controllers
         public async Task<IActionResult> CreateLoad(LoadViewModel model)
         {
             model.Status = LoadStatus.Created.ToString();
+            Guid userId = User.GetUserId().Value;
+            var profile = await userService.GetUserInformation(userId);
+            model.UserProfile = profile;
 
-            Guid? userId = User.GetUserId();
-
-            if (!ModelState.IsValid)
+			if (!ModelState.IsValid)
             {
                 return View(model);
             }
@@ -110,8 +111,8 @@ namespace LoadVantage.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, ErrorCreatingLoad + ex.Message);
-                return View("LoadDetails", model);
+               TempData.SetErrorMessage(ex.Message);
+                return View("CreateLoad", model);
             }
 
         }
@@ -432,7 +433,7 @@ namespace LoadVantage.Controllers
 	        }
 	        catch (Exception ex)
 	        {
-		        TempData["Error"] = $"An error occurred: {ex.Message}";
+                TempData.SetErrorMessage(ErrorDeliveringLoad);
 		        return RedirectToAction("LoadDetails", new { id = loadId });
 	        }
         }
