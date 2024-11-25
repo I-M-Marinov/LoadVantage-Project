@@ -1,0 +1,69 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Core.Models.Load;
+
+@model IEnumerable<DeliveredLoadViewModel>
+
+<table class="table datatable">
+	<thead>
+	<tr>
+		<th>Load From-To</th>
+		<th>Distance</th>
+		<th>Price</th>
+		<th>Broker</th>
+		<th>Dispatcher</th>
+		<th>Driver</th>
+		<th>Delivered On</th>
+	</tr>
+	</thead>
+	<tbody>
+	@foreach (var load in Model)
+	{
+		<tr>
+			<td>@load.LoadLocations</td>
+			<td>@(load.Distance.HasValue ? Math.Round(load.Distance.Value) : 0)</td>
+			<td>@load.Price</td>
+			<td>@load.BrokerName</td>
+			<td>@load.DispatcherName</td>
+			<td>@load.DriverName</td>
+			<td>@load.DeliveredOn</td>
+		</tr>
+	}
+
+	</tbody>
+</table>
+
+<script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+
+
+<script>
+
+	function initializeDataTables(selector = '.datatable') {
+		const datatables = document.querySelectorAll(selector);
+
+		datatables.forEach(datatable => {
+			new simpleDatatables.DataTable(datatable, {
+				perPageSelect: [5, 10, 15, ["All", -1]],
+				columns: [
+					{
+						select: 2,
+						sortSequence: ["desc", "asc"]
+					},
+					{
+						select: 3,
+						sortSequence: ["desc"]
+					},
+					{
+						select: 4,
+						cellClass: "green",
+						headerClass: "red"
+					}
+				]
+			});
+		});
+	}
+
+	initializeDataTables(); 
+
+
+</script>
+
