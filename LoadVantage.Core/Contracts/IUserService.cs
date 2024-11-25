@@ -77,6 +77,10 @@ namespace LoadVantage.Core.Contracts
 		/// Removes the User's image and sets the default user image in its place
 		/// </summary>
 		Task DeleteUserImageAsync(Guid userId, Guid imageUrl);
+		/// <summary>
+		/// Retrieves the user image url string by user Id
+		/// </summary>
+		Task<string> GetUserImageUrlAsync(Guid userId);
 
     }
 

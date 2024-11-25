@@ -168,6 +168,8 @@ namespace LoadVantage.Core.Services
 		        throw new Exception(UserNotFound);
 	        }
 
+	        var userImage = await GetUserImageUrlAsync(userId);
+
 			var viewModel = new ProfileViewModel
 	        {
 		        Id = user.Id.ToString(),
@@ -178,7 +180,7 @@ namespace LoadVantage.Core.Services
 		        CompanyName = user.CompanyName!,
 		        Position = user.Position!,
 		        PhoneNumber = user.PhoneNumber!,
-		        UserImageUrl = user.UserImage!.ImageUrl,
+		        UserImageUrl = userImage,
 		        ChangePasswordViewModel = new ChangePasswordViewModel(),
 		        ImageFileUploadModel = new ImageFileUploadModel()
 	        };
@@ -294,6 +296,16 @@ namespace LoadVantage.Core.Services
                 await context.SaveChangesAsync();
             }
 
+        }
+
+        public async Task<string> GetUserImageUrlAsync(Guid userId)
+        {
+	        var userImage = await context.UsersImages
+		        .Where(ui => ui.UserId == userId)
+		        .Select(ui => ui.ImageUrl)
+		        .FirstOrDefaultAsync();
+
+	        return userImage ?? DefaultImagePath;
         }
 	}
 
