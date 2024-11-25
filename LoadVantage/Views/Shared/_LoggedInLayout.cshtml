@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - LoadVantage</title>
-	
+
     <style>
         body.loading {
             visibility: hidden;
@@ -88,11 +88,27 @@
 <div class="container loading" >
 	@RenderBody()
 </div>
+
+
+@{
+	int currentYear = DateTime.Now.Year;
+}
 	
 <footer id="footer" class="footer">
-	<div class="copyright">
-		&copy; 2024 - LoadVantage 
-	</div>
+	@if (currentYear > 2024)
+	{
+		<div class="copyright">
+			<i class="bx bx-registered"></i>
+			<span> LoadVantage - 2024-@currentYear</span>
+		</div>
+	}
+	else
+	{
+		<div class="copyright">
+			<i class="bx bx-registered"></i>
+			<span> LoadVantage - 2024</span>
+		</div>
+	}
 
 </footer><!-- End Footer -->
 
