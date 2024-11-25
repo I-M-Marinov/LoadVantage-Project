@@ -11,8 +11,8 @@ namespace LoadVantage.Core.Contracts
 		Task<IEnumerable<LoadViewModel>> GetAllPostedLoadsAsync(Guid userId); // All dispatchers viewing posted loads
 		Task<IEnumerable<LoadViewModel>> GetAllBookedLoadsForBrokerAsync(Guid userId);
 		Task<IEnumerable<LoadViewModel>> GetAllBookedLoadsForDispatcherAsync(Guid userId);
-		Task<IEnumerable<LoadViewModel>> GetAllBilledLoadsForBrokerAsync(Guid userId);
-		Task<IEnumerable<LoadViewModel>> GetAllBilledLoadsForDispatcherAsync(Guid userId);
+		Task<IEnumerable<DeliveredLoadViewModel>> GetAllDeliveredLoadsForBrokerAsync(Guid userId);
+		Task<IEnumerable<DeliveredLoadViewModel>> GetAllDeliveredLoadsForDispatcherAsync(Guid userId);     
 		Task<LoadBoardViewModel> GetBrokerLoadBoardAsync(Guid userId);
 		Task<LoadBoardViewModel> GetDispatcherLoadBoardAsync(Guid userId);
 		Task<Dictionary<LoadStatus, int>> GetLoadCountsForBrokerAsync(Guid brokerId);

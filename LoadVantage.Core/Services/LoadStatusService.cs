@@ -361,10 +361,7 @@ namespace LoadVantage.Core.Services
 		        Notes = null
 	        };
 
-	        // Persist DeliveredLoads and remove BookedLoad
 	        context.DeliveredLoads.Add(deliveredLoad);
-
-
 	        await context.SaveChangesAsync();
 	        
 	        return true;

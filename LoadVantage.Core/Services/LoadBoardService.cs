@@ -15,18 +15,23 @@ namespace LoadVantage.Core.Services
 	[Authorize]
 	public class LoadBoardService : ILoadBoardService
 	{
-		private readonly LoadVantageDbContext dbContext;
+		private readonly LoadVantageDbContext context;
 		private readonly UserManager<User> userManager;
+		public readonly IProfileService profileService;
 
-		public LoadBoardService(LoadVantageDbContext _context, UserManager<User> _userManager)
+
+
+		public LoadBoardService(LoadVantageDbContext _context, UserManager<User> _userManager, IProfileService _profileService)
 		{
-			dbContext = _context;
+			context = _context;
 			userManager = _userManager;
+			profileService = _profileService;
+
 		}
 
 		public async Task<IEnumerable<LoadViewModel>> GetAllCreatedLoadsForBrokerAsync(Guid userId)
 		{
-			var createdLoads = await dbContext.Loads
+			var createdLoads = await context.Loads
 				.Where(load => load.Status == LoadStatus.Created && load.BrokerId == userId)
 				.OrderBy(l => l.PickupTime)
 				.ThenByDescending(l => l.OriginCity)
@@ -52,7 +57,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<IEnumerable<LoadViewModel>> GetAllPostedLoadsForBrokerAsync(Guid userId)
 		{
-			var postedLoads = await dbContext.Loads
+			var postedLoads = await context.Loads
 				.Where(load => load.Status == LoadStatus.Available && load.BrokerId == userId)
 				.ToListAsync();
 
@@ -75,7 +80,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<IEnumerable<LoadViewModel>> GetAllPostedLoadsAsync(Guid userId)
 		{
-			var postedLoads = await dbContext.Loads
+			var postedLoads = await context.Loads
 				.Include(load => load.PostedLoad)
 				.Where(load => load.Status == LoadStatus.Available)
 				.OrderByDescending(load => load.PostedLoad.PostedDate)
@@ -101,13 +106,14 @@ namespace LoadVantage.Core.Services
 		public async Task<IEnumerable<LoadViewModel>> GetAllBookedLoadsForBrokerAsync(Guid userId)
 		{
 			// Retrieve the booked loads for the broker
-			var bookedLoads = await dbContext.Loads
-				.Where(load => load.BookedLoad != null && load.BookedLoad.BrokerId == userId)
+			var bookedLoads = await context.Loads
 				.Include(load => load.BookedLoad)
 				.ThenInclude(bookedLoad => bookedLoad.Dispatcher)
 				.Include(load => load.BookedLoad)
 				.ThenInclude(bookedLoad => bookedLoad.Driver)
 				.ThenInclude(driver => driver.Truck)
+				.Where(load => load.BookedLoad != null && load.BookedLoad.BrokerId == userId)
+				.Where(load => load.Status == LoadStatus.Booked)
 				.ToListAsync();
 
 			// Select and map to LoadViewModel
@@ -125,6 +131,8 @@ namespace LoadVantage.Core.Services
 				Weight = load.Weight,
 				Status = load.Status.ToString(),
 				BrokerId = load.BrokerId,
+				DispatcherId = load.BookedLoad.DispatcherId,
+				DriverId = load.BookedLoad.DriverId,
 
 				// Include Dispatcher Info if available
 				DispatcherInfo = load.BookedLoad.DispatcherId != null
@@ -152,9 +160,10 @@ namespace LoadVantage.Core.Services
 
 		public async Task<IEnumerable<LoadViewModel>> GetAllBookedLoadsForDispatcherAsync(Guid userId)
 		{
-			var bookedLoads = await dbContext.Loads
+			var bookedLoads = await context.Loads
 				.Include(l => l.BookedLoad)
 				.Where(load => load.BookedLoad!.DispatcherId == userId)
+				.Where(load => load.Status == LoadStatus.Booked)
 				.ToListAsync();
 
 			return bookedLoads.Select(load => new LoadViewModel()
@@ -177,53 +186,53 @@ namespace LoadVantage.Core.Services
 			});
 		}
 
-		public async Task<IEnumerable<LoadViewModel>> GetAllBilledLoadsForBrokerAsync(Guid userId)
+		public async Task<IEnumerable<DeliveredLoadViewModel>> GetAllDeliveredLoadsForBrokerAsync(Guid userId)
 		{
-			var billedLoads = await dbContext.Loads
-				.Where(load => load.BilledLoad != null && load.BrokerId == userId)
+			var deliveredLoads = await context.Loads
+				.Include(l => l.BookedLoad)
+				.Include(l => l.DeliveredLoad)
+				.Include(l => l.BookedLoad.Dispatcher)
+				.Include(l => l.BookedLoad.Driver)
+				.Include(l => l.Broker)
+				.Where(load => load.DeliveredLoad != null && load.BrokerId == userId)
 				.ToListAsync();
 
-			return billedLoads.Select(load => new LoadViewModel
+
+			return deliveredLoads.Select(load => new DeliveredLoadViewModel
 			{
-				Id = load.Id,
-				OriginCity = load.OriginCity,
-				OriginState = load.OriginState,
-				DestinationCity = load.DestinationCity,
-				DestinationState = load.DestinationState,
-				PickupTime = load.PickupTime,
-				DeliveryTime = load.DeliveryTime,
-				PostedPrice = load.Price,
+				Id = load.DeliveredLoad.Id,
+				LoadLocations = $"{load.OriginCity}, {load.OriginState} - {load.DestinationCity},{load.DestinationState}",
 				Distance = load.Distance,
-				Weight = load.Weight,
-				Status = load.Status.ToString(),
-				BrokerId = load.BrokerId,
+				Price = load.Price,
+				DeliveredOn = load.DeliveredLoad.DeliveredDate,
+				BrokerName = load.Broker.FullName,
+				DispatcherName = load.BookedLoad.Dispatcher.FullName,
+				DriverName = load.BookedLoad.Driver.FullName
 			});
+			
 		}
 
-		public async Task<IEnumerable<LoadViewModel>> GetAllBilledLoadsForDispatcherAsync(Guid userId)
+		public async Task<IEnumerable<DeliveredLoadViewModel>> GetAllDeliveredLoadsForDispatcherAsync(Guid userId)
 		{
-			var billedLoads = await dbContext.Loads
-				.Include(l => l.BilledLoad)
+			var deliveredLoads = await context.Loads
 				.Include(l => l.BookedLoad)
-				.Where(load =>
-					load.BookedLoad != null && load.BookedLoad.DispatcherId == userId &&
-					load.Status == LoadStatus.Booked)
+				.Include(l => l.DeliveredLoad)
+				.Include(l => l.BookedLoad.Dispatcher)
+				.Include(l => l.BookedLoad.Driver)
+				.Include(l => l.Broker)
+				.Where(load => load.DeliveredLoad != null && load.BookedLoad.DispatcherId == userId)
 				.ToListAsync();
 
-			return billedLoads.Select(load => new LoadViewModel
+			return deliveredLoads.Select(load => new DeliveredLoadViewModel
 			{
-				Id = load.Id,
-				OriginCity = load.OriginCity,
-				OriginState = load.OriginState,
-				DestinationCity = load.DestinationCity,
-				DestinationState = load.DestinationState,
-				PickupTime = load.PickupTime,
-				DeliveryTime = load.DeliveryTime,
-				PostedPrice = load.Price,
+				Id = load.DeliveredLoad.Id,
+				LoadLocations = $"{load.OriginCity}, {load.OriginState} - {load.DestinationCity},{load.DestinationState}",
 				Distance = load.Distance,
-				Weight = load.Weight,
-				Status = load.Status.ToString(),
-				BrokerId = load.BrokerId,
+				Price = load.Price,
+				DeliveredOn = load.DeliveredLoad.DeliveredDate,
+				BrokerName = load.Broker.FullName,
+				DispatcherName = load.BookedLoad.Dispatcher.FullName,
+				DriverName = load.BookedLoad.Driver.FullName
 			});
 		}
 
@@ -235,22 +244,9 @@ namespace LoadVantage.Core.Services
 			var createdLoads = await GetAllCreatedLoadsForBrokerAsync(userId);
 			var postedLoads = await GetAllPostedLoadsForBrokerAsync(userId);
 			var bookedLoads = await GetAllBookedLoadsForBrokerAsync(userId);
-			var billedLoads = await GetAllBilledLoadsForBrokerAsync(userId);
+			var deliveredLoads = await GetAllDeliveredLoadsForBrokerAsync(userId);
 
-			var userImage = await dbContext.UsersImages.SingleOrDefaultAsync(ui => ui.UserId == userId);
-
-
-			var profileModel = new ProfileViewModel
-			{
-				Username = user.UserName,
-				Email = user.Email,
-				FirstName = user.FirstName,
-				LastName = user.LastName,
-				CompanyName = user.CompanyName,
-				Position = user.Position,
-				PhoneNumber = user.PhoneNumber,
-				UserImageUrl = userImage?.ImageUrl
-			};
+			var userProfile = await profileService.GetUserInformation(userId);
 
 			var loadBoardViewModel = new LoadBoardViewModel
 			{
@@ -262,8 +258,8 @@ namespace LoadVantage.Core.Services
 				CreatedLoads = createdLoads.ToList(),
 				PostedLoads = postedLoads,
 				BookedLoads = bookedLoads.ToList(),
-				BilledLoads = billedLoads.ToList(),
-				Profile = profileModel
+				DeliveredLoads = deliveredLoads,
+				Profile = userProfile
 			};
 
 			return loadBoardViewModel;
@@ -274,25 +270,13 @@ namespace LoadVantage.Core.Services
 			var user = await userManager.Users
 				.FirstOrDefaultAsync(u => u.Id == userId);
 
-			var createdLoads = await GetAllCreatedLoadsForBrokerAsync(userId);
+			var createdLoads = new List<LoadViewModel>();
 			var postedLoads = await GetAllPostedLoadsAsync(userId);
 			var bookedLoads = await GetAllBookedLoadsForDispatcherAsync(userId);
-			var billedLoads = await GetAllBilledLoadsForBrokerAsync(userId);
+			var deliveredLoads = await GetAllDeliveredLoadsForDispatcherAsync(userId);
 
-			var userImage = await dbContext.UsersImages.SingleOrDefaultAsync(ui => ui.UserId == userId);
+			var userProfile = await profileService.GetUserInformation(userId);
 
-
-			var profileModel = new ProfileViewModel
-			{
-				Username = user.UserName,
-				Email = user.Email,
-				FirstName = user.FirstName,
-				LastName = user.LastName,
-				CompanyName = user.CompanyName,
-				Position = user.Position,
-				PhoneNumber = user.PhoneNumber,
-				UserImageUrl = userImage?.ImageUrl
-			};
 
 			return new LoadBoardViewModel
 			{
@@ -301,17 +285,17 @@ namespace LoadVantage.Core.Services
 				LastName = user.LastName,
 				CompanyName = user.CompanyName,
 				Position = user.Position,
-				CreatedLoads = createdLoads.ToList(),
+				CreatedLoads = createdLoads,
 				PostedLoads = postedLoads,
 				BookedLoads = bookedLoads.ToList(),
-				BilledLoads = billedLoads.ToList(),
-				Profile = profileModel
+				DeliveredLoads = deliveredLoads.ToList(),
+				Profile = userProfile
 			};
 		}
 
 		public async Task<Dictionary<LoadStatus, int>> GetLoadCountsForBrokerAsync(Guid brokerId)
 		{
-			var loadCounts = await dbContext.Loads
+			var loadCounts = await context.Loads
 				.Where(load => load.BrokerId == brokerId)
 				.AsNoTracking()
 				.GroupBy(load => load.Status)
@@ -327,9 +311,9 @@ namespace LoadVantage.Core.Services
 
 		public async Task<Dictionary<LoadStatus, int>> GetLoadCountsForDispatcherAsync(Guid dispatcherId)
 		{
-			var loadCounts = await dbContext.Loads
+			var loadCounts = await context.Loads
 				.Include(l => l.BookedLoad)
-				.Include(l => l.BilledLoad)
+				.Include(l => l.DeliveredLoad)
 				.Where(load => load.BookedLoad!.DispatcherId == dispatcherId)
 				.AsNoTracking()
 				.GroupBy(load => load.Status)
