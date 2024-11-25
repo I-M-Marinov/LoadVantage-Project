@@ -6,12 +6,14 @@
 @model TrucksViewModel
 
 @{
-    
+
 	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 	ViewData["Title"] = "Trucks";
 
 	var tempDataSuccessMessage = TempData.GetSuccessMessage();
 	var tempDataErrorMessage = TempData.GetErrorMessage();
+
+	int counter = 1;
 }
 
 <!-- ======= Header ======= -->
@@ -24,7 +26,7 @@
 
 	<div class="pagetitle">
 		<h1>Trucks</h1>
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTruckModal">
+		<button type="button" id="addNewTruck" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTruckModal">
 			<i class="bi bi-truck"></i>
 			Add Truck
 		</button>	
@@ -180,6 +182,8 @@
 				<table class="table table-bordered table-hover table-sm">
 					<thead>
 					<tr>
+							
+						<th class="text-center hidden-th" scope="col" hidden>TruckId</th>
 						<th class="text-center" scope="col">Truck Number</th>
 						<th class="text-center" scope="col">Make</th>
 						<th class="text-center" scope="col">Model</th>
@@ -193,6 +197,7 @@
 					@foreach (var truck in Model.Trucks)
 					{
 						<tr>
+							<td class=".d-none" hidden>@truck.Id</td>
 							<td class="text-center">@truck.TruckNumber</td>
 							<td class="text-center">@truck.Make</td>
 							<td class="text-center">@truck.Model</td>
@@ -204,10 +209,47 @@
 								</span>
 							</td>
 							<td class="text-center">
-								<button type="button" class="btn btn-outline-primary edit-truck-btn btn-sm" data-id="@truck.Id">Edit</button>
-								<button type="button" class="btn btn-outline-danger btn-sm truck-delete-btn" data-truck-id="@truck.Id">Delete</button>
+								<div id="actionButtons" class="d-flex p-2 gap-1 justify-content-center justify-items-center">
+									@if (truck.IsAvailable && truck.DriverName == "N/A")
+									{
+										<button type="button" class="btn btn-outline-primary edit-truck-btn btn-sm " data-id="@truck.Id">Edit</button>
+										<button type="button" class="btn btn-outline-danger btn-sm truck-delete-btn " data-truck-id="@truck.Id">Delete</button>
+									}
+
+									@if (!truck.IsAvailable && truck.DriverId != null) 
+									{
+										<form asp-action="ParkTruck" asp-controller="Truck" method="post">
+											@Html.AntiForgeryToken()
+											<input type="hidden" name="truckId" value="@truck.Id" />
+											<input type="hidden" name="driverId" value="@truck.DriverId" />
+												<button type="submit" class="btn btn-outline-warning btn-sm driver-unassign-btn ">Park</button>
+										</form>
+									}
+								</div>
+
+								<div id="asignDriverDropdown">
+									@if (truck.IsAvailable)
+									{
+										<form asp-action="AssignDriverToTruck" asp-controller="Truck" method="post">
+											@Html.AntiForgeryToken()
+											<input type="hidden" name="TruckId" value="@truck.Id" />
+											<select id="driverDropdown_@counter" name="driverId" class="driverDropdown form-select form-select-lg btn btn-outline-primary ">
+												<option value="" disabled selected>Assign a Driver</option>
+											</select>
+											
+											
+											<button type="submit" id="asignDriverBtn" class="btn btn-success">
+												<i class="ri-save-3-fill"></i>
+											</button>
+										</form>
+									}
+
+								</div>
+									
 							</td>
-						</tr>
+
+						</tr> 
+						counter++;
 					}
 
 					</tbody>
@@ -226,7 +268,9 @@
 
 <script>
 
-	// Populate the Edit Truck Form 
+	/*-------------------------------------------------------------------------------------
+	# POPULATE EDIT TRUCK FORM 
+	--------------------------------------------------------------------------------------*/
 
 	document.addEventListener("DOMContentLoaded", function () {
 		document.addEventListener("click", function (event) {
@@ -260,6 +304,40 @@
 			document.body.classList.toggle('toggle-sidebar');
 		});
 	}
+
+	/*-------------------------------------------------------------------------------------
+	# POPULATE THE ASSIGN DRIVER DROPDOWN 
+	--------------------------------------------------------------------------------------*/
+
+	document.addEventListener("DOMContentLoaded", async function () {
+		const dropdowns = document.querySelectorAll('[id^="driverDropdown_"]');
+
+		try {
+			const response = await fetch('/Driver/GetAvailableDrivers');
+			const drivers = await response.json();
+
+			dropdowns.forEach(dropdown => {
+				dropdown.innerHTML = '';
+
+				const defaultOption = document.createElement("option");
+				defaultOption.value = "";
+				defaultOption.textContent = "Select a driver";
+				dropdown.appendChild(defaultOption);
+
+				drivers.forEach(driver => {
+					const option = document.createElement("option");
+					option.value = driver.id;
+					option.textContent = driver.name;
+					dropdown.appendChild(option);
+				});
+			});
+
+		} catch (error) {
+			console.log(error); // debugging purposes only 
+		}
+	});
+
+
 
 
 	/*-------------------------------------------------------------------------------------
