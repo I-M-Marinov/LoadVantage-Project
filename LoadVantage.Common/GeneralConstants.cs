@@ -41,8 +41,7 @@ namespace LoadVantage.Common
 
             // LOAD 
 
-            public const string LoadDoesNotExist = "The load you are looking for does not exist.";
-			public const string LoadCouldNotBeRetrieved = "Load could not be retrieved.";
+            public const string LoadCouldNotBeRetrieved = "Load could not be retrieved.";
             public const string LoadIdInvalid = "Load id is not valid.";
             public const string ErrorCancellingLoad = "There was an error cancelling the load";
 
@@ -60,6 +59,7 @@ namespace LoadVantage.Common
 
             public const string UnableToBookTheLoad = "Unable to book the load.It may no longer be available.";
             public const string UnableToMarkLoadDelivered = "Unable to mark the load as delivered. Ensure the load is in the Booked status.";
+            public const string ErrorDeliveringLoad = "There was an error and the load was not marked as delivered.";
 
 			// USER
 
@@ -92,9 +92,10 @@ namespace LoadVantage.Common
 			public const string DriverWasNotCreated = "The driver was not created successfully.";
 			public const string DriverCreateError = "Error ! Driver was not created.";
 			public const string DriverDoesNotExist = "The driver you are looking for does not exist.";
+			public const string DriverWasNotAssignedToTheLoad = "Failed to assign the driver to the load. Please check the details and try again.";
 
 
-		}
+        }
 
 		public static class SuccessMessages
         {
@@ -128,7 +129,8 @@ namespace LoadVantage.Common
             public const string DriverWasAddedSuccessfully = "The driver was added to your company successfully.";
             public const string DriverWasUpdatedSuccessfully = "The driver was updated successfully.";
             public const string DriverWasFiredSuccessfully = "The driver was fired successfully.";
-		}
+            public const string DriverWasAssignedToLoadSuccessfully = "Driver assigned to the load successfully!";
+        }
 
         public static class ActiveTabs
         {

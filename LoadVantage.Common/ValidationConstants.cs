@@ -33,6 +33,8 @@
             public const double WeightMinValue = 1.00;
             public const double WeightMaxValue = 48000.00;
 
+            public const int DeliveredLoadNotesMaxLength = 2000;
+
             public const string OriginCityRequired = "Origin city is required.";
             public const string OriginStateRequired = "Origin state is required.";
             public const string DestinationCityRequired = "Destination city is required.";
@@ -88,10 +90,15 @@
             public const int UserImagePublicIdMaxLength = 1000;
 
 
+			// CHAT MESSAGES 
 
-	        // NEW PASSWORD 
+			public const int MessageMaxValue = 2000;
 
-	        public const byte NewPasswordMinLength = 6;
+
+
+			// NEW PASSWORD 
+
+			public const byte NewPasswordMinLength = 6;
 	        public const byte NewPasswordMaxLength = 30;
 
 	        public const string UsernameRequired = "Username is required.";
