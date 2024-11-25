@@ -60,22 +60,8 @@ namespace LoadVantage.Core.Services
         }
         public async Task<Guid> CreateLoadAsync(LoadViewModel model, Guid brokerId)
         {
-            double calculatedDistance = 0;
-
-            if (model != null)
-            {
-                try
-                {
-                    calculatedDistance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(model.OriginCity, model.OriginState, model.DestinationCity, model.DestinationState);
-                }
-                catch (Exception e)
-                {
-                    logger.LogError(e, $"Error calculating distance!");
-                    calculatedDistance = -1;
-                    throw;
-                }
-            }
-
+            double calculatedDistance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(model.OriginCity, model.OriginState, model.DestinationCity, model.DestinationState);
+	        
             var (originFormattedCity, originFormattedState) = FormatLocation(model.OriginCity, model.OriginState);
             var (destinationFormattedCity, destinationFormattedState) = FormatLocation(model.DestinationCity, model.DestinationState);
 
@@ -283,6 +269,7 @@ namespace LoadVantage.Core.Services
         {
 	        var load = await context.Loads
 		        .Include(l => l.BookedLoad)
+		        .ThenInclude(bl => bl!.Driver)
 		        .FirstOrDefaultAsync(l => l.Id == loadId);
 
 	        if (load == null)
@@ -298,6 +285,11 @@ namespace LoadVantage.Core.Services
 	        if (load.BookedLoad == null || load.Status != LoadStatus.Booked)
 	        {
 		        throw new InvalidOperationException("This load is not currently booked.");
+	        }
+
+	        if (load.BookedLoad.DriverId != null)
+	        {
+		        load.BookedLoad.Driver.IsBusy = false; // Put the driver's IsBusy status to false, so he shows up available for the dispatcher again. 
 	        }
 
 	        context.BookedLoads.Remove(load.BookedLoad); // Remove the BookedLoad entity 
@@ -335,33 +327,49 @@ namespace LoadVantage.Core.Services
 
 			return result > 0; // Return true if there were affected rows returned from the DB
 		}
-		public async Task<bool> LoadDeliveredAsync(Guid loadId)
+        public async Task<bool> LoadDeliveredAsync(Guid loadId)
         {
-            var load = await context.Loads
-                .Include(l => l.BookedLoad)
-                .Include(l => l.BilledLoad)
-                .FirstOrDefaultAsync(l => l.Id == loadId);
+	        var load = await context.Loads
+		        .Include(l => l.BookedLoad)
+		        .FirstOrDefaultAsync(l => l.Id == loadId);
 
-            if (load == null || load.Status != LoadStatus.Booked)
-            {
-                return false; // Only allow marking as delivered if the load is "Booked"
-            }
+	        if (load == null || load.Status != LoadStatus.Booked || load.BookedLoad == null)
+	        {
+		        return false; 
+	        }
 
-            // Update status and add BilledLoad record
-            load.Status = LoadStatus.Delivered;
-            load.BilledLoad = new BilledLoad
-            {
-                LoadId = load.Id,
-				BilledAmount = load.Price,
-				BilledDate = DateTime.Now
-            };
+	        if (!load.BookedLoad.DriverId.HasValue)
+	        {
+				return false;
+			}
 
-            context.Loads.Update(load);
-            await context.SaveChangesAsync();
+	        var driver = await context.Drivers
+		        .Where(d => d.DriverId == load.BookedLoad.DriverId)
+		        .SingleOrDefaultAsync();
 
-            return true;
+
+			load.Status = LoadStatus.Delivered; // load is marked delivered 
+			driver.IsBusy = false; // driver is free to get another load
+
+	        var deliveredLoad = new DeliveredLoad
+	        {
+		        LoadId = load.Id,
+		        DriverId = load.BookedLoad.DriverId.Value,
+		        DispatcherId = load.BookedLoad.DispatcherId,
+		        BrokerId = load.BrokerId,
+		        DeliveredDate = DateTime.UtcNow.ToLocalTime(), 
+		        Notes = null
+	        };
+
+	        // Persist DeliveredLoads and remove BookedLoad
+	        context.DeliveredLoads.Add(deliveredLoad);
+
+
+	        await context.SaveChangesAsync();
+	        
+	        return true;
         }
-        public async Task<bool> CancelLoadAsync(Guid loadId)
+		public async Task<bool> CancelLoadAsync(Guid loadId)
         {
 	        var load = await context.Loads
 		        .Include(l => l.BookedLoad)
@@ -398,7 +406,7 @@ namespace LoadVantage.Core.Services
 		        .ThenInclude(bl => bl!.Dispatcher)
 		        .Include(l => l.BookedLoad!.Driver) 
 		        .ThenInclude(d => d!.Truck) 
-		        .Include(l => l.BilledLoad) 
+		        .Include(l => l.DeliveredLoad) 
 		        .FirstOrDefaultAsync(l => l.Id == loadId);
 
 			if (load == null)
