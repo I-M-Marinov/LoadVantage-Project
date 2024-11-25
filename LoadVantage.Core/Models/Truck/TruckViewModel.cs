@@ -34,6 +34,8 @@ namespace LoadVantage.Core.Models.Truck
 
 		[Display(Name = "Driver Name")]
 		public string? DriverName { get; set; }
+		[Display(Name = "Driver Id")]
+		public string? DriverId { get; set; }
 
 		[Required(ErrorMessage = AvailabilityRequired)]
 		[Display(Name = "Available")]
