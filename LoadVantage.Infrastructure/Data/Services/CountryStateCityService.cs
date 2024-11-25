@@ -26,44 +26,6 @@ namespace LoadVantage.Infrastructure.Data.Services
 
         }
 
-        public async Task<string> GetCountriesAsync()
-        {
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri($"{baseUrl}/countries"),
-                Headers =
-                {
-                    { "X-CSCAPI-KEY", _apiKey },
-                },
-            };
-
-            using (var response = await httpClient.SendAsync(request))
-            {
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
-            }
-        }
-
-        public async Task<string> GetStatesAsync(string countryCode)
-        {
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri($"{baseUrl}/countries/{countryCode}/states"),
-                Headers =
-                {
-                    { "X-CSCAPI-KEY", _apiKey },
-                },
-            };
-
-            using (var response = await httpClient.SendAsync(request))
-            {
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
-            }
-        }
-
         public async Task<string> GetCitiesAsync(string countryCode, string stateCode)
         {
             var request = new HttpRequestMessage
@@ -83,15 +45,6 @@ namespace LoadVantage.Infrastructure.Data.Services
             }
         }
 
-        public async Task<bool> IsValidCityStateAsync(string country, string stateCode, string city)
-        {
-            var citiesJson = await GetCitiesAsync(country, stateCode);
-
-            var cities = JsonConvert.DeserializeObject<List<CityDto>>(citiesJson); 
-
-            return cities.Any(c => c.Name.Equals(city, StringComparison.OrdinalIgnoreCase));
-        }
-
         public async Task<bool> ValidateCitiesAsync(string originCity, string originState, string destCity, string destState)
         {
             bool isOriginValid = await IsValidCityStateAsync("US", originState, originCity);
@@ -100,7 +53,14 @@ namespace LoadVantage.Infrastructure.Data.Services
             return isOriginValid && isDestValid;
         }
 
+        private async Task<bool> IsValidCityStateAsync(string country, string stateCode, string city)
+        {
+	        var citiesJson = await GetCitiesAsync(country, stateCode);
 
+	        var cities = JsonConvert.DeserializeObject<List<CityDto>>(citiesJson); 
+
+	        return cities.Any(c => c.Name.Equals(city, StringComparison.OrdinalIgnoreCase));
+        }
     }
 
     // DTO for deserializing the city data
