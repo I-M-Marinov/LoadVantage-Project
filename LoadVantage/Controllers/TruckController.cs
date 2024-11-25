@@ -1,10 +1,11 @@
 ﻿using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Truck;
+using LoadVantage.Core.Services;
 using LoadVantage.Extensions;
 using LoadVantage.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 
@@ -18,7 +19,7 @@ namespace LoadVantage.Controllers
 		private readonly ITruckService truckService;
 
 
-        public TruckController(ITruckService _truckService)
+        public TruckController(ITruckService _truckService)	
 		{
 			truckService = _truckService;
 		}
@@ -135,5 +136,57 @@ namespace LoadVantage.Controllers
 				return NotFound(TruckDoesNotExist);
 			}
 		}
+
+
+		[HttpPost]
+		public async Task<IActionResult> AssignDriverToTruck(Guid truckId, Guid driverId)
+		{
+			Guid userId = User.GetUserId()!.Value;
+
+			try
+			{
+				var result = await truckService.AssignDriverToTruckAsync(truckId, driverId);
+
+				if (!result)
+				{
+					TempData.SetErrorMessage("Invalid truck or driver selection.");
+					return RedirectToAction("ShowTrucks",new { userId = userId });
+				}
+
+				TempData.SetSuccessMessage("Driver assigned successfully!");
+				return RedirectToAction("ShowTrucks", new { userId = userId });
+			}
+			catch (Exception ex)
+			{
+				TempData.SetErrorMessage("An error occurred while assigning the driver.");
+				return RedirectToAction("ShowTrucks", new { userId = userId });
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> ParkTruck(Guid truckId, Guid driverId)
+		{
+			Guid userId = User.GetUserId()!.Value;
+
+			try
+			{
+				var result = await truckService.ParkTruckAsync(truckId, driverId);
+
+				if (!result)
+				{
+					TempData.SetErrorMessage("Invalid truck or driver selection.");
+					return RedirectToAction("ShowTrucks", new { userId = userId });
+				}
+
+				TempData.SetSuccessMessage("Driver unassigned successfully! Truck was parked at the yard.");
+				return RedirectToAction("ShowTrucks", new { userId = userId });
+			}
+			catch (Exception ex)
+			{
+				TempData.SetErrorMessage("An error occurred while unassigning the driver.");
+				return RedirectToAction("ShowTrucks", new { userId = userId });
+			}
+		}
+
 	}
 }
