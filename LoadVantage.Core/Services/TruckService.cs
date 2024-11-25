@@ -33,6 +33,8 @@ namespace LoadVantage.Core.Services
 			var trucks = await context.Trucks
 				.Include(t => t.Driver)
 				.Where(t => t.IsActive)
+				.Where(t => t.DispatcherId == userId)
+				.OrderByDescending(t => t.Driver.FirstName)
 				.Select(t => new TruckViewModel
 				{
 					Id = t.Id,
@@ -41,10 +43,10 @@ namespace LoadVantage.Core.Services
 					Model = t.Model,
 					Year = t.Year.ToString(),
 					DriverName = t.Driver != null ? t.Driver.FullName : "N/A",
+					DriverId = t.Driver.DriverId.ToString(),
 					IsAvailable = t.IsAvailable
 				})
-				.OrderBy(t => t.TruckNumber)
-				.ThenBy(t => t.IsAvailable)
+				.OrderBy(t => t.IsAvailable)
 				.ToListAsync();
 
 			var trucksViewModel = new TrucksViewModel
@@ -59,9 +61,12 @@ namespace LoadVantage.Core.Services
 
 		public async Task<TruckViewModel?> GetTruckByIdAsync(Guid id)
 		{
+			var user = await userService.GetCurrentUserAsync();
+
 			var truck = await context.Trucks
-				.Where(t => t.IsActive && t.Id == id)  
-				.Include(t => t.Driver)  
+				.Include(t => t.Driver)
+				.Where(t => t.IsActive && t.Id == id)
+				.Where(t => t.DispatcherId == user.Id)
 				.FirstOrDefaultAsync();
 
 			if (truck == null)
@@ -76,7 +81,6 @@ namespace LoadVantage.Core.Services
 				Make = truck.Make,
 				Model = truck.Model,
 				Year = truck.Year.ToString(),
-				DriverName = truck.Driver?.FullName,
 				IsAvailable = truck.IsAvailable
 			};
 
@@ -129,12 +133,60 @@ namespace LoadVantage.Core.Services
                 throw new KeyNotFoundException("Truck not found.");
             }
 
+            if (!truck.IsAvailable)
+            {
+	            throw new InvalidOperationException("You cannot delete a truck that is currently in use !");
+			}
+
             truck.IsAvailable = false; // set availability to false before decommissioning the truck 
 			truck.IsActive = false; // Soft delete 
 
 			await context.SaveChangesAsync();
 		}
 
+		public async Task<bool> AssignDriverToTruckAsync(Guid truckId, Guid driverId)
+		{
+			var truck = await context.Trucks
+				.FirstOrDefaultAsync(t => t.Id == truckId);
+			var driver = await context.Drivers
+				.FirstOrDefaultAsync(d => d.DriverId == driverId);
+
+			if (truck == null || driver == null || !driver.IsAvailable || !truck.IsAvailable)
+			{
+				return false;
+			}
+
+			truck.DriverId = driverId; // set the driver for that truck 
+			driver.TruckId = truckId; // set that truck for that driver 
+			driver.IsAvailable = false; // Mark driver as unavailable
+			truck.IsAvailable = false; // Mark truck as unavailable
+
+			var result = await context.SaveChangesAsync();
+
+			return result > 0; // true if one or more lines were affected 
+		}
+
+		public async Task<bool> ParkTruckAsync(Guid truckId, Guid driverId)
+		{
+			var truck = await context.Trucks
+				.FirstOrDefaultAsync(t => t.Id == truckId);
+			var driver = await context.Drivers
+				.FirstOrDefaultAsync(d => d.DriverId == driverId);
+
+			if (truck == null || driver == null || driver.IsAvailable || truck.IsAvailable)
+			{
+				return false;
+			}
+
+			truck.DriverId = null; // set the driver for that truck 
+			driver.TruckId = null; // set that truck for that driver 
+			driver.IsAvailable = true; // Mark driver as available
+			truck.IsAvailable = true; // Mark truck as available
+
+			var result = await context.SaveChangesAsync();
+
+			return result > 0; // true if one or more lines were affected 
+		}
 
 	}
 }

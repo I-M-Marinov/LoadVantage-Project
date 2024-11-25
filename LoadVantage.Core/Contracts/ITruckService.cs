@@ -34,6 +34,14 @@ namespace LoadVantage.Core.Contracts
 		/// </summary>
 		Task DeleteTruckAsync(Guid id);
 
+		/// <summary>
+		/// Assigns a driver in a truck and returns TRUE or FALSE based on the result.
+		/// </summary>
+		Task<bool> AssignDriverToTruckAsync(Guid truckId, Guid driverId);
 
+		/// <summary>
+		/// Unassigns a driver from a truck. Resets both truck and driver as Available.
+		/// </summary>
+		Task<bool> ParkTruckAsync(Guid truckId, Guid driverId);
 	}
 }
