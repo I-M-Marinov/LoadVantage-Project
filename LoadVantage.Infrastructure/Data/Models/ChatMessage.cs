@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using static LoadVantage.Common.ValidationConstants.UserValidations;
+
 
 namespace LoadVantage.Infrastructure.Data.Models
 {
@@ -22,7 +19,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 		public User Receiver { get; set; }
 
 		[Required]
-		[MaxLength(2000)]
+		[MaxLength(MessageMaxValue)]
 		public string Message { get; set; }
 
 		public DateTime Timestamp { get; set; }

@@ -37,6 +37,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 		public virtual Dispatcher? Dispatcher { get; set; }
 		public bool IsAvailable { get; set; } = true;
 		public bool IsFired { get; set; } = false;
+		public bool IsBusy { get; set; } = false;
 		public string FullName => $"{FirstName} {LastName}"; // FullName combines FirstName and LastName
 
 	}

@@ -20,7 +20,7 @@ namespace LoadVantage.Infrastructure.Data
         public DbSet<Load> Loads { get; set; }
         public DbSet<BookedLoad> BookedLoads { get; set; }
         public DbSet<PostedLoad> PostedLoads { get; set; }
-        public DbSet<BilledLoad> BilledLoads { get; set; }
+        public DbSet<DeliveredLoad> DeliveredLoads { get; set; }
         public DbSet<UserImage> UsersImages { get; set; }
         public DbSet<ChatMessage> ChatMessages { get; set; }
 
@@ -66,25 +66,25 @@ namespace LoadVantage.Infrastructure.Data
                 .WithOne(bl => bl.Load)
                 .HasForeignKey<BookedLoad>(bl => bl.LoadId);
 
-			// One Billed Load with One Load 
+			// One Delivered Load with One Load 
 			modelBuilder.Entity<Load>()
-                .HasOne(l => l.BilledLoad)
+                .HasOne(l => l.DeliveredLoad)
                 .WithOne(b => b.Load)
-                .HasForeignKey<BilledLoad>(b => b.LoadId);
+                .HasForeignKey<DeliveredLoad>(b => b.LoadId);
 
 			// One Sender with Many Sent Messages 
 			modelBuilder.Entity<ChatMessage>()
 	            .HasOne(cm => cm.Sender)
 	            .WithMany(u => u.SentMessages)
 	            .HasForeignKey(cm => cm.SenderId)
-	            .OnDelete(DeleteBehavior.Restrict); // Prevents cascading deletes
+	            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
 
 			// One Receiver with Many Received Messages 
 			modelBuilder.Entity<ChatMessage>()
 	            .HasOne(cm => cm.Receiver)
 	            .WithMany(u => u.ReceivedMessages)
 	            .HasForeignKey(cm => cm.ReceiverId)
-	            .OnDelete(DeleteBehavior.Restrict); // Prevents cascading deletes
+	            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
 		}
     }
 }

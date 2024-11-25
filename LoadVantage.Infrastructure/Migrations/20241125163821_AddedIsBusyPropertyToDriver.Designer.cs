@@ -4,6 +4,7 @@ using LoadVantage.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoadVantage.Infrastructure.Migrations
 {
     [DbContext(typeof(LoadVantageDbContext))]
-    partial class LoadVantageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241125163821_AddedIsBusyPropertyToDriver")]
+    partial class AddedIsBusyPropertyToDriver
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,9 +98,6 @@ namespace LoadVantage.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BookedLoadId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("BrokerId")
                         .HasColumnType("uniqueidentifier");
 
@@ -118,8 +118,6 @@ namespace LoadVantage.Infrastructure.Migrations
                         .HasColumnType("nvarchar(2000)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookedLoadId");
 
                     b.HasIndex("BrokerId");
 
@@ -632,10 +630,6 @@ namespace LoadVantage.Infrastructure.Migrations
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.DeliveredLoad", b =>
                 {
-                    b.HasOne("LoadVantage.Infrastructure.Data.Models.BookedLoad", "BookedLoad")
-                        .WithMany()
-                        .HasForeignKey("BookedLoadId");
-
                     b.HasOne("LoadVantage.Infrastructure.Data.Models.Broker", "Broker")
                         .WithMany()
                         .HasForeignKey("BrokerId")
@@ -659,8 +653,6 @@ namespace LoadVantage.Infrastructure.Migrations
                         .HasForeignKey("LoadVantage.Infrastructure.Data.Models.DeliveredLoad", "LoadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("BookedLoad");
 
                     b.Navigation("Broker");
 

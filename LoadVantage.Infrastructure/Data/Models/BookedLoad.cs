@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using LoadVantage.Common.Enums;
 
 
 namespace LoadVantage.Infrastructure.Data.Models
@@ -35,6 +36,5 @@ namespace LoadVantage.Infrastructure.Data.Models
 		[ForeignKey(nameof(DriverId))]
 		public virtual Driver? Driver { get; set; }
 
-
-    }
+	}
 }

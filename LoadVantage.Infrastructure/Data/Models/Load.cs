@@ -62,6 +62,6 @@ namespace LoadVantage.Infrastructure.Data.Models
         // Navigation properties to specialized tables
         public virtual PostedLoad? PostedLoad { get; set; }
         public virtual BookedLoad? BookedLoad { get; set; }
-        public virtual BilledLoad? BilledLoad { get; set; }
+        public virtual DeliveredLoad? DeliveredLoad { get; set; }
     }
 }
