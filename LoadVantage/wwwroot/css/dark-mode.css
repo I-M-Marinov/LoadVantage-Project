@@ -185,7 +185,8 @@ input{
 #unpostAllBtn,
 #cancelCarrierBtn,
 #returnLoadToBrokerBtn,
-#bookLoadButton {
+#bookLoadButton,
+#markAsDeliveredBtn {
     background: #333333 !important;
     color: #ffffff !important;
 }
@@ -193,6 +194,11 @@ input{
 #chatWithBrokerBtn:hover{
     border: 2px solid #1a00ff !important;
 }
+
+    #markAsDeliveredBtn:hover {
+        border: 2px solid #6f42c1 !important;
+        background: #6f42c1 !important;
+    }
 
 .datatable-sorter {
     color: black !important;
