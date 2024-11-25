@@ -80,7 +80,7 @@
 			break;
 	}
 }
-<div class="card-body justify-content-center" style="dispay:flex;">
+<div class="card-body justify-content-center">
 <h5 class="card-title">Viewing a load</h5>
 
 @if (!string.IsNullOrEmpty(tempDataSuccessMessage))
@@ -195,10 +195,7 @@
 		</div>
 						
 	</div>
-		
-		
 
-						
 	@if (@Model.UserProfile.Position is nameof(Broker))
 	{
 		<div class="text-center details-buttons-container">
@@ -220,7 +217,7 @@
 </form>
 
 <div class="d-flex justify-content-center">
-	<div class="text-center details-buttons-container gap-2">
+	<div class="text-center details-buttons-container">
 
 		@{
 			switch (status)
@@ -268,7 +265,7 @@
 							@Html.AntiForgeryToken()
 							<input type="hidden" name="loadId" value="@Model.Id" />
 							<button type="submit" class="btn btn-outline-danger" id="cancelCarrierBtn">
-							<i class="bi bi-exclamation-diamond"></i> Cancel Carrier
+								<i class="bi bi-exclamation-diamond"></i> Cancel Carrier
 							</button>
 						</form>
 					}
@@ -279,7 +276,7 @@
 							@Html.AntiForgeryToken()
 							<input type="hidden" name="loadId" value="@Model.Id" />
 							<button type="submit" class="btn btn-outline-danger" id="returnLoadToBrokerBtn">
-							<i class="bi bi-emoji-frown"></i> Return the Load
+								<i class="bi bi-emoji-frown"></i> Cancel Load
 							</button>
 						</form>
 					}
@@ -350,14 +347,32 @@
 					<i class="bx  bx-refresh"></i>
 				</button>
 			</form>
+			
+			@if (Model.UserProfile.Position is nameof(Dispatcher) && Model.Status == LoadStatus.Booked.ToString())
+			{
 
-			<form asp-action="ReturnToLoadBoard" asp-controller="LoadBoard" method="post" id="backToLoadBoardButton">
-				@Html.AntiForgeryToken()
-				<button type="submit" class="btn btn-outline-info">
-					<i class="bx bxs-dashboard"></i> Back to LoadBoard
-				</button>
-			</form>
-				
+				if (Model.DriverId == null)
+				{
+					<form asp-action="AssignADriverToLoad" asp-controller="Driver" method="post">
+						@Html.AntiForgeryToken()
+						<select id="driverDropdown" name="driverId" class="form-select form-select-lg btn btn-outline-warning">
+							<option value="" disabled selected>Select a driver</option>
+						</select>
+						<input type="hidden" name="loadId" value="@Model.Id" />
+						<button type="submit" class="btn btn-success">
+							<i class="ri-save-3-fill"></i>
+						</button>
+					</form>
+				}
+
+				<form asp-action="DeliverALoad" asp-controller="Load" method="post" id="deliverLoadForm">
+					@Html.AntiForgeryToken()
+					<input type="hidden" name="loadId" value="@Model.Id" />
+					<button type="submit" class="btn btn-outline-delivered" id="markAsDeliveredBtn">
+						<i class="bx bxs-check-square"></i> Mark as Delivered
+					</button>
+				</form>
+			}
 				
 		</div>
 		@if (Model.Status == LoadStatus.Booked.ToString() && Model.UserProfile.Position == nameof(Broker))
@@ -367,31 +382,39 @@
 				Details
 			</button>
 		}
+		
+		<form asp-action="ReturnToLoadBoard" asp-controller="LoadBoard" method="post" id="backToLoadBoardButton">
+			@Html.AntiForgeryToken()
+			<button type="submit" class="btn btn-outline-info">
+				<i class="bx bxs-dashboard"></i> Back to LoadBoard
+			</button>
+		</form>
 
 	</div>
+
 </div>
 				
 </div>
 	
 <div id="bookingDetails" class="collapse show">
 
-			@if (Model.Status == LoadStatus.Booked.ToString() && Model.UserProfile.Position == nameof(Broker))
+	@if (Model.Status == LoadStatus.Booked.ToString() && Model.UserProfile.Position == nameof(Broker))
 	{
-		<div class="card position-absolute responsive" id="booking-details" >
+		<div class="card position-absolute responsive" id="booking-details">
 			<div class="card-body">
 				<h5 class="card-title">Dispatcher Info</h5>
 				<p class="card-text">
-					<strong>Name:</strong> @Model.DispatcherInfo?.DispatcherName <br />
-					<strong>Email:</strong> @Model.DispatcherInfo?.DispatcherEmail<br />
+					<strong>Name:</strong> @Model.DispatcherInfo?.DispatcherName <br/>
+					<strong>Email:</strong> @Model.DispatcherInfo?.DispatcherEmail<br/>
 					<strong>Phone:</strong> @Model.DispatcherInfo?.DispatcherPhone
 				</p>
-				<hr />
+				<hr/>
 				@if (Model.DriverInfo.DriverName != null)
 				{
 					<h5 class="card-title">Driver Info</h5>
 					<p class="card-text">
-						<strong>Name:</strong> @Model.DriverInfo?.DriverName <br />
-						<strong>Truck Number:</strong> @Model.DriverInfo?.DriverTruckNumber <br />
+						<strong>Name:</strong> @Model.DriverInfo?.DriverName <br/>
+						<strong>Truck Number:</strong> @Model.DriverInfo?.DriverTruckNumber <br/>
 						<strong>License:</strong> @Model.DriverInfo?.DriverLicenseNumber
 					</p>
 				}
@@ -399,7 +422,7 @@
 			<button class="badge-info" data-bs-toggle="collapse" data-bs-target="#bookingDetails">
 				hide
 			</button>
-			</div>
+		</div>
 	}
 </div>
 
@@ -441,6 +464,37 @@
 			document.body.classList.toggle('toggle-sidebar');
 		});
 	}
+
+	document.addEventListener("DOMContentLoaded", function () {
+		fetch('/Driver/GetDriversWithTrucks')
+			.then(response => {
+				return response.json();
+			})
+			.then(data => {
+				const driverDropdown = document.getElementById('driverDropdown');
+				driverDropdown.innerHTML = ''; 
+
+				const defaultOption = document.createElement('option');
+				defaultOption.value = '';
+				defaultOption.textContent = 'Select a Driver';
+				defaultOption.disabled = true;
+				defaultOption.selected = true;
+				driverDropdown.appendChild(defaultOption);
+
+				data.forEach(driver => {
+					console.log(driver.driverId);
+					console.log(driver.name);
+					const option = document.createElement('option');
+					option.value = driver.driverId;
+					option.textContent = driver.name;
+					driverDropdown.appendChild(option);
+				});
+			})
+			.catch(error => {
+				console.log(error.message);
+			});
+	});
+
 
 
 </script>
