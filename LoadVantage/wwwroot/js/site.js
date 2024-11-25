@@ -90,9 +90,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             document.getElementById("cancelLoadBtn").style.display = "none";
+            document.getElementById("cancelCarrierBtn").style.display = "none";
 
             document.getElementById("saveLoadButton").style.display = "inline-block";
             document.getElementById("cancelEditingButton").style.display = "inline-block";
+
 
             document.getElementById("isEditing").value = "true";
         }, 300);
@@ -143,6 +145,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             document.getElementById("cancelLoadBtn").style.display = "inline-block";
+            document.getElementById("cancelCarrierBtn").style.display = "inline-block";
+
 
             document.getElementById("saveLoadButton").style.display = "none";
             document.getElementById("cancelEditingButton").style.display = "none";
