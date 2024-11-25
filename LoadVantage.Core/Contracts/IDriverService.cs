@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LoadVantage.Core.Models.Driver;
+using LoadVantage.Infrastructure.Data.Models;
 
 namespace LoadVantage.Core.Contracts
 {
@@ -34,5 +35,20 @@ namespace LoadVantage.Core.Contracts
 		/// Fires a truck by its ID.
 		/// </summary>
 		Task FireDriverAsync(Guid id);
+
+		/// <summary>
+		/// Retrieves a list of all available drivers
+		/// </summary>
+		Task<List<Driver>> GetAvailableDriversAsync();
+
+		/// <summary>
+		/// Assigns a driver to a booked load
+		/// </summary>
+		Task<bool> AssignADriverToLoadAsync(Guid loadId, Guid driverId, Guid userId);
+
+		/// <summary>
+		/// Retrieve all drivers from the DB that have a truck assigned 
+		/// </summary>
+		Task<List<Driver>> GetDriversWithTrucksAsync();
 	}
 }
