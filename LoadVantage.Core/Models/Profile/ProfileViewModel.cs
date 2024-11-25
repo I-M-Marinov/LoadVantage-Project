@@ -6,7 +6,7 @@ using static LoadVantage.Common.ValidationConstants.UserValidations;
 
 namespace LoadVantage.Core.Models.Profile
 {
-    public class ProfileViewModel :IValidatableObject
+    public class ProfileViewModel : IValidatableObject
     {
         public  string Id { get; set; } = null!;
         [Required(ErrorMessage = UsernameRequired)]

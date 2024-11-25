@@ -1,6 +1,4 @@
 ﻿using LoadVantage.Core.Models.Profile;
-using LoadVantage.Core.Models.Truck;
-
 
 namespace LoadVantage.Core.Models.Driver
 {

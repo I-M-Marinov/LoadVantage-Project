@@ -14,7 +14,7 @@ namespace LoadVantage.Core.Models.LoadBoard
 		public IEnumerable<LoadViewModel> CreatedLoads { get; set; }
 		public IEnumerable<LoadViewModel> PostedLoads { get; set; }
 		public IEnumerable<LoadViewModel> BookedLoads { get; set; }
-		public IEnumerable<LoadViewModel> BilledLoads { get; set; }
+		public IEnumerable<DeliveredLoadViewModel> DeliveredLoads { get; set; }
 	}
 		
 }

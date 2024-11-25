@@ -51,7 +51,6 @@ namespace LoadVantage.Core.Models.Load
         [DisplayName("Price")]
         [Range(LoadPriceMinValue, LoadPriceMaxValue, ErrorMessage = PriceRangeInvalid)]
         public decimal PostedPrice { get; set; }
-        public decimal? BilledAmount { get; set; } // Nullable for posted/booked
 
 		[Required(ErrorMessage = WeightRequired)]
         [DisplayName("Weight")]
@@ -64,9 +63,9 @@ namespace LoadVantage.Core.Models.Load
         public Guid? DispatcherId { get; set; }
         public Guid? DriverId { get; set; }
         public DateTime? BookedDate { get; set; } // Nullable for posted/billed
-        public DateTime? BilledDate { get; set; } // Nullable for posted/booked
+        public DateTime? DeliveredDate { get; set; } // Nullable for posted/booked
 
-        public ProfileViewModel UserProfile { get; set; }
+        public ProfileViewModel? UserProfile { get; set; }
         public DriverInfoViewModel? DriverInfo { get; set; }
         public DispatcherInfoViewModel? DispatcherInfo { get; set; }
 	}
