@@ -37,6 +37,10 @@ namespace LoadVantage.Core.Models.Driver
 		[Display(Name = "Fired")]
 		public bool isFired { get; set; }
 
+		[Display(Name = "On a load")]
+		public bool IsBusy { get; set; }
+
+
 
 
 	}
