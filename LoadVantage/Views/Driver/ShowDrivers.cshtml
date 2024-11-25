@@ -161,6 +161,7 @@
 			{
 				<div class="badge badge-danger mt-1 position-absolute top-0 start-50 translate-middle-x w-75" id="error-message">@tempDataErrorMessage</div>
 			}
+
 			<div class="table-responsive mt-4" id="drivers-table">
 				<h5 class="card-title">Driver List</h5>
 				<table class="table table-bordered table-hover table-sm">
@@ -183,8 +184,12 @@
 								<td class="text-center">@driver.LicenseNumber</td>
 								<td class="text-center">@driver.TruckNumber</td>
 								<td class="text-center">
-									<span class="badge @(driver.IsAvailable ? "driver-success" : "driver-danger")">
-										<i class="@(driver.IsAvailable ? "bi bi-patch-check" : "bi bi-patch-exclamation")"></i>
+									<span class="badge @(driver.IsAvailable ? "driver-success" : "driver-warning")">
+										<i class="@(driver.IsAvailable ? "bi bi-patch-check" : "bi bi-truck")"></i>
+									</span>
+
+									<span class="badge @(driver.IsBusy ? "driver-warning" : "driver-success" )">
+										<i class="@(driver.IsBusy ? "bx bx-package" : "bi bi-house-fill")"></i>
 									</span>
 								</td>
 								<td class="text-center">
@@ -223,6 +228,9 @@
 					const modalElement = document.getElementById("editDriverModal");
 
 					if (modalElement) {
+
+						const inputs = modalElement.querySelectorAll("input");
+						inputs.forEach(input => input.value = ""); 
 
 						const firstNameInput = modalElement.querySelector("input[name='EditedDriver.FirstName']");
 						const lastNameInput = modalElement.querySelector("input[name='EditedDriver.LastName']");
