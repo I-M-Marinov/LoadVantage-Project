@@ -488,6 +488,14 @@ body {
     color: black;
 }
 
+#dispatcherDriverDetailsbtn{
+    max-width: 6.6em;
+}
+
+#cancelLoadBtn{
+    margin-bottom: 0.5em;
+}
+
 
 .btn btn-outline-danger {
     border: 2px #dc3545 solid !important;
@@ -917,11 +925,13 @@ transition: opacity 0.25s ease-out;
     transform: scale(1.05);
 }
 
+#returnLoadToBrokerBtn{
+    margin: 1.5em 0.5em 0.5em;
+}
 /*-------------------------------------------------------------------------------------
 # TOGGLE DARK THEME ON AND OFF BUTTON 
 --------------------------------------------------------------------------------------*/
-
-/* From Uiverse.io by Emil190313 */
+/* Thanks to Emil190313 from Uiverse.io */
 
 .toggle {
     background-color: purple;
@@ -1029,7 +1039,7 @@ transition: opacity 0.25s ease-out;
 
 
 /*-------------------------------------------------------------------------------------
-# TRUCK IS AVAILABLE OR NOT BADGES 
+# TRUCK OR DRIVER IS AVAILABLE OR NOT BADGES 
 --------------------------------------------------------------------------------------*/
 .truck-success,
 .driver-success{
@@ -1041,9 +1051,17 @@ transition: opacity 0.25s ease-out;
     align-items: center;
 }
 
-.truck-danger,
-.driver-danger{
+.truck-danger{
     background-color: #dc3545;
+    color: ghostwhite !important;
+    border: 1px black solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.driver-warning {
+    background-color: #f6be09;
     color: ghostwhite !important;
     border: 1px black solid;
     display: flex;
@@ -1054,7 +1072,94 @@ transition: opacity 0.25s ease-out;
 .truck-success i,
 .truck-danger i,
 .driver-success i,
-.driver-danger i{
+.driver-warning i{
     color: black;
     font-size: 1rem;
 }
+
+/*-------------------------------------------------------------------------------------
+# MARK LOAD AS DELIVERED BUTTON 
+--------------------------------------------------------------------------------------*/
+
+.btn-outline-delivered {
+    color: #6f42c1 !important; 
+    border-color: #6f42c1 !important;
+    background-color: transparent !important;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+
+.btn-outline-delivered:hover {
+    color: #fff !important; 
+    background-color: #6f42c1 !important; 
+    border-color: #6f42c1 !important;
+}
+
+.btn-outline-delivered:focus,
+.btn-outline-delivered.focus {
+    color: #fff !important;
+    background-color: #6f42c1 !important; 
+    border-color: #6f42c1 !important;
+    box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.5) !important; 
+}
+
+.btn-outline-delivered:active,
+.btn-outline-delivered.active,
+.show > .btn-outline-delivered.dropdown-toggle {
+    color: #fff !important; 
+    background-color: #5a32a3 !important; 
+    border-color: #5a32a3 !important;
+}
+
+/*-------------------------------------------------------------------------------------
+# SHOW TRUCKS CSS
+--------------------------------------------------------------------------------------*/
+
+#addNewTruck {
+    margin: 0 auto;
+    width: 8em;
+}
+
+.text-center {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#asignDriverDropdown{
+    margin-top: 0.35em;
+}
+
+.driverDropdown {
+    color: #6c5ce7;
+    background-color: white !important;
+    border-color: #6c5ce7 !important;
+    max-width: 11em !important;
+    font-size: 0.85em !important;
+}
+
+.driverDropdown:hover {
+    color: orangered !important;
+}
+
+.driverDropdown:focus,
+.driverDropdown:active {
+    background-color: #6c5ce7 !important; 
+    border-color: #6c5ce7 !important; 
+    color: white !important; 
+
+
+.dropdown-item:hover {
+    background-color: #6c5ce7 !important;
+    color: white !important;
+}
+
+.dropdown-item:active {
+    background-color: white !important; 
+    color: white !important;
+}
+
+#asignDriverBtn {
+    font-size: 0.35rem !important;
+    padding: 0.20em !important;
+}
+
+
