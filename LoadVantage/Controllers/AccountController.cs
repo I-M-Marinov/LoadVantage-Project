@@ -36,8 +36,10 @@ namespace LoadVantage.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+		[AllowAnonymous]
+        [ValidateAntiForgeryToken]
+
+		public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -50,15 +52,14 @@ namespace LoadVantage.Controllers
                 return View(model);
             }
 
-            var existingUser = await userService.FindUserByEmailAsync(model.Email);
-
-            if (existingUser != null)
+            var existingEmail = await userService.FindUserByEmailAsync(model.Email);
+            if (existingEmail != null)
             {
                 ModelState.AddModelError("Email", EmailAlreadyExists);
                 return View(model);
             }
 
-            existingUser = await userService.FindUserByUsernameAsync(model.UserName);
+            var existingUser = await userService.FindUserByUsernameAsync(model.UserName);
             if (existingUser != null)
             {
                 ModelState.AddModelError("Username", UserNameAlreadyExists);
@@ -67,7 +68,9 @@ namespace LoadVantage.Controllers
 
             Role? role = await roleManager.FindByNameAsync(model.Role);
 
-            User user = new User
+			var defaultImageId = await userService.GetOrCreateDefaultImageAsync();
+
+			User user = new User
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -75,9 +78,9 @@ namespace LoadVantage.Controllers
                 Position = model.Position,
                 Email = model.Email,
                 UserName = model.UserName,
-                Role = role!
-            };
-
+                Role = role!,
+                UserImageId = defaultImageId
+			};
 
             var result = await userService.CreateUserAsync(user, model.Password);
 
@@ -111,6 +114,7 @@ namespace LoadVantage.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
