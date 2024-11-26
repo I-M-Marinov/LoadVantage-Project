@@ -87,12 +87,27 @@
 	</main>
 </div>
 
-<footer id="footer" class="footer">
-	<div class="copyright">
-			&copy; 2024 - LoadVantage - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-	</div>
+	@{
+		int currentYear = DateTime.Now.Year;
+	}
 
-</footer><!-- End Footer -->
+	<footer id="footer" class="footer">
+		@if (currentYear > 2024)
+		{
+			<div class="copyright">
+				<i class="bx bx-registered"></i>
+				<span> LoadVantage - 2024-@currentYear</span>
+			</div>
+		}
+		else
+		{
+			<div class="copyright">
+				<i class="bx bx-registered"></i>
+				<span> LoadVantage - 2024</span>
+			</div>
+		}
+
+	</footer><!-- End Footer -->
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
