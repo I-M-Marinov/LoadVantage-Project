@@ -41,7 +41,7 @@ namespace LoadVantage.Core.Services
 					Id = u.Id,
 					FullName = u.FullName,
 					ProfilePictureUrl = context.UsersImages
-						.Where(ui => ui.UserId == u.Id)
+						.Where(ui => ui.Id == u.UserImageId)
 						.Select(ui => ui.ImageUrl)
 						.FirstOrDefault()!,
 					Company = u.CompanyName!,
