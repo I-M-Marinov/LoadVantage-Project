@@ -92,7 +92,8 @@ body {
 # LOGIN BUTTON 
 --------------------------------------------------------------*/
 
-#login-submit {
+#login-submit,
+#registerSubmit {
     background: linear-gradient(to left, #8360c3, #4cddf1);
     color: #ffffff;
     border: 2px solid #8c1db8;
@@ -100,7 +101,8 @@ body {
     box-shadow: 7px 7px 4px #121112;
 }
 
-#login-submit:hover {
+#login-submit:hover,
+#registerSubmit:hover{
     animation: upDown 2s infinite ease;
 }
 
@@ -279,11 +281,31 @@ body {
 }
 
 /*--------------------------------------------------------------
+# REGISTER VIEW 
+--------------------------------------------------------------*/
+.form-floating select {
+    border: 2px #0945d4 solid;
+    font-family: Nunito;
+    font-weight: 550;
+    font-size: 14px;
+}
+.form-floating input {
+    height: 3em !important;
+}
+
+.section.register{
+    padding-top: 0;
+    margin-top: -5em;
+}
+
+.field-validation-error{
+    font-size: 0.85em;
+}
+/*--------------------------------------------------------------
 # LOADBOARD LOAD VIEW 
 --------------------------------------------------------------*/
-
 .centered-row {
-    gap: 1rem; 
+    gap: 1rem;
 }
 
 
@@ -999,7 +1021,8 @@ transition: opacity 0.25s ease-out;
     margin-bottom: 0 !important;
 }
 
-#truckNumberLabel {
+#truckNumberLabel,
+#driverFirstNameLabel {
     margin-top: 3em;
 }
 
@@ -1011,19 +1034,18 @@ transition: opacity 0.25s ease-out;
     margin-bottom: 0.5em;
 }
 
-#editedTruckNumberLabel {
-    margin-top: 2em !important;
-}
-
-.larger-checkbox {
-    width: 1.75rem !important;
-    height: 1.75rem !important;
-    cursor: pointer;
+#editDriverForm div label {
+    margin-top: 1rem;
+    background-color: #8c1db8;
+    font-weight: 600;
+    color: white;
+    border-bottom: 2px #5a99f5 solid;
     margin-bottom: 0.5em;
 }
 
-.larger-checkbox:checked {
-    background-color: darkgreen !important;
+#editedTruckNumberLabel,
+#editedDriverFirstNameLabel {
+    margin-top: 2em !important;
 }
 
 #editTruckForm .modal-footer,
@@ -1137,18 +1159,20 @@ transition: opacity 0.25s ease-out;
 }
 
 .driverDropdown:hover {
-    color: orangered !important;
+    color: purple !important;
+    background-color: mediumpurple;
+    border-color: purple !important;
 }
 
 .driverDropdown:focus,
 .driverDropdown:active {
-    background-color: #6c5ce7 !important; 
-    border-color: #6c5ce7 !important; 
-    color: white !important; 
-
+    background-color: #6c5ce7 !important;
+    border-color: black !important;
+    color: white !important;
+}
 
 .dropdown-item:hover {
-    background-color: #6c5ce7 !important;
+    background-color: #9e3dc4 !important;
     color: white !important;
 }
 
@@ -1158,7 +1182,7 @@ transition: opacity 0.25s ease-out;
 }
 
 #asignDriverBtn {
-    font-size: 0.35rem !important;
+    font-size: 1.10rem !important;
     padding: 0.20em !important;
 }
 

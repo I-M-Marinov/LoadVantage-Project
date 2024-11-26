@@ -90,7 +90,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             document.getElementById("cancelLoadBtn").style.display = "none";
-            document.getElementById("cancelCarrierBtn").style.display = "none";
+            if (document.getElementById("cancelCarrierBtn")) {
+                document.getElementById("cancelCarrierBtn").style.display = "none";
+            }
 
             document.getElementById("saveLoadButton").style.display = "inline-block";
             document.getElementById("cancelEditingButton").style.display = "inline-block";
@@ -115,15 +117,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
    
     function dissableFieldsAndtoggleButtons() {
+        const form = document.getElementById("loadDetailsForm");
+        const isValid = $(form).valid(); 
+
+        if (!isValid) {
+
+            return;
+        }
+
         setTimeout(() => {
-
-            const form = document.getElementById("loadDetailsForm"); 
-            const isValid = $(form).valid(); 
-
-            if (!isValid) {
-         
-                return; 
-            }
 
             showAndHideLoader();
 
@@ -145,7 +147,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             document.getElementById("cancelLoadBtn").style.display = "inline-block";
-            document.getElementById("cancelCarrierBtn").style.display = "inline-block";
+          
+            if (document.getElementById("cancelCarrierBtn")) {
+                document.getElementById("cancelCarrierBtn").style.display = "inline-block";
+            }
 
 
             document.getElementById("saveLoadButton").style.display = "none";
