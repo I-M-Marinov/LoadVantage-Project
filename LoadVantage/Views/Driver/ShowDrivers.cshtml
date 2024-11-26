@@ -58,12 +58,6 @@
 							<input asp-for="NewDriver.LicenseNumber" class="form-control text-center">
 							<span asp-validation-for="NewDriver.LicenseNumber" class="badge badge-danger mt-1"></span>
 						</div>
-						<div class="mb-3">
-							<label asp-for="NewDriver.IsAvailable" class="form-label text-center d-block">Available ?</label>
-							<input name="NewDriver.IsAvailable" asp-for="NewDriver.IsAvailable" type="checkbox" class="form-check-input d-block mx-auto larger-checkbox" />
-							<span asp-validation-for="NewDriver.IsAvailable" class="badge badge-danger mt-1"></span>
-
-						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-success text-center d-block">Add</button>
@@ -111,34 +105,31 @@
 				<div class="modal-body">
 					<form asp-action="EditDriver" asp-controller="Driver" method="post" id="editDriverForm">
 						@Html.AntiForgeryToken()
-
+						<div class="form-group">
+							<input type="hidden" name="EditedDriver.Id" asp-for="EditedDriver.Id"/>
+						</div>
+						
 						<div class="form-group">
 							<label asp-for="EditedDriver.FirstName" class="control-label text-center d-block" id="editedDriverFirstNameLabel"></label>
-							<input name="EditedDriver.FirstName" asp-for="EditedDriver.FirstName" class="form-control text-center" />
+							<input name="EditedDriver.FirstName" asp-for="EditedDriver.FirstName" class="form-control text-center"/>
 							<span asp-validation-for="EditedDriver.FirstName" class="badge badge-danger mt-1"></span>
 						</div>
 
 						<div class="form-group">
 							<label asp-for="EditedDriver.LastName" class="control-label text-center d-block"></label>
-							<input name="EditedDriver.LastName" asp-for="EditedDriver.LastName" class="form-control text-center" />
+							<input name="EditedDriver.LastName" asp-for="EditedDriver.LastName" class="form-control text-center"/>
 							<span asp-validation-for="EditedDriver.LastName" class="badge badge-danger mt-1"></span>
 						</div>
 
 						<div class="form-group">
 							<label asp-for="EditedDriver.LicenseNumber" class="control-label text-center d-block"></label>
-							<input name="EditedDriver.LicenseNumber" asp-for="EditedDriver.LicenseNumber" class="form-control text-center" />
+							<input name="EditedDriver.LicenseNumber" asp-for="EditedDriver.LicenseNumber" class="form-control text-center"/>
 							<span asp-validation-for="EditedDriver.LicenseNumber" class="badge badge-danger mt-1"></span>
-						</div>
-
-						<div class="form-group">
-							<label asp-for="EditedDriver.IsAvailable" class="control-label text-center d-block">Available ?</label>
-							<input name="EditedDriver.IsAvailable" asp-for="EditedDriver.IsAvailable" type="checkbox" class="form-check-input d-block mx-auto larger-checkbox" />
-							<span asp-validation-for="EditedDriver.IsAvailable" class="badge badge-danger mt-1"></span>
 						</div>
 
 						<div class="modal-footer">
 							<button type="submit" class="btn btn-success">Save</button>
-							<input type="hidden" name="EditedDriver.Id" asp-for="EditedDriver.Id" />
+
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 						</div>
 					</form>
@@ -193,8 +184,23 @@
 									</span>
 								</td>
 								<td class="text-center">
-									<button type="button" class="btn btn-outline-primary edit-driver-btn btn-sm" data-id="@driver.Id">Edit</button>
-									<button type="button" class="btn btn-outline-danger btn-sm fire-driver-btn" data-driver-id="@driver.Id">Fire</button>
+									@if (!driver.IsBusy && driver.IsAvailable)
+									{
+										<button type="button" class="btn btn-outline-primary edit-driver-btn btn-sm" data-id="@driver.Id">Edit</button>
+										<button type="button" class="btn btn-outline-danger btn-sm fire-driver-btn" data-driver-id="@driver.Id">Fire</button>
+									}
+									else
+									{
+										if (driver.IsBusy)
+										{
+											<span class="badge bg-success text-black"> covered </span>
+
+										}
+										else
+										{
+											<span class="badge bg-warning text-black"> ready for a load </span>
+										}
+									}
 								</td>
 							</tr>
 						}
@@ -218,46 +224,39 @@
 	// Populate the Edit Driver Form
 
 	document.addEventListener("DOMContentLoaded", function () {
-		document.addEventListener("click", async function (event) {
-			if (event.target && event.target.matches(".edit-driver-btn")) {
-				const driverId = event.target.getAttribute("data-id");
+
+		const editButtons = document.querySelectorAll(".edit-driver-btn");
+
+		editButtons.forEach(button => {
+			button.addEventListener("click", async function (event) {
+				const driverId = button.getAttribute("data-id");
+
 
 				try {
+
 					const response = await fetch(`/Driver/GetDriverDetails?id=${driverId}`);
 					const driver = await response.json();
-					const modalElement = document.getElementById("editDriverModal");
 
+					const modalElement = document.getElementById("editDriverModal");
 					if (modalElement) {
 
-						const inputs = modalElement.querySelectorAll("input");
-						inputs.forEach(input => input.value = ""); 
+						modalElement.querySelectorAll("input:not([type='hidden'])").forEach(input => input.value = "");
 
-						const firstNameInput = modalElement.querySelector("input[name='EditedDriver.FirstName']");
-						const lastNameInput = modalElement.querySelector("input[name='EditedDriver.LastName']");
-						const licenseNumberInput = modalElement.querySelector("input[name='EditedDriver.LicenseNumber']");
-						const isAvailableInput = modalElement.querySelector("input[name='EditedDriver.IsAvailable']");
-						const idInput = modalElement.querySelector("input[name='EditedDriver.Id']");
+						modalElement.querySelector("input[name='EditedDriver.Id']").value = driver.id;
+						modalElement.querySelector("input[name='EditedDriver.FirstName']").value = driver.firstName;
+						modalElement.querySelector("input[name='EditedDriver.LastName']").value = driver.lastName;
+						modalElement.querySelector("input[name='EditedDriver.LicenseNumber']").value = driver.licenseNumber;
 
-				
-						firstNameInput.value = driver.firstName;
-						lastNameInput.value = driver.lastName;
-						licenseNumberInput.value = driver.licenseNumber;
-						isAvailableInput.checked = driver.isAvailable;
-						idInput.value = driver.id;
-
+						// Show the modal
 						const modal = new bootstrap.Modal(modalElement);
 						modal.show();
-					} 
+					}
 				} catch (error) {
 					console.error("Error loading the driver details:", error);
 				}
-			}
+			});
 		});
 	});
-
-
-
-
 
 
 	if (document.querySelector('.toggle-sidebar-btn')) {
