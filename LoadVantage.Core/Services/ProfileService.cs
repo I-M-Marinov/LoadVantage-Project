@@ -6,7 +6,7 @@ using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using static LoadVantage.Common.GeneralConstants;
+using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Core.Services
@@ -37,7 +37,10 @@ namespace LoadVantage.Core.Services
 				throw new Exception(UserNotFound);
 			}
 
-			var userImage = await context.UsersImages.SingleOrDefaultAsync(ui => ui.UserId == userId);
+			var userImageUrl = await context.UsersImages
+				.Where(ui => ui.Id == user.UserImageId)
+				.Select(ui => ui.ImageUrl)
+				.FirstOrDefaultAsync();
 
 			var profile = new ProfileViewModel
 			{
@@ -49,8 +52,7 @@ namespace LoadVantage.Core.Services
 				CompanyName = user.CompanyName!,
 				PhoneNumber = user.PhoneNumber!,
 				Email = user.Email!,
-				UserImageUrl = userImage?.ImageUrl
-
+				UserImageUrl = userImageUrl
 			};
 
 			profile.ImageFileUploadModel = new ImageFileUploadModel();
@@ -110,7 +112,7 @@ namespace LoadVantage.Core.Services
 				throw new Exception(UserProfileUpdateFailed);
 			}
 
-			var userImage = await context.UsersImages.SingleOrDefaultAsync(ui => ui.UserId == user.Id);
+			var userImage = await context.UsersImages.SingleOrDefaultAsync(u => u.Id == user.UserImageId);
 
 			return new ProfileViewModel
 			{
@@ -141,7 +143,6 @@ namespace LoadVantage.Core.Services
 			}
 
 		}
-
 		public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
 		{
 			if (user == null)
@@ -168,7 +169,6 @@ namespace LoadVantage.Core.Services
 
 			return result;
 		}
-
 		private async Task<bool> IsUsernameTakenAsync(string username, Guid currentUserId)
 		{
 			var existingUser = await userService.FindUserByUsernameAsync(username);
