@@ -116,22 +116,24 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
 
-    var services = scope.ServiceProvider;
-    var userManager = services.GetRequiredService<UserManager<User>>();
-    var configuration = services.GetRequiredService<IConfiguration>();
-    
+	var services = scope.ServiceProvider;
+	var userManager = services.GetRequiredService<UserManager<User>>();
+	var configuration = services.GetRequiredService<IConfiguration>();
 
-    await InitializeRoles(services); // Seed the roles
-    await SeedAdminUser(services, configuration); // Seed the Administrator 
-    await SeedDispatchers(services, configuration); // Seed the Dispatchers
-    await SeedBrokers(services, configuration); // Seed the Brokers
-    await SeedDefaultPictures(userManager, services); // Seed the Default Images for all Users
-    await SeedCreatedLoads(userManager, services); // Seed the Created loads ( 6 random loads each per broker )
+
+	await InitializeRoles(services);							// Seed the roles
+	await SeedDefaultUserImage(userManager, services);			// Seed the Default User Image
+	await SeedAdminUser(services, configuration);				// Seed the Administrator 
+	await SeedDispatchers(services, configuration);				// Seed the Dispatchers
+	await SeedBrokers(services, configuration);					// Seed the Brokers
+	await SeedLoads(userManager, services);						// Seed the Created loads ( 20 random loads per each Broker )
+	await SeedTrucks(userManager, services);					// Seed the Trucks ( 5 random trucks per each Dispatcher ) 
+	await SeedDrivers(userManager, services);                   // Seed the Drivers ( 5 random drivers per each Dispatcher ) 
+
 }
 
-
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+	if (app.Environment.IsDevelopment())
 {
 	app.UseMigrationsEndPoint();
     builder.Configuration.AddUserSecrets<Program>(); 
