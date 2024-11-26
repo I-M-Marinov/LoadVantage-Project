@@ -320,6 +320,11 @@ namespace LoadVantage.Core.Services
 		        throw new InvalidOperationException("This load is not currently booked.");
 	        }
 
+	        if (load.BookedLoad.DriverId != null)
+	        {
+		        load.BookedLoad.Driver.IsBusy = false; // Put the driver's IsBusy status to false, so he shows up available for the dispatcher again. 
+	        }
+
 			context.BookedLoads.Remove(load.BookedLoad); // Remove the BookedLoad entity 
 			load.Status = LoadStatus.Available; // Set status back to Available (Posted) to repost the truck
 
