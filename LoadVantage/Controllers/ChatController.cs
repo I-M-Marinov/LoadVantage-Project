@@ -77,12 +77,17 @@ namespace LoadVantage.Controllers
 		{
 			var currentUser = await userService.GetCurrentUserAsync();
 
-			ChatMessage? lastChat = await chatService.GetLastChatAsync(currentUser.Id);
+			ChatMessage? lastChat = await chatService.GetLastChatAsync(currentUser!.Id);
+
 
 			if (lastChat == null)
 			{
 				ViewData["Message"] = NoRecentChats;
-				return View();
+
+				var chatModel = new ChatViewModel();
+				chatModel.Profile = await profileService!.GetUserInformation(currentUser!.Id);
+
+				return View("ChatWindow", chatModel);
 			}
 
 			var model = new ChatViewModel();
@@ -95,7 +100,6 @@ namespace LoadVantage.Controllers
 			else if (lastChat.ReceiverId == currentUser.Id)
 			{
 				model = await BuildChatViewModel(lastChat.SenderId);
-
 			}
 
 			return View("ChatWindow", model);
