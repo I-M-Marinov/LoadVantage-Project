@@ -72,6 +72,7 @@ namespace LoadVantage.Core.Services
 				.Include(d => d.Truck)
 				.Where(d => d.IsFired == false)
 				.Where(d => d.DispatcherId == user.Id)
+				.Where(d => d.DriverId == id)
 				.FirstOrDefaultAsync();
 
 			if (driver == null)
@@ -125,7 +126,6 @@ namespace LoadVantage.Core.Services
 			driver.LastName = model.LastName;
 			driver.LicenseNumber = model.LicenseNumber;
 			driver.IsFired = model.isFired;
-			driver.IsAvailable = model.IsAvailable;
 			driver.IsBusy = model.IsBusy;
 
 			context.Drivers.Update(driver);
