@@ -124,9 +124,11 @@ namespace LoadVantage.Controllers
         public async Task<IActionResult> EditLoad(LoadViewModel model, bool isEditing, Guid loadId)
         {
 
-            Guid? userId = User.GetUserId();
+            Guid userId = User.GetUserId()!.Value;
+            var profile = await userService.GetUserInformation(userId);
+            model.UserProfile = profile; // pass the user profile information in the view 
 
-            if (isEditing)
+			if (isEditing)
             {
                 if (!ModelState.IsValid)
                 {
