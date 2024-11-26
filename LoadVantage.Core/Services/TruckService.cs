@@ -118,7 +118,6 @@ namespace LoadVantage.Core.Services
 			truck.Make = model.Make;
 			truck.Model = model.Model;
 			truck.Year = int.Parse(model.Year);
-			truck.IsAvailable = model.IsAvailable;
 
 			context.Trucks.Update(truck);
 			await context.SaveChangesAsync();
