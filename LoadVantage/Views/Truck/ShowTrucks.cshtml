@@ -146,12 +146,6 @@
 							<span asp-validation-for="EditedTruck.Year" class="badge badge-danger mt-1"></span>
 						</div>
 
-						<div class="form-group">
-							<label asp-for="EditedTruck.IsAvailable" class="control-label text-center d-block">Available ?</label>
-							<input name="EditedTruck.IsAvailable" asp-for="EditedTruck.IsAvailable" type="checkbox" class="form-check-input d-block mx-auto larger-checkbox" />
-							<span asp-validation-for="EditedTruck.IsAvailable" class="badge badge-danger mt-1"></span>
-						</div>
-
 						<div class="modal-footer">
 							<button type="submit" class="btn btn-success">Save</button>
 							<input type="hidden" name="EditedTruck.Id" asp-for="EditedTruck.Id" />
@@ -285,7 +279,6 @@
 						document.querySelector("#editTruckModal input[name='EditedTruck.Make']").value = truck.make;
 						document.querySelector("#editTruckModal input[name='EditedTruck.Model']").value = truck.model;
 						document.querySelector("#editTruckModal input[name='EditedTruck.Year']").value = truck.year;
-						document.querySelector("#editTruckModal input[name='EditedTruck.IsAvailable']").checked = truck.isAvailable;
 
 						const modal = new bootstrap.Modal(document.getElementById("editTruckModal"));
 						modal.show();
