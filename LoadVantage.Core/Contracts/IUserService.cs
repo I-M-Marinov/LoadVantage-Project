@@ -81,6 +81,11 @@ namespace LoadVantage.Core.Contracts
 		/// Retrieves the user image url string by user Id
 		/// </summary>
 		Task<string> GetUserImageUrlAsync(Guid userId);
+		/// <summary>
+		/// Gets the default user Image Guid Id or creates it if it's not available 
+		/// </summary>
+		Task<Guid> GetOrCreateDefaultImageAsync();
+
 
     }
 

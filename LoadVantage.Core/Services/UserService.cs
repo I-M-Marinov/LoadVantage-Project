@@ -209,12 +209,14 @@ namespace LoadVantage.Core.Services
         }
 		public async Task UpdateUserImageAsync(Guid userId, IFormFile file)
         {
-            var userImage = await context.UsersImages
-                .SingleOrDefaultAsync(ui => ui.UserId == userId);
+	        var user = await GetUserByIdAsync(userId);
+
+			var userImage = await context.UsersImages
+                .SingleOrDefaultAsync(ui => ui.Id == user.UserImageId);
 
             // Delete the old image
 
-            if (userImage != null)
+            if (userImage != null && userImage.Id != DefaultImageId)
             {
                 await DeleteUserImageAsync(userId, userImage.Id); 
             }
@@ -228,25 +230,19 @@ namespace LoadVantage.Core.Services
                 var resultImageUrl = uploadResult.SecureUrl.ToString();
                 var publicId = uploadResult.PublicId;
 
-                if (userImage == null)
-                {
-                    userImage = new UserImage
-                    {
-                        UserId = userId,
-                        ImageUrl = resultImageUrl,
-                        PublicId = publicId
-                    };
-                    await context.UsersImages.AddAsync(userImage);
-				}
-				else
-                {
-                    userImage.ImageUrl = resultImageUrl;
-                    userImage.PublicId = publicId;
-                }
+				userImage = new UserImage
+				{
+					Id = Guid.NewGuid(),
+					ImageUrl = resultImageUrl,
+					PublicId = publicId
+				};
+
+				await context.UsersImages.AddAsync(userImage);
+				await context.SaveChangesAsync();
+                
 
                 // Add reference to the user in the User's table
 
-				var user = await userManager.FindByIdAsync(userId.ToString());
                 user!.UserImageId = userImage.Id;
                 await userManager.UpdateAsync(user);
 
@@ -261,38 +257,22 @@ namespace LoadVantage.Core.Services
 
         public async Task DeleteUserImageAsync(Guid userId, Guid imageId)
         {
-            var userImage = await context.UsersImages
-                .SingleOrDefaultAsync(ui => ui.UserId == userId);
+	        var user = await GetUserByIdAsync(userId);
 
+			var userImage = await context.UsersImages
+                .SingleOrDefaultAsync(ui => ui.Id == user.UserImageId);
 
             if (userImage != null)
             {
-                if (!string.IsNullOrEmpty(userImage.PublicId) && userImage.PublicId != DefaultImagePath)
+                var deleteResult = await imageService.DeleteImageAsync(userImage.PublicId);
+                
+				if (!deleteResult.IsSuccess)
                 {
-                    try
-                    {
-                        var deleteResult = await imageService.DeleteImageAsync(userImage.PublicId);
-
-                        if (!deleteResult.IsSuccess)
-                        {
-                            throw new Exception($"{ErrorRemovingImage} {deleteResult.Message}");
-                        }
-
-                        userImage.ImageUrl = DefaultImagePath; // Default image URL
-                        userImage.PublicId = DefaultImagePath; // Set PublicId to the default image string
-                    }
-                    catch (Exception ex)
-                    {
-                        userImage.ImageUrl = DefaultImagePath; // Default to local image
-                        userImage.PublicId = DefaultImagePath; // Set PublicId to the default image string
-                    }
-                }
-                else
-                {
-                    userImage.ImageUrl = DefaultImagePath; // Local default image URL
-                    userImage.PublicId = DefaultImagePath; // Set PublicId to default image string
+                    throw new Exception($"{ErrorRemovingImage} {deleteResult.Message}");
                 }
 
+                context.UsersImages.Remove(userImage);
+				user.UserImageId = DefaultImageId;
                 await context.SaveChangesAsync();
             }
 
@@ -300,13 +280,36 @@ namespace LoadVantage.Core.Services
 
         public async Task<string> GetUserImageUrlAsync(Guid userId)
         {
-	        var userImage = await context.UsersImages
-		        .Where(ui => ui.UserId == userId)
+	        var user = await GetUserByIdAsync(userId);
+
+			var userImage = await context.UsersImages
+		        .Where(ui => ui.Id == user.UserImageId)
 		        .Select(ui => ui.ImageUrl)
 		        .FirstOrDefaultAsync();
 
 	        return userImage ?? DefaultImagePath;
         }
+		public async Task<Guid> GetOrCreateDefaultImageAsync()
+		{
+			var defaultImage = await context.UsersImages
+				.FirstOrDefaultAsync(img => img.Id == DefaultImageId);
+
+			if (defaultImage == null) 
+			{
+				defaultImage = new UserImage
+				{
+					Id = DefaultImageId,
+					ImageUrl = DefaultImagePath,
+					PublicId = DefaultPublicId
+				};
+
+				context.UsersImages.Add(defaultImage);
+				await context.SaveChangesAsync();
+			}
+
+			return defaultImage.Id;
+		}
+
 	}
 
 }
