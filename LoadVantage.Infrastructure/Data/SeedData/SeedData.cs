@@ -14,6 +14,7 @@ using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.UserRoles;
 using static LoadVantage.Common.GeneralConstants.SecretString;
 using UserImage = LoadVantage.Infrastructure.Data.Models.UserImage;
+using System;
 
 
 namespace LoadVantage.Infrastructure.Data.SeedData
@@ -63,8 +64,8 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     PhoneNumber = adminPhoneNumber!,
                     CompanyName = adminCompany,
                     Role = role!,
-                    UserImageId = Guid.Empty
-                };
+                    UserImageId = DefaultImageId
+				};
 
 				var result = await userManager.CreateAsync(adminUser, adminPassword!);
 
@@ -102,7 +103,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     PhoneNumber = "+1-800-654-1234",
                     Position = DispatcherPositionName,
                     Role = userRole!,
-                    UserImageId = Guid.Empty
+                    UserImageId = DefaultImageId
 
                 },
                 new User()
@@ -115,9 +116,9 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     PhoneNumber = "+1-225-968-4692",
                     Position = DispatcherPositionName,
                     Role = userRole!,
-                    UserImageId = Guid.Empty
+                    UserImageId = DefaultImageId
 
-                }
+				}
             };
 
             var counter = 1;
@@ -178,9 +179,9 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     PhoneNumber = "+1-708-953-7412",
                     Position = BrokerPositionName,
                     Role = userRole!,
-                    UserImageId = Guid.Empty
+                    UserImageId = DefaultImageId
 
-                },
+				},
                 new User()
                 {
                     UserName = "broker2",
@@ -191,9 +192,9 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                     PhoneNumber = "+1-300-852-7391",
                     Position = BrokerPositionName,
                     Role = userRole!,
-                    UserImageId = Guid.Empty
+                    UserImageId = DefaultImageId
 
-                }
+				}
             };
 
 
@@ -228,39 +229,34 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 
         }
 
-        public static async Task SeedDefaultPictures(UserManager<User> userManager, IServiceProvider serviceProvider)
+		public static async Task SeedDefaultUserImage(UserManager<User> userManager, IServiceProvider serviceProvider)
+		{
+			var dbContext = serviceProvider.GetRequiredService<LoadVantageDbContext>();
+
+			var defaultImage = await dbContext.UsersImages
+				.FirstOrDefaultAsync(img => img.Id == DefaultImageId);
+
+			if (defaultImage == null)
+			{
+				defaultImage = new UserImage
+				{
+					Id = DefaultImageId,
+					ImageUrl = DefaultImagePath, 
+					PublicId = DefaultPublicId 
+				};
+
+				dbContext.UsersImages.Add(defaultImage);
+				await dbContext.SaveChangesAsync();
+			}
+
+			await dbContext.SaveChangesAsync();
+		}
+
+		public static async Task SeedLoads(UserManager<User> userManager, IServiceProvider serviceProvider)
         {
-            var dbContext = serviceProvider.GetRequiredService<LoadVantageDbContext>();
+	        var context = serviceProvider.GetRequiredService<LoadVantageDbContext>();
 
-            var userList = await userManager.Users.ToListAsync(); // get all Users that are Brokers 
-
-            foreach (var user in userList)
-            {
-                if (user.UserImageId == Guid.Empty)
-                {
-                    // Create a new `UsersImages` entry with default image values
-                    var userImage = new UserImage
-                    {
-                        Id = Guid.NewGuid(), 
-                        UserId = user.Id, 
-                        ImageUrl = DefaultImagePath, 
-                        PublicId = string.Empty
-                    };
-
-                    dbContext.UsersImages.Add(userImage);
-                    user.UserImageId = userImage.Id;
-                    dbContext.Users.Update(user);
-                }
-            }
-
-            await dbContext.SaveChangesAsync();
-        }
-
-        public static async Task SeedCreatedLoads(UserManager<User> userManager, IServiceProvider serviceProvider)
-        {
-            await using var context = serviceProvider.GetRequiredService<LoadVantageDbContext>();
-
-            var distanceCalculatorService = serviceProvider.GetRequiredService<IDistanceCalculatorService>();
+			var distanceCalculatorService = serviceProvider.GetRequiredService<IDistanceCalculatorService>();
 
             // Check if any loads already exist
             if (context.Loads.Any())
@@ -321,14 +317,15 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                         OriginState = origin.State,
                         DestinationCity = destination.City,
                         DestinationState = destination.State,
-						PickupTime = createdDate.AddDays(random.Next(1, 5)),
-						DeliveryTime = createdDate.AddDays(random.Next(6, 11)),
+						PickupTime = createdDate.AddDays(random.Next(1, 7)),
+						DeliveryTime = createdDate.AddDays(random.Next(8, 15)),
 						Distance = 0,
                         Price = random.Next(1000, 7500), // Random price 
                         Weight = random.Next(500, 48000), // Random weight 
                         Status = LoadStatus.Created
                     });
                 }
+
                 return loads;
             }
 
@@ -365,5 +362,119 @@ namespace LoadVantage.Infrastructure.Data.SeedData
             await context.SaveChangesAsync();
             
         }
-    }
+
+		public static async Task SeedTrucks(UserManager<User> userManager, IServiceProvider serviceProvider)
+		{
+			var context = serviceProvider.GetRequiredService<LoadVantageDbContext>();
+
+			// Check if trucks are already seeded
+			if (context.Trucks.Any())
+			{
+				return; // Trucks are already seeded
+			}
+
+
+			var dispatchers = await userManager.Users
+				.OfType<Dispatcher>()
+				.ToListAsync();
+
+			// Dictionary of American Truck Make and Models
+			var makeModelDictionary = new Dictionary<string, List<string>>
+			{
+				{ "Freightliner", new List<string> { "Cascadia", "M2", "Columbia", "Xperience" } },
+				{ "Peterbilt", new List<string> { "389", "579", "567", "337" } },
+				{ "Kenworth", new List<string> { "T680", "W900", "T800", "T880" } },
+				{ "Mack", new List<string> { "Anthem", "Granite", "Pinnacle", "TerraPro" } },
+				{ "International", new List<string> { "LT Series", "ProStar", "Lonestar", "DuraStar" } },
+				{ "Western Star", new List<string> { "5700XE", "4900", "6900", "4700" } },
+				{ "Volvo", new List<string> { "VNL 300", "VNR 400", "VNX", "VHD" } },  
+	            { "Sterling", new List<string> { "Acterra", "L8500", "A9500", "Bullet" } },
+				{ "Navistar", new List<string> { "International CV Series", "ProStar", "LT", "MXT" } },
+			};
+
+			var trucksToAdd = new List<Truck>();
+
+			foreach (var dispatcher in dispatchers) // For each dispatcher
+			{
+				for (int i = 0; i < 5; i++) // add 5 trucks
+				{
+					var randomMake = makeModelDictionary.Keys.ElementAt(new Random().Next(makeModelDictionary.Count));
+					var models = makeModelDictionary[randomMake];
+
+					var randomModel = models[new Random().Next(models.Count)];
+
+					int truckCounter = 1; 
+
+					var truck = new Truck
+					{
+						Id = Guid.NewGuid(),
+						TruckNumber = $"T000{truckCounter++}", 
+						Make = randomMake,
+						Model = randomModel,
+						Year = new Random().Next(2000, 2024),
+						DispatcherId = dispatcher.Id,
+						IsAvailable = true,
+						IsActive = true
+					};
+
+					trucksToAdd.Add(truck);
+
+				}
+			}
+
+			await context.Trucks.AddRangeAsync(trucksToAdd);
+			await context.SaveChangesAsync();
+		}
+
+		public static async Task SeedDrivers(UserManager<User> userManager, IServiceProvider serviceProvider)
+		{
+			await using var context = serviceProvider.GetRequiredService<LoadVantageDbContext>();
+
+			// Check if drivers are already seeded
+			if (context.Drivers.Any())
+			{
+				return; // Drivers are already seeded
+			}
+
+
+			var dispatchers = await userManager.Users
+				.OfType<Dispatcher>()
+				.ToListAsync();
+
+			var driversToAdd = new List<Driver>();
+
+			var firstNames = new[] { "John", "Mike", "James", "Bob", "Anakin", "Thomas", "Emily", "Daniel", "Luke", "Ted" };
+			var lastNames = new[] { "Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Skywalker", "Moore", "Bundy", "Doe" };
+			var licenseNumbers = new[] { "ABC1234", "XYZ5678", "LMN9876", "DEF3456", "QRS6789" };
+
+			foreach (var dispatcher in dispatchers) // for every dispatcher 
+			{
+				for (int i = 0; i < 5; i++) // add 5 drivers 
+				{
+					// Generate a random first name, last name, and license number
+					var randomFirstName = firstNames[new Random().Next(firstNames.Length)];
+					var randomLastName = lastNames[new Random().Next(lastNames.Length)];
+					var randomLicenseNumber = licenseNumbers[new Random().Next(licenseNumbers.Length)];
+
+					var driver = new Driver
+					{
+						DriverId = Guid.NewGuid(),
+						FirstName = randomFirstName,
+						LastName = randomLastName,
+						LicenseNumber = randomLicenseNumber,
+						DispatcherId = dispatcher.Id,
+						IsAvailable = true,
+						IsFired = false,
+						IsBusy = false
+					};
+
+					driversToAdd.Add(driver);
+				}
+			}
+
+			await context.Drivers.AddRangeAsync(driversToAdd);
+			await context.SaveChangesAsync();
+		}
+
+	}
 }
