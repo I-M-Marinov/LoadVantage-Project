@@ -1,6 +1,4 @@
 ﻿
-using static Microsoft.AspNetCore.Internal.AwaitableThreadPool;
-
 namespace LoadVantage.Common
 {
 	public static class GeneralConstants
@@ -17,6 +15,7 @@ namespace LoadVantage.Common
 
 			public static readonly string[] ValidPositions = { DispatcherPositionName, BrokerPositionName, AdminPositionName };
 			public static readonly string[] ValidRoles = { AdminRoleName, UserRoleName };
+			
 		}
 
 		public static class TempMessages
@@ -152,6 +151,9 @@ namespace LoadVantage.Common
         public static class UserImage
         {
 	        public const string DefaultImagePath = "/images/default-user-image.png";
+	        public const string DefaultPublicId = "default-public-id";
+	        public static readonly Guid DefaultImageId = new Guid("00000000-0000-0000-0000-000000000001");
+
 
 	        public const string ImageRemoveSuccessfully = "Profile image removed successfully.";
 	        public const string ImageUpdatedSuccessfully = "Profile image updated successfully.";
@@ -161,7 +163,6 @@ namespace LoadVantage.Common
 	        public const string ErrorUpdatingImage = "An error occurred while updating the image: ";
 	        public const string ErrorRemovingImage = "Error removing the old profile image: ";
 	        public const string ImageUrlExceedsLimit = "Image URL length exceeds limit.";
-
         }
     }
 }

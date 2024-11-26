@@ -13,18 +13,18 @@ namespace LoadVantage.Core.Models.Driver
 		public Guid Id { get; set; }
 
 		[Required(ErrorMessage = DriverFirstNameRequired)]
-		[Display(Name = "Driver's first name")]
+		[Display(Name = "First name")]
 		[StringLength(DriverFirstNameMaxLength, MinimumLength = DriverFirstNameMinLength, ErrorMessage = DriverFirstNameInvalid)]
 		public string FirstName { get; set; } = null!;
 
 		[Required(ErrorMessage = DriverLastNameRequired)]
-		[Display(Name = "Driver's last name")]
+		[Display(Name = "Last name")]
 		[StringLength(DriverLastNameMaxLength, MinimumLength = DriverLastNameMinLength, ErrorMessage = DriverLastNameInvalid)]
 
 		public string LastName { get; set; } = null!;
 
 		[Required(ErrorMessage = DriverLicenseNumberRequired)]
-		[Display(Name = "Driver's license number ")]
+		[Display(Name = "License number ")]
 		[RegularExpression(DriverLicenceNumberRegexPattern, ErrorMessage = DriverLicenseNumberInvalid)]
 		public string LicenseNumber { get; set; } = null!;
 
