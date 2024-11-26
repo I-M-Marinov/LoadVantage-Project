@@ -41,7 +41,6 @@ namespace LoadVantage.Infrastructure.Data.Models
             [StringLength(UserPhoneNumberMaxLength)]
             public override string? PhoneNumber { get; set; } = null!;
 
-			[Required]
 			public Guid? UserImageId { get; set; }
 
 			[ForeignKey(nameof(UserImageId))]

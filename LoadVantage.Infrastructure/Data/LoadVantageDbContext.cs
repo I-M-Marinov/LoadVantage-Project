@@ -41,11 +41,11 @@ namespace LoadVantage.Infrastructure.Data
 				.WithMany(d => d.Drivers) 
 				.HasForeignKey(d => d.DispatcherId);
 
-			// One UserImage with One User
-			modelBuilder.Entity<UserImage>()
-				.HasOne(ui => ui.User)
-				.WithOne(u => u.UserImage)
-				.HasForeignKey<UserImage>(ui => ui.UserId);
+			modelBuilder.Entity<User>()
+				.HasOne(u => u.UserImage)                
+				.WithMany(ui => ui.Users)                
+				.HasForeignKey(u => u.UserImageId)  
+				.OnDelete(DeleteBehavior.Restrict);
 
 			// Position as dicriminator ---> Dispatcher, Broker or Administrator 
 			modelBuilder.Entity<User>()

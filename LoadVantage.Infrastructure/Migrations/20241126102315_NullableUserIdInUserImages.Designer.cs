@@ -4,6 +4,7 @@ using LoadVantage.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoadVantage.Infrastructure.Migrations
 {
     [DbContext(typeof(LoadVantageDbContext))]
-    partial class LoadVantageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241126102315_NullableUserIdInUserImages")]
+    partial class NullableUserIdInUserImages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -401,6 +404,7 @@ namespace LoadVantage.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<Guid?>("UserImageId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserName")
@@ -419,8 +423,6 @@ namespace LoadVantage.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("UserImageId");
 
                     b.ToTable("AspNetUsers", (string)null);
 
@@ -444,7 +446,14 @@ namespace LoadVantage.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("UsersImages");
                 });
@@ -722,14 +731,16 @@ namespace LoadVantage.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LoadVantage.Infrastructure.Data.Models.UserImage", "UserImage")
-                        .WithMany("Users")
-                        .HasForeignKey("UserImageId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("Role");
+                });
 
-                    b.Navigation("UserImage");
+            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.UserImage", b =>
+                {
+                    b.HasOne("LoadVantage.Infrastructure.Data.Models.User", "User")
+                        .WithOne("UserImage")
+                        .HasForeignKey("LoadVantage.Infrastructure.Data.Models.UserImage", "UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -802,11 +813,8 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.Navigation("ReceivedMessages");
 
                     b.Navigation("SentMessages");
-                });
 
-            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.UserImage", b =>
-                {
-                    b.Navigation("Users");
+                    b.Navigation("UserImage");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Broker", b =>

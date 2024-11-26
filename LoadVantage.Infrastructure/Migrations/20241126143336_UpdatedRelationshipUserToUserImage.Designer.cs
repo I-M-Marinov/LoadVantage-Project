@@ -4,6 +4,7 @@ using LoadVantage.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoadVantage.Infrastructure.Migrations
 {
     [DbContext(typeof(LoadVantageDbContext))]
-    partial class LoadVantageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241126143336_UpdatedRelationshipUserToUserImage")]
+    partial class UpdatedRelationshipUserToUserImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -420,7 +423,9 @@ namespace LoadVantage.Infrastructure.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("UserImageId");
+                    b.HasIndex("UserImageId")
+                        .IsUnique()
+                        .HasFilter("[UserImageId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
 
@@ -443,6 +448,9 @@ namespace LoadVantage.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -723,9 +731,8 @@ namespace LoadVantage.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("LoadVantage.Infrastructure.Data.Models.UserImage", "UserImage")
-                        .WithMany("Users")
-                        .HasForeignKey("UserImageId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithOne("User")
+                        .HasForeignKey("LoadVantage.Infrastructure.Data.Models.User", "UserImageId");
 
                     b.Navigation("Role");
 
@@ -806,7 +813,7 @@ namespace LoadVantage.Infrastructure.Migrations
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.UserImage", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Broker", b =>

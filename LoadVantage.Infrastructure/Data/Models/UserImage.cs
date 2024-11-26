@@ -14,16 +14,13 @@ namespace LoadVantage.Infrastructure.Data.Models
 		[Key]
 		public Guid Id { get; set; }
 
-		public Guid UserId { get; set; }
-
-		public User? User { get; set; }
-
 		[StringLength(UserImageMaxLength)]
 		public string? ImageUrl { get; set; }
 
 		[StringLength(UserImagePublicIdMaxLength)]
 		[Required]
-		public string? PublicId { get; set; } = null!;
+		public string PublicId { get; set; } = null!;
+		public virtual ICollection<User> Users { get; set; } = new HashSet<User>();
 
 	}
 }
