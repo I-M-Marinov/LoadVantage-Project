@@ -445,7 +445,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 
 			var firstNames = new[] { "John", "Mike", "James", "Bob", "Anakin", "Thomas", "Emily", "Daniel", "Luke", "Ted" };
 			var lastNames = new[] { "Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Skywalker", "Moore", "Bundy", "Doe" };
-			var licenseNumbers = new[] { "ABC1234", "XYZ5678", "LMN9876", "DEF3456", "QRS6789" };
+			var licenseNumbers = new[] { "ABC123456", "XYZ569978", "LMN986676", "DEF345619", "QRS678910" };
 
 			foreach (var dispatcher in dispatchers) // for every dispatcher 
 			{
