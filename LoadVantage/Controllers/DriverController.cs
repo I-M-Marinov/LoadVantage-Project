@@ -164,7 +164,7 @@ namespace LoadVantage.Controllers
 				var drivers = await driverService.GetDriversWithTrucksAsync();
 				var driverList = drivers.Select(d => new
 				{
-					DriverId = d.DriverId, // Make sure the property names match the JavaScript expectations
+					DriverId = d.DriverId, 
 					Name = d.FullName
 				});
 

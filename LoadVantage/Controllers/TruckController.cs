@@ -1,11 +1,11 @@
-﻿using LoadVantage.Core.Contracts;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Truck;
-using LoadVantage.Core.Services;
 using LoadVantage.Extensions;
 using LoadVantage.Filters;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 
@@ -78,6 +78,7 @@ namespace LoadVantage.Controllers
 			{
 				return NotFound();
 			}
+
 			return Json(truck);
 		}
 
@@ -116,7 +117,6 @@ namespace LoadVantage.Controllers
 			}
 		}
 
-
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 
@@ -136,7 +136,6 @@ namespace LoadVantage.Controllers
 				return NotFound(TruckDoesNotExist);
 			}
 		}
-
 
 		[HttpPost]
 		public async Task<IActionResult> AssignDriverToTruck(Guid truckId, Guid driverId)
