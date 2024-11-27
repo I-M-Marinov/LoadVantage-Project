@@ -303,6 +303,7 @@ namespace LoadVantage.Core.Services
         {
 	        var load = await context.Loads
 		        .Include(l => l.BookedLoad)
+		        .ThenInclude(bl => bl.Driver)
 		        .FirstOrDefaultAsync(l => l.Id == loadId);
 
 	        if (load == null)

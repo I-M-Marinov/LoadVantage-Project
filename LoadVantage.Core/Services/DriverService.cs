@@ -168,6 +168,7 @@ namespace LoadVantage.Core.Services
 
 			var load = await context.Loads
 				.Include(l => l.BookedLoad)
+				.Include(l => l.BookedLoad.Driver)
 				.FirstOrDefaultAsync(l =>
 					l.Id == loadId &&
 					l.Status == LoadStatus.Booked &&
