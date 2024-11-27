@@ -1,0 +1,70 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Areas.Admin.Models;
+
+@model AdminProfileViewModel
+
+
+<div class="row mb-3">
+
+	<div class="d-flex flex-row justify-content-center">
+		<img class="img-fluid img-thumbnail" src="@Model.UserImageUrl" alt="Profile" id="profileImagePreview" />
+
+		<div class="d-flex flex-row align-items-center">
+			<div class="row ml-3">
+				<form id="imageUploadForm" asp-area="Admin" asp-controller="Admin" asp-action="UpdateProfileImage" enctype="multipart/form-data" method="post">
+					@Html.AntiForgeryToken()
+
+					<input type="file" asp-for="AdminImageFileUploadModel!.FormFile" id="fileInput" style="display:none" accept="image/*">
+					<span asp-validation-for="AdminImageFileUploadModel!.FormFile" class="text-danger"></span>
+
+
+					<div class="pt-2">
+						<button id="uploadImageButton" type="button" class="btn btn-primary btn-sm" title="Upload new profile image">
+							<i class="ri  ri-attachment-2"></i>
+						</button>
+						<button id="submitButton" type="submit" class="btn btn-success btn-sm">
+							Upload
+						</button>
+					</div>
+
+				</form>
+
+				<!-- Form to Delete Current Profile Image -->
+				<form asp-area="Admin"  asp-controller="Admin" asp-action="DeleteProfileImage" method="post" class="d-inline">
+					@Html.AntiForgeryToken()
+					<button id="removeImageButton" type="submit" class="btn btn-danger btn-sm" title="Remove my profile image">
+						<i class="bi-trash"></i>
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const uploadImageButton = document.getElementById("uploadImageButton");
+		const fileInput = document.getElementById("fileInput");
+		const submitButton = document.getElementById("submitButton");
+
+		submitButton.style.display = 'none';
+
+		if (uploadImageButton && fileInput && submitButton) {
+
+			uploadImageButton.addEventListener("click", function (event) {
+				event.preventDefault();
+				fileInput.click();
+			});
+
+			fileInput.addEventListener("change", function () {
+				if (fileInput.files.length > 0) {
+					submitButton.style.display = 'inline-block';
+				} else {
+					submitButton.style.display = 'none';
+				}
+			});
+		}
+	});
+
+</script>
+

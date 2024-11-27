@@ -1,0 +1,338 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Areas.Admin.Models;
+@using LoadVantage.Extensions
+@using LoadVantage.Infrastructure.Data.Models
+
+@model AdminProfileViewModel
+
+@{
+    
+	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+
+	ViewData["Title"] = $"{Model.Position} Profile";
+
+	var tempDataSuccessMessage = TempData.GetSuccessMessage();
+	var tempDataErrorMessage = TempData.GetErrorMessage();
+	var tempDataActiveTab = TempData.GetActiveTab();
+
+}}
+
+   
+    <!-- ======= Header ======= -->
+@await Html.PartialAsync("_AdminHeaderPartialView", Model)
+
+    <!-- End Header -->
+
+    <!-- ======= Sidebar ======= -->
+@await Html.PartialAsync("_AdminSidebarPartialView", Model)
+
+    <!-- End Sidebar -->
+
+
+<main id="main" class="main">
+
+	<div class="pagetitle">
+		<h1>Profile</h1>
+
+	</div><!-- End Page Title -->
+
+	<section class="section profile">
+		<div class="row">
+			<div class="col-xl-4">
+
+				<div class="card">
+					<div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+						<img src=@Model.UserImageUrl alt="User Image" class="rounded-circle">
+						<h2>@Model.FullName</h2>
+						<h3>@Model.Position at @Model.CompanyName</h3>
+						<div class="social-links mt-2">
+						</div>
+					</div>
+				</div>
+
+				<div class="card">
+					<div class="card-body loads-card pt-2 d-flex flex-column align-items-left">
+
+						<h2>Loads</h2>
+						<div class="social-links mt-2">
+							<div class="status-row">
+								@if (Model.Position is nameof(Broker))
+								{
+									<div class="badge bg-primary profile-loads">
+										<i class="bi bi-star me-1"></i>Created
+									</div>
+									<div class="badge bg-success profile-loads">
+										<i class="bi bi-check-circle me-1"></i>Posted
+									</div>
+								}
+
+								<div class="badge bg-warning profile-loads">
+									<i class="bi bi-bookmark me-1"></i>Booked
+								</div>
+								<div class="badge bg-info profile-loads">
+									<i class="bi bi-truck me-1"></i>Delivered
+								</div>
+							</div>
+							<div class="count-row">
+							
+								<div>@ViewBag.CreatedLoadsCount</div>
+								<div>@ViewBag.PostedLoadsCount</div>
+								<div>@ViewBag.BookedLoadsCount</div>
+								<div>@ViewBag.DeliveredLoadsCount</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+
+			</div>
+
+			<div class="col-xl-8">
+
+				<div class="card">
+					<div class="card-body pt-3">
+						<!-- Bordered Tabs -->
+						<ul class="nav nav-tabs nav-tabs-bordered">
+
+							<li class="nav-item">
+								<button class="nav-link active" data-bs-toggle="tab" id="profile-overview-tab" href="#profile-overview" data-bs-target="#profile-overview">Overview</button>
+							</li>
+
+							<li class="nav-item">
+
+								<button class="nav-link" data-bs-toggle="tab" id="profile-edit-tab" href="#profile-edit" data-bs-target="#profile-edit">Edit Profile</button>
+
+							</li>
+
+							<li class="nav-item">
+								<button class="nav-link" data-bs-toggle="tab" id="profile-change-picture-tab" href="#profile-change-picture" data-bs-target="#profile-change-picture">Edit Picture</button>
+							</li>
+
+							<li class="nav-item">
+								<button class="nav-link" data-bs-toggle="tab" id="profile-change-password-tab" href="#profile-change-password" data-bs-target="#profile-change-password">Change Password</button>
+							</li>
+
+
+
+						</ul>
+						<div class="tab-content pt-2">
+
+							<div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+								<h5 class="card-title">Profile Details</h5>
+
+								<div class="row">
+									<div class="col-lg-3 col-md-4 label">
+										<i class="bx bxs-wink-smile"></i>
+										<span> Full Name</span>
+									</div>
+									<div class="col-lg-9 col-md-8">@Model.FullName</div>
+								</div>
+
+								<div class="row">
+									<div class="col-lg-3 col-md-4 label">
+										<i class="bx bxs-business"></i>
+										<span> Company</span>
+									</div>
+									<div class="col-lg-9 col-md-8">@Model.CompanyName</div>
+								</div>
+
+								<div class="row">
+									<div class="col-lg-3 col-md-4 label">
+										<i class="bi bi-check2-square"></i>
+										<span> Position</span>
+									</div>
+									<div class="col-lg-9 col-md-8">@Model.Position</div>
+								</div>
+
+								<div class="row">
+									<div class="col-lg-3 col-md-4 label">
+										<i class="bx bxs-user-check"></i>
+										<span> Username</span>
+									</div>
+									<div class="col-lg-9 col-md-8">@Model.Username</div>
+								</div>
+
+								<div class="row">
+
+									<div class="col-lg-3 col-md-4 label">
+										<i class="bi bi-headset"></i>
+										<span> Phone Number</span>
+									</div>
+									<div class="col-lg-9 col-md-8">@Model.PhoneNumber</div>
+								</div>
+
+								<div class="row">
+									<div class="col-lg-3 col-md-4 label">
+										<i class="ri-mail-check-line"></i>
+										<span> Email</span>
+									</div>
+									<div class="col-lg-9 col-md-8">@Model.Email!.ToLower()</div>
+								</div>
+
+
+							</div>
+
+							<div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+
+								@await Html.PartialAsync("~/Areas/Admin/Views/Admin/Profile/_AdminEditProfilePartialView.cshtml", Model)
+
+							</div>
+
+							<div class="tab-pane fade profile-edit pt-3" id="profile-change-picture">
+
+								@await Html.PartialAsync("~/Areas/Admin/Views/Admin/Profile/_AdminProfileImagePartial.cshtml", Model)
+
+							</div>
+
+							<div class="tab-pane fade pt-3" id="profile-change-password">
+
+								@await Html.PartialAsync("~/Areas/Admin/Views/Admin/Profile/_AdminChangePasswordPartialView.cshtml", new AdminChangePasswordViewModel())
+
+							</div>
+
+							<div class="spinner-container">
+								<div id="loader" class="spinner" style="display: none;">
+
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+
+								</div>
+							</div>
+
+
+							<!-- Success Modal -->
+							<div class="modal fade justify-content-center" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" data-bs-backdrop="false">
+								<div class="modal-dialog">
+									<div class="modal-content success-content">
+										<div class="modal-header bg-success text-white border-none">
+											<h5 class="modal-title text-center w-100" id="successModalLabel">Success</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body messages-text">
+											@tempDataSuccessMessage
+
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Error Modal -->
+							<div class="modal fade justify-content-center" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true" data-bs-backdrop="false">
+								<div class="modal-dialog">
+									<div class="modal-content error-content">
+										<div class="modal-header bg-danger text-white border-none">
+											<h5 class="modal-title text-center w-100" id="errorModalLabel">Error</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body messages-text">
+											@tempDataErrorMessage
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div><!-- End Bordered Tabs -->
+					</div>
+				</div>
+
+				<!-- Card with titles, buttons, and links -->
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Card with titles, buttons, and links</h5>
+						<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+						<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+						<p class="card-text"><a href="#" class="btn btn-primary">Button</a></p>
+						<a href="#" class="card-link">Card link</a>
+						<a href="#" class="card-link">Another link</a>
+					</div>
+				</div><!-- End Card with titles, buttons, and links -->
+
+			</div>
+		</div>
+	</section>
+
+
+
+</main><!-- End #main -->
+
+
+<script>
+
+	document.addEventListener("DOMContentLoaded", function () {
+		var activeTab = "@tempDataActiveTab";
+
+		if (activeTab === "changePassword") {
+			var changePasswordTabLink = document.getElementById('profile-change-password-tab');
+			if (changePasswordTabLink) {
+				new bootstrap.Tab(changePasswordTabLink).show();
+				console.log("redirected to the password change!"); // Debugging purposes only
+			}
+		} else if (activeTab === "profileEdit") {
+			var editProfileTabLink = document.getElementById('profile-edit-tab');
+			if (editProfileTabLink) {
+				new bootstrap.Tab(editProfileTabLink).show();
+				console.log("redirected to the profile edit!"); // Debugging purposes only
+			}
+		} else if (activeTab === "profileChangePicture") {
+			var editProfilePictureTabLink = document.getElementById('profile-change-picture-tab');
+			if (editProfilePictureTabLink) {
+				new bootstrap.Tab(editProfilePictureTabLink).show();
+				console.log("redirected to the profile picture edit tab!"); // Debugging purposes only
+			}
+		} else {
+			var overviewTabLink = document.getElementById('profile-overview-tab'); // fall back to the profile overview tab
+			if (overviewTabLink) {
+				new bootstrap.Tab(overviewTabLink).show();
+				console.log("redirected to the profile overview!"); // Debugging purposes only
+
+			}
+		}
+	});
+
+
+
+	if (document.querySelector('.toggle-sidebar-btn')) {
+
+		document.querySelector('.toggle-sidebar-btn').addEventListener('click', function (e) {
+
+			document.body.classList.toggle('toggle-sidebar');
+		});
+	}
+
+
+
+	document.addEventListener("DOMContentLoaded", function () {
+		var successMessage = '@tempDataSuccessMessage';
+		var errorMessage = '@tempDataErrorMessage';
+
+
+		if (successMessage.trim() !== '') {
+			var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+			successModal.show();
+
+			setTimeout(() => {
+				successModal.hide();
+			}, 2000);
+		}
+
+		if (errorMessage.trim() !== '') {
+			var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+			errorModal.show();
+		}
+	});
+
+
+</script>
+
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+

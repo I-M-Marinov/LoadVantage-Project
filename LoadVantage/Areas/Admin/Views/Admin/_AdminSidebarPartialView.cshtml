@@ -1,0 +1,124 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Areas.Admin.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model AdminProfileViewModel
+
+
+<!-- ======= Sidebar ======= -->
+
+<aside id="sidebar" class="sidebar">
+
+	<ul class="sidebar-nav" id="sidebar-nav">
+
+
+		<li class="nav-item loadboard-nav">
+
+			<form method="get" action="@Url.Action("LoadBoard", "LoadBoard")">
+				<input type="hidden" name="userId" value="@Model.Id" />
+				<button type="submit" class="nav-link collapsed" id="loadboard-nav">
+					<i class="bx bxs-dashboard"></i>
+					<span>Load Board</span>
+				</button>
+			</form>
+
+
+		</li>
+
+		<li class="nav-item profile-nav">
+
+
+			<form method="get" action="@Url.Action("Profile", "Profile")">
+				<input type="hidden" name="userId" value="@Model.Id" />
+				<button type="submit" class="nav-link collapsed" id="profile-nav">
+					<i class="ri-account-pin-box-line"></i>
+					<span>Profile</span>
+				</button>
+			</form>
+
+		</li>
+
+		
+
+		<li class="nav-item create-load-nav">
+
+
+			<form method="get" action="@Url.Action("CreateLoad", "Load")">
+				<input type="hidden" name="userId" value="@Model.Id" />
+				<button type="submit" class="nav-link collapsed" id="create-load-nav">
+					<i class="ri-treasure-map-line"></i>
+					<span>Create a load</span>
+				</button>
+			</form>
+
+		</li>
+
+		
+
+		<li class="nav-item chat-nav">
+
+
+			<form method="get" action="@Url.Action("ChatWindow", "Chat")">
+
+				<button type="submit" class="nav-link collapsed" id="chat-nav">
+					<i class="bx bxs-chat"></i>
+					<span>Chat</span>
+				</button>
+			</form>
+
+		</li>
+
+		
+		<li class="nav-item trucks-nav">
+
+
+			<form method="get" action="@Url.Action("ShowTrucks", "Truck")">
+				<input type="hidden" name="userId" value="@Model.Id" />
+				<button type="submit" class="nav-link collapsed" id="truck-nav">
+					<i class="ri-truck-line"></i>
+					<span>Trucks</span>
+				</button>
+			</form>
+
+		</li>
+
+		<li class="nav-item driver-nav">
+
+			<form method="get" action="@Url.Action("ShowDrivers", "Driver")">
+				<input type="hidden" name="userId" value="@Model.Id" />
+				<button type="submit" class="nav-link collapsed" id="truck-nav">
+					<i class="bi bi-person-fill"></i>
+					<span>Drivers</span>
+				</button>
+			</form>
+
+		</li>
+	
+
+		<!-- End Profile Page Nav -->
+
+
+	</ul>
+
+</aside>
+
+<!-- End Sidebar-->
+
+<script>
+
+	document.addEventListener("DOMContentLoaded", function () {
+		const sidebarButtons = document.querySelectorAll(".sidebar .nav-link");
+
+		const currentPath = window.location.pathname;
+
+		sidebarButtons.forEach(button => {
+			const formAction = button.closest("form").getAttribute("action");
+
+			if (formAction === currentPath) {
+				button.classList.remove("collapsed");
+			}
+		});
+	});
+
+</script>
+
