@@ -325,7 +325,8 @@
 			@if (@Model.UserProfile.Position is nameof(Dispatcher))
 			{
 				<a asp-action="ChatWithBrokerWindow" asp-controller="Chat" asp-route-brokerId="@Model.BrokerId" class="btn btn-outline-primary" id="chatWithBrokerBtn">
-					<i class="bi bi-chat-text-fill"></i> Chat with Broker 
+					<i class="bi bi-chat-text-fill"></i>
+					<span class="d-none d-sm-inline">Chat with Broker</span>
 				</a>
 
 				if (Model.Status == LoadStatus.Available.ToString())
@@ -355,7 +356,7 @@
 				{
 					<form asp-action="AssignADriverToLoad" asp-controller="Driver" method="post">
 						@Html.AntiForgeryToken()
-						<select id="driverDropdown" name="driverId" class="form-select form-select-lg btn btn-outline-warning">
+						<select id="driversDropdown" name="driverId" class="form-select form-select-lg btn btn-outline-warning">
 							<option value="" disabled selected>Select a driver</option>
 						</select>
 						<input type="hidden" name="loadId" value="@Model.Id" />
@@ -368,8 +369,10 @@
 				<form asp-action="DeliverALoad" asp-controller="Load" method="post" id="deliverLoadForm">
 					@Html.AntiForgeryToken()
 					<input type="hidden" name="loadId" value="@Model.Id" />
+
 					<button type="submit" class="btn btn-outline-delivered" id="markAsDeliveredBtn">
-						<i class="bx bxs-check-square"></i> Mark as Delivered
+						<i class="bx bxs-check-square"></i> 
+						<span class="d-none d-sm-inline">Mark as Delivered</span>
 					</button>
 				</form>
 			}
@@ -431,14 +434,6 @@
 
 </main><!-- End #main -->
 
-<!-- jQuery -->
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-
-<!-- jQuery Validation -->
-<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
-
 <script>
 	
 
@@ -474,13 +469,18 @@
 	}
 
 	document.addEventListener("DOMContentLoaded", function () {
+		const driverDropdown = document.getElementById('driversDropdown');
+
+		if (!driverDropdown) {
+			return;
+		}
+
 		fetch('/Driver/GetDriversWithTrucks')
 			.then(response => {
 				return response.json();
 			})
 			.then(data => {
-				const driverDropdown = document.getElementById('driverDropdown');
-				driverDropdown.innerHTML = ''; 
+				driverDropdown.innerHTML = '';
 
 				const defaultOption = document.createElement('option');
 				defaultOption.value = '';
@@ -490,8 +490,6 @@
 				driverDropdown.appendChild(defaultOption);
 
 				data.forEach(driver => {
-					console.log(driver.driverId);
-					console.log(driver.name);
 					const option = document.createElement('option');
 					option.value = driver.driverId;
 					option.textContent = driver.name;
@@ -502,7 +500,6 @@
 				console.log(error.message);
 			});
 	});
-
 
 
 </script>
