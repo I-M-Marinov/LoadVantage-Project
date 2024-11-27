@@ -148,16 +148,16 @@ namespace LoadVantage.Controllers
 
 				if (!result)
 				{
-					TempData.SetErrorMessage("Invalid truck or driver selection.");
+					TempData.SetErrorMessage(InvalidTruckOrDriver);
 					return RedirectToAction("ShowTrucks",new { userId = userId });
 				}
 
-				TempData.SetSuccessMessage("Driver assigned successfully!");
+				TempData.SetSuccessMessage(DriverAssignedToTruckSuccessfully);
 				return RedirectToAction("ShowTrucks", new { userId = userId });
 			}
 			catch (Exception ex)
 			{
-				TempData.SetErrorMessage("An error occurred while assigning the driver.");
+				TempData.SetErrorMessage(ErrorAssigningDriverToTruck);
 				return RedirectToAction("ShowTrucks", new { userId = userId });
 			}
 		}
@@ -173,16 +173,16 @@ namespace LoadVantage.Controllers
 
 				if (!result)
 				{
-					TempData.SetErrorMessage("Invalid truck or driver selection.");
+					TempData.SetErrorMessage(TruckCannotBeParkedRightNow);
 					return RedirectToAction("ShowTrucks", new { userId = userId });
 				}
 
-				TempData.SetSuccessMessage("Driver unassigned successfully! Truck was parked at the yard.");
+				TempData.SetSuccessMessage(TruckParkedAtTheYard);
 				return RedirectToAction("ShowTrucks", new { userId = userId });
 			}
 			catch (Exception ex)
 			{
-				TempData.SetErrorMessage("An error occurred while unassigning the driver.");
+				TempData.SetErrorMessage(ex.Message);
 				return RedirectToAction("ShowTrucks", new { userId = userId });
 			}
 		}

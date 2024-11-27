@@ -85,6 +85,11 @@ namespace LoadVantage.Common
 			public const string TruckWasNotCreated = "The truck was not created successfully.";
             public const string TruckCreateError = "Error ! Truck was not created.";
             public const string TruckDoesNotExist = "The truck you are looking for does not exist.";
+            public const string TruckCannotBeParkedRightNow = "Error ! Truck cannot be parked right now!";
+
+            public const string InvalidTruckOrDriver = "Invalid truck or driver selection.";
+            public const string ErrorAssigningDriverToTruck = "An error occurred while assigning the driver to the truck.";
+
 
 			// DRIVER
 
@@ -92,6 +97,8 @@ namespace LoadVantage.Common
 			public const string DriverCreateError = "Error ! Driver was not created.";
 			public const string DriverDoesNotExist = "The driver you are looking for does not exist.";
 			public const string DriverWasNotAssignedToTheLoad = "Failed to assign the driver to the load. Please check the details and try again.";
+			public const string DriverCurrentlyUnderALoad = "Driver is currently doing a load and cannot leave the truck.";
+
 
 
         }
@@ -122,10 +129,13 @@ namespace LoadVantage.Common
             public const string TruckWasAddedSuccessfully = "The truck was added successfully to your fleet.";
             public const string TruckWasUpdatedSuccessfully = "Truck was updated successfully.";
             public const string TruckWasRemovedSuccessfully = "Truck was removed/decommissioned from your fleet successfully.";
+            public const string TruckParkedAtTheYard = "Driver unassigned successfully! Truck is parked at the yard.";
 
-            // DRIVER 
+            public const string DriverAssignedToTruckSuccessfully = "Driver assigned to the truck successfully!";
 
-            public const string DriverWasAddedSuccessfully = "The driver was added to your company successfully.";
+			// DRIVER 
+
+			public const string DriverWasAddedSuccessfully = "The driver was added to your company successfully.";
             public const string DriverWasUpdatedSuccessfully = "The driver was updated successfully.";
             public const string DriverWasFiredSuccessfully = "The driver was fired successfully.";
             public const string DriverWasAssignedToLoadSuccessfully = "Driver assigned to the load successfully!";
