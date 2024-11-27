@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoadVantage.Infrastructure.Data
 {
-	public class LoadVantageDbContext : IdentityDbContext<User, Role, Guid>
+	public class LoadVantageDbContext : IdentityDbContext<BaseUser, Role, Guid>
 	{
 		public LoadVantageDbContext(DbContextOptions<LoadVantageDbContext> options)
 			: base(options)
@@ -29,6 +29,11 @@ namespace LoadVantage.Infrastructure.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
+			modelBuilder.Entity<BaseUser>()
+				.HasOne(u => u.Role)
+				.WithMany()  // if a Role can have multiple users
+				.HasForeignKey(u => u.RoleId);
+
 			// One Truck with One Driver 
 			modelBuilder.Entity<Driver>()
 				.HasOne(d => d.Truck)
@@ -41,21 +46,16 @@ namespace LoadVantage.Infrastructure.Data
 				.WithMany(d => d.Drivers) 
 				.HasForeignKey(d => d.DispatcherId);
 
-			modelBuilder.Entity<User>()
-				.HasOne(u => u.UserImage)                
-				.WithMany(ui => ui.Users)                
-				.HasForeignKey(u => u.UserImageId)  
-				.OnDelete(DeleteBehavior.Restrict);
-
 			// Position as dicriminator ---> Dispatcher, Broker or Administrator 
-			modelBuilder.Entity<User>()
+			modelBuilder.Entity<BaseUser>()
 				.HasDiscriminator<string>("Position")
+				.HasValue<User>("User")
 				.HasValue<Dispatcher>("Dispatcher")
 				.HasValue<Broker>("Broker")
 				.HasValue<Administrator>("Administrator");
 
 			// One Posted Load with One Load 
-            modelBuilder.Entity<Load>()
+			modelBuilder.Entity<Load>()
                 .HasOne(l => l.PostedLoad)
                 .WithOne(pl => pl.Load)
                 .HasForeignKey<PostedLoad>(pl => pl.LoadId);

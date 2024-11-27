@@ -12,11 +12,11 @@ namespace LoadVantage.Infrastructure.Data.Models
 		[Required]
 		public Guid SenderId { get; set; }
 		[Required]
-		public User Sender { get; set; }
+		public BaseUser Sender { get; set; }
 		[Required]
 		public Guid ReceiverId { get; set; }
 		[Required]
-		public User Receiver { get; set; }
+		public BaseUser Receiver { get; set; }
 
 		[Required]
 		[MaxLength(MessageMaxValue)]

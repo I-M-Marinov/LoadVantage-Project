@@ -20,7 +20,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 		[StringLength(UserImagePublicIdMaxLength)]
 		[Required]
 		public string PublicId { get; set; } = null!;
-		public virtual ICollection<User> Users { get; set; } = new HashSet<User>();
+		public virtual ICollection<BaseUser> Users { get; set; } = new HashSet<BaseUser>();
 
 	}
 }

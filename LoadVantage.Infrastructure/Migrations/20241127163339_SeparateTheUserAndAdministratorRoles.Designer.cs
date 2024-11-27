@@ -4,6 +4,7 @@ using LoadVantage.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoadVantage.Infrastructure.Migrations
 {
     [DbContext(typeof(LoadVantageDbContext))]
-    partial class LoadVantageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241127163339_SeparateTheUserAndAdministratorRoles")]
+    partial class SeparateTheUserAndAdministratorRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,6 @@ namespace LoadVantage.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -72,12 +74,10 @@ namespace LoadVantage.Infrastructure.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
@@ -86,9 +86,6 @@ namespace LoadVantage.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -100,7 +97,6 @@ namespace LoadVantage.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -113,8 +109,6 @@ namespace LoadVantage.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("RoleId");
 
                     b.HasIndex("UserImageId");
 
@@ -526,12 +520,7 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BaseUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("BaseUserId");
 
                     b.HasIndex("RoleId");
 
@@ -561,12 +550,26 @@ namespace LoadVantage.Infrastructure.Migrations
                 {
                     b.HasBaseType("LoadVantage.Infrastructure.Data.Models.BaseUser");
 
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasIndex("RoleId");
+
                     b.HasDiscriminator().HasValue("Administrator");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.User", b =>
                 {
                     b.HasBaseType("LoadVantage.Infrastructure.Data.Models.BaseUser");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.ToTable("AspNetUsers", t =>
+                        {
+                            t.Property("RoleId")
+                                .HasColumnName("User_RoleId");
+                        });
 
                     b.HasDiscriminator().HasValue("User");
                 });
@@ -575,6 +578,14 @@ namespace LoadVantage.Infrastructure.Migrations
                 {
                     b.HasBaseType("LoadVantage.Infrastructure.Data.Models.User");
 
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUsers", t =>
+                        {
+                            t.Property("RoleId")
+                                .HasColumnName("User_RoleId");
+                        });
+
                     b.HasDiscriminator().HasValue("Broker");
                 });
 
@@ -582,22 +593,22 @@ namespace LoadVantage.Infrastructure.Migrations
                 {
                     b.HasBaseType("LoadVantage.Infrastructure.Data.Models.User");
 
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUsers", t =>
+                        {
+                            t.Property("RoleId")
+                                .HasColumnName("User_RoleId");
+                        });
+
                     b.HasDiscriminator().HasValue("Dispatcher");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.BaseUser", b =>
                 {
-                    b.HasOne("LoadVantage.Infrastructure.Data.Models.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LoadVantage.Infrastructure.Data.Models.UserImage", "UserImage")
                         .WithMany("Users")
                         .HasForeignKey("UserImageId");
-
-                    b.Navigation("Role");
 
                     b.Navigation("UserImage");
                 });
@@ -772,10 +783,6 @@ namespace LoadVantage.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("LoadVantage.Infrastructure.Data.Models.BaseUser", null)
-                        .WithMany("UserRoles")
-                        .HasForeignKey("BaseUserId");
-
                     b.HasOne("LoadVantage.Infrastructure.Data.Models.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
@@ -798,13 +805,44 @@ namespace LoadVantage.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Administrator", b =>
+                {
+                    b.HasOne("LoadVantage.Infrastructure.Data.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Broker", b =>
+                {
+                    b.HasOne("LoadVantage.Infrastructure.Data.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Dispatcher", b =>
+                {
+                    b.HasOne("LoadVantage.Infrastructure.Data.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.BaseUser", b =>
                 {
                     b.Navigation("ReceivedMessages");
 
                     b.Navigation("SentMessages");
-
-                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Load", b =>
