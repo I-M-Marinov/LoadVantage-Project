@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Profile;
 using LoadVantage.Core.Models.Truck;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
+
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 
 namespace LoadVantage.Core.Services
@@ -150,7 +151,10 @@ namespace LoadVantage.Core.Services
 			var driver = await context.Drivers
 				.FirstOrDefaultAsync(d => d.DriverId == driverId);
 
-			if (truck == null || driver == null || !driver.IsAvailable || !truck.IsAvailable)
+			if (truck == null || 
+			    driver == null || 
+			    !driver.IsAvailable || 
+			    !truck.IsAvailable)
 			{
 				return false;
 			}
@@ -169,12 +173,21 @@ namespace LoadVantage.Core.Services
 		{
 			var truck = await context.Trucks
 				.FirstOrDefaultAsync(t => t.Id == truckId);
+
 			var driver = await context.Drivers
 				.FirstOrDefaultAsync(d => d.DriverId == driverId);
 
-			if (truck == null || driver == null || driver.IsAvailable || truck.IsAvailable)
+			if (truck == null || 
+			    driver == null || 
+			    driver.IsAvailable || 
+			    truck.IsAvailable)
 			{
 				return false;
+			}
+
+			if (driver.IsBusy)
+			{
+				throw new InvalidOperationException(DriverCurrentlyUnderALoad);
 			}
 
 			truck.DriverId = null; // set the driver for that truck 
