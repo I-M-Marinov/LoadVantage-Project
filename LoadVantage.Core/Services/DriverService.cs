@@ -32,7 +32,7 @@ namespace LoadVantage.Core.Services
 		{
 			var user = await userService.GetUserByIdAsync(userId);
 
-			ProfileViewModel profile = await profileService.GetUserInformation(user.Id);
+			ProfileViewModel profile = await profileService.GetUserInformation(user!.Id);
 
 			var drivers = await context.Drivers
 				.Include(d => d.Truck)

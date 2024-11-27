@@ -36,6 +36,7 @@ namespace LoadVantage.Core.Services
 
 			var users = await context.Users
 				.Where(u => userIds.Contains(u.Id))
+				.Where(u => u.Position == "User")
 				.Select(u => new UserChatViewModel
 				{
 					Id = u.Id,

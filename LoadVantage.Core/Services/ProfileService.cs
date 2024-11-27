@@ -15,17 +15,19 @@ namespace LoadVantage.Core.Services
 	{
 
 		private readonly IUserService userService;
-		private readonly UserManager<User> userManager;
+		private readonly UserManager<BaseUser> userManager;
 		private readonly LoadVantageDbContext context;
-		private readonly SignInManager<User> signInManager;
+		private readonly SignInManager<BaseUser> signInManager;
+		private readonly IProfileHelperService profileHelperService;
 
-		public ProfileService(LoadVantageDbContext _context, IUserService _userService, UserManager<User> _userManager,
-			SignInManager<User> _signInManager)
+		public ProfileService(LoadVantageDbContext _context, IUserService _userService, UserManager<BaseUser> _userManager,
+			SignInManager<BaseUser> _signInManager, IProfileHelperService _profileHelperService)
 		{
 			userService = _userService;
 			userManager = _userManager;
 			context = _context;
 			signInManager = _signInManager;
+			profileHelperService = _profileHelperService;
 		}
 
 		public async Task<ProfileViewModel?> GetUserInformation(Guid userId)
@@ -76,12 +78,12 @@ namespace LoadVantage.Core.Services
 				return model;
 			}
 
-			if (await IsEmailTakenAsync(model.Email, user.Id))
+			if (await profileHelperService.IsEmailTakenAsync(model.Email, user.Id))
 			{
 				throw new InvalidOperationException(EmailIsAlreadyTaken);
 			}
 
-			if (await IsUsernameTakenAsync(model.Username, user.Id))
+			if (await profileHelperService.IsUsernameTakenAsync(model.Username, user.Id))
 			{
 				throw new InvalidDataException(UserNameIsAlreadyTaken);
 			}
@@ -128,10 +130,10 @@ namespace LoadVantage.Core.Services
 			};
 		}
 
-		public async Task UpdateUserClaimsAsync(User user, ProfileViewModel model)
+		public async Task UpdateUserClaimsAsync(BaseUser user, ProfileViewModel model)
 		{
-			var existingClaims = await GetUserClaimsAsync(user);
-			var claimsToAddOrUpdate = GetMissingClaims(existingClaims, model.FirstName, model.LastName, model.Username,
+			var existingClaims = await profileHelperService.GetClaimsAsync(user);
+			var claimsToAddOrUpdate = profileHelperService.GetMissingClaims(existingClaims, model.FirstName, model.LastName, model.Username,
 				model.Position);
 
 			if (claimsToAddOrUpdate.Any())
@@ -143,7 +145,7 @@ namespace LoadVantage.Core.Services
 			}
 
 		}
-		public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
+		public async Task<IdentityResult> ChangePasswordAsync(BaseUser user, string currentPassword, string newPassword)
 		{
 			if (user == null)
 			{
@@ -169,23 +171,8 @@ namespace LoadVantage.Core.Services
 
 			return result;
 		}
-		private async Task<bool> IsUsernameTakenAsync(string username, Guid currentUserId)
-		{
-			var existingUser = await userService.FindUserByUsernameAsync(username);
-			return existingUser != null && existingUser.Id != currentUserId;
-		}
-		private async Task<bool> IsEmailTakenAsync(string email, Guid currentUserId)
-		{
-			if (string.IsNullOrWhiteSpace(email))
-			{
-				throw new ArgumentException("Email cannot be null or empty.", nameof(email));
-			}
 
-			var isEmailTaken = await context.Users.AnyAsync(user => user.Email == email && user.Id != currentUserId);
-
-			return isEmailTaken;
-		}
-		private bool AreUserPropertiesEqual(User user, ProfileViewModel model)
+		private bool AreUserPropertiesEqual(BaseUser user, ProfileViewModel model)
 		{
 			return user.Id == Guid.Parse(model.Id) &&
 			       user.Position == model.Position &&
@@ -196,25 +183,6 @@ namespace LoadVantage.Core.Services
 			       user.PhoneNumber == model.PhoneNumber &&
 			       user.Email == model.Email;
 		}
-		private async Task<IEnumerable<Claim>> GetUserClaimsAsync(User user)
-		{
-			return await userService.GetUserClaimsAsync(user);
-		}
-		private List<Claim> GetMissingClaims(IEnumerable<Claim> existingClaims, string firstName, string lastName, string userName, string userPosition)
-		{
-			var claims = new List<Claim>
-			{
-				new Claim("FirstName", firstName),
-				new Claim("LastName", lastName),
-				new Claim("UserName", userName),
-				new Claim("Position", userPosition),
-			};
 
-			var missingClaims = claims.Where(claim =>
-				!existingClaims.Any(c => c.Type == claim.Type && c.Value == claim.Value)
-			).ToList();
-
-			return missingClaims;
-		}
 	}
 }

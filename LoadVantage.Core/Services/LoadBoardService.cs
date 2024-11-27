@@ -16,12 +16,12 @@ namespace LoadVantage.Core.Services
 	public class LoadBoardService : ILoadBoardService
 	{
 		private readonly LoadVantageDbContext context;
-		private readonly UserManager<User> userManager;
+		private readonly UserManager<BaseUser> userManager;
 		public readonly IProfileService profileService;
 
 
 
-		public LoadBoardService(LoadVantageDbContext _context, UserManager<User> _userManager, IProfileService _profileService)
+		public LoadBoardService(LoadVantageDbContext _context, UserManager<BaseUser> _userManager, IProfileService _profileService)
 		{
 			context = _context;
 			userManager = _userManager;

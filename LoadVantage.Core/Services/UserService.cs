@@ -22,12 +22,12 @@ namespace LoadVantage.Core.Services
     [Authorize]
     public class UserService : IUserService
     {
-        private readonly UserManager<User> userManager;
+        private readonly UserManager<BaseUser> userManager;
         private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly LoadVantageDbContext context;
         private readonly IImageService imageService;
 
-        public UserService(UserManager<User> _userManager, IHttpContextAccessor _httpContextAccessor, LoadVantageDbContext _context, IImageService _imageService)
+        public UserService(UserManager<BaseUser> _userManager, IHttpContextAccessor _httpContextAccessor, LoadVantageDbContext _context, IImageService _imageService)
 		{
             userManager = _userManager;
             httpContextAccessor = _httpContextAccessor;
@@ -37,12 +37,12 @@ namespace LoadVantage.Core.Services
 
 		
 
-		public async Task<User> GetUserByIdAsync(Guid userId)
+		public async Task<BaseUser> GetUserByIdAsync(Guid userId)
         {
             return await userManager.FindByIdAsync(userId.ToString());
         }
 
-        public async Task<User> GetCurrentUserAsync()
+		public async Task<BaseUser> GetCurrentUserAsync()
         {
 	        var userId = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -54,7 +54,7 @@ namespace LoadVantage.Core.Services
 			return await userManager.FindByIdAsync(userId);
         }
 
-		public async Task<User> FindUserByEmailAsync(string email)
+		public async Task<BaseUser> FindUserByEmailAsync(string email)
 		{
 			if (string.IsNullOrWhiteSpace(email))
 				throw new ArgumentException("Email cannot be null or empty.", nameof(email));
@@ -62,7 +62,7 @@ namespace LoadVantage.Core.Services
 			return await userManager.FindByEmailAsync(email);
 		}
 
-		public async Task<User> FindUserByUsernameAsync(string username)
+		public async Task<BaseUser> FindUserByUsernameAsync(string username)
 		{
 			if (string.IsNullOrWhiteSpace(username))
 				throw new ArgumentException("Username cannot be null or empty.", nameof(username));
@@ -70,7 +70,7 @@ namespace LoadVantage.Core.Services
 			return await userManager.FindByNameAsync(username);
 		}
 
-		public async Task<IdentityResult> CreateUserAsync(User user, string password)
+		public async Task<IdentityResult> CreateUserAsync(BaseUser user, string password)
 		{
 			if (user == null)
 				throw new ArgumentNullException(nameof(user));
@@ -81,7 +81,7 @@ namespace LoadVantage.Core.Services
 			return await userManager.CreateAsync(user, password);
 		}
 
-		public async Task<IdentityResult> AssignUserRoleAsync(User user, string role)
+		public async Task<IdentityResult> AssignUserRoleAsync(BaseUser user, string role)
 		{
 
 			if (user == null)
@@ -100,66 +100,8 @@ namespace LoadVantage.Core.Services
 			throw new ArgumentException("That role is already assigned to the user.", nameof(role));
 
 		}
-		public async Task<IEnumerable<Claim>> GetUserClaimsAsync(User user)
-		{
-			var claims = await userManager.GetClaimsAsync(user);
-			return claims;
-		}
 
-		public async Task<IdentityResult> AddUserClaimAsync(User user, Claim claim)
-		{
-			if (user == null)
-				throw new ArgumentNullException(nameof(user));
-
-			if (claim == null)
-				throw new ArgumentNullException(nameof(claim));
-
-			return await userManager.AddClaimAsync(user, claim);
-		}
-
-		public async Task<IdentityResult> AddUserClaimsAsync(User user, IEnumerable<Claim> claims)
-		{
-			if (user == null)
-				throw new ArgumentNullException(nameof(user));
-
-			if (claims == null || !claims.Any())
-				throw new ArgumentException("Claims cannot be null or empty.", nameof(claims));
-
-			return await userManager.AddClaimsAsync(user, claims);
-		}
-
-		public async Task<IEnumerable<User>> GetAllUsersAsync()
-        {
-            return  await userManager.Users
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<User>> GetDispatchersAsync()
-        {
-            return await userManager.Users
-                .Where(u => u is Dispatcher)
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<User>> GetBrokersAsync()
-        {
-            return await userManager.Users
-                .Where(u => u is Broker)
-                .ToListAsync();
-        }
-
-        public async Task UpdateUserPositionAsync(Guid userId, string position)
-        {
-            var user = await GetUserByIdAsync(userId);
-
-            if (user != null)
-            {
-                user.Position = position;
-                await userManager.UpdateAsync(user);
-            }
-        }
-
-        public async Task<ProfileViewModel> GetUserInformation(Guid userId)
+		public async Task<ProfileViewModel> GetUserInformation(Guid userId)
         {
 	        var user = await GetUserByIdAsync(userId);
 
@@ -192,7 +134,8 @@ namespace LoadVantage.Core.Services
 		public async Task<UserChatViewModel> GetChatUserInfoAsync(Guid userId)
         {
 	        var user = await context.Users
-		        .Include(u => u.UserImage)
+		        .Cast<User>()
+				.Include(u => u.UserImage)
 		        .Where(u => u.Id == userId)
 		        .Select(u => new UserChatViewModel
 		        {
@@ -289,26 +232,55 @@ namespace LoadVantage.Core.Services
 
 	        return userImage ?? DefaultImagePath;
         }
-		public async Task<Guid> GetOrCreateDefaultImageAsync()
-		{
-			var defaultImage = await context.UsersImages
-				.FirstOrDefaultAsync(img => img.Id == DefaultImageId);
 
-			if (defaultImage == null) 
-			{
-				defaultImage = new UserImage
-				{
-					Id = DefaultImageId,
-					ImageUrl = DefaultImagePath,
-					PublicId = DefaultPublicId
-				};
+        public async Task<Guid> GetOrCreateDefaultImageAsync()
+        {
+	        var defaultImage = await context.UsersImages
+		        .FirstOrDefaultAsync(img => img.Id == DefaultImageId);
 
-				context.UsersImages.Add(defaultImage);
-				await context.SaveChangesAsync();
-			}
+	        if (defaultImage == null)
+	        {
+		        defaultImage = new UserImage
+		        {
+			        Id = DefaultImageId,
+			        ImageUrl = DefaultImagePath,
+			        PublicId = DefaultPublicId
+		        };
 
-			return defaultImage.Id;
-		}
+		        context.UsersImages.Add(defaultImage);
+		        await context.SaveChangesAsync();
+	        }
+
+	        return defaultImage.Id;
+        }
+
+		public async Task<IEnumerable<Claim>> GetUserClaimsAsync(BaseUser user)
+        {
+	        var claims = await userManager.GetClaimsAsync(user);
+	        return claims;
+        }
+
+        public async Task<IdentityResult> AddUserClaimAsync(BaseUser user, Claim claim)
+        {
+	        if (user == null)
+		        throw new ArgumentNullException(nameof(user));
+
+	        if (claim == null)
+		        throw new ArgumentNullException(nameof(claim));
+
+	        return await userManager.AddClaimAsync(user, claim);
+        }
+
+        public async Task<IdentityResult> AddUserClaimsAsync(BaseUser user, IEnumerable<Claim> claims)
+        {
+	        if (user == null)
+		        throw new ArgumentNullException(nameof(user));
+
+	        if (claims == null || !claims.Any())
+		        throw new ArgumentException("Claims cannot be null or empty.", nameof(claims));
+
+	        return await userManager.AddClaimsAsync(user, claims);
+        }
 
 	}
 
