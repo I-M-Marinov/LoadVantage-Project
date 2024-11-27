@@ -71,8 +71,9 @@ label {
 }
 
 .form-control {
-    background-color: #dddddd !important;
-    color: white !important;
+    background-color: white !important;
+    border: 2px rgba(189,62,189,0.9) solid !important;
+    color: black !important;
 }
 
 .search-bar search-form {
@@ -186,23 +187,127 @@ input{
 #cancelCarrierBtn,
 #returnLoadToBrokerBtn,
 #bookLoadButton,
-#markAsDeliveredBtn {
+#markAsDeliveredBtn,
+#driversDropdown {
     background: #333333 !important;
     color: #ffffff !important;
 }
 
-#chatWithBrokerBtn:hover{
+#driversDropdown:hover {
+    background: #be6519 !important;
+    color: #ffffff !important;
+}
+
+#chatWithBrokerBtn:hover {
     border: 2px solid #1a00ff !important;
 }
 
-    #markAsDeliveredBtn:hover {
-        border: 2px solid #6f42c1 !important;
-        background: #6f42c1 !important;
-    }
+#markAsDeliveredBtn:hover {
+    border: 2px solid #6f42c1 !important;
+    background: #6f42c1 !important;
+}
 
-.datatable-sorter {
+#chatWithBrokerBtn,
+#changePasswordBtn,
+#saveChangesBtn,
+#editLoadButton {
+    border: 2px solid #1a00ff !important;
+    color: white !important;
+}
+
+#chatWithBrokerBtn:hover,
+#changePasswordBtn:hover,
+#saveChangesBtn:hover,
+#editLoadButton:hover{
+    background: #1a00ff !important;
+    color: white !important;
+}
+
+#returnLoadToBrokerBtn {
+    border: 2px solid #ff0000 !important;
+}
+
+#returnLoadToBrokerBtn:hover {
+    background: #ff0000 !important;
+    color: white !important;
+}
+
+#backToLoadBoardButton button {
+    border: 2px solid #0094ff !important;
+}
+
+#backToLoadBoardButton button:hover {
+    background: #0094ff !important;
+    color: white !important;
+}
+
+#bookLoadButton {
+    border: 2px solid #198754 !important;
+}
+
+#bookLoadButton:hover {
+    background: #198754 !important;
+    color: white !important;
+}
+
+#refreshLoadInfoButton {
+    border: 2px solid #0dcaf0 !important;
+}
+
+#refreshLoadInfoButton:hover {
+    background: #0dcaf0 !important;
     color: black !important;
 }
+
+#postLoadBtn {
+    border: 2px solid #ffc107 !important;
+}
+
+#postLoadBtn:hover {
+    background: #ffc107 !important;
+    color: black !important;
+}
+
+#cancelLoadBtn {
+    border: 2px solid #ff0000 !important;
+}
+
+#cancelLoadBtn:hover {
+    background: #ff0000 !important;
+    color: black !important;
+}
+
+#saveLoadButton {
+    border: 2px solid #198754 !important;
+}
+
+#saveLoadButton:hover {
+    background: #198754 !important;
+    color: white !important;
+}
+
+#cancelEditingButton {
+    border: 2px solid #6c757d !important;
+}
+
+#cancelEditingButton:hover {
+    background: #6c757d !important;
+    color: white !important;
+}
+
+
+#unpostLoadBtn,
+#unpostAllBtn {
+    border: 2px solid #ffc107 !important;
+}
+
+#unpostLoadBtn:hover,
+#unpostAllBtn:hover {
+    background: #ffc107 !important;
+    color: black !important;
+}
+
+
 
 .datatable-input {
     color: black !important;
@@ -231,4 +336,23 @@ input{
 #saveProfileButton {
     background: #333333 !important;
     color: #1a00ff !important;
+}
+
+.datatable-sorter {
+    color: black !important;
+}
+
+#currentPassword,
+#newPassword,
+#renewPassword{
+    color: #7201ae !important;
+}
+
+.form-control .text-center{
+    background-color: black !important;
+}
+
+
+#editDriverForm{
+    color: black !important;
 }
