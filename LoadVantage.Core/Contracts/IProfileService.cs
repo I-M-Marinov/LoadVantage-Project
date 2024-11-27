@@ -16,10 +16,9 @@ namespace LoadVantage.Core.Contracts
 	    /// Updates the user information.
 	    /// </summary>
 		Task<ProfileViewModel> UpdateProfileInformation(ProfileViewModel model, Guid userId);
-	    /// <summary>
-	    /// Updates the the user claims 
-	    /// </summary>
-		Task UpdateUserClaimsAsync(User user, ProfileViewModel model);
-        Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword);
+		/// <summary>
+		/// Changes the user's password.
+		/// </summary>
+		Task<IdentityResult> ChangePasswordAsync(BaseUser user, string currentPassword, string newPassword);
     }
 }

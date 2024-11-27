@@ -12,39 +12,27 @@ namespace LoadVantage.Core.Contracts
 	    /// <summary>
 	    /// Retrieves a user by his id
 	    /// </summary>
-		Task<User?> GetUserByIdAsync(Guid userId);
+		Task<BaseUser?> GetUserByIdAsync(Guid userId);
 	    /// <summary>
 	    /// Retrieves the currently authorized User or returns null if not authorized.
 	    /// </summary>
-		Task<User?> GetCurrentUserAsync();
+		Task<BaseUser?> GetCurrentUserAsync();
 	    /// <summary>
 	    /// Finds the User by his email address
 	    /// </summary>
-		Task<User?> FindUserByEmailAsync(string email);
-	    /// <summary>
-	    /// Finds the User by his username 
-	    /// </summary>
-		Task<User?> FindUserByUsernameAsync(string username);
-	    /// <summary>
-	    /// Creates a new User 
-	    /// </summary>
-		Task<IdentityResult> CreateUserAsync(User user, string password);
-	    /// <summary>
-	    /// Assigns the User role 
-	    /// </summary>
-		Task<IdentityResult> AssignUserRoleAsync(User user, string role);
+		Task<BaseUser?> FindUserByEmailAsync(string email);
 	    /// <summary>
 	    /// Retrieve all the claims for a user 
 	    /// </summary>
-	    Task<IEnumerable<Claim>> GetUserClaimsAsync(User user);
+	    Task<IEnumerable<Claim>> GetUserClaimsAsync(BaseUser user);
 	    /// <summary>
 	    /// Adds a User Claim  
 	    /// </summary>
-		Task<IdentityResult> AddUserClaimAsync(User user, Claim claim);
+		Task<IdentityResult> AddUserClaimAsync(BaseUser user, Claim claim);
 		/// <summary>
 		/// Adds multiple User Claims 
 		/// </summary>
-		Task<IdentityResult> AddUserClaimsAsync(User user, IEnumerable<Claim> claims);
+		Task<IdentityResult> AddUserClaimsAsync(BaseUser user, IEnumerable<Claim> claims);
 		/// <summary>
 		/// Gets the User information and maps it to the model for the profile section
 		/// </summary>
@@ -53,22 +41,6 @@ namespace LoadVantage.Core.Contracts
 		/// Gets the User information and maps some of it the model for the chat section
 		/// </summary>
 		Task<UserChatViewModel> GetChatUserInfoAsync(Guid brokerId);
-		/// <summary>
-		/// Retrieves all registered Users
-		/// </summary>
-		Task<IEnumerable<User>> GetAllUsersAsync();
-		/// <summary>
-		/// Retrieves all registered Dispatchers 
-		/// </summary>
-		Task<IEnumerable<User>> GetDispatchersAsync();
-		/// <summary>
-		/// Retrieves all registered Brokers 
-		/// </summary>
-		Task<IEnumerable<User>> GetBrokersAsync();
-		/// <summary>
-		/// Updates the User's position  
-		/// </summary>
-		Task UpdateUserPositionAsync(Guid userId, string position);
 		/// <summary>
 		/// Updates the User's image  
 		/// </summary>
@@ -81,10 +53,14 @@ namespace LoadVantage.Core.Contracts
 		/// Retrieves the user image url string by user Id
 		/// </summary>
 		Task<string> GetUserImageUrlAsync(Guid userId);
-		/// <summary>
-		/// Gets the default user Image Guid Id or creates it if it's not available 
-		/// </summary>
 		Task<Guid> GetOrCreateDefaultImageAsync();
+		Task<BaseUser> FindUserByUsernameAsync(string username);
+		Task<IdentityResult> CreateUserAsync(BaseUser user, string password);
+		Task<IdentityResult> AssignUserRoleAsync(BaseUser user, string role);
+
+
+
+
 
 
     }

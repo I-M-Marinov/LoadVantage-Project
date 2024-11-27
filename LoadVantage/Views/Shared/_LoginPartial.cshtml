@@ -1,7 +1,7 @@
 ﻿@using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@inject SignInManager<User> SignInManager
+@inject SignInManager<BaseUser> SignInManager
 
 
 @if (SignInManager.IsSignedIn(User))
