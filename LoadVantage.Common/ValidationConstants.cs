@@ -128,8 +128,10 @@
         {
 
             public static readonly string[] ValidImageExtensions = new [] { ".jpg", ".jpeg", ".png" };
+            public static readonly string[] AdminValidImageExtensions = new [] { ".jpg", ".jpeg", ".png", ".gif" };
             public const int UserImageMaxFileSize = 10485760; // in bytes ( or 10 * 1024 * 1024 )
             public const string InvalidImageFileExtension = "Invalid file extension. Only JPG, JPEG and PNG files are allowed.";
+            public const string AdminInvalidImageFileExtension = "Invalid file extension. Only JPG, JPEG, PNG and GIF files are allowed.";
             public const string ImageFileSizeExceeded = "File size must not exceed 10 MegaBytes.";
 
 		}

@@ -39,7 +39,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 		public static async Task SeedAdminUser(IServiceProvider serviceProvider, IConfiguration configuration)
 		{
 			using var scope = serviceProvider.CreateScope();
-			var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+			var userManager = scope.ServiceProvider.GetRequiredService<UserManager<BaseUser>>();
 			var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
 
 
@@ -54,7 +54,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 			if (await userManager.FindByNameAsync(adminUserName!) == null)
 			{
 				Role? role = await roleManager.FindByNameAsync(AdminRoleName);
-				var adminUser = new User
+				var adminUser = new Administrator()
 				{
 					UserName = adminUserName,
 					Email = adminEmail,
@@ -86,7 +86,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
         public static async Task SeedDispatchers(IServiceProvider serviceProvider, IConfiguration configuration)
         {
             using var scope = serviceProvider.CreateScope();
-            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<BaseUser>>();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
 
             Role? userRole = await roleManager.FindByNameAsync(UserRoleName);
@@ -156,7 +156,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
             var dbContext = serviceProvider.GetRequiredService<LoadVantageDbContext>();
 
             using var scope = serviceProvider.CreateScope();
-            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<BaseUser>>();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
 
             // Check if any brokers already exist
@@ -229,7 +229,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 
         }
 
-		public static async Task SeedDefaultUserImage(UserManager<User> userManager, IServiceProvider serviceProvider)
+		public static async Task SeedDefaultUserImage(UserManager<BaseUser> userManager, IServiceProvider serviceProvider)
 		{
 			var dbContext = serviceProvider.GetRequiredService<LoadVantageDbContext>();
 
@@ -252,7 +252,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 			await dbContext.SaveChangesAsync();
 		}
 
-		public static async Task SeedLoads(UserManager<User> userManager, IServiceProvider serviceProvider)
+		public static async Task SeedLoads(UserManager<BaseUser> userManager, IServiceProvider serviceProvider)
         {
 	        var context = serviceProvider.GetRequiredService<LoadVantageDbContext>();
 
@@ -363,7 +363,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
             
         }
 
-		public static async Task SeedTrucks(UserManager<User> userManager, IServiceProvider serviceProvider)
+		public static async Task SeedTrucks(UserManager<BaseUser> userManager, IServiceProvider serviceProvider)
 		{
 			var context = serviceProvider.GetRequiredService<LoadVantageDbContext>();
 
@@ -426,7 +426,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
 			await context.SaveChangesAsync();
 		}
 
-		public static async Task SeedDrivers(UserManager<User> userManager, IServiceProvider serviceProvider)
+		public static async Task SeedDrivers(UserManager<BaseUser> userManager, IServiceProvider serviceProvider)
 		{
 			await using var context = serviceProvider.GetRequiredService<LoadVantageDbContext>();
 

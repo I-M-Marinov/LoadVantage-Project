@@ -26,8 +26,28 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/AdminDashboard.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cQWRtaW5EYXNoYm9hcmQuY3NodG1s
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/Profile/AdminProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cUHJvZmlsZVxBZG1pblByb2ZpbGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/Profile/_AdminChangePasswordPartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cUHJvZmlsZVxfQWRtaW5DaGFuZ2VQYXNzd29yZFBhcnRpYWxWaWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/Profile/_AdminEditProfilePartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cUHJvZmlsZVxfQWRtaW5FZGl0UHJvZmlsZVBhcnRpYWxWaWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/Profile/_AdminProfileImagePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cUHJvZmlsZVxfQWRtaW5Qcm9maWxlSW1hZ2VQYXJ0aWFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/_AdminHeaderPartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cX0FkbWluSGVhZGVyUGFydGlhbFZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/_AdminSidebarPartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cX0FkbWluU2lkZWJhclBhcnRpYWxWaWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Identity/Pages/Account/_ViewImports.cshtml]
