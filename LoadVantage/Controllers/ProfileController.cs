@@ -235,7 +235,7 @@ namespace LoadVantage.Controllers
 			return RedirectToAction(nameof(Profile));
 		}
 
-		private async Task GetLoadCounts(User user)
+		private async Task GetLoadCounts(BaseUser user)
 		{
 			var loadCounts = await loadBoardService.GetLoadCountsForUserAsync(user.Id, user.Position);
 

@@ -24,7 +24,7 @@ namespace LoadVantage.Controllers
 		[HttpGet]
 		public async Task<IActionResult> LoadBoard()
 		{
-			User? user = userService.GetCurrentUserAsync().Result;
+			BaseUser? user = userService.GetCurrentUserAsync().Result;
 
 			if (user is Dispatcher)
 			{

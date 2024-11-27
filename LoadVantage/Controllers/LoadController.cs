@@ -38,7 +38,7 @@ namespace LoadVantage.Controllers
         public async Task<IActionResult> LoadDetails(Guid loadId)
         {
 
-	        User? user = await userService.GetCurrentUserAsync();
+	        BaseUser? user = await userService.GetCurrentUserAsync();
 
 			if (user == null)
             {

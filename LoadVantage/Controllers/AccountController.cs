@@ -9,6 +9,7 @@ using static LoadVantage.Common.GeneralConstants.TempMessages;
 using static LoadVantage.Common.ValidationConstants;
 using System.Security.Claims;
 using LoadVantage.Core.Contracts;
+using LoadVantage.Extensions;
 
 namespace LoadVantage.Controllers
 {
@@ -16,10 +17,10 @@ namespace LoadVantage.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService userService;
-        private readonly SignInManager<User> signInManager;
+        private readonly SignInManager<BaseUser> signInManager;
         private readonly RoleManager<Role> roleManager;
 
-        public AccountController(IUserService _userService, SignInManager<User> _signInManager, RoleManager<Role> _roleManager)
+        public AccountController(IUserService _userService, SignInManager<BaseUser> _signInManager, RoleManager<Role> _roleManager)
 		{
             userService = _userService;
             signInManager = _signInManager;
@@ -129,7 +130,8 @@ namespace LoadVantage.Controllers
 
                 var result = await signInManager.PasswordSignInAsync(user, model.Password, false, false);
 
-                if (result.Succeeded)
+                
+				if (result.Succeeded)
                 {
                     var claims = GetMissingClaims(User.Claims, user.FirstName, user.LastName, user.UserName, user.Position);
 
@@ -140,13 +142,11 @@ namespace LoadVantage.Controllers
 
                     await signInManager.SignInAsync(user, isPersistent: false);
 
-                    if (user is Administrator)
-                        return RedirectToAction("AdminDashboard", "Admin"); // Redirect to admin dashboard
-                    if (user is Dispatcher || user is Broker)
-                        return RedirectToAction("Profile", "Profile"); // Redirect to Profile page
-                }
+                    await RedirectToProfile(user);
 
-                ModelState.AddModelError(string.Empty, InvalidUserNameOrPassword);
+                }
+				
+				ModelState.AddModelError(string.Empty, InvalidUserNameOrPassword);
                 return View(model);
 
             }
@@ -179,6 +179,16 @@ namespace LoadVantage.Controllers
 
 			return missingClaims; 
 		}
+
+        private async Task<IActionResult> RedirectToProfile(BaseUser user)
+        {
+	        if (user is Administrator)
+		        return RedirectToAction("AdminProfile", "Admin", new { area = "Admin" }); // Redirect to Admin Profile in the Admin area
+	        if (user is Dispatcher || user is Broker)
+		        return RedirectToAction("Profile", "Profile"); // Redirect to Profile page
+
+	        return RedirectToAction("Index", "Home");
+        }
 
 	}
 }

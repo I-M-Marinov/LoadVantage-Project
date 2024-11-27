@@ -46,9 +46,10 @@ namespace LoadVantage.Controllers
 
             if (user is Administrator)
             {
-	            return RedirectToAction("AdminDashboard", "Admin"); 
-            }
-            else if (user is Dispatcher || user is Broker)
+	            return RedirectToAction("AdminProfile", "Admin", new { area = "Admin" }); // Redirect to Admin Profile in the Admin area
+
+			}
+			else if (user is Dispatcher || user is Broker)
             {
 	            return RedirectToAction("Profile", "Profile");
             }
