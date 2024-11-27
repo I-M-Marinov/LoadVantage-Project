@@ -1,4 +1,6 @@
 using System.Threading.RateLimiting;
+using LoadVantage.Areas.Admin.Contracts;
+using LoadVantage.Areas.Admin.Services;
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Services;
 using LoadVantage.Core.Hubs;
@@ -46,7 +48,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true; 
 });
 
-builder.Services.AddIdentity<User, Role>(options =>
+builder.Services.AddIdentity<BaseUser, Role>(options =>
 	{
 		options.Password.RequireDigit = true;
 		options.SignIn.RequireConfirmedAccount = false;
@@ -73,6 +75,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IImageService, ImageService>();									// Add the Image Service 
 builder.Services.AddScoped<IProfileService, ProfileService>();                              // Add the Profile Service 
+builder.Services.AddScoped<IProfileHelperService, ProfileHelperService>();                  // Add the Profile Helper Service 
 builder.Services.AddScoped<IUserService, UserService>();                                    // Add the User Service 
 builder.Services.AddHttpClient<ICountryStateCityService, CountryStateCityService>();		// Add CountryStateCity Service 
 builder.Services.AddScoped<IGeocodeService, GeocodeService>();								// Add the Geocode Retrieval Service 
@@ -85,6 +88,14 @@ builder.Services.AddScoped<IDriverService, DriverService>();								// Add the D
 builder.Services.AddSignalR();                                                              // Add SignalR
 
 // =================================================== // 
+
+// =============== Register ADMIN services ============== // 
+
+builder.Services.AddScoped<IAdminProfileService, AdminProfileService>();
+builder.Services.AddScoped<IAdminUserService, AdminUserService>();
+
+// =================================================== // 
+
 
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
@@ -117,7 +128,7 @@ using (var scope = app.Services.CreateScope())
 {
 
 	var services = scope.ServiceProvider;
-	var userManager = services.GetRequiredService<UserManager<User>>();
+	var userManager = services.GetRequiredService<UserManager<BaseUser>>();
 	var configuration = services.GetRequiredService<IConfiguration>();
 
 
@@ -181,6 +192,13 @@ app.UseEndpoints(endpoints =>
 		name: "driver",
 		pattern: "Driver/{action}/{id?}",
 		defaults: new { controller = "Driver", action = "ShowDrivers" });
+
+	endpoints.MapAreaControllerRoute(
+		name: "Admin_default",
+		areaName: "Admin",
+		pattern: "Admin/{controller}/{action}/{id?}",
+		defaults: new { area = "Admin", controller = "Admin", action = "AdminProfile" }
+	);
 
 	endpoints.MapHub<LoadHub>("/loadHub");
 	endpoints.MapHub<ChatHub>("/chatHub");
