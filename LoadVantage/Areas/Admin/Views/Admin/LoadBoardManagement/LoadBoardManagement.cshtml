@@ -1,0 +1,258 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Extensions
+@using LoadVantage.Infrastructure.Data.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Areas.Admin.Models.LoadBoard;
+
+@model AdminLoadBoardViewModel
+
+@{
+	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+	ViewData["Title"] = $"{Model.Profile.Position} Load Board";
+
+	var tempDataSuccessMessage = TempData.GetSuccessMessage();
+	var tempDataErrorMessage = TempData.GetErrorMessage();
+	var tempDataActiveTab = TempData.GetActiveTab();
+
+}
+   
+<!-- ======= Header ======= -->
+@await Html.PartialAsync("~/Areas/Admin/Views/AdminShared/_AdminHeaderPartialView.cshtml", Model.Profile)
+
+<!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+@await Html.PartialAsync("~/Areas/Admin/Views/AdminShared/_AdminSidebarPartialView.cshtml", Model.Profile)
+
+<!-- End Sidebar -->
+
+<main id="main" class="main">
+
+	<div class="pagetitle">
+		<h1>Load Board</h1>
+		<nav>
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="Profile">@Model.Profile.Position</a></li>
+				<li class="breadcrumb-item active">Load Board</li>
+			</ol>
+		</nav>
+	</div><!-- End Page Title -->
+
+	<!-- LOAD BOARD START -->
+	<section class="section">
+		<div class="row">
+			<div class="col-lg-12">
+
+				<div class="card">
+					<div class="card-body">
+
+						@if (!string.IsNullOrEmpty(tempDataSuccessMessage))
+						{
+							<div class="badge badge-danger mt-1 d-flex justify-content-center" id="success-message">@tempDataSuccessMessage</div>
+						}
+
+						@if (!string.IsNullOrEmpty(tempDataErrorMessage))
+						{
+							<div class="badge badge-danger mt-1 d-flex justify-content-center" id="error-message">@tempDataErrorMessage</div>
+						}
+
+						<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+							
+							<li class="nav-item" role="presentation">
+								<button class="nav-link active" id="pills-created-tab" data-bs-toggle="pill" data-bs-target="#pills-created" type="button" role="tab" aria-controls="pills-created" aria-selected="true">Created Loads</button>
+							</li>
+							
+							<li class="nav-item" role="presentation">
+								<button class="nav-link" id="pills-posted-tab" data-bs-toggle="pill" data-bs-target="#pills-posted" type="button" role="tab" aria-controls="pills-posted" aria-selected="false">Posted Loads</button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link" id="pills-booked-tab" data-bs-toggle="pill" data-bs-target="#pills-booked" type="button" role="tab" aria-controls="pills-booked" aria-selected="false">Booked Loads</button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link" id="pills-billed-tab" data-bs-toggle="pill" data-bs-target="#pills-billed" type="button" role="tab" aria-controls="pills-billed" aria-selected="false">Delivered Loads</button>
+							</li>
+							
+							<li class="nav-item" role="presentation">
+								<button class="nav-link" id="pills-cancelled-tab" data-bs-toggle="pill" data-bs-target="#pills-cancelled" type="button" role="tab" aria-controls="pills-cancelled" aria-selected="false">Cancelled Loads</button>
+							</li>
+						</ul>
+						<div class="tab-content" id="myTabContent">
+							
+							<div class="tab-pane fade show active" id="pills-created" role="tabpanel" aria-labelledby="pills-created-tab">
+								<div class="table-responsive">
+									<table class="table datatable">
+										<thead>
+											<tr>
+												<th>Origin</th>
+												<th>State</th>
+												<th>Destination</th>
+												<th>State</th>
+												<th>Pickup Time</th>
+												<th>Delivery Time</th>
+												<th>Distance</th>
+												<th>Price</th>
+												<th data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Rate per Mile">RPM</th>
+												<th>Actions</th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach (var load in Model.CreatedLoads)
+											{
+												<tr class="clickable-row">
+													<td>@load.OriginCity</td>
+													<td>@load.OriginState</td>
+													<td>@load.DestinationCity</td>
+													<td>@load.DestinationState</td>
+													<td>@load.PickupTime.ToString("dd/MM/yyyy HH:mm")</td>
+													<td>@load.DeliveryTime.ToString("dd/MM/yyyy HH:mm")</td>
+													<td>@(load.Distance.HasValue ? Math.Round(load.Distance.Value) : 0)</td>
+													<td>$@load.PostedPrice</td>
+													<td title="Price per mile">@($"${(load.PostedPrice / (decimal)load.Distance):F2}")</td>
+													<td>
+
+														<form method="get" asp-area="Admin" asp-controller="AdminLoad" asp-action="GetLoadInfo">
+															<input type="hidden" name="loadId" value="@load.Id"/>
+															<button class="btn btn-warning view-button">
+																<i class="bx bx-info-square"></i>
+																<span>View</span>
+															</button>
+														</form>
+
+													</td>
+												</tr>
+											}
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+							<div class="tab-pane fade" id="pills-posted" role="tabpanel" aria-labelledby="pills-posted-tab">
+								<div class="table-responsive" id="postedLoadsTableContainer">
+
+									@await Html.PartialAsync("~/Areas/Admin/Views/Admin/LoadBoardManagement/_AdminBookedLoadsPartialView.cshtml", Model.PostedLoads)
+
+								</div>
+							</div>
+
+							<div class="tab-pane fade" id="pills-booked" role="tabpanel" aria-labelledby="pills-booked-tab">
+								<div class="table-responsive">
+
+									@await Html.PartialAsync("~/Areas/Admin/Views/Admin/LoadBoardManagement/_AdminPostedLoadsTablePartial.cshtml", Model.BookedLoads)
+
+								</div>
+							</div>
+							<div class="tab-pane fade" id="pills-billed" role="tabpanel" aria-labelledby="pills-billed-tab">
+								<div class="table-responsive">
+
+									@await Html.PartialAsync("~/Areas/Admin/Views/Admin/LoadBoardManagement/_AdminDeliveredLoadsTablePartial.cshtml", Model.DeliveredLoads)
+
+								</div>
+							</div>
+							
+							<div class="tab-pane fade" id="pills-cancelled" role="tabpanel" aria-labelledby="pills-cancelled-tab">
+								<div class="table-responsive">
+
+									@await Html.PartialAsync("~/Areas/Admin/Views/Admin/LoadBoardManagement/_AdminCancelledLoadsTablePartial.cshtml", Model.CancelledLoads)
+
+								</div>
+							</div>
+
+						</div><!-- End Pills Tabs -->
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>    <!-- LOAD BOARD START -->
+
+
+
+</main><!-- End #main -->
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+			return new bootstrap.Tooltip(tooltipTriggerEl);
+		});
+	});
+
+	document.addEventListener("DOMContentLoaded", function () {
+		var activeTab = "@tempDataActiveTab";
+
+		if (activeTab === "posted") {
+			var postedTabButton = document.getElementById("pills-posted-tab");
+			if (postedTabButton) {
+				new bootstrap.Tab(postedTabButton).show();
+			}
+		} else if (activeTab === "booked") {
+			var bookedTabButton = document.getElementById("pills-booked-tab");
+			if (bookedTabButton) {
+				new bootstrap.Tab(bookedTabButton).show();
+			}
+		} else {
+			var createdTabButton = document.getElementById("pills-created-tab"); // fallback to created tab
+			if (createdTabButton) {
+				new bootstrap.Tab(createdTabButton).show();
+			}
+		}
+	});
+
+
+
+	/*-------------------------------------------------------------------------------------
+	# SIGNALR WEB SOCKET CONNECTION TO RETRIEVE ANY NEW POSTED LOADS
+	--------------------------------------------------------------------------------------*/
+
+
+	// Declare postedLoadsConnection globally
+	var postedLoadsConnection;
+
+	function initializePostedLoadsConnection() {
+		if (!postedLoadsConnection) {
+			postedLoadsConnection = new signalR.HubConnectionBuilder()
+				.withUrl("/loadHub")
+				.build();
+
+			postedLoadsConnection.start()
+				.then(() => {
+					console.log("Connected to LoadHub.");
+				})
+				.catch(err => {
+					console.error("Error connecting to LoadHub: " + err);
+				});
+
+			postedLoadsConnection.on("ReceiveLoadPostedNotification", function (loadId) {
+				console.log("New load posted with ID: " + loadId);
+				reloadPostedLoadsTable();
+			});
+
+			postedLoadsConnection.on("ReloadPostedLoadsTable", function () {
+				console.log("Reloading the table... multiple loads status change / load's status changed");
+				reloadPostedLoadsTable();
+			});
+		}
+	}
+
+	function reloadPostedLoadsTable() {
+		$.get("/LoadBoard/GetPostedLoadsTable", function (data) {
+			$("#postedLoadsTableContainer").html(data);
+		});
+	}
+
+	document.addEventListener("DOMContentLoaded", function () {
+		initializePostedLoadsConnection();
+	});
+
+	window.addEventListener("beforeunload", () => {
+		if (postedLoadsConnection && postedLoadsConnection.state === "Connected") {
+			postedLoadsConnection.stop();
+		}
+	});
+
+
+
+</script>
+
