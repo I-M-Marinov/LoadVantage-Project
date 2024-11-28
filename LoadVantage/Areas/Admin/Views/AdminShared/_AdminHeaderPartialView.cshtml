@@ -1,5 +1,5 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using LoadVantage.Areas.Admin.Models;
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Areas.Admin.Models.Profile;
 
 @model AdminProfileViewModel
 
@@ -18,21 +18,9 @@
 		<i class="bi bi-list toggle-sidebar-btn"></i>
 	</div><!-- End Logo -->
 
-	<div class="search-bar">
-		<form class="search-form d-flex align-items-center" method="POST" action="#">
-			<input type="text" name="query" placeholder="Search" title="Enter search keyword">
-			<button type="submit" title="Search"><i class="bi bi-search"></i></button>
-		</form>
-	</div><!-- End Search Bar -->
 
 	<nav class="header-nav ms-auto">
 		<ul class="d-flex align-items-center">
-
-			<li class="nav-item d-block d-lg-none">
-				<a class="nav-link nav-icon search-bar-toggle " href="#">
-					<i class="bi bi-search"></i>
-				</a>
-			</li><!-- End Search Icon-->
 
 			<div class="container">
 				<label for="dark-mode-toggle" class="toggle">
@@ -175,7 +163,7 @@
 
 					<li>
 
-						<form method="get" action="@Url.Action("Profile", "Profile")">
+						<form method="get" asp-area="Admin" asp-controller="Admin" asp-action="AdminProfile">
 							<input type="hidden" name="userId" value="@Model.Id" />
 							<button type="submit" class="dropdown-item d-flex align-items-center">
 								<i class="bi bi-person"></i>
@@ -210,13 +198,14 @@
 					</li>
 
 					<li>
-						<form method="get" action="@Url.Action("Logout", "Account")">
-							<input type="hidden" name="brokerId" value="@Model.Id" />
+						<form method="get" asp-area="" asp-controller="Account" asp-action="Logout">
+							<input type="hidden" name="userId" value="@Model.Id" />
 							<button type="submit" class="dropdown-item d-flex align-items-center">
 								<i class="bi bi-box-arrow-right"></i>
 								<span>Sign Out</span>
 							</button>
 						</form>
+
 					</li>
 
 				</ul><!-- End Profile Dropdown Items -->

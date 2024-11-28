@@ -1,6 +1,5 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using LoadVantage.Areas.Admin.Models
-@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Areas.Admin.Models.Profile;
 
 @model AdminProfileViewModel
 
@@ -14,7 +13,7 @@
 
 		<li class="nav-item loadboard-nav">
 
-			<form method="get" action="@Url.Action("LoadBoard", "LoadBoard")">
+			<form method="get" asp-area="Admin" asp-controller="LoadBoardManagement" asp-action="LoadBoardManagement">
 				<input type="hidden" name="userId" value="@Model.Id" />
 				<button type="submit" class="nav-link collapsed" id="loadboard-nav">
 					<i class="bx bxs-dashboard"></i>
@@ -28,7 +27,7 @@
 		<li class="nav-item profile-nav">
 
 
-			<form method="get" action="@Url.Action("Profile", "Profile")">
+			<form method="get" asp-area="Admin" asp-controller="Admin" asp-action="AdminProfile">
 				<input type="hidden" name="userId" value="@Model.Id" />
 				<button type="submit" class="nav-link collapsed" id="profile-nav">
 					<i class="ri-account-pin-box-line"></i>
@@ -86,7 +85,7 @@
 
 			<form method="get" action="@Url.Action("ShowDrivers", "Driver")">
 				<input type="hidden" name="userId" value="@Model.Id" />
-				<button type="submit" class="nav-link collapsed" id="truck-nav">
+				<button type="submit" class="nav-link collapsed" id="driver-nav">
 					<i class="bi bi-person-fill"></i>
 					<span>Drivers</span>
 				</button>
