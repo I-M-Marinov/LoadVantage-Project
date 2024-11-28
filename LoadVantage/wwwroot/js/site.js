@@ -89,7 +89,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 postLoadBtn.style.display = "none";
             }
 
-            document.getElementById("cancelLoadBtn").style.display = "none";
+
+
+            if (document.getElementById("cancelLoadBtn")) {
+                document.getElementById("cancelLoadBtn").style.display = "none";
+            }
             if (document.getElementById("cancelCarrierBtn")) {
                 document.getElementById("cancelCarrierBtn").style.display = "none";
             }
@@ -145,8 +149,10 @@ document.addEventListener("DOMContentLoaded", function () {
             if (postLoadBtn) {
                 postLoadBtn.style.display = "inline-block";
             }
-
-            document.getElementById("cancelLoadBtn").style.display = "inline-block";
+        
+            if (document.getElementById("cancelLoadBtn")) {
+                document.getElementById("cancelLoadBtn").style.display = "inline-block";
+            }
           
             if (document.getElementById("cancelCarrierBtn")) {
                 document.getElementById("cancelCarrierBtn").style.display = "inline-block";
