@@ -3,6 +3,7 @@
 using LoadVantage.Core.Models.Image;
 using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.ValidationConstants.UserValidations;
+using static LoadVantage.Common.ValidationConstants.EditProfile;
 
 namespace LoadVantage.Core.Models.Profile
 {

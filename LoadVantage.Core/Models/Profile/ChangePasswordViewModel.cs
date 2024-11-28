@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static LoadVantage.Common.ValidationConstants.UserValidations;
+using static LoadVantage.Common.ValidationConstants.EditProfile;
 
 
 namespace LoadVantage.Core.Models.Profile

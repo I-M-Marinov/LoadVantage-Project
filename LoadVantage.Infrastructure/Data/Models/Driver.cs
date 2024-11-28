@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using static LoadVantage.Common.ValidationConstants;
+using static LoadVantage.Common.ValidationConstants.DriverValidations;
 using static LoadVantage.Common.ValidationConstants.UserValidations;
 
 
