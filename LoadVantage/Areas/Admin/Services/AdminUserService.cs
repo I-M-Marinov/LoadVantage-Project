@@ -52,7 +52,7 @@ namespace LoadVantage.Areas.Admin.Services
 		{
 			return await userManager.FindByIdAsync(adminId.ToString());
 		}
-		public async Task<BaseUser> GetCurrentAdministratorAsync()
+		public async Task<Administrator> GetCurrentAdministratorAsync()
 		{
 			var adminId = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -61,7 +61,7 @@ namespace LoadVantage.Areas.Admin.Services
 				return null;
 			}
 
-			return await userManager.FindByIdAsync(adminId);
+			return await userManager.FindByIdAsync(adminId) as Administrator;
 		}
 		public async Task<IEnumerable<BaseUser>> GetAllUsersAsync()
 		{
@@ -95,7 +95,6 @@ namespace LoadVantage.Areas.Admin.Services
 			var claims = await userManager.GetClaimsAsync(administrator);
 			return claims;
 		}
-
 		public async Task UpdateUserImageAsync(Guid userId, IFormFile file)
 		{
 			var user = await GetAdminByIdAsync(userId);
@@ -143,7 +142,6 @@ namespace LoadVantage.Areas.Admin.Services
 				throw new Exception(ImageUploadFailed);
 			}
 		}
-
 		public async Task DeleteUserImageAsync(Guid userId, Guid imageId)
 		{
 			var user = await GetAdminByIdAsync(userId);

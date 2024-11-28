@@ -9,10 +9,10 @@ namespace LoadVantage.Areas.Admin.Contracts
 	{
 		Task<BaseUser> GetCurrentAdminAsync();
 		Task<BaseUser> GetAdminByIdAsync(Guid adminId);
-		Task<BaseUser> GetCurrentAdministratorAsync();
+		Task<Administrator> GetCurrentAdministratorAsync();
 		/// <summary>
-		/// Retrieves all registered Users
-		/// </summary>
+																/// Retrieves all registered Users
+																/// </summary>
 		Task<IEnumerable<BaseUser>> GetAllUsersAsync();
 		/// <summary>
 		/// Retrieves all registered Dispatchers 
