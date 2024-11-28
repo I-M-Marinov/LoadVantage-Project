@@ -2,11 +2,6 @@
 {
 	public static class ValidationConstants
 	{
-		// DRIVER 
-
-		public const byte LicenseNumberMinLength = 5;
-		public const byte LicenseNumberMaxLength = 15;
-
 
 		// VALIDATION MESSAGES 
 
@@ -101,6 +96,13 @@
 			public const byte NewPasswordMinLength = 6;
 	        public const byte NewPasswordMaxLength = 30;
 
+	        
+
+
+        }
+
+        public static class EditProfile
+        {
 	        public const string UsernameRequired = "Username is required.";
 	        public const string EmailAddressRequired = "Email address is required.";
 	        public const string FirstNameRequired = "First name is required.";
@@ -109,20 +111,18 @@
 	        public const string PhoneNumberRequired = "Phone number is required.";
 
 
-			public const string EmailLengthNotValid = "The length of the email must be between 7 and 50 characters.";
-			public const string EmailAddressNotValid = "Invalid email address format.";
-            public const string CompanyNameLengthNotValid = "The length of the company name must be between 3 and 50 characters.";
-            public const string UserPhoneNumberLengthNotValid = "The length of the phone number must be between 7 and 15 characters.";
-            public const string UserPhoneNumberEmailAddressNotValid = "Invalid phone number format - Accepted formats: (123) 456-7890 or +1-234-567-8900";
-            public const string UserNameLengthNotValid = "The length of the username must be between 4 and 30 characters.";
-            public const string FirstNameLengthNotValid = "The length of the firstname must be between 2 and 25 characters.";
-            public const string LastNameLengthNotValid = "The length of the lastname must be between 3 and 25 characters.";
-            public const string PositionLengthNotValid = "The length of the postion must be between 6 and 20 characters.";
-            public const string NewPasswordLengthNotValid = "The new password must be between 6 and 30 characters long.";
-            public const string NewAndConfirmPasswordDoNotMatch = "The new password and confirmation password do not match.";
-
-
-        }
+	        public const string EmailLengthNotValid = "The length of the email must be between 7 and 50 characters.";
+	        public const string EmailAddressNotValid = "Invalid email address format.";
+	        public const string CompanyNameLengthNotValid = "The length of the company name must be between 3 and 50 characters.";
+	        public const string UserPhoneNumberLengthNotValid = "The length of the phone number must be between 7 and 15 characters.";
+	        public const string UserPhoneNumberEmailAddressNotValid = "Invalid phone number format - Accepted formats: (123) 456-7890 or +1-234-567-8900";
+	        public const string UserNameLengthNotValid = "The length of the username must be between 4 and 30 characters.";
+	        public const string FirstNameLengthNotValid = "The length of the firstname must be between 2 and 25 characters.";
+	        public const string LastNameLengthNotValid = "The length of the lastname must be between 3 and 25 characters.";
+	        public const string PositionLengthNotValid = "The length of the postion must be between 6 and 20 characters.";
+	        public const string NewPasswordLengthNotValid = "The new password must be between 6 and 30 characters long.";
+	        public const string NewAndConfirmPasswordDoNotMatch = "The new password and confirmation password do not match.";
+		}
 
         public static class UserImageValidations
         {
@@ -181,7 +181,8 @@
 	        public const byte DriverLastNameMinLength = 3;
 	        public const byte DriverLastNameMaxLength = 25;
 
-	        public const string DriverLicenceNumberRegexPattern = @"^[A-Za-z0-9]{8,15}$";
+	        public const byte LicenseNumberMaxLength = 15;
+			public const string DriverLicenceNumberRegexPattern = @"^[A-Za-z0-9]{8,15}$";
 
 		}
 	}
