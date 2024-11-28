@@ -6,10 +6,10 @@ using LoadVantage.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using LoadVantage.Areas.Admin.Contracts;
-using LoadVantage.Areas.Admin.Models;
 using Microsoft.EntityFrameworkCore;
 using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
+using LoadVantage.Areas.Admin.Models.Profile;
 
 namespace LoadVantage.Areas.Admin.Services
 {
@@ -132,23 +132,8 @@ namespace LoadVantage.Areas.Admin.Services
                 UserImageUrl = userImage.ImageUrl
             };
         }
-        private async Task UpdateAdminClaimsAsync(BaseUser admin, AdminProfileViewModel model)
-        {
-            var existingClaims = await adminUserService.GetAdminClaimsAsync(admin);
-            var claimsToAddOrUpdate = profileHelperService.GetMissingClaims(existingClaims, model.FirstName, model.LastName, model.Username,
-                model.Position);
 
-            if (claimsToAddOrUpdate.Any())
-            {
-                await adminUserManager.RemoveClaimsAsync(admin, existingClaims.Where(c => claimsToAddOrUpdate.Any(newClaim => newClaim.Type == c.Type)));
-
-                await Task.Delay(500); // Ensuring removal happens first.
-
-                await adminUserManager.AddClaimsAsync(admin, claimsToAddOrUpdate);
-            }
-
-        }
-        public async Task<IdentityResult> ChangePasswordAsync(BaseUser admin, string currentPassword, string newPassword)
+        public async Task<IdentityResult> ChangePasswordAsync(Administrator admin, string currentPassword, string newPassword)
         {
             if (admin == null)
             {
@@ -174,6 +159,24 @@ namespace LoadVantage.Areas.Admin.Services
 
             return result;
         }
+
+        private async Task UpdateAdminClaimsAsync(BaseUser admin, AdminProfileViewModel model)
+        {
+	        var existingClaims = await adminUserService.GetAdminClaimsAsync(admin);
+	        var claimsToAddOrUpdate = profileHelperService.GetMissingClaims(existingClaims, model.FirstName, model.LastName, model.Username,
+		        model.Position);
+
+	        if (claimsToAddOrUpdate.Any())
+	        {
+		        await adminUserManager.RemoveClaimsAsync(admin, existingClaims.Where(c => claimsToAddOrUpdate.Any(newClaim => newClaim.Type == c.Type)));
+
+		        await Task.Delay(500); // Ensuring removal happens first.
+
+		        await adminUserManager.AddClaimsAsync(admin, claimsToAddOrUpdate);
+	        }
+
+        }
+
         private bool AreUserPropertiesEqual(BaseUser admin, AdminProfileViewModel model)
         {
 	        return admin.Id == Guid.Parse(model.Id) &&
