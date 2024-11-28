@@ -142,7 +142,7 @@ namespace LoadVantage.Controllers
 
                     await signInManager.SignInAsync(user, isPersistent: false);
 
-                    await RedirectToProfile(user);
+                   return await RedirectToProfile(user);
 
                 }
 				
@@ -183,11 +183,11 @@ namespace LoadVantage.Controllers
         private async Task<IActionResult> RedirectToProfile(BaseUser user)
         {
 	        if (user is Administrator)
-		        return RedirectToAction("AdminProfile", "Admin", new { area = "Admin" }); // Redirect to Admin Profile in the Admin area
+		        return  RedirectToAction("AdminProfile", "Admin", new { area = "Admin" }); // Redirect to Admin Profile in the Admin area
 	        if (user is Dispatcher || user is Broker)
 		        return RedirectToAction("Profile", "Profile"); // Redirect to Profile page
 
-	        return RedirectToAction("Index", "Home");
+	        return  RedirectToAction("Index", "Home");
         }
 
 	}
