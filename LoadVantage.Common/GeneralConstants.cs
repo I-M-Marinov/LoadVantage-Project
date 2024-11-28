@@ -47,7 +47,7 @@ namespace LoadVantage.Common
             public const string InvalidCityOrStateSpecified = "Invalid city or state specified.";
             public const string ErrorRetrievingCoordinates = "Error retrieving coordinates.";
             public const string ErrorCreatingLoad = "There was an error creating the load. Please check your input and try again.";
-            public const string ErrorRetrievingDetailsForLoad = "Could not retrieve the details for this load.";
+            public const string ErrorUpdatingThisLoad = "An error occurred while trying to update the load.";
             public const string ErrorUpdatingLoad = "Load was not updated !";
 
             public const string LoadIsNotInCorrectStatus = "This load cannot be posted. It is not with status \"Created\"";

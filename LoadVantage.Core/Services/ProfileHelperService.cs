@@ -44,7 +44,6 @@ namespace LoadVantage.Core.Services
 		{
 			return await userService.GetUserClaimsAsync(user);
 		}
-
 		public List<Claim> GetMissingClaims(IEnumerable<Claim> existingClaims, string firstName, string lastName, string userName, string userPosition)
 		{
 			var claims = new List<Claim>

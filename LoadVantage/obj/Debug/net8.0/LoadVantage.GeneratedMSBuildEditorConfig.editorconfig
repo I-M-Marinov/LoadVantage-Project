@@ -26,6 +26,38 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/AdminShared/_AdminHeaderPartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5TaGFyZWRcX0FkbWluSGVhZGVyUGFydGlhbFZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/AdminShared/_AdminSidebarPartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5TaGFyZWRcX0FkbWluU2lkZWJhclBhcnRpYWxWaWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/LoadBoardManagement/LoadBoardManagement.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cTG9hZEJvYXJkTWFuYWdlbWVudFxMb2FkQm9hcmRNYW5hZ2VtZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/LoadBoardManagement/_AdminBookedLoadsPartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cTG9hZEJvYXJkTWFuYWdlbWVudFxfQWRtaW5Cb29rZWRMb2Fkc1BhcnRpYWxWaWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/LoadBoardManagement/_AdminCancelledLoadsTablePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cTG9hZEJvYXJkTWFuYWdlbWVudFxfQWRtaW5DYW5jZWxsZWRMb2Fkc1RhYmxlUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/LoadBoardManagement/_AdminDeliveredLoadsTablePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cTG9hZEJvYXJkTWFuYWdlbWVudFxfQWRtaW5EZWxpdmVyZWRMb2Fkc1RhYmxlUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/LoadBoardManagement/_AdminPostedLoadsTablePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cTG9hZEJvYXJkTWFuYWdlbWVudFxfQWRtaW5Qb3N0ZWRMb2Fkc1RhYmxlUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/Load/LoadInformation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cTG9hZFxMb2FkSW5mb3JtYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/Profile/AdminProfile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cUHJvZmlsZVxBZG1pblByb2ZpbGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -40,14 +72,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/Profile/_AdminProfileImagePartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cUHJvZmlsZVxfQWRtaW5Qcm9maWxlSW1hZ2VQYXJ0aWFsLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/_AdminHeaderPartialView.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cX0FkbWluSGVhZGVyUGFydGlhbFZpZXcuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/_AdminSidebarPartialView.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cX0FkbWluU2lkZWJhclBhcnRpYWxWaWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Identity/Pages/Account/_ViewImports.cshtml]

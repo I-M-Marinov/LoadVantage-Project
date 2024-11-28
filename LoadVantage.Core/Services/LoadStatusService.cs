@@ -23,12 +23,12 @@ namespace LoadVantage.Core.Services
 	    public readonly LoadVantageDbContext context;
 	    public readonly IDistanceCalculatorService distanceCalculatorService;
 
-	    public LoadStatusService(IProfileService _profileService, LoadVantageDbContext _context, IDistanceCalculatorService distanceCalculatorServiceService, ILogger<LoadStatusService> _logger)
+	    public LoadStatusService(IProfileService _profileService, LoadVantageDbContext _context, IDistanceCalculatorService _distanceCalculatorService, ILogger<LoadStatusService> _logger)
 	    {
 		    profileService = _profileService;
 		    logger = _logger;
             context = _context;
-            distanceCalculatorService = distanceCalculatorServiceService;
+            distanceCalculatorService = _distanceCalculatorService;
 	    }
 
         public async Task<LoadViewModel> GetLoadByIdAsync(Guid loadId)
@@ -223,13 +223,11 @@ namespace LoadVantage.Core.Services
 
                     return true;
                 }
-                catch (Exception e)
-                {
-
-                    logger.LogError(ErrorRetrievingDetailsForLoad);
-                    throw;
-                }
-            }
+				catch (Exception e)
+				{
+					throw new Exception(ErrorUpdatingThisLoad);
+				}
+			}
 
             context.Loads.Update(load);
             await context.SaveChangesAsync();

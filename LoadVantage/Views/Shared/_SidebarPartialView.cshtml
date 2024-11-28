@@ -17,8 +17,8 @@
 		
 		<li class="nav-item loadboard-nav">
 
-			<form method="get" action="@Url.Action("LoadBoard", "LoadBoard")">
-				<input type="hidden" name="userId" value="@Model.Id" />
+			<form method="get" action="@Url.Action("LoadBoard", "LoadBoard", new { area = "" })">
+				<input type="hidden" name="userId" value="@Model.Id"/>
 				<button type="submit" class="nav-link collapsed" id="loadboard-nav">
 					<i class="bx bxs-dashboard"></i>
 					<span>Load Board</span>

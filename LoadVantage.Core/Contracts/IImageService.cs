@@ -8,7 +8,7 @@ namespace LoadVantage.Core.Contracts
 	public interface IImageService
 	{
 		/// <summary>
-		/// Uploads an image to Cloudinary ( sends the 
+		/// Uploads an image to Cloudinary 
 		/// </summary>
 		Task<ImageUploadResult> UploadImageAsync(IFormFile file);
 		/// <summary>

@@ -66,7 +66,6 @@ namespace LoadVantage.Infrastructure.Data.Services
 
             if (!areCitiesValid)
             {
-                logger.LogError(InvalidCityOrStateSpecified);
                 throw new InvalidOperationException(InvalidCityOrStateSpecified);
             }
 

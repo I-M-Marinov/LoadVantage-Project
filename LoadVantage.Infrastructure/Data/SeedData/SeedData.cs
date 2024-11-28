@@ -186,7 +186,7 @@ namespace LoadVantage.Infrastructure.Data.SeedData
                 {
                     UserName = "broker2",
                     Email = "broker2@gmail.com",
-                    FirstName = "Donald",
+                    FirstName = "Daffy",
                     LastName = "Duck",
                     CompanyName = "Rabbit Season Ltd.",
                     PhoneNumber = "+1-300-852-7391",
