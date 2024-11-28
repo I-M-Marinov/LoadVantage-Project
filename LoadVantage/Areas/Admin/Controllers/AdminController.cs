@@ -1,38 +1,39 @@
-﻿using LoadVantage.Areas.Admin.Contracts;
-using LoadVantage.Areas.Admin.Models;
-using LoadVantage.Areas.Admin.Services;
-using LoadVantage.Common.Enums;
-using LoadVantage.Core.Contracts;
-using LoadVantage.Core.Models.Image;
-using LoadVantage.Core.Models.Profile;
-using LoadVantage.Core.Services;
-using LoadVantage.Extensions;
+﻿using Microsoft.AspNetCore.Mvc;
+
 using LoadVantage.Filters;
-using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using LoadVantage.Extensions;
+using LoadVantage.Core.Contracts;
+using LoadVantage.Areas.Admin.Contracts;
+using LoadVantage.Areas.Admin.Models.Profile;
+
 using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
-using static LoadVantage.Common.GeneralConstants.UserRoles;
-using static LoadVantage.Common.ValidationConstants.UserImageValidations;
-using static LoadVantage.Common.ValidationConstants.UserValidations;
+using static LoadVantage.Common.GeneralConstants.SuccessMessages;
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Areas.Admin.Controllers
 {
-	[AdminOnly]
+    [AdminOnly]
 	[Area("Admin")]
 
 	public class AdminController : Controller
 	{
 		private readonly IUserService userService;
+		private readonly IProfileService profileService;
 		private readonly IAdminProfileService adminProfileService;
+		private readonly IAdminUserService adminUserService;
 		private readonly ILoadBoardService loadBoardService;
 
 		public AdminController(IUserService _userService,
-			IAdminProfileService _adminProfileService, ILoadBoardService _loadBoardService)
+			IProfileService _profileService,
+			IAdminProfileService _adminProfileService,
+			IAdminUserService _adminUserService, 
+			ILoadBoardService _loadBoardService)
 		{
 			userService = _userService;
+			profileService = _profileService;
 			adminProfileService = _adminProfileService;
+			adminUserService = _adminUserService;
 			loadBoardService = _loadBoardService;
 		}
 
@@ -47,48 +48,61 @@ namespace LoadVantage.Areas.Admin.Controllers
 			return View("~/Areas/Admin/Views/Admin/Profile/AdminProfile.cshtml", adminProfileInformation);
 		}
 
+		[HttpPost]
+		[ValidateAntiForgeryToken]
 
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
+		public async Task<IActionResult> UpdateProfile(AdminProfileViewModel model)
+		{
+			var user = await adminUserService.GetCurrentAdministratorAsync();
 
-		//public async Task<IActionResult> ChangePassword(AdminChangePasswordViewModel model)
-		//{
-		//	var user = await userService.GetCurrentUserAsync();
+			AdminProfileViewModel? userProfileViewModel = await adminProfileService.GetAdminInformation(user.Id);
+			model.UserImageUrl = userProfileViewModel!.UserImageUrl;
 
-		//	ProfileViewModel? profileModel = await profileService.GetUserInformation(user.Id);
 
-		//	profileModel.ChangePasswordViewModel = model;
+			if (!ModelState.IsValid)
+			{
+				return View("~/Areas/Admin/Views/Admin/Profile/AdminProfile.cshtml", model);
+			}
 
-		//	if (!ModelState.IsValid)
-		//	{
-		//		TempData.SetActiveTab(ProfileChangePasswordActiveTab); // navigate to the change password tab
-		//		return View("Profile", profileModel); // Redirect to the profile page and pass the Model for the password form  
-		//	}
+			try
+			{
+				var updatedModel = await adminProfileService.UpdateProfileInformation(model, user.Id);
 
-		//	var result = await profileService.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+				if (updatedModel.Id != user.Id.ToString())
+				{
+					TempData.SetActiveTab(ProfileActiveTab);
+					ModelState.AddModelError(string.Empty, NoChangesMadeToProfile);
 
-		//	if (result.Succeeded)
-		//	{
-		//		TempData.SetSuccessMessage(PasswordUpdatedSuccessfully);
-		//		TempData.SetActiveTab(ProfileActiveTab); // navigate to the profile tab
+					return View("~/Areas/Admin/Views/Admin/Profile/AdminProfile.cshtml", updatedModel);
+				}
 
-		//		return View("Profile", profileModel);
-		//	}
+				TempData.SetActiveTab(ProfileActiveTab);
+				TempData.SetSuccessMessage(ProfileUpdatedSuccessfully);
+				return View("~/Areas/Admin/Views/Admin/Profile/AdminProfile.cshtml", updatedModel);
+			}
+			catch (Exception ex) when (ex is InvalidDataException || ex is InvalidOperationException)
+			{
+				TempData.SetActiveTab(ProfileEditActiveTab);
 
-		//	var errors = "";
+				if (ex is InvalidDataException)
+				{
+					ModelState.AddModelError("username", ex.Message); // Invalid username
+				}
+				else if (ex is InvalidOperationException)
+				{
+					ModelState.AddModelError("email", ex.Message); // Invalid email
+				}
 
-		//	foreach (var error in result.Errors)
-		//	{
-		//		ModelState.AddModelError(string.Empty, error.Description);
-		//		errors += error.Description;
-		//	}
+				return View("~/Areas/Admin/Views/Admin/Profile/AdminProfile.cshtml", model);
+			}
+			catch (Exception ex)
+			{
+				TempData.SetActiveTab(ProfileActiveTab);
+				TempData.SetSuccessMessage(NoChangesMadeToProfile); // tell the user no changes were made 
+				return View("~/Areas/Admin/Views/Admin/Profile/AdminProfile.cshtml", model);
+			}
 
-		//	await GetLoadCounts(user);
-		//	TempData.SetErrorMessage(errors);
-		//	TempData.SetActiveTab(ProfileChangePasswordActiveTab); // navigate to the change password tab
-		//	return View("Profile", profileModel); // Redirect to the profile page and pass the Model for the password form  
-
-		//}
+		}
 
 		[HttpGet]
 		public async Task<IActionResult> UpdateProfileImage()
@@ -153,11 +167,11 @@ namespace LoadVantage.Areas.Admin.Controllers
 
 		public async Task<IActionResult> DeleteProfileImage()
 		{
-			var user = await userService.GetCurrentUserAsync();
+			var user = await adminUserService.GetCurrentAdministratorAsync();
 
 			try
 			{
-				await userService.DeleteUserImageAsync(user.Id, user.UserImageId!.Value);
+				await adminUserService.DeleteUserImageAsync(user.Id, user.UserImageId!.Value);
 
 				TempData.SetSuccessMessage(ImageRemoveSuccessfully);
 				return RedirectToAction("AdminProfile");
@@ -169,35 +183,57 @@ namespace LoadVantage.Areas.Admin.Controllers
 				return View("~/Areas/Admin/Views/Admin/Profile/AdminProfile.cshtml");
 			}
 		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+
+		public async Task<IActionResult> ChangePassword(AdminChangePasswordViewModel model)
+		{
+			var user = await adminUserService.GetCurrentAdministratorAsync();
+
+			AdminProfileViewModel? profileModel = await adminProfileService.GetAdminInformation(user.Id);
+
+			profileModel.AdminChangePasswordViewModel = model;
+
+			if (!ModelState.IsValid)
+			{
+				TempData.SetActiveTab(ProfileChangePasswordActiveTab); // navigate to the change password tab
+				return View("~/Areas/Admin/Views/Admin/Profile/AdminProfile.cshtml", profileModel); // Redirect to the profile page and pass the Model for the password form  
+			}
+
+			var result = await adminProfileService.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+			if (result.Succeeded)
+			{
+				TempData.SetSuccessMessage(PasswordUpdatedSuccessfully);
+				TempData.SetActiveTab(ProfileActiveTab); // navigate to the profile tab
+
+				return View("~/Areas/Admin/Views/Admin/Profile/AdminProfile.cshtml", profileModel);
+			}
+
+			var errors = "";
+
+			foreach (var error in result.Errors)
+			{
+				ModelState.AddModelError(string.Empty, error.Description);
+				errors += error.Description;
+			}
+
+			TempData.SetErrorMessage(errors);
+			TempData.SetActiveTab(ProfileChangePasswordActiveTab); // navigate to the change password tab
+			return View("~/Areas/Admin/Views/Admin/Profile/AdminProfile.cshtml", profileModel); // Redirect to the profile page and pass the Model for the password form  
+
+		}
+
+		[HttpGet]
+		public IActionResult RefreshEditProfile()
+		{
+			TempData.SetActiveTab(ProfileEditActiveTab);
+
+			return RedirectToAction(nameof(AdminProfile));
+		}
 	}
 
-	//[HttpGet]
-	//public IActionResult RefreshEditProfile()
-	//{
-	//	TempData.SetActiveTab(ProfileEditActiveTab);
-	//	return RedirectToAction(nameof(Profile));
-	//}
-
-	//private async Task GetLoadCounts(User user)
-	//{
-	//	var loadCounts = await loadBoardService.GetLoadCountsForUserAsync(user.Id, user.Position);
-
-	//	if (user is Broker)
-	//	{
-	//		var brokerLoadCounts = loadCounts[nameof(Broker)];
-
-	//		ViewBag.CreatedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Created, 0);
-	//		ViewBag.PostedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Available, 0);
-	//		ViewBag.BookedLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Booked, 0);
-	//		ViewBag.DeliveredLoadsCount = brokerLoadCounts.GetValueOrDefault(LoadStatus.Delivered, 0);
-	//	}
-	//	else // user is Dispatcher
-	//	{
-	//		var dispatcherLoadCounts = loadCounts[nameof(Dispatcher)];
-
-	//		ViewBag.BookedLoadsCount = dispatcherLoadCounts.GetValueOrDefault(LoadStatus.Booked, 0);
-	//		ViewBag.DeliveredLoadsCount = dispatcherLoadCounts.GetValueOrDefault(LoadStatus.Delivered, 0);
-	//	}
-	//}
+	
 }
 
