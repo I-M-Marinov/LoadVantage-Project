@@ -32,6 +32,10 @@ body {
 .card {
     box-shadow: 0 26px 58px 0 rgba(0, 0, 0, .22), 0 5px 14px 0 rgba(0, 0, 0, .18) !important;
 }
+
+.toggle-sidebar-btn{
+    font-size: 1.5em;
+}
 /*--------------------------------------------------------------
 # FANCY BUTTON ( NAVIGATION BUTTONS HOME INDEX - UNAUTHORIZED )
 --------------------------------------------------------------*/
@@ -567,16 +571,17 @@ body {
     position: absolute;
     bottom: 0.75em;
     right: 0.75em;
-    width: 2em;
-    height: 2em;
+    width: 1.7em;
+    height: 1.7em;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 #refreshProfileoButton i {
-    font-size: 24px;
-    margin-top: 0.25rem;
+    font-size: 1.2em;
+    margin-top: 0.40rem;
+    margin-left: 0.1rem;
 }
 
 #changePasswordBtn,
@@ -921,7 +926,8 @@ body {
 #pills-created-tab,
 #pills-posted-tab,
 #pills-booked-tab,
-#pills-billed-tab {
+#pills-billed-tab,
+#pills-cancelled-tab {
     background: white;
     color: #121112 !important;
     margin-right: 0.2em;
@@ -939,7 +945,8 @@ body {
 #pills-created-tab:hover,
 #pills-posted-tab:hover,
 #pills-booked-tab:hover,
-#pills-billed-tab:hover {
+#pills-billed-tab:hover,
+#pills-cancelled-tab:hover{
     background: linear-gradient(to left, #4cddf1, #8360c3) !important;
     background-color: #fff !important;
     color: ghostwhite !important;
@@ -1272,3 +1279,14 @@ transition: opacity 0.25s ease-out;
 #driversDropdown:hover{
     color: black;
 }
+
+#booking-details {
+    position: absolute;
+    width: 20em;
+    padding: 0.2em;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+

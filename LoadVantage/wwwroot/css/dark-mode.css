@@ -307,6 +307,14 @@ input{
     color: black !important;
 }
 
+#refreshProfileoButton i {
+    color: #0dcaf0 !important;
+}
+
+#refreshProfileoButton i:hover {
+    color: white !important;
+}
+
 
 
 .datatable-input {
