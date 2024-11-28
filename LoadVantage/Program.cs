@@ -93,6 +93,8 @@ builder.Services.AddSignalR();                                                  
 
 builder.Services.AddScoped<IAdminProfileService, AdminProfileService>();
 builder.Services.AddScoped<IAdminUserService, AdminUserService>();
+builder.Services.AddScoped<IAdminLoadBoardService, AdminLoadBoardService>();
+builder.Services.AddScoped<IAdminLoadStatusService, AdminLoadStatusService>();
 
 // =================================================== // 
 
@@ -173,10 +175,10 @@ app.UseEndpoints(endpoints =>
         pattern: "Profile",
         defaults: new { controller = "Profile", action = "Profile" });
 
-    endpoints.MapControllerRoute(
-	    name: "loadboard",
-	    pattern: "LoadBoard",
-	    defaults: new { controller = "LoadBoard", action = "LoadBoard" });
+	endpoints.MapControllerRoute(
+		name: "loadboard",
+		pattern: "LoadBoard/{action=LoadBoard}/{id?}",
+		defaults: new { controller = "LoadBoard", action = "LoadBoard" });
 
 	endpoints.MapControllerRoute(
 	    name: "load",
