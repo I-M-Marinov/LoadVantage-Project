@@ -1,7 +1,7 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using LoadVantage.Areas.Admin.Models;
+@using LoadVantage.Areas.Admin.Models.Profile;
 @using LoadVantage.Extensions
-@using LoadVantage.Infrastructure.Data.Models
+@using LoadVantage.Infrastructure.Data.Models;
 
 @model AdminProfileViewModel
 
@@ -15,18 +15,18 @@
 	var tempDataErrorMessage = TempData.GetErrorMessage();
 	var tempDataActiveTab = TempData.GetActiveTab();
 
-}}
+}
 
-   
-    <!-- ======= Header ======= -->
-@await Html.PartialAsync("_AdminHeaderPartialView", Model)
 
-    <!-- End Header -->
 
-    <!-- ======= Sidebar ======= -->
-@await Html.PartialAsync("_AdminSidebarPartialView", Model)
+<!-- ======= Header ======= -->
+@await Html.PartialAsync("~/Areas/Admin/Views/AdminShared/_AdminHeaderPartialView.cshtml", Model)
 
-    <!-- End Sidebar -->
+<!-- End Header -->
+<!-- ======= Sidebar ======= -->
+@await Html.PartialAsync("~/Areas/Admin/Views/AdminShared/_AdminSidebarPartialView.cshtml", Model)
+
+<!-- End Sidebar -->
 
 
 <main id="main" class="main">
@@ -54,19 +54,16 @@
 				<div class="card">
 					<div class="card-body loads-card pt-2 d-flex flex-column align-items-left">
 
-						<h2>Loads</h2>
+						<h2></h2>
 						<div class="social-links mt-2">
 							<div class="status-row">
-								@if (Model.Position is nameof(Broker))
-								{
-									<div class="badge bg-primary profile-loads">
-										<i class="bi bi-star me-1"></i>Created
-									</div>
-									<div class="badge bg-success profile-loads">
-										<i class="bi bi-check-circle me-1"></i>Posted
-									</div>
-								}
 
+								<div class="badge bg-primary profile-loads">
+									<i class="bi bi-star me-1"></i>Created
+								</div>
+								<div class="badge bg-success profile-loads">
+									<i class="bi bi-check-circle me-1"></i>Posted
+								</div>
 								<div class="badge bg-warning profile-loads">
 									<i class="bi bi-bookmark me-1"></i>Booked
 								</div>
