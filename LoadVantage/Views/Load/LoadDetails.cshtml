@@ -326,7 +326,7 @@
 			{
 				<a asp-action="ChatWithBrokerWindow" asp-controller="Chat" asp-route-brokerId="@Model.BrokerId" class="btn btn-outline-primary" id="chatWithBrokerBtn">
 					<i class="bi bi-chat-text-fill"></i>
-					<span class="d-none d-sm-inline">Chat with Broker</span>
+					<span class="d-none d-sm-inline">PM the Broker</span>
 				</a>
 
 				if (Model.Status == LoadStatus.Available.ToString())
@@ -389,7 +389,7 @@
 		<form asp-action="ReturnToLoadBoard" asp-controller="LoadBoard" method="post" id="backToLoadBoardButton">
 			@Html.AntiForgeryToken()
 			<button type="submit" class="btn btn-outline-info">
-				<i class="bx bxs-dashboard"></i> Back to LoadBoard
+				<i class="bx bxs-dashboard"></i> Back to Load Board
 			</button>
 		</form>
 
@@ -417,7 +417,6 @@
 					<h5 class="card-title">Driver Info</h5>
 					<p class="card-text">
 						<strong>Name:</strong> @Model.DriverInfo?.DriverName <br/>
-						<strong>Truck Number:</strong> @Model.DriverInfo?.DriverTruckNumber <br/>
 						<strong>License:</strong> @Model.DriverInfo?.DriverLicenseNumber
 					</p>
 				}
