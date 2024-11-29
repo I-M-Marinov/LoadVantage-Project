@@ -65,7 +65,8 @@ namespace LoadVantage.Areas.Admin.Models.Load
         public Guid BrokerId { get; set; }
         public Broker? Broker { get; set; }
         public Guid? DispatcherId { get; set; }
-        public Guid? DriverId { get; set; }
+        public Dispatcher? Dispatcher { get; set; }
+		public Guid? DriverId { get; set; }
         public DateTime? BookedDate { get; set; } // Nullable for posted/billed
         public DateTime? DeliveredDate { get; set; } // Nullable for posted/booked
 
