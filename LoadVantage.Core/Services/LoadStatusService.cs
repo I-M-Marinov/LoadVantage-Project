@@ -22,13 +22,15 @@ namespace LoadVantage.Core.Services
 	    public readonly ILogger<LoadStatusService> logger;
 	    public readonly LoadVantageDbContext context;
 	    public readonly IDistanceCalculatorService distanceCalculatorService;
+        public readonly ILoadHelperService loadHelperService;
 
-	    public LoadStatusService(IProfileService _profileService, LoadVantageDbContext _context, IDistanceCalculatorService _distanceCalculatorService, ILogger<LoadStatusService> _logger)
+	    public LoadStatusService(IProfileService _profileService, LoadVantageDbContext _context, IDistanceCalculatorService _distanceCalculatorService, ILogger<LoadStatusService> _logger, ILoadHelperService _loadHelperService)
 	    {
 		    profileService = _profileService;
 		    logger = _logger;
             context = _context;
             distanceCalculatorService = _distanceCalculatorService;
+            loadHelperService = _loadHelperService;
 	    }
 
         public async Task<LoadViewModel> GetLoadByIdAsync(Guid loadId)
@@ -62,8 +64,8 @@ namespace LoadVantage.Core.Services
         {
             double calculatedDistance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(model.OriginCity, model.OriginState, model.DestinationCity, model.DestinationState);
 	        
-            var (originFormattedCity, originFormattedState) = FormatLocation(model.OriginCity, model.OriginState);
-            var (destinationFormattedCity, destinationFormattedState) = FormatLocation(model.DestinationCity, model.DestinationState);
+            var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(model.OriginCity, model.OriginState);
+            var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(model.DestinationCity, model.DestinationState);
 
 
             var load = new Load
@@ -172,8 +174,8 @@ namespace LoadVantage.Core.Services
                 return false; // Load not found
             }
 
-            var (originFormattedCity, originFormattedState) = FormatLocation(model.OriginCity, model.OriginState);
-            var (destinationFormattedCity, destinationFormattedState) = FormatLocation(model.DestinationCity, model.DestinationState);
+            var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(model.OriginCity, model.OriginState);
+            var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(model.DestinationCity, model.DestinationState);
 
             // If any changes in the Origin City or State
             bool originChanged = load.OriginCity != originFormattedCity || load.OriginState != originFormattedState;
@@ -352,8 +354,8 @@ namespace LoadVantage.Core.Services
 		        .SingleOrDefaultAsync();
 
 
-			load.Status = LoadStatus.Delivered; // load is marked delivered 
-			driver.IsBusy = false; // driver is free to get another load
+			load.Status = LoadStatus.Delivered; // load is marked delivered
+			driver.IsBusy = false; // driver is freed up to get another load
 
 	        var deliveredLoad = new DeliveredLoad
 	        {
@@ -361,8 +363,9 @@ namespace LoadVantage.Core.Services
 		        DriverId = load.BookedLoad.DriverId.Value,
 		        DispatcherId = load.BookedLoad.DispatcherId,
 		        BrokerId = load.BrokerId,
-		        DeliveredDate = DateTime.UtcNow.ToLocalTime(), 
-		        Notes = null
+		        DeliveredDate = DateTime.UtcNow.ToLocalTime(),
+		        BookedLoadId = load.BookedLoad.Id,
+				Notes = null
 	        };
 
 	        context.DeliveredLoads.Add(deliveredLoad);
@@ -395,7 +398,7 @@ namespace LoadVantage.Core.Services
         }
         public async Task<LoadViewModel?> GetLoadDetailsAsync(Guid loadId, Guid userId)
         {
-	        var userAllowedToView = await CanUserViewLoadAsync(userId, loadId);
+	        var userAllowedToView = await loadHelperService.CanUserViewLoadAsync(userId, loadId);
 
 			if (!userAllowedToView)
 	        {
@@ -415,8 +418,8 @@ namespace LoadVantage.Core.Services
                 throw new Exception(LoadCouldNotBeRetrieved);
             }
 
-			var dispatcherInfo = CreateDispatcherInfo(load.BookedLoad);
-			var driverInfo = CreateDriverInfo(load.BookedLoad);
+			var dispatcherInfo = loadHelperService.CreateDispatcherInfo(load.BookedLoad);
+			var driverInfo = loadHelperService.CreateDriverInfo(load.BookedLoad);
             var userProfile = await profileService.GetUserInformation(userId);
 
 
@@ -444,74 +447,6 @@ namespace LoadVantage.Core.Services
             return loadViewModel;
 
         }
-        private (string FormattedCity, string FormattedState) FormatLocation(string city, string state)
-        {
-            string formattedCity = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(city.Trim().ToLower());
-            string formattedState = state.Trim().ToUpper();
-
-            return (formattedCity, formattedState);
-        }
-		private async Task<bool> CanUserViewLoadAsync(Guid userId, Guid loadId)
-		{
-			var load = await context.Loads
-				.Include(l => l.BookedLoad) 
-				.FirstOrDefaultAsync(l => l.Id == loadId);
-
-			if (load == null || load.Status == LoadStatus.Cancelled)
-			{
-				return false;
-			}
-			
-			if (load.BrokerId == userId)
-			{
-				return true; // Brokers can always see their own loads 
-			}
-
-			if (load.BookedLoad?.DispatcherId == userId)
-			{
-				return load.Status == LoadStatus.Booked || load.Status == LoadStatus.Delivered;
-			}
-
-			return load.Status == LoadStatus.Available; // General rule for Available loads
-		}
-		private DispatcherInfoViewModel CreateDispatcherInfo(BookedLoad? bookedLoad)
-		{
-			if (bookedLoad?.Dispatcher == null)
-			{
-				return new DispatcherInfoViewModel
-				{
-					DispatcherName = null,
-					DispatcherEmail = null,
-					DispatcherPhone = null
-				};
-			}
-
-			return new DispatcherInfoViewModel
-			{
-				DispatcherName = bookedLoad.Dispatcher.FullName,
-				DispatcherEmail = bookedLoad.Dispatcher.Email,
-				DispatcherPhone = bookedLoad.Dispatcher.PhoneNumber
-			};
-		}
-		private DriverInfoViewModel CreateDriverInfo(BookedLoad? bookedLoad)
-		{
-			if (bookedLoad?.Driver == null)
-			{
-				return new DriverInfoViewModel
-				{
-					DriverName = null,
-					DriverTruckNumber = null,
-					DriverLicenseNumber = null
-				};
-			}
-
-			return new DriverInfoViewModel
-			{
-				DriverName = bookedLoad.Driver.FullName,
-				DriverTruckNumber = bookedLoad.Driver.Truck?.TruckNumber,
-				DriverLicenseNumber = bookedLoad.Driver.LicenseNumber
-			};
-		}
 
 
 	}

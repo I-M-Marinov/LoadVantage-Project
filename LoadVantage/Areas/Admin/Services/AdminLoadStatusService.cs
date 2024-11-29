@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using LoadVantage.Areas.Admin.Contracts;
 using LoadVantage.Areas.Admin.Models.Load;
+using LoadVantage.Common.Enums;
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Load;
 using LoadVantage.Core.Services;
@@ -19,24 +20,34 @@ namespace LoadVantage.Areas.Admin.Services
 	{
 		private readonly LoadVantageDbContext context;
 		private readonly IAdminProfileService adminProfileService;
-		private readonly IUserService userService;
+		private readonly ILoadHelperService loadHelperService;
 		private IDistanceCalculatorService distanceCalculatorService;
 
 
 
-		public AdminLoadStatusService(LoadVantageDbContext _context, IAdminProfileService _adminProfileService, IUserService _userService, IDistanceCalculatorService _distanceCalculatorServiceService)
+		public AdminLoadStatusService(LoadVantageDbContext _context, IAdminProfileService _adminProfileService, ILoadHelperService _loadHelperService, IDistanceCalculatorService _distanceCalculatorServiceService)
 		{
 			context = _context;
 			adminProfileService = _adminProfileService;
-			userService = _userService;
+			loadHelperService = _loadHelperService;
 			distanceCalculatorService = _distanceCalculatorServiceService;
 		}
 
-		public Task<bool> ChangeLoadStatusAsync(Guid loadId)
+		public async Task<bool> RestoreLoadAsync(Guid loadId)
 		{
-			throw new NotImplementedException();
-		}
+			var load = await context.Loads.FindAsync(loadId);
 
+			if (load == null)
+			{
+				return false; // Load not found
+			}
+
+			load.Status = LoadStatus.Created;
+			context.Loads.Update(load);
+			await context.SaveChangesAsync();
+
+			return true;
+		}
 		public async Task<bool> EditLoadAsync(Guid loadId, AdminLoadViewModel model)
 		{
 			var load = await context.Loads.FindAsync(loadId);
@@ -46,8 +57,8 @@ namespace LoadVantage.Areas.Admin.Services
 				return false; // Load not found
 			}
 
-			var (originFormattedCity, originFormattedState) = FormatLocation(model.OriginCity, model.OriginState);
-			var (destinationFormattedCity, destinationFormattedState) = FormatLocation(model.DestinationCity, model.DestinationState);
+			var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(model.OriginCity, model.OriginState);
+			var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(model.DestinationCity, model.DestinationState);
 
 			// If any changes in the Origin City or State
 			bool originChanged = load.OriginCity != originFormattedCity || load.OriginState != originFormattedState;
@@ -107,7 +118,6 @@ namespace LoadVantage.Areas.Admin.Services
 
 			return true;
 		}
-
 		public async Task<AdminLoadViewModel?> GetLoadInformation(Guid loadId, Guid userId)
 		{
 			var load = await context.Loads
@@ -124,9 +134,9 @@ namespace LoadVantage.Areas.Admin.Services
 				throw new Exception(LoadCouldNotBeRetrieved);
 			}
 
-			var brokerInfo = CreateBrokerInfo(load);
-			var dispatcherInfo = CreateDispatcherInfo(load.BookedLoad);
-			var driverInfo = CreateDriverInfo(load.BookedLoad);
+			var brokerInfo = loadHelperService.CreateBrokerInfo(load);
+			var dispatcherInfo = loadHelperService.CreateDispatcherInfo(load.BookedLoad);
+			var driverInfo = loadHelperService.CreateDriverInfo(load.BookedLoad);
 			var adminProfile = await adminProfileService.GetAdminInformation(userId);
 
 
@@ -157,77 +167,6 @@ namespace LoadVantage.Areas.Admin.Services
 			return loadViewModel;
 
 		}
-
-		public Task<AdminLoadViewModel> GetLoadByIdAsync(Guid loadId)
-		{
-			throw new NotImplementedException();
-		}
-
-		private  BrokerInfoViewModel CreateBrokerInfo(Load? load)
-		{
-			if (load?.BrokerId == Guid.Empty)
-			{
-				return new BrokerInfoViewModel
-				{
-					BrokerName = null,
-					BrokerEmail = null,
-					BrokerPhone = null
-				};
-			}
-
-			return new BrokerInfoViewModel
-			{
-				BrokerName = load.Broker.FullName,
-				BrokerEmail = load.Broker.Email,
-				BrokerPhone = load.Broker.PhoneNumber
-			};
-		}
-		private DispatcherInfoViewModel CreateDispatcherInfo(BookedLoad? bookedLoad)
-		{
-			if (bookedLoad?.Dispatcher == null)
-			{
-				return new DispatcherInfoViewModel
-				{
-					DispatcherName = null,
-					DispatcherEmail = null,
-					DispatcherPhone = null
-				};
-			}
-
-			return new DispatcherInfoViewModel
-			{
-				DispatcherName = bookedLoad.Dispatcher.FullName,
-				DispatcherEmail = bookedLoad.Dispatcher.Email,
-				DispatcherPhone = bookedLoad.Dispatcher.PhoneNumber
-			};
-		}
-		private DriverInfoViewModel CreateDriverInfo(BookedLoad? bookedLoad)
-		{
-			if (bookedLoad?.Driver == null)
-			{
-				return new DriverInfoViewModel
-				{
-					DriverName = null,
-					DriverTruckNumber = null,
-					DriverLicenseNumber = null
-				};
-			}
-
-			return new DriverInfoViewModel
-			{
-				DriverName = bookedLoad.Driver.FullName,
-				DriverTruckNumber = bookedLoad.Driver.Truck?.TruckNumber,
-				DriverLicenseNumber = bookedLoad.Driver.LicenseNumber
-			};
-		}
-		private (string FormattedCity, string FormattedState) FormatLocation(string city, string state)
-		{
-			string formattedCity = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(city.Trim().ToLower());
-			string formattedState = state.Trim().ToUpper();
-
-			return (formattedCity, formattedState);
-		}
-
 
 	}
 }
