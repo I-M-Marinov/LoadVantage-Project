@@ -17,26 +17,12 @@ namespace LoadVantage.Areas.Admin.Services
 {
 	public class AdminLoadBoardService : IAdminLoadBoardService
 	{
-		private readonly UserManager<BaseUser> userManager;
-		private readonly IUserService userService;
-		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly LoadVantageDbContext context;
-		private readonly IImageService imageService;
 		private readonly IAdminProfileService adminProfileService;
 
-		public AdminLoadBoardService(
-			UserManager<BaseUser> _userManager,
-			IUserService _userService,
-			IHttpContextAccessor _httpContextAccessor,
-			LoadVantageDbContext _context,
-			IImageService _imageService,
-			IAdminProfileService _adminProfileService)
+		public AdminLoadBoardService(LoadVantageDbContext _context, IAdminProfileService _adminProfileService)
 		{
-			userManager = _userManager;
-			userService = _userService;
-			httpContextAccessor = _httpContextAccessor;
 			context = _context;
-			imageService = _imageService;
 			adminProfileService = _adminProfileService;
 		}
 
@@ -44,13 +30,17 @@ namespace LoadVantage.Areas.Admin.Services
 		{
 			var allLoads = await context.Loads
 				.Include(l => l.Broker)
+				.ThenInclude(b => b.UserImage)  
 				.Include(l => l.PostedLoad)
 				.Include(l => l.BookedLoad)
-				.ThenInclude(bl => bl.Driver)
+				.ThenInclude(bl => bl.Driver) 
+				.Include(l => l.BookedLoad)
+				.ThenInclude(bl => bl.Dispatcher)  
+				.ThenInclude(d => d.UserImage)  
 				.Include(l => l.BookedLoad)
 				.ThenInclude(bl => bl.Dispatcher)
-				.ThenInclude(d => d.Trucks)
-				.ThenInclude(t => t.Driver) 
+				.ThenInclude(d => d.Trucks)   
+				.ThenInclude(t => t.Driver)    
 				.Include(l => l.DeliveredLoad)
 				.ToListAsync();
 
@@ -81,6 +71,7 @@ namespace LoadVantage.Areas.Admin.Services
 					Weight = load.Weight,
 					Status = load.Status.ToString(),
 					BrokerId = load.BrokerId,
+					Broker = load.Broker,
 					BrokerInfo = load.BrokerId != Guid.Empty
 						? new BrokerInfoViewModel()
 						{
@@ -104,7 +95,6 @@ namespace LoadVantage.Areas.Admin.Services
 						? new DriverInfoViewModel
 						{
 							DriverName = load.BookedLoad.Driver?.FullName,
-							DriverTruckNumber = load.BookedLoad.Driver.Truck?.TruckNumber,
 							DriverLicenseNumber = load.BookedLoad.Driver.LicenseNumber
 						}
 						: null
@@ -131,6 +121,7 @@ namespace LoadVantage.Areas.Admin.Services
 					Weight = load.Weight,
 					Status = load.Status.ToString(),
 					BrokerId = load.BrokerId,
+					Broker = load.Broker,
 					BrokerInfo = load.BrokerId != Guid.Empty
 						? new BrokerInfoViewModel()
 						{
@@ -154,7 +145,6 @@ namespace LoadVantage.Areas.Admin.Services
 						? new DriverInfoViewModel
 						{
 							DriverName = load.BookedLoad.Driver?.FullName,
-							DriverTruckNumber = load.BookedLoad.Driver.Truck?.TruckNumber,
 							DriverLicenseNumber = load.BookedLoad.Driver.LicenseNumber
 						}
 						: null
@@ -180,7 +170,9 @@ namespace LoadVantage.Areas.Admin.Services
 					Weight = load.Weight,
 					Status = load.Status.ToString(),
 					BrokerId = load.BrokerId,
+					Broker = load.Broker,
 					DispatcherId = load.BookedLoad.DispatcherId,
+					Dispatcher = load.BookedLoad.Dispatcher,
 					DriverId = load.BookedLoad.DriverId,
 					BrokerInfo = load.BrokerId != Guid.Empty
 						? new BrokerInfoViewModel()
@@ -205,7 +197,6 @@ namespace LoadVantage.Areas.Admin.Services
 						? new DriverInfoViewModel
 						{
 							DriverName = load.BookedLoad.Driver?.FullName,
-							DriverTruckNumber = load.BookedLoad.Driver.Truck?.TruckNumber,
 							DriverLicenseNumber = load.BookedLoad.Driver.LicenseNumber
 						}
 						: null
@@ -234,7 +225,9 @@ namespace LoadVantage.Areas.Admin.Services
 					Status = load.Status.ToString(),
 					DeliveredDate = load.DeliveredLoad.DeliveredDate,
 					BrokerId = load.BrokerId,
+					Broker = load.Broker,
 					DispatcherId = load.BookedLoad.DispatcherId,
+					Dispatcher = load.BookedLoad.Dispatcher,
 					DriverId = load.BookedLoad.DriverId,
 					BrokerInfo = load.BrokerId != Guid.Empty
 						? new BrokerInfoViewModel()
@@ -259,7 +252,6 @@ namespace LoadVantage.Areas.Admin.Services
 						? new DriverInfoViewModel
 						{
 							DriverName = load.BookedLoad.Driver?.FullName,
-							DriverTruckNumber = load.BookedLoad.Driver.Truck?.TruckNumber,
 							DriverLicenseNumber = load.BookedLoad.Driver.LicenseNumber
 						}
 						: null
@@ -287,6 +279,7 @@ namespace LoadVantage.Areas.Admin.Services
 					Weight = load.Weight,
 					Status = load.Status.ToString(),
 					BrokerId = load.BrokerId,
+					Broker = load.Broker,
 					BrokerInfo = load.BrokerId != Guid.Empty
 						? new BrokerInfoViewModel()
 						{
@@ -310,7 +303,6 @@ namespace LoadVantage.Areas.Admin.Services
 						? new DriverInfoViewModel
 						{
 							DriverName = load.BookedLoad.Driver?.FullName,
-							DriverTruckNumber = load.BookedLoad.Driver.Truck?.TruckNumber,
 							DriverLicenseNumber = load.BookedLoad.Driver.LicenseNumber
 						}
 						: null
@@ -331,6 +323,58 @@ namespace LoadVantage.Areas.Admin.Services
 			};
 
 			return loadBoardViewModel;
+		}
+
+		public async Task<IEnumerable<AdminLoadViewModel>> GetAllPostedLoadsAsync(Guid userId)
+		{
+			var postedLoads = await GetAllLoads(userId);
+			postedLoads = postedLoads.Where(l => l.Status == LoadStatus.Available);
+
+			var postedLoadsModels = postedLoads
+				.Select(load => new AdminLoadViewModel()
+				{
+					Id = load.Id,
+					OriginCity = load.OriginCity,
+					OriginState = load.OriginState,
+					DestinationCity = load.DestinationCity,
+					DestinationState = load.DestinationState,
+					PickupTime = load.PickupTime,
+					DeliveryTime = load.DeliveryTime,
+					PostedPrice = load.Price,
+					Distance = load.Distance,
+					Weight = load.Weight,
+					Status = load.Status.ToString(),
+					BrokerId = load.BrokerId,
+					BrokerInfo = load.BrokerId != Guid.Empty
+						? new BrokerInfoViewModel()
+						{
+							BrokerName = load.Broker.FullName,
+							BrokerEmail = load.Broker.Email,
+							BrokerPhone = load.Broker.PhoneNumber,
+						}
+						: null,
+					// Include Dispatcher Info if available
+					DispatcherInfo = load.BookedLoad?.DispatcherId != null
+						? new DispatcherInfoViewModel
+						{
+							DispatcherName = load.BookedLoad.Dispatcher.FullName,
+							DispatcherEmail = load.BookedLoad.Dispatcher.Email,
+							DispatcherPhone = load.BookedLoad.Dispatcher.PhoneNumber,
+						}
+						: null,
+
+					// Include Driver Info if available
+					DriverInfo = load.BookedLoad?.DriverId != null
+						? new DriverInfoViewModel
+						{
+							DriverName = load.BookedLoad.Driver?.FullName,
+							DriverLicenseNumber = load.BookedLoad.Driver.LicenseNumber
+						}
+						: null
+				})
+				.ToList();
+
+			return postedLoadsModels;
 		}
 	}
 }
