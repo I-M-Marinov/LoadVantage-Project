@@ -69,7 +69,7 @@
 					break;
 				case LoadStatus.Delivered:
 					<div class="load-status badge bg-info">
-						<i class="bi bi-truck me-1"></i> DeliveredFSav
+						<i class="bi bi-truck me-1"></i> Delivered
 					</div>
 					break;
 				case LoadStatus.Cancelled:
@@ -217,95 +217,31 @@
 			<div class="d-flex justify-content-center">
 				<div class="text-center details-buttons-container">
 
-					@{
-						switch (status)
-						{
-							case LoadStatus.Created:
-								
-								<form asp-action="PostALoad" asp-controller="Load" method="post" id="postLoadForm">
-									@Html.AntiForgeryToken()
-									<input type="hidden" name="loadId" value="@Model.Id" />
-									<button type="submit" class="btn btn-outline-warning" id="postLoadBtn">
-										<i class="ri-file-list-line"></i> Post
-									</button>
-								</form>
-								
-								break;
-
-							case LoadStatus.Available:
-								
-								<form asp-action="UnpostALoad" asp-controller="Load" method="post" id="unpostLoadFrom">
-									@Html.AntiForgeryToken()
-									<input type="hidden" name="loadId" value="@Model.Id" />
-									<button type="submit" class="btn btn-outline-warning" id="unpostLoadBtn">
-										<i class="ri-file-list-line"></i> Unpost
-									</button>
-								</form>
-
-								<form asp-action="UnpostAllLoads" asp-controller="Load" method="post" id="unpostAllLoadFrom">
-									@Html.AntiForgeryToken()
-									<input type="hidden" name="brokerId" value="@Model.BrokerId" />
-									<button type="submit" class="btn btn-outline-warning" id="unpostAllBtn">
-										<i class="ri-file-list-line"></i> Unpost All
-									</button>
-								</form>
-								
-
-								break;
-
-							case LoadStatus.Booked:
-
-							
-								<form asp-action="CancelBooking" asp-controller="Load" method="post" id="cancelCarrierForm">
-									@Html.AntiForgeryToken()
-									<input type="hidden" name="loadId" value="@Model.Id" />
-									<button type="submit" class="btn btn-outline-danger" id="cancelCarrierBtn">
-										<i class="bi bi-exclamation-diamond"></i> Cancel Carrier
-									</button>
-								</form>
-							
-
-							
-								<form asp-action="ReturnLoadToBroker" asp-controller="Load" method="post" id="returnLoadtoBrokerForm">
-									@Html.AntiForgeryToken()
-									<input type="hidden" name="loadId" value="@Model.Id" />
-									<button type="submit" class="btn btn-outline-danger" id="returnLoadToBrokerBtn">
-										<i class="bi bi-emoji-frown"></i> Cancel Load
-									</button>
-								</form>
-								
-								break;
-								// case LoadStatus.Delivered:
-								// 	<div class="load-status badge bg-info">
-								// 		<i class="bi bi-truck me-1"></i> Delivered
-								// 	</div>
-								// 	break;
-
-						}
-					}
-
 					<div class="text-center details-buttons-container">
 
 
-						<form id="cancelLoadForm" asp-action="CancelLoad" asp-controller="Load" method="post" id="restoreLoadBtn">
+						@if (Model.Status == LoadStatus.Cancelled.ToString())
+						{
+							<form id="restoreLoadForm" asp-area="Admin" asp-action="RestoreLoad" asp-controller="AdminLoad" method="post" id="restoreLoadBtn">
 								@Html.AntiForgeryToken()
 								<input type="hidden" name="loadId" value="@Model.Id" />
 								<button type="submit" class="btn btn-outline-success">
-								<i class="ri-arrow-go-back-fill"></i> Restore Load
+									<i class="ri-arrow-go-back-fill"></i> Restore Load
 								</button>
 							</form>
+						}
 
-							<a asp-action="ChatWithBrokerWindow" asp-controller="Chat" asp-route-brokerId="@Model.BrokerId" class="btn btn-outline-primary" id="chatWithBrokerBtn">
-								<i class="bi bi-chat-text-fill"></i>
-								<span class="d-none d-sm-inline">Chat with Broker</span>
-							</a>
+						<a asp-action="ChatWithBrokerWindow" asp-controller="Chat" asp-route-brokerId="@Model.BrokerId" class="btn btn-outline-primary" id="chatWithBrokerBtn">
+							<i class="bi bi-chat-text-fill"></i>
+							<span class="d-none d-sm-inline">PM the Broker</span>
+						</a>
 
-							<form asp-area="Admin" asp-controller="AdminLoad" asp-action="GetLoadInfo" id="refreshLoadForm">
-								<input type="hidden" name="loadId" value="@Model.Id" />
-								<button id="refreshLoadInfoButton" class="btn btn-outline-info">
-									<i class="bx  bx-refresh"></i>
-								</button>
-							</form>
+						<form asp-area="Admin" asp-controller="AdminLoad" asp-action="GetLoadInfo" method="get" id="refreshLoadForm">
+							<input type="hidden" name="loadId" value="@Model.Id" />
+							<button id="refreshLoadInfoButton" class="btn btn-outline-info">
+								<i class="bx  bx-refresh"></i>
+							</button>
+						</form>
 
 					</div>
 					
@@ -318,7 +254,7 @@
 					<form asp-area="Admin" asp-action="ReturnToLoadBoard" asp-controller="LoadBoardManagement" method="post" id="backToLoadBoardButton">
 						@Html.AntiForgeryToken()
 						<button type="submit" class="btn btn-outline-info">
-							<i class="bx bxs-dashboard"></i> Back to LoadBoard
+							<i class="bx bxs-dashboard"></i> Back to Load Board
 						</button>
 					</form>
 
@@ -337,7 +273,7 @@
 					<p class="card-text">
 						<strong>Name:</strong> @Model.BrokerInfo?.BrokerName <br />
 						<strong>Email:</strong> @Model.BrokerInfo?.BrokerEmail<br />
-						<strong>Phone:</strong> @Model.BrokerInfo?.BrokerPhone
+						<strong>Phone:</strong> @Model.BrokerInfo?.BrokerPhone 
 					</p>
 					<hr />
 
@@ -357,7 +293,6 @@
 						<h5 class="card-title">Driver Info</h5>
 						<p class="card-text">
 							<strong>Name:</strong> @Model.DriverInfo?.DriverName <br/>
-							<strong>Truck Number:</strong> @Model.DriverInfo?.DriverTruckNumber <br/>
 							<strong>License:</strong> @Model.DriverInfo?.DriverLicenseNumber
 						</p>
 					}
