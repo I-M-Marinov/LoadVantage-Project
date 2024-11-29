@@ -35,7 +35,6 @@ namespace LoadVantage.Areas.Admin.Models.Profile
         public string CompanyName { get; set; } = null!;
 
         [Required]
-        [StringLength(PositionMaxLength, MinimumLength = PositionMinLength, ErrorMessage = PositionLengthNotValid)]
         public string Position { get; set; } = null!;
 
         [Required(ErrorMessage = PhoneNumberRequired)]
