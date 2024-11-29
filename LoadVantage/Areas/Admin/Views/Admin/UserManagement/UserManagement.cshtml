@@ -1,0 +1,220 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using LoadVantage.Extensions
+@using LoadVantage.Areas.Admin.Models.User
+
+@model UsersListModel
+
+@{
+
+	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+	ViewData["Title"] = "User Management";
+
+	var tempDataSuccessMessage = TempData.GetSuccessMessage();
+	var tempDataErrorMessage = TempData.GetErrorMessage();
+
+}
+
+<!-- ======= Header ======= -->
+@await Html.PartialAsync("~/Areas/Admin/Views/AdminShared/_AdminHeaderPartialView.cshtml", Model.AdminProfile)
+
+<!-- End Header -->
+<!-- ======= Sidebar ======= -->
+@await Html.PartialAsync("~/Areas/Admin/Views/AdminShared/_AdminSidebarPartialView.cshtml", Model.AdminProfile)
+
+<!-- End Sidebar -->
+
+<main id="main" class="main user-management">
+
+	<div class="pagetitle">
+		<h1>User Management</h1>
+		<button type="button" id="addNewUser" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+			<i class="ri-user-add-fill"></i>
+			Add User
+		</button>
+
+
+	</div>
+	
+	
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-area="Admin" asp-action="CreateUser" asp-controller="UserManagement" method="post" id="createUserForm">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Create New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- First Row -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="NewUser.UserName" class="form-label mt-5">Username</label>
+                            <input asp-for="NewUser.UserName" class="form-control">
+                            <span asp-validation-for="NewUser.UserName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="NewUser.Email" class="form-label mt-5">Email</label>
+                            <input asp-for="NewUser.Email" class="form-control">
+                            <span asp-validation-for="NewUser.Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Second Row -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="NewUser.Password" class="form-label">Password</label>
+                            <input asp-for="NewUser.Password" type="password" class="form-control">
+                            <span asp-validation-for="NewUser.Password" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="NewUser.PhoneNumber" class="form-label">Phone Number</label>
+                            <input asp-for="NewUser.PhoneNumber" type="tel" class="form-control">
+                            <span asp-validation-for="NewUser.PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Third Row -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="NewUser.FirstName" class="form-label">First Name</label>
+                            <input asp-for="NewUser.FirstName" class="form-control">
+                            <span asp-validation-for="NewUser.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="NewUser.LastName" class="form-label">Last Name</label>
+                            <input asp-for="NewUser.LastName" class="form-control">
+                            <span asp-validation-for="NewUser.LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Fourth Row -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="NewUser.CompanyName" class="form-label">Company Name</label>
+                            <input asp-for="NewUser.CompanyName" class="form-control">
+                            <span asp-validation-for="NewUser.CompanyName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="NewUser.Position" class="form-label">Position</label>
+                            <select asp-for="NewUser.Position" class="form-select position-select">
+                                <option value="Broker">Broker</option>
+                                <option value="Dispatcher">Dispatcher</option>
+                            </select>
+                            <span asp-validation-for="NewUser.Position" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Create User</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+	
+
+	<div class="card">
+
+		<div class="card-body position-relative">
+			@if (!string.IsNullOrEmpty(tempDataSuccessMessage))
+			{
+				<div class="badge badge-danger mt-1 position-absolute top-0 start-50 translate-middle-x w-75" id="success-message">@tempDataSuccessMessage</div>
+			}
+
+			@if (!string.IsNullOrEmpty(tempDataErrorMessage))
+			{
+				<div class="badge badge-danger mt-1 position-absolute top-0 start-50 translate-middle-x w-75" id="error-message">@tempDataErrorMessage</div>
+			}
+			
+			
+			<div class="table-responsive mt-4">
+				<div class="d-flex justify-content-between align-items-center mb-3">
+					<h5 class="card-title">User List</h5>
+					<form id="searchUserForm" method="get" class="d-flex justify-content-end mb-3">
+						<input type="hidden" name="pageNumber" value="1" />
+						<input type="hidden" name="pageSize" value="@Model.PageSize" />
+						<input type="hidden" name="adminId" value="@Model.AdminProfile.Id" />
+						<input class="form-control me-2 search-users-imput" type="text" name="searchTerm" value="@Model.SearchTerm" placeholder="Search users..." />
+						<button class="btn btn-primary search-users-btn" type="submit"> <i class="ri-user-search-fill"></i>  </button>
+					</form>
+				</div>
+
+				<div class="table-responsive mt-4" id="users-table">
+
+					<table class="table table-bordered table-hover table-sm">
+						<thead>
+						<tr>
+							<th class="text-center hidden-th" scope="col" hidden>UserId</th>
+							<th class="text-center" scope="col">Profile Picture</th>
+							<th class="text-center" scope="col">Username</th>
+							<th class="text-center" scope="col">Full Name</th>
+							<th class="text-center" scope="col">Email</th>
+							<th class="text-center" scope="col">Phone Number</th>
+							<th class="text-center" scope="col">Company</th>
+							<th class="text-center" scope="col">Role</th>
+							<th class="text-center" scope="col">Position</th>
+							<th class="text-center" scope="col">Actions</th>
+						</tr>
+						</thead>
+						<tbody>
+						@foreach (var user in Model.Users)
+						{
+							<tr>
+								<td class="d-none" hidden>@user.Id</td>
+								<td class="text-center">
+									<img src="@user.UserImageUrl" alt="Profile Picture" class="rounded-circle userImageManager" width="45" height="45">
+								</td>
+								<td class="text-center">@user.UserName</td>
+								<td class="text-center">@user.FirstName @user.LastName</td>
+								<td class="text-center">@user.Email</td>
+								<td class="text-center">@user.PhoneNumber</td>
+								<td class="text-center">@user.CompanyName</td>
+								<td class="text-center">@user.Role</td>
+								<td class="text-center">@user.Position</td>
+								<td class="text-center">
+									<button class="btn btn-sm btn-primary">Edit</button>
+									<button class="btn btn-sm btn-danger">Delete</button>
+								</td>
+							</tr>
+						}
+						</tbody>
+					</table>
+
+					<nav aria-label="Page navigation example">
+						<ul class="pagination justify-content-center">
+							@for (int i = 1; i <= Math.Ceiling((double)Model.TotalUsers / Model.PageSize); i++)
+							{
+								<li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+									<a class="page-link" asp-area="Admin" asp-controller="UserManagement" asp-action="UserManagement" method="get"
+									   asp-route-pageNumber="@i" asp-route-pageSize="@Model.PageSize" asp-route-adminId="@Model.AdminProfile.Id"> @i
+									</a>
+								</li>
+							}
+						</ul>
+					</nav>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+</main>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+<script>
+	
+
+	if (document.querySelector('.toggle-sidebar-btn')) {
+
+		document.querySelector('.toggle-sidebar-btn').addEventListener('click', function (e) {
+
+			document.body.classList.toggle('toggle-sidebar');
+		});
+	}
+
+</script>
