@@ -2,6 +2,7 @@
 using LoadVantage.Areas.Admin.Models.Load;
 using LoadVantage.Extensions;
 using LoadVantage.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
@@ -9,12 +10,11 @@ using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Areas.Admin.Controllers
 {
+	[Authorize]
 	[AdminOnly]
 	[Area("Admin")]
 	public class AdminLoadController : Controller
 	{
-
-
 		private readonly IAdminProfileService adminProfileService;
 		private readonly IAdminUserService adminUserService;
 		private readonly IAdminLoadStatusService adminLoadStatusService;
@@ -106,5 +106,23 @@ namespace LoadVantage.Areas.Admin.Controllers
 			return RedirectToAction("GetLoadInfo", new { loadId = model.Id });
 
 		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> RestoreLoad(Guid loadId)
+		{
+			var result = await adminLoadStatusService.RestoreLoadAsync(loadId);
+
+			if (!result)
+			{
+				TempData.SetErrorMessage(LoadCouldNotBeRetrieved);
+				return RedirectToAction("GetLoadInfo", new { loadId = loadId });
+			}
+
+			TempData.SetSuccessMessage(LoadWasRestoredSuccessfully);
+			return RedirectToAction("GetLoadInfo", new { loadId = loadId });
+		}
+
+
 	}
 }
