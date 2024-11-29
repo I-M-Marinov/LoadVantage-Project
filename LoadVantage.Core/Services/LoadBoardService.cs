@@ -16,15 +16,13 @@ namespace LoadVantage.Core.Services
 	public class LoadBoardService : ILoadBoardService
 	{
 		private readonly LoadVantageDbContext context;
-		private readonly UserManager<BaseUser> userManager;
 		public readonly IProfileService profileService;
 
 
 
-		public LoadBoardService(LoadVantageDbContext _context, UserManager<BaseUser> _userManager, IProfileService _profileService)
+		public LoadBoardService(LoadVantageDbContext _context, IProfileService _profileService)
 		{
 			context = _context;
-			userManager = _userManager;
 			profileService = _profileService;
 
 		}
@@ -41,7 +39,6 @@ namespace LoadVantage.Core.Services
 				.ThenInclude(d => d.Trucks)
 				.ThenInclude(t => t.Driver) 
 				.Include(l => l.DeliveredLoad)
-				.Where(load => load.BrokerId == userId || load.BookedLoad.DispatcherId == userId)
 				.ToListAsync();
 
 
@@ -79,6 +76,7 @@ namespace LoadVantage.Core.Services
 
 			var createdLoads = allLoads
 				.Where(load => load.Status == LoadStatus.Created)
+				.Where(load => load.BrokerId == userId)
 				.OrderBy(l => l.PickupTime)
 				.ThenByDescending(l => l.OriginCity)
 				.ThenByDescending(l => l.OriginState)
@@ -101,6 +99,7 @@ namespace LoadVantage.Core.Services
 
 			var postedLoads = allLoads
 				.Where(load => load.Status == LoadStatus.Available)
+				.Where(load => load.BrokerId == userId)
 				.OrderBy(l => l.PickupTime)
 				.ThenByDescending(l => l.OriginCity)
 				.ThenByDescending(l => l.OriginState)
@@ -123,6 +122,7 @@ namespace LoadVantage.Core.Services
 
 			var bookedLoads = allLoads
 				.Where(load => load.Status == LoadStatus.Booked)
+				.Where(load => load.BrokerId == userId)
 				.OrderBy(l => l.PickupTime)
 				.ThenByDescending(l => l.OriginCity)
 				.ThenByDescending(l => l.OriginState)
@@ -158,23 +158,24 @@ namespace LoadVantage.Core.Services
 						? new DriverInfoViewModel
 						{
 							DriverName = load.BookedLoad.Driver.FullName,
-							DriverTruckNumber = load.BookedLoad.Driver.Truck.TruckNumber,
 							DriverLicenseNumber = load.BookedLoad.Driver.LicenseNumber
 						}
 						: null
 				})
 				.ToList();
 
-			var deliveredLoads = allLoads
+            
 
+			var deliveredLoads = allLoads
 				.Where(load => load.Status == LoadStatus.Delivered)
+				.Where(load => load.BrokerId == userId)
 				.OrderBy(l => l.DeliveryTime)
 				.ThenByDescending(l => l.OriginCity)
 				.ThenByDescending(l => l.OriginState)
 				.Select(load => new DeliveredLoadViewModel
 				{
 					Id = load.DeliveredLoad.Id,
-					LoadLocations = $"{load.OriginCity}, {load.OriginState} - {load.DestinationCity},{load.DestinationState}",
+					LoadLocations = $"{load.OriginCity}, {load.OriginState} to {load.DestinationCity}, {load.DestinationState}",
 					Distance = load.Distance,
 					Price = load.Price,
 					DeliveredOn = load.DeliveredLoad.DeliveredDate,
@@ -201,9 +202,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<LoadBoardViewModel> GetDispatcherLoadBoardAsync(Guid userId)
 		{
-			var user = await userManager.Users
-				.FirstOrDefaultAsync(u => u.Id == userId);
-
+			
 			var allLoads = await GetAllLoads(userId);
 
 			var createdLoads = new List<LoadViewModel>();
@@ -230,8 +229,11 @@ namespace LoadVantage.Core.Services
 				})
 				.ToList();
 
+
+
 			var bookedLoads = allLoads
 				.Where(load => load.Status == LoadStatus.Booked)
+				.Where(load => load.BookedLoad.DispatcherId == userId)
 				.OrderBy(l => l.PickupTime)
 				.ThenByDescending(l => l.OriginCity)
 				.ThenByDescending(l => l.OriginState)
@@ -256,13 +258,14 @@ namespace LoadVantage.Core.Services
 
 			var deliveredLoads = allLoads
 				.Where(load => load.Status == LoadStatus.Delivered)
+				.Where(load => load.BookedLoad.DispatcherId == userId)
 				.OrderBy(l => l.DeliveryTime)
 				.ThenByDescending(l => l.OriginCity)
 				.ThenByDescending(l => l.OriginState)
 				.Select(load => new DeliveredLoadViewModel
 				{
 					Id = load.DeliveredLoad.Id,
-					LoadLocations = $"{load.OriginCity}, {load.OriginState} - {load.DestinationCity},{load.DestinationState}",
+					LoadLocations = $"{load.OriginCity}, {load.OriginState} to {load.DestinationCity}, {load.DestinationState}",
 					Distance = load.Distance,
 					Price = load.Price,
 					DeliveredOn = load.DeliveredLoad.DeliveredDate,
