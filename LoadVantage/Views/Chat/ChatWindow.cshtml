@@ -1,7 +1,9 @@
 ﻿
+@using LoadVantage.Infrastructure.Data.Models
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using LoadVantage.Core.Models.Chat;
 @using LoadVantage.Extensions
+@using Dispatcher = LoadVantage.Infrastructure.Data.Models.Dispatcher
 
 @model ChatViewModel
 
@@ -111,21 +113,36 @@
 		    }
 			else
 			{
-				<div id="noChatsContainer">
-					<h5>@ViewData["Message"]</h5>
-					<p>To start a chat with a broker please view a posted load on the Load Board</p>
+				if (Model.Profile.Position == nameof(Dispatcher))
+				{
+					<div id="noChatsContainer">
+						<h5>@ViewData["Message"]</h5>
+						<p>To start a chat with a broker please view a posted load on the Load Board.</p>
 					
-					<form asp-action="ReturnToLoadBoard" asp-controller="LoadBoard" method="post" id="backToLoadBoardButton">
-						@Html.AntiForgeryToken()
-						<button type="submit" class="btn btn-info">
-							<i class="bx bxs-dashboard"></i> LoadBoard
-						</button>
-					</form>
+						<form asp-action="ReturnToLoadBoard" asp-controller="LoadBoard" method="post" id="backToLoadBoardButton">
+							@Html.AntiForgeryToken()
+							<button type="submit" class="btn btn-info">
+								<i class="bx bxs-dashboard"></i> LoadBoard
+							</button>
+						</form>
 
-				</div>
+					</div>
+				}
+				else // Position is Broker
+				{
+					<div id="noChatsContainer">
+						<h5>@ViewData["Message"]</h5>
+						<p>No Dispatchers contacted you yet. Go back to the Load Board and post a load and the surely will.</p>
+					
+						<form asp-action="ReturnToLoadBoard" asp-controller="LoadBoard" method="post" id="backToLoadBoardButton">
+							@Html.AntiForgeryToken()
+							<button type="submit" class="btn btn-info">
+								<i class="bx bxs-dashboard"></i> LoadBoard
+							</button>
+						</form>
 
-				
-				
+					</div>
+				}
 			}
 		   
 	    </div>
