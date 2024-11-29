@@ -162,6 +162,8 @@ input{
     background-color: #dddddd !important;
 }
 
+
+
 .btn {
     color: black !important;
 }
@@ -363,4 +365,12 @@ input{
 
 #editDriverForm{
     color: black !important;
+}
+
+.userImageManager {
+    box-shadow: none !important;
+}
+
+.form-label select {
+    color: black;
 }

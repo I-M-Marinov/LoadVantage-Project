@@ -362,11 +362,24 @@ body {
     font-weight: 700;
 }
 
-.section {
+.view-button-admin {
+    font-size: 11px !important;
+    padding: 0.40rem 0.40rem !important;
+    border-radius: 0.85em !important;
+    margin-top: 0.30rem !important;
     font-family: Nunito;
-    font-weight: 550;
-    font-size: 15px;
+    font-weight: 700;
 }
+
+.view-button-admin i{
+    font-size: 30px;
+}
+
+    .section {
+        font-family: Nunito;
+        font-weight: 550;
+        font-size: 15px;
+    }
 
 /*--------------------------------------------------------------
 # LOADING SPINNER 
@@ -538,7 +551,7 @@ body {
     position: absolute;
     top: 0.75em;
     right: 0.75em;
-    width: 7.5em;
+    width: 8em;
     height: 2.2em;
     text-align: center;
     border: 2px black solid;
@@ -952,12 +965,32 @@ body {
     color: ghostwhite !important;
 }
 
-#loadboard-nav, #profile-nav, #create-load-nav, #chat-nav, #truck-nav, #driver-nav {
-background: linear-gradient(to left, #8360c3, #4cddf1);
-color: #262424 !important;
-border-radius: 1em;
-box-shadow: 25px 0 20px -20px rgba(0, 0, 0, 0.45), -25px 0 20px -20px rgba(0, 0, 0, 0.45);
-transition: opacity 0.25s ease-out;
+#loadboard-nav, #profile-nav, #create-load-nav, #chat-nav, #truck-nav, #driver-nav, #loadboard-nav-admin, #user-management, #statistics {
+    background: linear-gradient(to left, #8360c3, #4cddf1);
+    color: #262424 !important;
+    border-radius: 1em;
+    box-shadow: 25px 0 20px -20px rgba(0, 0, 0, 0.45), -25px 0 20px -20px rgba(0, 0, 0, 0.45);
+    transition: opacity 0.25s ease-out;
+}
+
+#loadboard-nav-admin span{
+    margin-left: -3.2em;
+}
+
+#user-management span {
+    margin-left: -2.4em;
+}
+
+#statistics span{
+    margin-left: -0.5em;
+}
+
+#loadboard-nav span {
+    margin-left: -1em;
+}
+
+#chat-nav span {
+    margin-left: -0.5em;
 }
 
 #loadboard-nav:hover,
@@ -965,7 +998,10 @@ transition: opacity 0.25s ease-out;
 #create-load-nav:hover,
 #chat-nav:hover,
 #truck-nav:hover,
-#driver-nav:hover {
+#driver-nav:hover,
+#loadboard-nav-admin:hover,
+#user-management:hover,
+#statistics:hover {
     background-color: #fff !important;
     color: white !important;
     transition: opacity 0.25s ease-out;
@@ -1032,8 +1068,9 @@ transition: opacity 0.25s ease-out;
 /*-------------------------------------------------------------------------------------
 # TRUCK VIEW ( SHOW TRUCKS VIEW ) 
 --------------------------------------------------------------------------------------*/
-.trucks
-.drivers {
+.trucks,
+.drivers,
+.user-management {
     font-family: Nunito;
 }
 
@@ -1067,7 +1104,8 @@ transition: opacity 0.25s ease-out;
 }
 
 #truckNumberLabel,
-#driverFirstNameLabel {
+#driverFirstNameLabel,
+.usernameNewUserLabel {
     margin-top: 3em;
 }
 
@@ -1187,7 +1225,8 @@ transition: opacity 0.25s ease-out;
 }
 
 #addNewTruck,
-#addNewDriver {
+#addNewDriver,
+#addNewUser{
     color: white !important;
     margin: 0 auto;
     min-width: 9em;
@@ -1196,7 +1235,8 @@ transition: opacity 0.25s ease-out;
 }
 
 #addNewTruck:hover,
-#addNewDriver:hover {
+#addNewDriver:hover,
+#addNewUser:hover{
     color: black !important;
     background-color: white !important;
 }
@@ -1290,3 +1330,56 @@ transition: opacity 0.25s ease-out;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.page-item:nth-child(2n+1) {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0.25em;
+
+}
+
+.page-link {
+    margin-right: 0.25em;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #0d6efd !important;
+    color: ghostwhite !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-bottom: 2px #8c1db8 solid !important;
+    border-top: 2px #8c1db8 solid !important;
+}
+
+.page-item.active {
+    transform: scale(1.25);
+    transition: transform 0.5s ease, box-shadow 0.5s, border-color 0.4s ease;
+}
+
+.page-item .page-link:hover {
+    color: #8c1db8 !important;
+}
+
+.ri-user-search-fill{
+    font-size: 1.25em !important;
+}
+
+.search-users-imput,
+.search-users-btn {
+    border: 2px solid black !important;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 6px 8px rgba(0,0,0,0.11), 0 8px 16px rgba(0,0,0,0.11);
+}
+usernameNewUserLabel
+.search-users-imput {
+    min-width: 50em !important;
+    min-height: 2em !important;
+}
+
+.form-label select{
+    color: black;
+}
