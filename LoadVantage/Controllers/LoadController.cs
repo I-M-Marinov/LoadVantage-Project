@@ -76,7 +76,7 @@ namespace LoadVantage.Controllers
                 BrokerId = userId,
                 UserProfile = profile
 			};
-
+             
             return View(model);
         }
 

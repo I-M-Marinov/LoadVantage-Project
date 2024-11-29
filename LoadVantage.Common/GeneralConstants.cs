@@ -28,6 +28,8 @@ namespace LoadVantage.Common
         public static class SecretString
         {
 			public const string PasswordSecretWord = "password";
+			public const string NewlyCreatedUserPassword = "randomPassword123";
+
         }
 
         public static class Conversion
@@ -69,10 +71,13 @@ namespace LoadVantage.Common
             public const string UserNameIsAlreadyTaken = "The username is already taken.";
             public const string EmailIsAlreadyTaken = "The email is already taken.";
             public const string CurrentAndNewPasswordCannotMatch = "The new password cannot be the same as the current password.";
+            public const string UserCreationFailed = "User creation failed.";
+            public const string InvalidModelOrRoleAdded = "Invalid user model or invalid role selected!";
 
-            // SESSION
 
-            public const string InvalidSession = "Your session is invalid. Please log in again.";
+			// SESSION
+
+			public const string InvalidSession = "Your session is invalid. Please log in again.";
 
 			// PROFILE 
 
@@ -98,6 +103,8 @@ namespace LoadVantage.Common
 			public const string DriverDoesNotExist = "The driver you are looking for does not exist.";
 			public const string DriverWasNotAssignedToTheLoad = "Failed to assign the driver to the load. Please check the details and try again.";
 			public const string DriverCurrentlyUnderALoad = "Driver is currently doing a load and cannot leave the truck.";
+			public const string DriverAlreadyOnAnotherLoad = "Status change unsuccessful ! Driver might already be on another load.";
+
 
 
 
@@ -115,6 +122,8 @@ namespace LoadVantage.Common
             public const string LoadPostedSuccessfully = "Load was posted successfully.";
             public const string LoadUnpostedSuccessfully = "Load was unposted successfully.";
             public const string LoadsUnpostedSuccessfully = "All loads were unposted successfully.";
+            public const string LoadWasRestoredSuccessfully = "The load was restored successfully.";
+            public const string LoadWasMovedBackToBookedSuccessfully = "The load's status was changed successfully back to Booked";
 
             public const string LoadWasBookSuccessfully = "Load was booked successfully!";
             public const string LoadWasDeliveredSuccessfully = "Load was delivered successfully!";
@@ -174,5 +183,11 @@ namespace LoadVantage.Common
 	        public const string ErrorRemovingImage = "Error removing the old profile image: ";
 	        public const string ImageUrlExceedsLimit = "Image URL length exceeds limit.";
         }
-    }
+
+        public static class AdministratorManagement
+        {
+	        public const string NewUserCreatedSuccessfully = "New user with username --> {0} and name {1} was created";
+
+		}
+	}
 }

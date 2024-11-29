@@ -12,13 +12,16 @@
         {
             var user = context.HttpContext.User;
 
+
             if (!user.Identity.IsAuthenticated ||
                 !user.IsInRole(UserRoleName) ||
                 user.FindFirst("Position")?.Value != DispatcherPositionName)
             {
-                context.Result = new ForbidResult(); 
+	            context.Result = new ForbidResult();
             }
-        }
+
+
+		}
     }
 
 }

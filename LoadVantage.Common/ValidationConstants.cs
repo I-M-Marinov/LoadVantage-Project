@@ -53,50 +53,60 @@
         public static class UserValidations
         {
 
-	        public const byte UserNameMinLength = 4;
+
+	        // USERNAME
+
+			public const byte UserNameMinLength = 4;
 	        public const byte UserNameMaxLength = 30;
 
-	        public const byte PositionMinLength = 6;
-	        public const byte PositionMaxLength = 20;
 
-	        public const byte EmailMinLength = 7;
+	        // POSITION
+
+			public const byte PositionMaxLength = 20;
+
+
+	        // EMAIL
+
+			public const byte EmailMinLength = 7;
 	        public const byte EmailMaxLength = 50;
 	        public const string EmailRegexPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?$";
 
 
+	        // FIRST NAME
+
 			public const byte FirstNameMinLength = 2;
 	        public const byte FirstNameMaxLength = 25;
 
-	        public const byte LastNameMinLength = 3;
+	        // LAST NAME
+
+			public const byte LastNameMinLength = 3;
 	        public const byte LastNameMaxLength = 25;
 
-	        public const byte CompanyNameMinLength = 3;
+	        // COMPANY NAME
+
+			public const byte CompanyNameMinLength = 3;
 	        public const byte CompanyNameMaxLength = 50;
 
-	        public const byte UserPhoneNumberMinLength = 7;
+			// PHONE NUMBER 
+
+			public const byte UserPhoneNumberMinLength = 7;
 	        public const byte UserPhoneNumberMaxLength = 15;
 	        public const string PhoneNumberRegexPattern = @"^\+?(\(\d{1,4}\)|\d{1,4})([-\s]?\d{1,4}){1,3}$";
-
-
 
 			// USER IMAGE 
 
 			public const int UserImageMaxLength = 1000;
             public const int UserImagePublicIdMaxLength = 1000;
 
-
 			// CHAT MESSAGES 
 
 			public const int MessageMaxValue = 2000;
 
+			// PASSWORD 
 
+			public const byte PasswordMinLength = 6;
+	        public const byte PasswordMaxLength = 30;
 
-			// NEW PASSWORD 
-
-			public const byte NewPasswordMinLength = 6;
-	        public const byte NewPasswordMaxLength = 30;
-
-	        
 
 
         }
@@ -119,12 +129,16 @@
 	        public const string UserNameLengthNotValid = "The length of the username must be between 4 and 30 characters.";
 	        public const string FirstNameLengthNotValid = "The length of the firstname must be between 2 and 25 characters.";
 	        public const string LastNameLengthNotValid = "The length of the lastname must be between 3 and 25 characters.";
-	        public const string PositionLengthNotValid = "The length of the postion must be between 6 and 20 characters.";
 	        public const string NewPasswordLengthNotValid = "The new password must be between 6 and 30 characters long.";
 	        public const string NewAndConfirmPasswordDoNotMatch = "The new password and confirmation password do not match.";
+
+			// ADMIN USER CREATION 
+
+			public const string PasswordLengthNotValid = "The new password must be between 6 and 30 characters long.";
+
 		}
 
-        public static class UserImageValidations
+		public static class UserImageValidations
         {
 
             public static readonly string[] ValidImageExtensions = new [] { ".jpg", ".jpeg", ".png" };

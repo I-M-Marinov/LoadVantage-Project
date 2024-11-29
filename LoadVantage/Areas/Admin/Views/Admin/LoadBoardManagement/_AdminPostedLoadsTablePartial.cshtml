@@ -17,7 +17,7 @@
 			<th>Distance</th>
 			<th>Price</th>
 			<th data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Rate per Mile">RPM</th>
-			<th>Actions</th>
+ 			<th>Actions</th>
 
 
 		</tr>
@@ -36,13 +36,14 @@
 				<td>@load.PostedPrice</td>
 				<td>@($"${(load.PostedPrice / (decimal)load.Distance!):F2}")</td>
 				<td>
-				<form method="get" asp-area="Admin" asp-controller="AdminLoad" asp-action="GetLoadInfo">
-					<input type="hidden" name="loadId" value="@load.Id"/>
-					<button class="btn btn-warning view-button">
-						<i class="bx bx-info-square"></i>
-						<span>View</span>
-					</button>
-				</form>
+					<form method="get" asp-area="Admin" asp-controller="AdminLoad" asp-action="GetLoadInfo">
+						<input type="hidden" name="loadId" value="@load.Id"/>
+						<button class="btn btn-warning view-button">
+							<i class="bx bx-info-square"></i>
+							<span>View</span>
+						</button>
+					</form>
+				</td>
 			</tr>
 		}
 
