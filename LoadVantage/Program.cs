@@ -71,7 +71,7 @@ builder.Services.AddCors(options =>
 			.AllowAnyHeader());
 });
 
-// =============== Register all services ============== // 
+// =============== Register USER services ============== // 
 
 builder.Services.AddScoped<IImageService, ImageService>();									// Add the Image Service 
 builder.Services.AddScoped<IProfileService, ProfileService>();                              // Add the Profile Service 
@@ -81,6 +81,7 @@ builder.Services.AddHttpClient<ICountryStateCityService, CountryStateCityService
 builder.Services.AddScoped<IGeocodeService, GeocodeService>();								// Add the Geocode Retrieval Service 
 builder.Services.AddScoped<IDistanceCalculatorService, DistanceCalculatorService>();		// Add the Distance Calculator Service
 builder.Services.AddScoped<ILoadStatusService, LoadStatusService>();						// Add the Load Status Service 
+builder.Services.AddScoped<ILoadHelperService, LoadHelperService>();                        // Add the Load Helper Service 
 builder.Services.AddScoped<ILoadBoardService, LoadBoardService>();							// Add the LoadBoard Service 
 builder.Services.AddScoped<IChatService, ChatService>();									// Add the Chat Service 
 builder.Services.AddScoped<ITruckService, TruckService>();									// Add the Truck Service 
@@ -95,6 +96,8 @@ builder.Services.AddScoped<IAdminProfileService, AdminProfileService>();
 builder.Services.AddScoped<IAdminUserService, AdminUserService>();
 builder.Services.AddScoped<IAdminLoadBoardService, AdminLoadBoardService>();
 builder.Services.AddScoped<IAdminLoadStatusService, AdminLoadStatusService>();
+builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+
 
 // =================================================== // 
 
@@ -200,6 +203,13 @@ app.UseEndpoints(endpoints =>
 		areaName: "Admin",
 		pattern: "Admin/{controller}/{action}/{id?}",
 		defaults: new { area = "Admin", controller = "Admin", action = "AdminProfile" }
+	);
+
+	endpoints.MapAreaControllerRoute(
+		name: "Admin_LoadBoard",
+		areaName: "Admin",
+		pattern: "Admin/{controller=LoadBoardManagement}/{action=Index}/{id?}",
+		defaults: new { area = "Admin" }
 	);
 
 	endpoints.MapHub<LoadHub>("/loadHub");
