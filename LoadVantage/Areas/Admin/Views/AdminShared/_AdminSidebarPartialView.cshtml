@@ -10,22 +10,7 @@
 
 	<ul class="sidebar-nav" id="sidebar-nav">
 
-
-		<li class="nav-item loadboard-nav">
-
-			<form method="get" asp-area="Admin" asp-controller="LoadBoardManagement" asp-action="LoadBoardManagement">
-				<input type="hidden" name="userId" value="@Model.Id" />
-				<button type="submit" class="nav-link collapsed" id="loadboard-nav">
-					<i class="bx bxs-dashboard"></i>
-					<span>Load Board</span>
-				</button>
-			</form>
-
-
-		</li>
-
 		<li class="nav-item profile-nav">
-
 
 			<form method="get" asp-area="Admin" asp-controller="Admin" asp-action="AdminProfile">
 				<input type="hidden" name="userId" value="@Model.Id" />
@@ -36,23 +21,31 @@
 			</form>
 
 		</li>
-
 		
+		<li class="nav-item loadboard-nav">
 
-		<li class="nav-item create-load-nav">
-
-
-			<form method="get" action="@Url.Action("CreateLoad", "Load")">
+			<form method="get" asp-area="Admin" asp-controller="LoadBoardManagement" asp-action="LoadBoardManagement">
 				<input type="hidden" name="userId" value="@Model.Id" />
-				<button type="submit" class="nav-link collapsed" id="create-load-nav">
-					<i class="ri-treasure-map-line"></i>
-					<span>Create a load</span>
+				<button type="submit" class="nav-link collapsed" id="loadboard-nav-admin">
+					<i class="bx bxs-dashboard"></i>
+					<span>Load Board Management</span>
 				</button>
 			</form>
 
 		</li>
 
-		
+		<li class="nav-item create-load-nav">
+
+			<form method="get" asp-area="Admin" asp-controller="UserManagement" asp-action="UserManagement">
+				<input type="hidden" name="adminId" value="@Model.Id" />
+				<button type="submit" class="nav-link collapsed" id="user-management">
+					<i class="bx bxs-user"></i>
+					<span>User Management</span>
+				</button>
+			</form>
+
+		</li>
+
 
 		<li class="nav-item chat-nav">
 
@@ -73,9 +66,9 @@
 
 			<form method="get" action="@Url.Action("ShowTrucks", "Truck")">
 				<input type="hidden" name="userId" value="@Model.Id" />
-				<button type="submit" class="nav-link collapsed" id="truck-nav">
-					<i class="ri-truck-line"></i>
-					<span>Trucks</span>
+				<button type="submit" class="nav-link collapsed" id="statistics">
+					<i class="bi bi-graph-up"></i>
+					<span>Statistics</span>
 				</button>
 			</form>
 

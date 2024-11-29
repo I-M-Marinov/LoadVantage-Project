@@ -14,7 +14,19 @@
 
 	<ul class="sidebar-nav" id="sidebar-nav">
 
-		
+		<li class="nav-item profile-nav">
+
+
+			<form method="get" action="@Url.Action("Profile", "Profile")">
+				<input type="hidden" name="userId" value="@Model.Id"/>
+				<button type="submit" class="nav-link collapsed" id="profile-nav">
+					<i class="ri-account-pin-box-line"></i>
+					<span>Profile</span>
+				</button>
+			</form>
+
+		</li>
+
 		<li class="nav-item loadboard-nav">
 
 			<form method="get" action="@Url.Action("LoadBoard", "LoadBoard", new { area = "" })">
@@ -28,27 +40,16 @@
 
 		</li>
 
-		<li class="nav-item profile-nav">
-	 
 
-			<form method="get" action="@Url.Action("Profile", "Profile")">
-				<input type="hidden" name="userId" value="@Model.Id" />
-				<button type="submit" class="nav-link collapsed" id="profile-nav">
-					<i class="ri-account-pin-box-line"></i>
-					<span>Profile</span>
-				</button>
-			</form>
 
-		</li>
-    
 		@if (Model.Position is nameof(Broker))
 		{
 
 			<li class="nav-item create-load-nav">
-	 
+
 
 				<form method="get" action="@Url.Action("CreateLoad", "Load")">
-					<input type="hidden" name="userId" value="@Model.Id" />
+					<input type="hidden" name="userId" value="@Model.Id"/>
 					<button type="submit" class="nav-link collapsed" id="create-load-nav">
 						<i class="ri-treasure-map-line"></i>
 						<span>Create a load</span>
@@ -71,26 +72,26 @@
 			</form>
 
 		</li>
-		
+
 		@if (Model.Position is nameof(Dispatcher))
 		{
 			<li class="nav-item trucks-nav">
 
 
 				<form method="get" action="@Url.Action("ShowTrucks", "Truck")">
-					<input type="hidden" name="userId" value="@Model.Id" />
+					<input type="hidden" name="userId" value="@Model.Id"/>
 					<button type="submit" class="nav-link collapsed" id="truck-nav">
 						<i class="ri-truck-line"></i>
 						<span>Trucks</span>
 					</button>
 				</form>
 
-			</li>		
-		
+			</li>
+
 			<li class="nav-item driver-nav">
 
 				<form method="get" action="@Url.Action("ShowDrivers", "Driver")">
-					<input type="hidden" name="userId" value="@Model.Id" />
+					<input type="hidden" name="userId" value="@Model.Id"/>
 					<button type="submit" class="nav-link collapsed" id="truck-nav">
 						<i class="bi bi-person-fill"></i>
 						<span>Drivers</span>
