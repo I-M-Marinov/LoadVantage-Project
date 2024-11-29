@@ -9,7 +9,7 @@ namespace LoadVantage.Core.Models.Profile
 {
     public class ProfileViewModel : IValidatableObject
     {
-        public  string Id { get; set; } = null!;
+        public string Id { get; set; } = null!;
         [Required(ErrorMessage = UsernameRequired)]
         [StringLength(UserNameMaxLength, MinimumLength = UserNameMinLength, ErrorMessage = UserNameLengthNotValid)]
         public string Username { get; set; } = null!;
@@ -21,16 +21,15 @@ namespace LoadVantage.Core.Models.Profile
 		public string Email { get; set; } = null!;
         [Required(ErrorMessage = FirstNameRequired)]
         [StringLength(FirstNameMaxLength, MinimumLength = FirstNameMinLength, ErrorMessage = FirstNameLengthNotValid)]
-        public  string FirstName { get; set; } = null!;
+        public string FirstName { get; set; } = null!;
         [Required(ErrorMessage = LastNameRequired)]
         [StringLength(LastNameMaxLength, MinimumLength = LastNameMinLength, ErrorMessage = LastNameLengthNotValid)]
-		public  string LastName { get; set; } = null!;
+		public string LastName { get; set; } = null!;
         [Required(ErrorMessage = CompanyNameRequired)]
         [StringLength(CompanyNameMaxLength, MinimumLength = CompanyNameMinLength, ErrorMessage = CompanyNameLengthNotValid)]
-        public  string CompanyName { get; set; } = null!;
+        public string CompanyName { get; set; } = null!;
         [Required]
-        [StringLength(PositionMaxLength, MinimumLength = PositionMinLength, ErrorMessage = PositionLengthNotValid)]
-        public  string Position { get; set; } = null!;
+        public string Position { get; set; } = null!;
         [Required(ErrorMessage = PhoneNumberRequired)]
         [StringLength(UserPhoneNumberMaxLength, MinimumLength = UserPhoneNumberMinLength, ErrorMessage = UserPhoneNumberLengthNotValid)]
         [RegularExpression(PhoneNumberRegexPattern, ErrorMessage = UserPhoneNumberEmailAddressNotValid)]
