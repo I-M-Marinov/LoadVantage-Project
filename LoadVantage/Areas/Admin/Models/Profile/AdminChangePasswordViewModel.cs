@@ -13,7 +13,7 @@ namespace LoadVantage.Areas.Admin.Models.Profile
         public string CurrentPassword { get; set; } = null!;
 
         [Required(ErrorMessage = "New password is required.")]
-        [StringLength(NewPasswordMaxLength, MinimumLength = NewPasswordMinLength, ErrorMessage = NewPasswordLengthNotValid)]
+        [StringLength(PasswordMaxLength, MinimumLength = PasswordMinLength, ErrorMessage = NewPasswordLengthNotValid)]
         [DataType(DataType.Password)]
         [Display(Name = "New Password")]
         public string NewPassword { get; set; } = null!;
