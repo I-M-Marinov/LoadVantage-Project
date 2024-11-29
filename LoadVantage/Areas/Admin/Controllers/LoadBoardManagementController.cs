@@ -1,15 +1,19 @@
 ﻿using LoadVantage.Areas.Admin.Contracts;
+using LoadVantage.Areas.Admin.Models.Load;
 using LoadVantage.Core.Contracts;
+using LoadVantage.Core.Models.Load;
 using LoadVantage.Core.Services;
 using LoadVantage.Extensions;
 using LoadVantage.Filters;
 using LoadVantage.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
 
 namespace LoadVantage.Areas.Admin.Controllers
 {
+	[Authorize]
 	[AdminOnly]
 	[Area("Admin")]
 	public class LoadBoardManagementController : Controller
@@ -51,6 +55,16 @@ namespace LoadVantage.Areas.Admin.Controllers
 		public IActionResult ReturnToLoadBoard()
 		{
 			return RedirectToAction(nameof(LoadBoardManagement));
+		}
+
+		[HttpGet]
+		public IActionResult GetPostedLoadsTableForAdmin()
+		{
+			var userId = User.GetAdminId().Value;
+
+			var loads = adminLoadBoardService.GetAllPostedLoadsAsync(userId).Result;
+
+			return PartialView("~/Areas/Admin/Views/Admin/LoadBoardManagement/_AdminPostedLoadsTablePartial.cshtml", loads);
 		}
 	}
 }
