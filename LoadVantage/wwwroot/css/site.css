@@ -1226,20 +1226,32 @@ body {
 
 #addNewTruck,
 #addNewDriver,
-#addNewUser{
+#addNewUser,
+#addNewAdmin{
     color: white !important;
-    margin: 0 auto;
     min-width: 9em;
     max-width: 100%;
     border: 2px black solid !important;  
 }
 
-#addNewTruck:hover,
-#addNewDriver:hover,
-#addNewUser:hover{
+#addNewAdmin {
     color: black !important;
-    background-color: white !important;
 }
+
+#adding-buttons-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em !important;
+}
+
+    #addNewTruck:hover,
+    #addNewDriver:hover,
+    #addNewUser:hover,
+    #addNewAdmin:hover {
+        color: black !important;
+        background-color: white !important;
+    }
 
 .driver-unassign-btn {
     border: 2px solid #ffc008 !important;
@@ -1340,11 +1352,12 @@ body {
 }
 
 .page-link {
-    margin-right: 0.25em;
+    margin: 0 0.25em;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 2.5em;
     height: 100%;
     background-color: #0d6efd !important;
     color: ghostwhite !important;
@@ -1357,6 +1370,7 @@ body {
 }
 
 .page-item.active {
+    margin: 0 0.25em;
     transform: scale(1.25);
     transition: transform 0.5s ease, box-shadow 0.5s, border-color 0.4s ease;
 }
@@ -1374,12 +1388,22 @@ body {
     border: 2px solid black !important;
     box-shadow: 0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 6px 8px rgba(0,0,0,0.11), 0 8px 16px rgba(0,0,0,0.11);
 }
-usernameNewUserLabel
+
+#usernameNewUserLabel,
 .search-users-imput {
-    min-width: 50em !important;
+    min-width: 30em !important;
     min-height: 2em !important;
 }
 
-.form-label select{
+#searchContainerUserManagement {
+    margin-top: 2.5em !important;
+   
+}
+
+.form-label select {
     color: black;
+}
+
+.user-infoinput label{
+
 }
