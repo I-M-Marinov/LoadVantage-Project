@@ -7,7 +7,7 @@ namespace LoadVantage.Areas.Admin.Models.User
 {
 	public class AdminCreateUserViewModel
 	{
-		public string Id { get; set; } = Guid.NewGuid().ToString();
+		public string Id { get; set; } = null!;
 		public string? Role { get; set; }
 		[Required(ErrorMessage = UsernameRequired)]
 		[StringLength(UserNameMaxLength, MinimumLength = UserNameMinLength, ErrorMessage = UserNameLengthNotValid)]
