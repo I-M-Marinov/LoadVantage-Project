@@ -14,8 +14,12 @@ namespace LoadVantage.Core.Contracts
 	    /// </summary>
 		Task<BaseUser?> GetUserByIdAsync(Guid userId);
 	    /// <summary>
-	    /// Retrieves the currently authorized User or returns null if not authorized.
+	    /// Update user information
 	    /// </summary>
+		Task<IdentityResult> UpdateUserAsync(BaseUser user);
+		/// <summary>
+		/// Retrieves the currently authorized User or returns null if not authorized.
+		/// </summary>
 		Task<BaseUser?> GetCurrentUserAsync();
 	    /// <summary>
 	    /// Finds the User by his email address

@@ -42,6 +42,11 @@ namespace LoadVantage.Core.Services
             return await userManager.FindByIdAsync(userId.ToString());
         }
 
+        public async Task<IdentityResult> UpdateUserAsync(BaseUser user)
+        {
+	        return await userManager.UpdateAsync(user);
+        }
+
 		public async Task<BaseUser> GetCurrentUserAsync()
         {
 	        var userId = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -205,7 +210,12 @@ namespace LoadVantage.Core.Services
 			var userImage = await context.UsersImages
                 .SingleOrDefaultAsync(ui => ui.Id == user.UserImageId);
 
-            if (userImage != null)
+			if (userImage.Id == DefaultImageId)
+			{
+				return; // no need to do anything if the user is already with the default image 
+			}
+
+			if (userImage != null)
             {
                 var deleteResult = await imageService.DeleteImageAsync(userImage.PublicId);
                 
