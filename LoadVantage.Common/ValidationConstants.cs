@@ -8,6 +8,7 @@
 		public const string EmailAlreadyExists = "An account with this email already exists.";
 		public const string UserNameAlreadyExists = "An account with this username already exists.";
 		public const string InvalidUserNameOrPassword = "Invalid username or password.";
+		public const string ThisAccountIsInactive = "The account you are trying to log in with has been deactivated.";
 		public const string InvalidPositionSelected = "The selected position is invalid.";
 
         public static class LoadValidations

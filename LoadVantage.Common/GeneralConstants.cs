@@ -72,7 +72,9 @@ namespace LoadVantage.Common
             public const string EmailIsAlreadyTaken = "The email is already taken.";
             public const string CurrentAndNewPasswordCannotMatch = "The new password cannot be the same as the current password.";
             public const string UserCreationFailed = "User creation failed.";
-            public const string InvalidModelOrRoleAdded = "Invalid user model or invalid role selected!";
+            public const string InvalidUserModelOrRoleAdded = "Invalid user model or invalid role selected!";
+            public const string InvalidAdminModelOrRoleAdded = "Invalid administrator model or invalid role selected!";
+            public const string FailedToUpdateTheUser = "Failed to update the user!";
 
 
 			// SESSION
@@ -186,8 +188,23 @@ namespace LoadVantage.Common
 
         public static class AdministratorManagement
         {
-	        public const string NewUserCreatedSuccessfully = "New user with username --> {0} and name {1} was created";
+	        public const string NewUserCreatedSuccessfully = "New user with username --> {0} and name {1} was created successfully!";
+	        public const string NewAdministratorCreatedSuccessfully = "New administrator with username --> {0} and name {1} was created successfully!";
 
-		}
+	        public const string UserDeactivatedSuccessfully = "User was deactivated successfully.";
+	        public const string UserActivatedSuccessfully = "User was activated successfully.";
+	        public const string UserUpdatedSuccessfully = "User details updated successfully.";
+	        
+
+			public const string FailedToDeleteTheUser = "Failed to deactivate the user.";
+	        public const string FailedToReactivateThisAccount = "Failed to reactivate the user.";
+	        
+
+	        public const string ErrorTryLater = "An unkown error occurred. Please try again later.";
+	        
+
+
+
+        }
 	}
 }
