@@ -1,0 +1,222 @@
+﻿/* Main Body Styles */
+main {
+    padding: 20px;
+    background: rgb(131, 58, 180);
+    background: linear-gradient(90deg, rgba(131, 58, 180, 1) 0%, rgba(29, 255, 253, 1) 100%, rgba(252, 176, 69, 1) 100%);
+}
+
+/* Truck Animation */
+.custom-truck-animation {
+    position: relative;
+    height: 200px;
+    margin: 40px 0;
+    overflow: hidden;
+}
+
+.custom-truck {
+    position: absolute;
+    left: -150px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 50px;
+    background-image: url('truck-icon.png'); /* Replace with your truck image */
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: custom-drive 5s linear infinite;
+}
+
+@keyframes custom-drive {
+    0% {
+        left: -150px;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* Slogan Section */
+.custom-slogan {
+    text-align: center;
+    margin: 50px 0;
+    color: white;
+}
+
+    .custom-slogan h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+/* Dynamic Cards */
+.custom-cards {
+    display: flex;
+    justify-content: space-around;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.custom-card {
+    position: relative;
+    width: 200px;
+    height: 300px;
+    perspective: 1000px;
+}
+
+.custom-card-front,
+.custom-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    transition: transform 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.custom-card-front {
+    background-color: #fff;
+    color: #333;
+}
+
+.custom-card-back {
+    background-color: #333;
+    color: white;
+    transform: rotateY(180deg);
+    padding: 20px;
+    font-size: 1rem;
+}
+
+.custom-card.flipped .custom-card-front {
+    transform: rotateY(180deg);
+}
+
+.custom-card.flipped .custom-card-back {
+    transform: rotateY(0deg);
+}
+
+.custom-card h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+
+/*TRUCK ANIMATION */
+
+.loader {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.truckWrapper {
+    width: 100em;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    justify-content: flex-end;
+    overflow-x: hidden;
+}
+/* truck upper body */
+.truckBody {
+    width: 130px;
+    height: fit-content;
+    margin-bottom: 0.75em;
+    position: absolute;
+    left: 10%;
+
+    animation: motion 1s linear infinite;
+}
+/* truck suspension animation*/
+@keyframes motion {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(3px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+/* truck's tires */
+.truckTires {
+    width: 130px;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 10px 0px 15px;
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+}
+
+.truckTires svg {
+    width: 24px;
+  
+}
+
+.road {
+    width: 100%;
+    height: 2px;
+    background-color: #282828;
+    position: relative;
+    bottom: 0;
+    align-self: flex-end;
+    border-radius: 3px;
+}
+
+.road::before {
+    content: "";
+    position: absolute;
+    width: 100em;
+    height: 100%;
+    background-color: #282828;
+    right: -50%;
+    border-radius: 3px;
+    animation: roadAnimation 5s linear infinite;
+}
+
+.road::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    background-color: #282828;
+    right: -65%;
+    border-radius: 3px;
+    animation: roadAnimation 1.4s linear infinite;
+    border-left: 4px solid white;
+}
+
+.lampPost {
+    position: absolute;
+    bottom: 0;
+    right: 10%;
+    height: 100px;
+    animation: roadAnimation 5s linear infinite;
+}
+
+@keyframes roadAnimation {
+    0% {
+        transform: translateX(0px);
+    }
+
+    100% {
+        transform: translateX(-2000px);
+    }
+}
