@@ -127,15 +127,20 @@ namespace LoadVantage.Controllers
 
             if (user != null)
             {
+	            if (!user.IsActive)
+	            {
+		            ModelState.AddModelError(string.Empty, ThisAccountIsInactive);
+		            return View(model);
+	            }
 
-                var result = await signInManager.PasswordSignInAsync(user, model.Password, false, false);
+				var result = await signInManager.PasswordSignInAsync(user, model.Password, false, false);
 
                 
 				if (result.Succeeded)
                 {
                     var claims = GetMissingClaims(User.Claims, user.FirstName, user.LastName, user.UserName, user.Position);
 
-                    if (claims.Count != 0)
+					if (claims.Count != 0)
                     {
                         await userService.AddUserClaimsAsync(user, claims);
                     }
