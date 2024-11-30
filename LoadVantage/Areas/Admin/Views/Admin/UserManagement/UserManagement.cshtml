@@ -27,90 +27,173 @@
 
 	<div class="pagetitle">
 		<h1>User Management</h1>
-		<button type="button" id="addNewUser" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-			<i class="ri-user-add-fill"></i>
-			Add User
-		</button>
+
+		<div id="adding-buttons-container">
+			<button type="button" id="addNewUser" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal" data-modal-title="Create User" data-role="User">
+				<i class="ri-user-add-fill"></i>
+				Add User
+			</button>
+
+			<button type="button" id="addNewAdmin" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addModal" data-modal-title="Create Administrator" data-role="Administrator">
+				<i class="ri-user-add-fill"></i>
+				Add Administrator
+			</button>
+		</div>
 
 
 	</div>
 	
 	
-<!-- Add User Modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-area="Admin" asp-action="CreateUser" asp-controller="UserManagement" method="post" id="createUserForm">
-                @Html.AntiForgeryToken()
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addUserModalLabel">Create New User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <!-- First Row -->
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="NewUser.UserName" class="form-label mt-5">Username</label>
-                            <input asp-for="NewUser.UserName" class="form-control">
-                            <span asp-validation-for="NewUser.UserName" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="NewUser.Email" class="form-label mt-5">Email</label>
-                            <input asp-for="NewUser.Email" class="form-control">
-                            <span asp-validation-for="NewUser.Email" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Second Row -->
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="NewUser.Password" class="form-label">Password</label>
-                            <input asp-for="NewUser.Password" type="password" class="form-control">
-                            <span asp-validation-for="NewUser.Password" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="NewUser.PhoneNumber" class="form-label">Phone Number</label>
-                            <input asp-for="NewUser.PhoneNumber" type="tel" class="form-control">
-                            <span asp-validation-for="NewUser.PhoneNumber" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Third Row -->
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="NewUser.FirstName" class="form-label">First Name</label>
-                            <input asp-for="NewUser.FirstName" class="form-control">
-                            <span asp-validation-for="NewUser.FirstName" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="NewUser.LastName" class="form-label">Last Name</label>
-                            <input asp-for="NewUser.LastName" class="form-control">
-                            <span asp-validation-for="NewUser.LastName" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Fourth Row -->
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="NewUser.CompanyName" class="form-label">Company Name</label>
-                            <input asp-for="NewUser.CompanyName" class="form-control">
-                            <span asp-validation-for="NewUser.CompanyName" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="NewUser.Position" class="form-label">Position</label>
-                            <select asp-for="NewUser.Position" class="form-select position-select">
-                                <option value="Broker">Broker</option>
-                                <option value="Dispatcher">Dispatcher</option>
-                            </select>
-                            <span asp-validation-for="NewUser.Position" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Create User</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<!-- Add Modal -->
+	<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form asp-area="Admin" asp-action="CreateUser" asp-controller="UserManagement" method="post" id="createUserForm">
+					@Html.AntiForgeryToken()
+					<div class="modal-header">
+						<h5 class="modal-title" id="addModalLabel">Create New User</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<!-- First Row -->
+							<div class="col-md-6 mb-3 justify-content-center user-infoinput">
+								<label asp-for="NewUser.UserName" class="form-label mt-5">Username</label>
+								<input asp-for="NewUser.UserName" class="form-control">
+								<span asp-validation-for="NewUser.UserName" class="text-danger"></span>
+							</div>
+							<div class="col-md-6 mb-3 user-infoinput">
+								<label asp-for="NewUser.Email" class="form-label mt-5">Email</label>
+								<input asp-for="NewUser.Email" class="form-control">
+								<span asp-validation-for="NewUser.Email" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="row">
+							<!-- Second Row -->
+							<div class="col-md-6 mb-3 user-infoinput">
+								<label asp-for="NewUser.Password" class="form-label">Password</label>
+								<input asp-for="NewUser.Password" type="password" class="form-control">
+								<span asp-validation-for="NewUser.Password" class="text-danger"></span>
+							</div>
+							<div class="col-md-6 mb-3 user-infoinput">
+								<label asp-for="NewUser.PhoneNumber" class="form-label">Phone Number</label>
+								<input asp-for="NewUser.PhoneNumber" type="tel" class="form-control">
+								<span asp-validation-for="NewUser.PhoneNumber" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="row">
+							<!-- Third Row -->
+							<div class="col-md-6 mb-3 user-infoinput">
+								<label asp-for="NewUser.FirstName" class="form-label">First Name</label>
+								<input asp-for="NewUser.FirstName" class="form-control">
+								<span asp-validation-for="NewUser.FirstName" class="text-danger"></span>
+							</div>
+							<div class="col-md-6 mb-3 user-infoinput">
+								<label asp-for="NewUser.LastName" class="form-label">Last Name</label>
+								<input asp-for="NewUser.LastName" class="form-control">
+								<span asp-validation-for="NewUser.LastName" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="row">
+							<!-- Fourth Row -->
+							<div class="col-md-6 mb-3 user-infoinput">
+								<label asp-for="NewUser.CompanyName" class="form-label">Company Name</label>
+								<input asp-for="NewUser.CompanyName" class="form-control">
+								<span asp-validation-for="NewUser.CompanyName" class="text-danger"></span>
+							</div>
+							<div class="col-md-6 mb-3 user-infoinput" id="position-select-element">
+								<label asp-for="NewUser.Position" class="form-label">Position</label>
+								<select asp-for="NewUser.Position" class="form-select position-select">
+									<option value="Administrator">Administrator</option>
+									<option value="Broker">Broker</option>
+									<option value="Dispatcher">Dispatcher</option>
+								</select>
+								<span asp-validation-for="NewUser.Position" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer d-flex justify-content-center">
+						<button type="submit" class="btn btn-primary">Create User</button>
+						<input asp-for="NewUser.Id" type="hidden" name="NewUser.Id">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	
+	<!-- Edit User Modal -->
+	<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form asp-area="Admin" asp-action="EditUser" asp-controller="UserManagement" method="post" id="editUserForm">
+					@Html.AntiForgeryToken()
+					<div class="modal-header">
+						<h5 class="modal-title" id="editUserModalLabel">Editing a User</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+
+							<!-- First Row -->
+							<div class="col-md-6 mb-3 justify-content-center user-infoinput">
+								<label asp-for="EditedUser.UserName" class="form-label mt-5">Username</label>
+								<input asp-for="EditedUser.UserName" class="form-control">
+								<span asp-validation-for="EditedUser.UserName" class="text-danger"></span>
+							</div>
+							<div class="col-md-6 mb-3 user-infoinput">
+								<label asp-for="EditedUser.Email" class="form-label mt-5">Email</label>
+								<input asp-for="EditedUser.Email" class="form-control">
+								<span asp-validation-for="EditedUser.Email" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="row">
+
+							<!-- Second Row -->
+							<div class="col-md-6 mb-3 user-infoinput">
+								<label asp-for="EditedUser.FirstName" class="form-label">First Name</label>
+								<input asp-for="EditedUser.FirstName" class="form-control">
+								<span asp-validation-for="EditedUser.FirstName" class="text-danger"></span>
+							</div>
+							<div class="col-md-6 mb-3 user-infoinput">
+								<label asp-for="EditedUser.LastName" class="form-label">Last Name</label>
+								<input asp-for="EditedUser.LastName" class="form-control">
+								<span asp-validation-for="EditedUser.LastName" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="row">
+							<!-- Third Row -->
+
+							<div class="col-md-6 mb-3 user-infoinput">
+								<label asp-for="EditedUser.PhoneNumber" class="form-label">Phone Number</label>
+								<input asp-for="EditedUser.PhoneNumber" type="tel" class="form-control">
+								<span asp-validation-for="EditedUser.PhoneNumber" class="text-danger"></span>
+							</div>
+
+							<div class="col-md-6 mb-3 user-infoinput">
+								<label asp-for="EditedUser.CompanyName" class="form-label">Company Name</label>
+								<input asp-for="EditedUser.CompanyName" class="form-control">
+								<span asp-validation-for="EditedUser.CompanyName" class="text-danger"></span>
+							</div>
+
+						</div>
+
+
+					</div>
+					<div class="modal-footer d-flex justify-content-center">
+
+						<button type="submit" class="btn btn-primary">Save</button>
+						<input asp-for="EditedUser.Id" type="hidden" name="EditedUser.Id">
+						<input asp-for="EditedUser.IsActive" type="hidden" name="EditedUser.IsActive">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
 
 	
 
@@ -129,7 +212,7 @@
 			
 			
 			<div class="table-responsive mt-4">
-				<div class="d-flex justify-content-between align-items-center mb-3">
+				<div class="d-flex justify-content-between align-items-center mb-3" id="searchContainerUserManagement">
 					<h5 class="card-title">User List</h5>
 					<form id="searchUserForm" method="get" class="d-flex justify-content-end mb-3">
 						<input type="hidden" name="pageNumber" value="1" />
@@ -163,25 +246,59 @@
 							<tr>
 								<td class="d-none" hidden>@user.Id</td>
 								<td class="text-center">
-									<img src="@user.UserImageUrl" alt="Profile Picture" class="rounded-circle userImageManager" width="45" height="45">
+									@if (user.IsActive)
+									{
+										<img src="@user.UserImageUrl" alt="Profile Picture" class="rounded-circle userImageManager" width="45" height="45">
+									}
+									else
+									{
+										<span class="badge badge-danger">Deactivated <br/> Account</span>
+									}
 								</td>
 								<td class="text-center">@user.UserName</td>
-								<td class="text-center">@user.FirstName @user.LastName</td>
+								<td class="text-center">@user.FullName</td>
 								<td class="text-center">@user.Email</td>
 								<td class="text-center">@user.PhoneNumber</td>
 								<td class="text-center">@user.CompanyName</td>
 								<td class="text-center">@user.Role</td>
 								<td class="text-center">@user.Position</td>
 								<td class="text-center">
-									<button class="btn btn-sm btn-primary">Edit</button>
-									<button class="btn btn-sm btn-danger">Delete</button>
+									<div class="d-flex justify-content-center align-items-center gap-2">
+										
+										<button class="btn btn-sm btn-primary edit-user-btn" title="Edit this user" data-id="@user.Id">
+											<i class="bi bi-person-lines-fill"></i>
+										</button>
+
+										@if (user.IsActive)
+										{
+											<form class="deactivateUserForm" asp-area="Admin" asp-action="DeactivateUser" asp-controller="UserManagement" method="post">
+												@Html.AntiForgeryToken()
+												<input type="hidden" name="userId" value="@user.Id"/>
+												<button type="submit" class="btn btn-sm btn-danger" title="Deactivate this user">
+													<i class="ri-user-unfollow-fill"></i>
+												</button>
+											</form>
+										}
+										else
+										{
+											<form class="reactivateUserForm" asp-area="Admin" asp-action="ReactivateUser" asp-controller="UserManagement" method="post">
+												@Html.AntiForgeryToken()
+												<input type="hidden" name="userId" value="@user.Id"/>
+												<button type="submit" class="btn btn-sm btn-success" title="Activate this user">
+													<i class="ri-user-star-fill"></i>
+												</button>
+											</form>
+										}
+
+										
+									</div>
 								</td>
 							</tr>
 						}
 						</tbody>
 					</table>
 
-					<nav aria-label="Page navigation example">
+					<nav aria-label="Page Navigation">
 						<ul class="pagination justify-content-center">
 							@for (int i = 1; i <= Math.Ceiling((double)Model.TotalUsers / Model.PageSize); i++)
 							{
@@ -207,7 +324,11 @@
 
 
 <script>
-	
+
+
+  /*--------------------------
+	# TOGGLE SIDE BAR
+   --------------------------*/
 
 	if (document.querySelector('.toggle-sidebar-btn')) {
 
@@ -216,5 +337,103 @@
 			document.body.classList.toggle('toggle-sidebar');
 		});
 	}
+
+	/*---------------------------------------------------------------------------------------------------------------------
+	# FETCH THE JSON FROM THE GetUserRoleDetails METHOD IN THE CONTROLLER AND POPULATE THE FIELDS FOR THE EDIT USER MODAL /
+	--------------------------------------------------------------------------------------------------------------------*/
+
+
+	document.addEventListener('DOMContentLoaded', function () {
+		const buttons = document.querySelectorAll('.edit-user-btn');
+		buttons.forEach(button => {
+			button.addEventListener('click', function () {
+				const userId = this.getAttribute('data-id');
+				loadUserData(userId);
+			});
+		});
+	});
+
+	function loadUserData(userId) {
+		if (!userId) {
+			console.error('No user ID provided!');
+			return;
+		}
+
+		fetch(`/Admin/UserManagement/GetUserRoleDetails?userId=${userId}`)
+			.then(response => response.json())
+			.then(user => {
+				// Handle the response and populate modal fields
+				document.querySelector("#editUserModal input[name='EditedUser.Id']").value = user.id;
+				document.querySelector("#editUserModal input[name='EditedUser.UserName']").value = user.userName;
+				document.querySelector("#editUserModal input[name='EditedUser.Email']").value = user.email;
+				document.querySelector("#editUserModal input[name='EditedUser.PhoneNumber']").value = user.phoneNumber || "";
+				document.querySelector("#editUserModal input[name='EditedUser.FirstName']").value = user.firstName;
+				document.querySelector("#editUserModal input[name='EditedUser.LastName']").value = user.lastName;
+				document.querySelector("#editUserModal input[name='EditedUser.CompanyName']").value = user.companyName;
+
+				// Show the modal
+				$('#editUserModal').modal('show');
+			})
+			.catch(error => {
+				console.error("Error fetching user data:", error);
+			});
+	}
+
+
+	/*--------------------------------------------------------------------------------------------------------
+	# DYNAMICALLY ADD THE CORRECT ACTION ON THE FORM IN THE ADDMODAL AND SET THE DROPDOWN OPTIONS FOR POSTION
+	---------------------------------------------------------------------------------------------------------*/
+
+
+	document.addEventListener('DOMContentLoaded', function () {
+		var addModal = document.getElementById('addModal');
+		var createUserForm = document.getElementById('createUserForm');
+		var modalTitle = document.getElementById('addModalLabel');
+
+		addModal.addEventListener('show.bs.modal', function (event) {
+			var button = event.relatedTarget; 
+			var modalTitleText = button.getAttribute('data-modal-title'); 
+			var positionSelect = addModal.querySelector('select[name="NewUser.Position"]'); 
+
+			var options = positionSelect.querySelectorAll('option');
+			options.forEach(option => option.remove());
+
+			if (modalTitleText === "Create Administrator") {
+
+				var adminOption = document.createElement('option');
+				adminOption.value = "Administrator";
+				adminOption.textContent = "Administrator";
+				positionSelect.appendChild(adminOption);
+
+			} else if (modalTitleText === "Create User") {
+
+				var dispatcherOption = document.createElement('option');
+				dispatcherOption.value = "Dispatcher";
+				dispatcherOption.textContent = "Dispatcher";
+				positionSelect.appendChild(dispatcherOption);
+
+				var brokerOption = document.createElement('option');
+				brokerOption.value = "Broker";
+				brokerOption.textContent = "Broker";
+				positionSelect.appendChild(brokerOption);
+			}
+
+			if (modalTitleText === "Create Administrator") {
+
+				createUserForm.setAttribute('action', 'CreateAdministrator');
+				modalTitle.textContent = 'Creating a new Administrator';
+
+			} else if (modalTitleText === "Create User") {
+
+				createUserForm.setAttribute('action', 'CreateUser');
+				modalTitle.textContent = 'Creating a new User';
+			}
+		});
+	});
+
+
+
+
+
 
 </script>
