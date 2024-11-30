@@ -2089,6 +2089,10 @@
       "PackagePath": "staticwebassets\\css\\dark-mode.css"
     },
     {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\home-page.css",
+      "PackagePath": "staticwebassets\\css\\home-page.css"
+    },
+    {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

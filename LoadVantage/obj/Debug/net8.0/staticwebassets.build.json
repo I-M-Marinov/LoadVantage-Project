@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "hUXUUl3IK1GGfZIGwR3xZzNlQZ/19T7b8NT2ABjrfOg=",
+  "Hash": "4UAfZer0aieTzubSB5w7kXdlFca4ddJzd4V9bNBAzqw=",
   "Source": "LoadVantage",
   "BasePath": "_content/LoadVantage",
   "Mode": "Default",
@@ -11092,6 +11092,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\dark-mode.css"
+    },
+    {
+      "Identity": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\home-page.css",
+      "SourceId": "LoadVantage",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\",
+      "BasePath": "_content/LoadVantage",
+      "RelativePath": "css/home-page.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\home-page.css"
     },
     {
       "Identity": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\site.css",

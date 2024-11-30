@@ -4,6 +4,7 @@ using LoadVantage.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoadVantage.Infrastructure.Migrations
 {
     [DbContext(typeof(LoadVantageDbContext))]
-    partial class LoadVantageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241129221100_IsActivePropertyToBaseUserEntity")]
+    partial class IsActivePropertyToBaseUserEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,7 +163,7 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.HasIndex("LoadId")
                         .IsUnique();
 
-                    b.ToTable("BookedLoads", (string)null);
+                    b.ToTable("BookedLoads");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.ChatMessage", b =>
@@ -192,7 +195,7 @@ namespace LoadVantage.Infrastructure.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("ChatMessages", (string)null);
+                    b.ToTable("ChatMessages");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.DeliveredLoad", b =>
@@ -236,7 +239,7 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.HasIndex("LoadId")
                         .IsUnique();
 
-                    b.ToTable("DeliveredLoads", (string)null);
+                    b.ToTable("DeliveredLoads");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Driver", b =>
@@ -283,7 +286,7 @@ namespace LoadVantage.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[TruckId] IS NOT NULL");
 
-                    b.ToTable("Drivers", (string)null);
+                    b.ToTable("Drivers");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Load", b =>
@@ -341,7 +344,7 @@ namespace LoadVantage.Infrastructure.Migrations
 
                     b.HasIndex("BrokerId");
 
-                    b.ToTable("Loads", (string)null);
+                    b.ToTable("Loads");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.PostedLoad", b =>
@@ -361,7 +364,7 @@ namespace LoadVantage.Infrastructure.Migrations
                     b.HasIndex("LoadId")
                         .IsUnique();
 
-                    b.ToTable("PostedLoads", (string)null);
+                    b.ToTable("PostedLoads");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.Role", b =>
@@ -429,7 +432,7 @@ namespace LoadVantage.Infrastructure.Migrations
 
                     b.HasIndex("DispatcherId");
 
-                    b.ToTable("Trucks", (string)null);
+                    b.ToTable("Trucks");
                 });
 
             modelBuilder.Entity("LoadVantage.Infrastructure.Data.Models.UserImage", b =>
@@ -449,7 +452,7 @@ namespace LoadVantage.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UsersImages", (string)null);
+                    b.ToTable("UsersImages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
