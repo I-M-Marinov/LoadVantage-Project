@@ -29,6 +29,8 @@ namespace LoadVantage.Areas.Admin.Models.User
 
 		public string PhoneNumber { get; set; } = string.Empty;
 		public string? UserImageUrl { get; set; } 
+		public bool IsActive { get; set; }
 		public string FullName => $"{FirstName} {LastName}";
+
 	}
 }
