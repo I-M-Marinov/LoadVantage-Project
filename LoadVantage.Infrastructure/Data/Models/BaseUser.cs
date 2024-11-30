@@ -61,5 +61,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 
 		public ICollection<ChatMessage> SentMessages { get; set; }
 		public ICollection<ChatMessage> ReceivedMessages { get; set; }
+		public bool IsActive { get; set; } = true;
+
 	}
 }
