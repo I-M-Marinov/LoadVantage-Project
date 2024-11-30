@@ -13,6 +13,8 @@ using static LoadVantage.Common.GeneralConstants.AdministratorManagement;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using LoadVantage.Core.Models.Truck;
 using static LoadVantage.Common.GeneralConstants;
+using LoadVantage.Core.Services;
+using LoadVantage.Core.Contracts;
 
 
 namespace LoadVantage.Areas.Admin.Controllers
@@ -26,13 +28,16 @@ namespace LoadVantage.Areas.Admin.Controllers
 		private readonly IAdminProfileService adminProfileService;
 		private readonly UserManager<BaseUser> userManager;
 		private readonly RoleManager<Role> roleManager;
+		private readonly IUserService userService;
 
-		public UserManagementController(IUserManagementService _userManagementService, IAdminProfileService _adminProfileService, UserManager<BaseUser> _userManager, RoleManager<Role> _roleManager)
+		public UserManagementController(IUserManagementService _userManagementService, IAdminProfileService _adminProfileService, 
+			UserManager<BaseUser> _userManager, RoleManager<Role> _roleManager, IUserService _userService)
 		{
 			userManagementService = _userManagementService;
 			adminProfileService = _adminProfileService;
 			userManager = _userManager;
 			roleManager = _roleManager;
+			userService = _userService;
 
 		}
 
@@ -53,20 +58,21 @@ namespace LoadVantage.Areas.Admin.Controllers
 
             totalUsers = await userManagementService.GetTotalUsersCountAsync();
 
-			var adminProfile = await adminProfileService.GetAdminInformation(adminId);
+            var adminProfile = await adminProfileService.GetAdminInformation(adminId);
+
 
             var model = new UsersListModel
             {
-                Users = users.ToList(),
-                TotalUsers = totalUsers,
-                PageSize = pageSize,
-                CurrentPage = pageNumber,
-                SearchTerm = searchTerm,
-                AdminProfile = adminProfile
+	            Users = users.ToList(),
+	            TotalUsers = totalUsers,
+	            AdminProfile = adminProfile,
+				PageSize = pageSize,
+	            CurrentPage = pageNumber,
+	            SearchTerm = searchTerm
             };
-
             return View("~/Areas/Admin/Views/Admin/UserManagement/UserManagement.cshtml", model);
         }
+
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -74,8 +80,9 @@ namespace LoadVantage.Areas.Admin.Controllers
 		{
 			var adminId = User.GetAdminId();
 
+			model.NewUser.Id = Guid.NewGuid().ToString();
 			ModelState.Clear(); // Clear any other model state errors found 
-			TryValidateModel(model.NewUser); // Validate just the truck  
+			TryValidateModel(model.NewUser); // Validate just the new user  
 
 			if (!ModelState.IsValid)
 			{
@@ -88,7 +95,7 @@ namespace LoadVantage.Areas.Admin.Controllers
 
 
 				TempData.SetErrorMessage(errors);
-				return RedirectToAction("UserManagement", new { adminId = adminId });
+				return RedirectToAction("UserManagement", new { adminId });
 
 			}
 
@@ -99,26 +106,188 @@ namespace LoadVantage.Areas.Admin.Controllers
 			catch (InvalidOperationException e)
 			{
 				TempData.SetErrorMessage(e.Message);
-				return RedirectToAction("UserManagement", new { adminId = adminId });
+				return RedirectToAction("UserManagement", new { adminId });
 			}
 			catch (ArgumentNullException ex)
 			{
-				TempData.SetErrorMessage(InvalidModelOrRoleAdded);
-				return RedirectToAction("UserManagement", new { adminId = adminId });
+				TempData.SetErrorMessage(InvalidUserModelOrRoleAdded);
+				return RedirectToAction("UserManagement", new { adminId });
 			}
 
 			TempData.SetSuccessMessage(string.Format(NewUserCreatedSuccessfully, model.NewUser.UserName, model.NewUser.FullName));
-			return RedirectToAction("UserManagement", new { adminId = adminId });
+			return RedirectToAction("UserManagement", new { adminId });
 
 		}
 
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public async Task<IActionResult> DeleteUser(Guid userId)
-		//{
 
-		//}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> CreateAdministrator(UsersListModel model)
+		{
+			var adminId = User.GetAdminId();
 
+			model.NewUser.Id = Guid.NewGuid().ToString();
+			ModelState.Clear(); // Clear any other model state errors found 
+			TryValidateModel(model.NewUser); // Validate just the new user  
+
+			if (!ModelState.IsValid)
+			{
+				var validationErrors = ModelState.Values
+					.SelectMany(v => v.Errors)
+					.Select(e => e.ErrorMessage)
+					.ToList();
+
+				var errors = string.Join(Environment.NewLine, validationErrors);
+
+
+				TempData.SetErrorMessage(errors);
+				return RedirectToAction("UserManagement", new { adminId });
+
+			}
+
+			try
+			{
+				await userManagementService.CreateAdministratorAsync(model.NewUser);
+			}
+			catch (InvalidOperationException e)
+			{
+				TempData.SetErrorMessage(e.Message);
+				return RedirectToAction("UserManagement", new { adminId });
+			}
+			catch (ArgumentNullException ex)
+			{
+				TempData.SetErrorMessage(InvalidAdminModelOrRoleAdded);
+				return RedirectToAction("UserManagement", new { adminId });
+			}
+
+			TempData.SetSuccessMessage(string.Format(NewAdministratorCreatedSuccessfully, model.NewUser.UserName, model.NewUser.FullName));
+			return RedirectToAction("UserManagement", new { adminId });
+
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeactivateUser(Guid userId)
+		{
+			var adminId = User.GetAdminId();
+
+			try
+			{
+				var isDeleted = await userManagementService.DeactivateUserAsync(userId);
+
+				if (!isDeleted)
+				{
+					TempData.SetErrorMessage(FailedToDeleteTheUser);
+					return RedirectToAction("UserManagement", new { adminId });
+				}
+
+				TempData.SetSuccessMessage(UserDeactivatedSuccessfully);
+				return RedirectToAction("UserManagement", new { adminId });
+			}
+			catch (ArgumentException ex)
+			{
+				TempData.SetErrorMessage(ex.Message); // "User not found"
+				return RedirectToAction("UserManagement", new { adminId });
+			}
+			catch (Exception ex)
+			{
+				TempData.SetErrorMessage($"An error occurred: {ex.Message}");
+				return RedirectToAction("UserManagement", new { adminId });
+			}
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> ReactivateUser(Guid userId)
+		{
+			var adminId = User.GetAdminId();
+
+			try
+			{
+				var isRestored = await userManagementService.ReactivateUserAsync(userId);
+
+				if (!isRestored)
+				{
+					TempData.SetErrorMessage(FailedToReactivateThisAccount);
+					return RedirectToAction("UserManagement", new { adminId });
+				}
+
+				TempData.SetSuccessMessage(UserActivatedSuccessfully);
+				return RedirectToAction("UserManagement", new { adminId });
+			}
+			catch (ArgumentException ex)
+			{
+				TempData.SetErrorMessage(ex.Message); // "User not found"
+				return RedirectToAction("UserManagement", new { adminId });
+			}
+			catch (Exception ex)
+			{
+				TempData.SetErrorMessage(ErrorTryLater);
+				return RedirectToAction("UserManagement", new { adminId });
+			}
+		}
+
+
+		[HttpGet]
+		public async Task<IActionResult> GetUserRoleDetails(Guid userId)
+		{
+			var user = await userService.GetUserByIdAsync(userId);
+
+			if (user == null)
+			{
+				return NotFound(UserNotFound);
+			}
+
+			var model = new AdminEditUserViewModel
+			{
+				Id = user.Id.ToString(),
+				UserName = user.UserName,
+				Email = user.Email,
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				PhoneNumber = user.PhoneNumber ?? "",
+				CompanyName = user.CompanyName ?? ""
+			};
+
+			return Json(model); // Return the model as JSON
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+
+		public async Task<IActionResult> EditUser(UsersListModel model)
+		{
+			var adminId = User.GetAdminId();
+
+
+			ModelState.Clear(); // Clear any other model state errors found 
+			TryValidateModel(model.EditedUser); // Validate just the Edited User  
+
+			if (!ModelState.IsValid)
+			{
+				return BadRequest("Invalid user data provided.");
+			}
+			try
+			{
+				await userManagementService.UpdateUserAsync(model.EditedUser);
+				TempData.SetSuccessMessage(UserUpdatedSuccessfully);
+
+				return RedirectToAction("UserManagement", new { adminId });
+			}
+			catch (InvalidOperationException ex)
+			{
+				TempData.SetErrorMessage(ex.Message);
+
+				return RedirectToAction("UserManagement", new { adminId });
+			}
+			catch (Exception ex)
+			{
+				TempData.SetErrorMessage(ErrorTryLater);
+				return RedirectToAction("UserManagement", new { adminId });
+			}
+		}
+
+		
 
 	}
 }
