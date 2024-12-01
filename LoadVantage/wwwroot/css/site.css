@@ -479,7 +479,8 @@ body {
 .create-load-buttons-container button,
 .details-buttons-container button,
 .btn btn-outline-danger,
-#chatWithBrokerBtn {
+#chatWithBrokerBtn,
+#chatWithDispatcherBtn {
     font-family: Nunito;
     font-size: 0.90rem;
     font-weight: 700;
@@ -1222,6 +1223,8 @@ body {
 .pagetitle {
     display: flex;
     flex-direction: column;
+    align-content: center;
+    justify-content: center;
 }
 
 #addNewTruck,
@@ -1229,13 +1232,14 @@ body {
 #addNewUser,
 #addNewAdmin{
     color: white !important;
-    min-width: 9em;
-    max-width: 100%;
+    width: 9em;
+    align-self: center;
     border: 2px black solid !important;  
 }
 
 #addNewAdmin {
     color: black !important;
+    min-width: 11.4em !important;
 }
 
 #adding-buttons-container {
@@ -1391,7 +1395,7 @@ body {
 
 #usernameNewUserLabel,
 .search-users-imput {
-    min-width: 30em !important;
+    min-width: 20em !important;
     min-height: 2em !important;
 }
 
@@ -1406,4 +1410,24 @@ body {
 
 .user-infoinput label{
 
+}
+
+#admin-icon i{
+    font-family: Nunito !important;
+    font-weight: 800 !important;
+    font-size: 18px;
+    color: #8c1db8;
+}
+
+#chattingWithWindow {
+    margin-top: 4em;
+    margin: 0 auto;
+    width: 50%;
+    height: 50%;
+}
+
+#yourUsername,
+#inputGroupPrepend,
+#yourPassword {
+    border: 2px #0945d4 solid;
 }
