@@ -184,6 +184,7 @@ input{
 #createLoadButton,
 #resetFormButton,
 #chatWithBrokerBtn,
+#chatWithDispatcherBtn,
 #unpostLoadBtn,
 #unpostAllBtn,
 #cancelCarrierBtn,
@@ -200,7 +201,8 @@ input{
     color: #ffffff !important;
 }
 
-#chatWithBrokerBtn:hover {
+#chatWithBrokerBtn:hover,
+#chatWithDispatcherBtn:hover {
     border: 2px solid #1a00ff !important;
 }
 
@@ -209,6 +211,7 @@ input{
     background: #6f42c1 !important;
 }
 
+#chatWithDispatcherBtn,
 #chatWithBrokerBtn,
 #changePasswordBtn,
 #saveChangesBtn,
@@ -217,10 +220,11 @@ input{
     color: white !important;
 }
 
+#chatWithDispatcherBtn:hover,
 #chatWithBrokerBtn:hover,
 #changePasswordBtn:hover,
 #saveChangesBtn:hover,
-#editLoadButton:hover{
+#editLoadButton:hover {
     background: #1a00ff !important;
     color: white !important;
 }
