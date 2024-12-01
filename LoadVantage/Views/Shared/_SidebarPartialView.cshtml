@@ -63,8 +63,8 @@
 		<li class="nav-item chat-nav">
 
 
-			<form method="get" action="@Url.Action("ChatWindow", "Chat")">
-
+			<form method="get" asp-area="" asp-controller="Chat" asp-action="ChatWindow">
+				<input type="hidden" name="adminId" value="@Model.Id" />
 				<button type="submit" class="nav-link collapsed" id="chat-nav">
 					<i class="bx bxs-chat"></i>
 					<span>Chat</span>
