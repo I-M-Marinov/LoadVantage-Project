@@ -1,6 +1,4 @@
-﻿
-@using LoadVantage.Infrastructure.Data.Models
-@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using LoadVantage.Core.Models.Chat;
 @using LoadVantage.Extensions
 @using Dispatcher = LoadVantage.Infrastructure.Data.Models.Dispatcher
@@ -155,182 +153,65 @@
 
 
 <script>
+    if (document.querySelector('.toggle-sidebar-btn')) {
+        document.querySelector('.toggle-sidebar-btn').addEventListener('click', function (e) {
+            document.body.classList.toggle('toggle-sidebar');
+        });
+    }
+
+    const hasChats = document.getElementById("chat-messages-container") !== null;
+
+    if (hasChats) {
+        function scrollToBottom() {
+            const chatContainer = $("#chat-messages-container")[0];
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        $(document).ready(function () {
+            scrollToBottom();
+        });
+
+        // Clicking on Chat User Link //
+        $(document).on("click", ".chat-user-link", function (e) {
+            e.preventDefault();
+
+            const url = $(this).attr("href");
+            const urlParams = new URLSearchParams(url.split('?')[1]);
+            const userId = urlParams.get("chatUserId");
+            if (!userId) {
+                alert("Invalid chat user ID.");
+                return;
+            }
+
+            loadUserInfo(userId);
+            loadChatMessages(url);
+
+            $("input[name='receiverId']").val(userId);
+        });
+        // Clicking on Chat User Link //
+
+        // Loading User Info //
+        function loadUserInfo(userId) {
+            $.get(`/Chat/GetUserInfo?userId=${userId}`, function (data) {
+                $(".broker-info").html(data);
+            }).fail(function () {
+                alert("Error loading user information.");
+            });
+        }
+        // Loading User Info //
 
 
-	if (document.querySelector('.toggle-sidebar-btn')) {
+        // Loading Chat Messages -----------------------------------------------------------//
+        function loadChatMessages(url) {
+            $("#chat-messages-container").load(url, function (response, status, xhr) {
+                if (status === "error") {
+                    alert("Error loading chat messages.");
+                } else {
+                    scrollToBottom();
+                }
+            });
+        }
+        // Loading Chat Messages -----------------------------------------------------------//
 
-		document.querySelector('.toggle-sidebar-btn').addEventListener('click', function (e) {
-
-			document.body.classList.toggle('toggle-sidebar');
-		});
-	}
-
-	const hasChats = document.getElementById("chat-messages-container") !== null;
-
-	if (hasChats) {
-
-		function scrollToBottom() {
-			const chatContainer = $("#chat-messages-container")[0];
-			chatContainer.scrollTop = chatContainer.scrollHeight;
-		}
-
-		$(document).ready(function () {
-			scrollToBottom();
-		});
-
-		// Clicking on Chat User Link //
-
-		$(document).on("click", ".chat-user-link", function (e) {
-			e.preventDefault();
-
-			const url = $(this).attr("href");
-			const urlParams = new URLSearchParams(url.split('?')[1]);
-			const userId = urlParams.get("chatUserId");
-			if (!userId) {
-				alert("Invalid chat user ID.");
-				return;
-			}
-
-			loadUserInfo(userId);
-			loadChatMessages(url);
-
-			$("input[name='receiverId']").val(userId);
-
-		});
-
-		// Clicking on Chat User Link //
-
-		// Loading User Info //
-		function loadUserInfo(userId) {
-			$.get(`/Chat/GetUserInfo?userId=${userId}`, function (data) {
-				$(".broker-info").html(data);
-			}).fail(function () {
-				alert("Error loading user information.");
-			});
-		}
-
-		// Loading User Info //
-
-		// Loading Chat Messages //
-
-		function loadChatMessages(url) {
-			$("#chat-messages-container").load(url, function (response, status, xhr) {
-				if (status === "error") {
-					alert("Error loading chat messages.");
-				} else {
-					scrollToBottom();
-				}
-			});
-		}
-
-		// Loading Chat Messages //
-
-		// SIGNALR
-
-		const connection = new signalR.HubConnectionBuilder()
-			.withUrl("/chatHub")
-			.build();
-
-		connection.start().then(() => {
-			console.log("SignalR connected.");
-
-			connection.on("ReceiveMessage", function (chatMessage) {
-
-				displayMessage(chatMessage);
-			});
-		}).catch(err => {
-			console.error("Error while starting connection: " + err);
-		});
-
-		// Handle sending a message via SignalR when the form is submitted
-
-		document.querySelector("form").addEventListener("submit", function (event) {
-			event.preventDefault();
-
-			const messageContent = document.querySelector("input[name='messageContent']").value;
-			const receiverId = document.querySelector("input[name='receiverId']").value;
-			const senderId = document.getElementById("senderId").value;
-
-			connection.invoke("SendMessage", senderId, receiverId, messageContent)
-				.then(() => {
-					console.log("Message sent successfully.");
-
-					document.querySelector("input[name='messageContent']").value = "";
-				})
-				.catch(err => {
-					console.error("Error sending message: " + err);
-				});
-		});
-
-
-		document.querySelector('#chat-messages-container').addEventListener('click', function (e) {
-			const messageElement = e.target.closest('.chat-message');
-			if (messageElement && messageElement.classList.contains('received')) {
-				const senderId = messageElement.getAttribute('data-sender-id');
-				const receiverId = messageElement.getAttribute('data-receiver-id');
-
-				markMessagesAsRead(senderId, receiverId);
-
-				messageElement.classList.add('read');
-			}
-		});
-
-
-		// Sanitize the message
-		function sanitizeMessage(message) {
-			const element = document.createElement('div');
-			element.innerText = message;
-			return element.innerHTML;
-		}
-
-		// Display the message
-
-		function displayMessage(chatMessage) {
-			const messageContainer = document.getElementById("chat-messages-container");
-
-			const messageElement = document.createElement("div");
-			messageElement.classList.add("chat-message");
-
-			const senderId = document.getElementById("senderId").value;
-			if (chatMessage.senderId === senderId) {
-				messageElement.classList.add("sent");
-				messageElement.setAttribute("data-is-received", "false");
-			} else {
-				messageElement.classList.add("received");
-				messageElement.setAttribute("data-is-received", "true");
-			}
-
-			messageElement.setAttribute("data-message-id", chatMessage.id);
-			messageElement.setAttribute("data-sender-id", chatMessage.senderId);
-			messageElement.setAttribute("data-receiver-id", chatMessage.receiverId);
-
-			const messageContent = document.createElement("div");
-			messageContent.classList.add("message-content");
-			messageContent.innerHTML = sanitizeMessage(chatMessage.content);  // Sanitization
-
-			const messageTimestamp = document.createElement("div");
-			messageTimestamp.classList.add("message-timestamp");
-			messageTimestamp.innerText = new Date(chatMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-			messageElement.appendChild(messageContent);
-			messageElement.appendChild(messageTimestamp);
-
-			if (chatMessage.isRead) {
-				messageElement.classList.add("read");
-			}
-
-			messageContainer.appendChild(messageElement);
-
-			// Scroll to the bottom of the message container
-			if (messageContainer) {
-				messageContainer.scrollTop = messageContainer.scrollHeight;
-			}
-
-		}
-	}
-
-
-
-	
-
+    }
 </script>
