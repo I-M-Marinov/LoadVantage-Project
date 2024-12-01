@@ -1,14 +1,26 @@
 ﻿@using LoadVantage.Core.Models.Chat;
+@using LoadVantage.Infrastructure.Data.Models
 @model UserChatViewModel
 
 
 <div class="card-body">
-	<div class="d-flex align-items-center">
+	<div class="d-flex align-items-center" id="chattingWithWindow">
 		<img src="@Model.ProfilePictureUrl" alt="@Model.FullName" class="profile-img rounded-circle" style="width: 5em; height: 5em;" />
 		<div class="ms-3">
 			<h5 class="card-title">@Model.FullName</h5>
-			<p class="card-text">Phone: @Model.PhoneNumber</p>
-			<p class="card-text">Company: @Model.Company</p>
+			
+			@if (Model.Position != nameof(Administrator))
+			{
+				<p class="card-text">Phone: @Model.PhoneNumber</p>
+				<p class="card-text">Company: @Model.Company</p>
+			}
+			else
+			{
+				<p class="card-text" id="admin-icon">
+					<i class="bx bxs-user"> Administrator</i>
+				</p>
+			}
+
 		</div>
 	</div>
 </div>
