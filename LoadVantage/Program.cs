@@ -97,6 +97,7 @@ builder.Services.AddScoped<IAdminUserService, AdminUserService>();
 builder.Services.AddScoped<IAdminLoadBoardService, AdminLoadBoardService>();
 builder.Services.AddScoped<IAdminLoadStatusService, AdminLoadStatusService>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+builder.Services.AddScoped<IAdminChatService, AdminChatService>();
 
 
 // =================================================== // 
@@ -209,6 +210,13 @@ app.UseEndpoints(endpoints =>
 		name: "Admin_LoadBoard",
 		areaName: "Admin",
 		pattern: "Admin/{controller=LoadBoardManagement}/{action=Index}/{id?}",
+		defaults: new { area = "Admin" }
+	);
+
+	endpoints.MapAreaControllerRoute(
+		name: "AdminChat",
+		areaName: "Admin",
+		pattern: "Admin/{controller=AdminChat}/{action=Index}/{id?}",
 		defaults: new { area = "Admin" }
 	);
 
