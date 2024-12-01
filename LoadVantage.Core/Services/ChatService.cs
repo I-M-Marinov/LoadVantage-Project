@@ -13,14 +13,20 @@ namespace LoadVantage.Core.Services
 	{
 		private readonly IHubContext<ChatHub> chatHub;
 		private readonly LoadVantageDbContext context;
+        private readonly IUserService userService;
+        private readonly IProfileService profileService;
 
-		public ChatService(IHubContext<ChatHub> _chatHub, LoadVantageDbContext _dbContext)
+
+        public ChatService(IHubContext<ChatHub> _chatHub, LoadVantageDbContext _dbContext, IUserService _userService, IProfileService _profileService)
 		{
 			chatHub = _chatHub;
 			context = _dbContext;
-		}
+            userService = _userService;
+            profileService = _profileService;
 
-		public async Task<List<UserChatViewModel>> GetChatUsersAsync(Guid currentUserId,bool includeNewChat = false, Guid? newChatUserId = null)
+        }
+
+        public async Task<List<UserChatViewModel>> GetChatUsersAsync(Guid currentUserId,bool includeNewChat = false, Guid? newChatUserId = null)
 		{
 			var userIds = await context.ChatMessages
 				.Where(m => m.SenderId == currentUserId || m.ReceiverId == currentUserId)
@@ -36,7 +42,6 @@ namespace LoadVantage.Core.Services
 
 			var users = await context.Users
 				.Where(u => userIds.Contains(u.Id))
-				.Where(u => u.Position == "User")
 				.Select(u => new UserChatViewModel
 				{
 					Id = u.Id,
@@ -140,6 +145,39 @@ namespace LoadVantage.Core.Services
 
 			return result;
 		}
+
+        public async Task<ChatViewModel> BuildChatViewModel(Guid userId)
+        {
+            var currentUser = await userService.GetCurrentUserAsync();
+
+            // Fetch chat users, messages, and user info and the current user's profile 
+            var chatUsers = await GetChatUsersAsync(currentUser.Id);
+            var userInfo = await userService.GetChatUserInfoAsync(userId);
+            var messages = await GetMessagesAsync(currentUser.Id, userId);
+            var profile = await profileService.GetUserInformation(currentUser.Id);
+
+            // Build the ChatViewModel
+            var chatViewModel = new ChatViewModel
+            {
+                Users = chatUsers ?? new List<UserChatViewModel>(),
+                CurrentChatUserId = userId,
+                Messages = messages.Select(m => new ChatMessageViewModel
+                {
+                    Id = m.Id,
+                    SenderId = m.SenderId,
+                    ReceiverId = m.ReceiverId,
+                    Content = m.Content,
+                    Timestamp = m.Timestamp,
+                    IsRead = m.IsRead
+                }).ToList(),
+                UserInfo = userInfo,
+                Profile = profile
+            };
+
+            return chatViewModel;
+        }
+
+        
 
 	}
 
