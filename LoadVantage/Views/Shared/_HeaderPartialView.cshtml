@@ -9,7 +9,7 @@
 	<div class="d-flex align-items-center justify-content-between">
 		<a asp-controller="Profile" asp-action="Profile" class="logo d-flex align-items-center">
 			<img src="~/assets/img/loadVantage.svg" alt="LoadVantage Logo">
-			
+
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
 				<path d="M50,0 L100,100 H0 Z" fill="transparent" />
 			</svg>
@@ -58,102 +58,6 @@
 				</label>
 			</div> <!-- End Toggle Dark Theme -->
 
-
-			<li class="nav-item dropdown">
-
-				<a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-					<i class="bi bi-bell"></i>
-					<span class="badge bg-primary badge-number">4</span>
-				</a><!-- End Notification Icon -->
-
-				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-					<li class="dropdown-header">
-						You have 4 new notifications
-						<a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-					</li>
-					<li>
-						<hr class="dropdown-divider">
-					</li>
-
-					<li class="notification-item">
-						<i class="bi bi-exclamation-circle text-warning"></i>
-						<div>
-							<h4>Lorem Ipsum</h4>
-							<p>Quae dolorem earum veritatis oditseno</p>
-							<p>30 min. ago</p>
-						</div>
-					</li>
-
-					<li>
-						<hr class="dropdown-divider">
-					</li>
-
-					<li class="notification-item">
-						<i class="bi bi-x-circle text-danger"></i>
-						<div>
-							<h4>Atque rerum nesciunt</h4>
-							<p>Quae dolorem earum veritatis oditseno</p>
-							<p>1 hr. ago</p>
-						</div>
-					</li>
-
-					<li>
-						<hr class="dropdown-divider">
-					</li>
-
-					<li class="notification-item">
-						<i class="bi bi-check-circle text-success"></i>
-						<div>
-							<h4>Sit rerum fuga</h4>
-							<p>Quae dolorem earum veritatis oditseno</p>
-							<p>2 hrs. ago</p>
-						</div>
-					</li>
-
-					<li>
-						<hr class="dropdown-divider">
-					</li>
-
-					<li class="notification-item">
-						<i class="bi bi-info-circle text-primary"></i>
-						<div>
-							<h4>Dicta reprehenderit</h4>
-							<p>Quae dolorem earum veritatis oditseno</p>
-							<p>4 hrs. ago</p>
-						</div>
-					</li>
-
-					<li>
-						<hr class="dropdown-divider">
-					</li>
-					<li class="dropdown-footer">
-						<a href="#">Show all notifications</a>
-					</li>
-
-				</ul><!-- End Notification Dropdown Items -->
-
-			</li><!-- End Notification Nav -->
-
-			<li class="nav-item dropdown">
-				<a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-					<i class="bi bi-chat-left-text"></i>
-					<span id="loadNotificationCount" class="badge bg-success badge-number"></span>
-				</a><!-- End Messages Icon -->
-
-				<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages" id="loadNotificationList">
-					<li class="dropdown-header">
-						<input type="hidden" id="userId" value="@Model.Id" />
-						You have <span id="notificationCount">0</span> new notifications
-						<a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-					</li>
-					<li>
-						<hr class="dropdown-divider">
-					</li>
-
-				</ul><!-- End Messages Dropdown Items -->
-			</li><!-- End Messages Nav -->
-
-
 			<li class="nav-item dropdown pe-3">
 
 				<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
@@ -179,16 +83,6 @@
 								<span>My Profile</span>
 							</button>
 						</form>
-					</li>
-					<li>
-						<hr class="dropdown-divider">
-					</li>
-
-					<li>
-						<a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-							<i class="bi bi-gear"></i>
-							<span>Account Settings</span>
-						</a>
 					</li>
 					<li>
 						<hr class="dropdown-divider">
@@ -224,133 +118,140 @@
 
 </header><!-- End Header -->
 
-@* <script>
-
-
-    let messageConnection = null;
-
-    function initializeMessageNotifications() {
-        // Establish SignalR connection
-        if (!messageConnection) {
-            messageConnection = new signalR.HubConnectionBuilder()
-                .withUrl("/chatHub")
-                .configureLogging(signalR.LogLevel.Information)
-                .build();
-
-            messageConnection.start()
-                .then(() => {
-                    console.log("Connected to ChatHub.");
-                })
-                .catch(err => {
-                    console.error("Error connecting to ChatHub:", err.toString());
-                });
-
-            // Handle received messages
-            messageConnection.on("ReceiveMessage", function (message) {
-                console.log("Received message: ", message);
-                appendMessageToChat(message);
-            });
-
-            // Handle received notifications
-            messageConnection.on("ReceiveNotification", function (notification) {
-                console.log("Received notification: ", notification);
-                displayNotification(notification);
-            });
-
-            // Handle disconnection
-            messageConnection.onclose(async () => {
-                console.log("Disconnected from ChatHub. Attempting to reconnect...");
-                try {
-                    await messageConnection.start();
-                    console.log("Reconnected to ChatHub.");
-                } catch (err) {
-                    console.error("Reconnection failed:", err.toString());
-                }
-            });
-        }
-    }
-
-    // Append a new message to the chat
-    function appendMessageToChat(message) {
-        const chatMessages = document.getElementById("chat-messages");
-        const messageElement = document.createElement("div");
-        messageElement.classList.add("message-item");
-        messageElement.textContent = `You: ${message}`;
-        chatMessages.appendChild(messageElement);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    // Display a notification (customize as needed)
-    function displayNotification(notification) {
-        // Find the dropdown list where the notifications are added
-        const notificationList = document.getElementById("loadNotificationList");
-
-        // Create a new list item for the notification
-        const newNotification = document.createElement("li");
-        newNotification.classList.add("notification-item");
-        newNotification.textContent = notification;  // Customize this if needed
-
-        // Insert the new notification item before the footer
-        notificationList.insertBefore(newNotification, notificationList.querySelector(".dropdown-footer"));
-
-        // Optionally, update the notification count in the header
-        const notificationCountElement = document.getElementById("notificationCount");
-        notificationCountElement.textContent = parseInt(notificationCountElement.textContent) + 1;
-    }
-
-    // Handle the form submission for sending a message
-    function handleSendMessage(event) {
-        event.preventDefault();
-
-        const messageInput = document.getElementById("message-input");
-        const receiverId = document.getElementById("receiverId");
-        const message = messageInput.value;
-
-        if (message) {
-            // The message is sent by a form submission to the controller action (handled server-side)
-            // The controller will then trigger SignalR notification for real-time updates
-            document.getElementById("chat-form").submit(); // Submit the form to trigger the controller action
-            messageInput.value = ""; // Clear input after sending
-        }
-    }
-
-    // Attach form submission handler
-    window.onload = function () {
-        document.getElementById("chat-form").addEventListener("submit", handleSendMessage);
-    };
-
-    function reloadChatWindow(receiverId) {
-        $.ajax({
-            url: '/Chat/GetChatWindow',  // This should match your controller's action
-            type: 'GET',
-            data: { receiverId: receiverId },
-            success: function (data) {
-                // Replace the current chat window content with the new content
-                $('#chat-window').html(data);
-            },
-            error: function (error) {
-                console.error("Error loading chat window:", error);
-            }
-        });
-    }
-	
-	// document.addEventListener("DOMContentLoaded", function () {
-   // 	initializeMessageNotifications();
-   // });
-
-</script>
- *@
- 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.5/signalr.min.js"></script>
+
 
 <script>
+
+
+ //    let messageConnection = null;
+
+ //    function initializeMessageNotifications() {
+ //        // Establish SignalR connection
+ //        if (!messageConnection) {
+ //            messageConnection = new signalR.HubConnectionBuilder()
+ //                .withUrl("/chatHub")
+ //                .configureLogging(signalR.LogLevel.Information)
+ //                .build();
+
+ //            messageConnection.start()
+ //                .then(() => {
+ //                    console.log("Connected to ChatHub.");
+ //                })
+ //                .catch(err => {
+ //                    console.error("Error connecting to ChatHub:", err.toString());
+ //                });
+
+ //            // Handle received messages
+ //            messageConnection.on("ReceiveMessage", function (message) {
+ //                console.log("Received message: ", message);
+ //                appendMessageToChat(message);
+ //            });
+
+ //            // Handle received notifications
+ //            messageConnection.on("ReceiveNotification", function (notification) {
+ //                console.log("Received notification: ", notification);
+ //                displayNotification(notification);
+ //            });
+
+ //            // Handle disconnection
+ //            messageConnection.onclose(async () => {
+ //                console.log("Disconnected from ChatHub. Attempting to reconnect...");
+ //                try {
+ //                    await messageConnection.start();
+ //                    console.log("Reconnected to ChatHub.");
+ //                } catch (err) {
+ //                    console.error("Reconnection failed:", err.toString());
+ //                }
+ //            });
+ //        }
+ //    }
+
+ //    // Append a new message to the chat
+ //    function appendMessageToChat(message) {
+ //        const chatMessages = document.getElementById("chat-messages");
+ //        const messageElement = document.createElement("div");
+ //        messageElement.classList.add("message-item");
+ //        messageElement.textContent = `You: ${message}`;
+ //        chatMessages.appendChild(messageElement);
+ //        chatMessages.scrollTop = chatMessages.scrollHeight;
+ //    }
+
+ //    // Display a notification (customize as needed)
+ //    function displayNotification(notification) {
+ //        // Find the dropdown list where the notifications are added
+ //        const notificationList = document.getElementById("loadNotificationList");
+
+ //        // Create a new list item for the notification
+ //        const newNotification = document.createElement("li");
+ //        newNotification.classList.add("notification-item");
+ //        newNotification.textContent = notification;  // Customize this if needed
+
+ //        // Insert the new notification item before the footer
+ //        notificationList.insertBefore(newNotification, notificationList.querySelector(".dropdown-footer"));
+
+ //        // Optionally, update the notification count in the header
+ //        const notificationCountElement = document.getElementById("notificationCount");
+ //        notificationCountElement.textContent = parseInt(notificationCountElement.textContent) + 1;
+ //    }
+
+ //    // Handle the form submission for sending a message
+ //    function handleSendMessage(event) {
+ //        event.preventDefault();
+
+ //        const messageInput = document.getElementById("message-input");
+ //        const receiverId = document.getElementById("receiverId");
+ //        const message = messageInput.value;
+
+ //        if (message) {
+ //            // The message is sent by a form submission to the controller action (handled server-side)
+ //            // The controller will then trigger SignalR notification for real-time updates
+ //            document.getElementById("chat-form").submit(); // Submit the form to trigger the controller action
+ //            messageInput.value = ""; // Clear input after sending
+ //        }
+ //    }
+
+ //    // Attach form submission handler
+	// document.addEventListener("DOMContentLoaded", function () {
+	// 	const chatForm = document.getElementById("chat-form");
+	// 	if (chatForm) {
+	// 		chatForm.addEventListener("submit", handleSendMessage);
+	// 	} 
+	// });
+
+ //    function reloadChatWindow(receiverId) {
+ //        $.ajax({
+ //            url: '/Chat/GetChatWindow',  // This should match your controller's action
+ //            type: 'GET',
+ //            data: { receiverId: receiverId },
+ //            success: function (data) {
+ //                // Replace the current chat window content with the new content
+ //                $('#chat-window').html(data);
+ //            },
+ //            error: function (error) {
+ //                console.error("Error loading chat window:", error);
+ //            }
+ //        });
+ //    }
 	
-    // $(document).ready(function () {
-    //     updateUnreadCount();
+	// document.addEventListener("DOMContentLoaded", function () {
+ //   	initializeMessageNotifications();
+ //   });
 
-    //     // Optional: Auto-refresh every 30 seconds
-    //     setInterval(updateUnreadCount, 10000);
-    // });
 
+
+	// $(document).ready(function () {
+	// 	updateUnreadCount();
+
+	// 	// Auto-refresh every 10 seconds
+	// 	setInterval(updateUnreadCount, 10000);
+	// });
+
+	
 
 </script>
+ 
+ 
+
+
