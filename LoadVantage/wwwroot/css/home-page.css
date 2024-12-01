@@ -118,6 +118,34 @@ main {
     justify-content: center;
 }
 
+.cityBuildings {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    bottom: 25%;
+    right: -10%;
+    animation: roadAnimation 10s linear infinite !important;
+    z-index: 3000;
+}
+
+.cityBuildings2 {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    bottom: 25%;
+    right: -35%;
+    animation: roadAnimation 15s linear infinite !important;
+}
+
+.cityBuildings3 {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    bottom: 25%;
+    right: -45%;
+    animation: roadAnimation 20s linear infinite !important;
+}
+
 .truckWrapper {
     width: 100em;
     height: 150px;
@@ -172,7 +200,7 @@ main {
 
 .road {
     width: 100%;
-    height: 2px;
+    height: 5px;
     background-color: #282828;
     position: relative;
     bottom: 0;
@@ -207,7 +235,7 @@ main {
     position: absolute;
     bottom: 0;
     right: 10%;
-    height: 100px;
+    height: 60px;
     animation: roadAnimation 5s linear infinite;
 }
 
@@ -219,4 +247,14 @@ main {
     100% {
         transform: translateX(-2000px);
     }
+}
+
+
+/****************************************************************************/
+.navbar-toggler {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: black;
+    z-index: 5000;
 }
