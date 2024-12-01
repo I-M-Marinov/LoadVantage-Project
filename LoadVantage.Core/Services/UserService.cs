@@ -139,7 +139,6 @@ namespace LoadVantage.Core.Services
 		public async Task<UserChatViewModel> GetChatUserInfoAsync(Guid userId)
         {
 	        var user = await context.Users
-		        .Cast<User>()
 				.Include(u => u.UserImage)
 		        .Where(u => u.Id == userId)
 		        .Select(u => new UserChatViewModel
@@ -148,7 +147,8 @@ namespace LoadVantage.Core.Services
 			        FullName = u.FullName,
 			        ProfilePictureUrl = u.UserImage.ImageUrl,
 			        PhoneNumber = u.PhoneNumber,
-			        Company = u.CompanyName
+			        Company = u.CompanyName,
+					Position = u.Position
 		        })
 		        .AsNoTracking()
 		        .FirstOrDefaultAsync();
