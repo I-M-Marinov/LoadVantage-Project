@@ -81,17 +81,22 @@ namespace LoadVantage.Controllers
                 TempData.SetSuccessMessage(ProfileUpdatedSuccessfully);
                 return View(updatedModel);
             }
-			catch (Exception ex) when (ex is InvalidDataException || ex is InvalidOperationException)
+			catch (Exception ex) when (ex is InvalidDataException || ex is InvalidOperationException || ex is ArgumentException)
 			{
 				TempData.SetActiveTab(ProfileEditActiveTab);
 
-				if (ex is InvalidDataException)
+				if (ex is InvalidDataException) // Invalid username
 				{
-					ModelState.AddModelError("username", ex.Message); // Invalid username
+					ModelState.AddModelError("username", ex.Message); 
 				}
-				else if (ex is InvalidOperationException)
+				else if (ex is InvalidOperationException) // Invalid email
 				{
-					ModelState.AddModelError("email", ex.Message); // Invalid email
+					ModelState.AddModelError("email", ex.Message); 
+				}
+				else if (ex is ArgumentException) // Invalid user type 
+				{
+					TempData.SetErrorMessage(ex.Message); // message bubbling up from the GetLoadCountsForUserAsync method in the loadBoardService
+					return View(model);
 				}
 
 				return View(model);
@@ -237,7 +242,16 @@ namespace LoadVantage.Controllers
 
 		private async Task GetLoadCounts(BaseUser user)
 		{
-			var loadCounts = await loadBoardService.GetLoadCountsForUserAsync(user.Id, user.Position);
+			var loadCounts = new Dictionary<string, Dictionary<LoadStatus, int>>();
+
+			try
+			{
+				loadCounts = await loadBoardService.GetLoadCountsForUserAsync(user.Id, user.Position);
+			}
+			catch (ArgumentException e)
+			{
+				throw new ArgumentException(e.Message);
+			}
 
 			if (user is Broker)
 			{
