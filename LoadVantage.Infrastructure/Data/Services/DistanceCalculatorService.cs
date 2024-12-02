@@ -14,15 +14,13 @@ namespace LoadVantage.Infrastructure.Data.Services
         private readonly string _apiKey;
         private readonly HttpClient client = new HttpClient();
         private readonly IGeocodeService geocodeService;
-        private readonly ILogger<DistanceCalculatorService> logger;
         private readonly ICountryStateCityService countryStateCityService;
 
 
-        public DistanceCalculatorService(IConfiguration configuration, ICountryStateCityService _countryStateCityService, IGeocodeService geocodeService, ILogger<DistanceCalculatorService> _logger)
+        public DistanceCalculatorService(IConfiguration configuration, ICountryStateCityService _countryStateCityService, IGeocodeService geocodeService)
         {
             _apiKey = configuration["ApiKeys:OpenRouteService"];
             this.geocodeService = geocodeService;
-            this.logger = _logger;
             this.countryStateCityService = _countryStateCityService;
         }
 
@@ -77,10 +75,9 @@ namespace LoadVantage.Infrastructure.Data.Services
 
                 return await GetDistanceAsync(originLat, originLon, destLat, destLon);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                logger.LogError(ErrorRetrievingCoordinates);
-                throw;
+                throw new Exception(ErrorRetrievingCoordinates);
             }
 
         }
