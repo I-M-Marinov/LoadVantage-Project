@@ -292,6 +292,31 @@ namespace LoadVantage.Core.Services
 	        return await userManager.AddClaimsAsync(user, claims);
         }
 
-	}
+        public async Task<int> GetUserCountAsync()
+        {
+            return await context.Users.CountAsync();
+        }
+
+        public async Task<int> GetDispatcherCountAsync()
+        {
+            return await context.Users.CountAsync(user => user.Position == nameof(Dispatcher));
+        }
+
+        public async Task<int> GetBrokerCountAsync()
+        {
+            return await context.Users.CountAsync(user => user.Position == nameof(Broker));
+        }
+
+        public async Task<IEnumerable<BaseUser>> GetAllUsersFromACompany()
+        {
+			var usersWithCompanyName = await context.Users
+                .Where(user => !string.IsNullOrEmpty(user.CompanyName))
+                .ToListAsync();
+
+            return usersWithCompanyName;
+        }
+
+
+    }
 
 }

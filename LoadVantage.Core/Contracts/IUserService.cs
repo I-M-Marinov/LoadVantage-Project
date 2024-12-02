@@ -57,11 +57,38 @@ namespace LoadVantage.Core.Contracts
 		/// Retrieves the user image url string by user Id
 		/// </summary>
 		Task<string> GetUserImageUrlAsync(Guid userId);
-		Task<Guid> GetOrCreateDefaultImageAsync();
-		Task<BaseUser> FindUserByUsernameAsync(string username);
-		Task<IdentityResult> CreateUserAsync(BaseUser user, string password);
-		Task<IdentityResult> AssignUserRoleAsync(BaseUser user, string role);
-
+        /// <summary>
+        /// Retrieves the default user image url string or if it does not exist it creates it first 
+        /// </summary>
+        Task<Guid> GetOrCreateDefaultImageAsync();
+        /// <summary>
+        /// Find a user by his username and returns it, or null if it's not found 
+        /// </summary>
+        Task<BaseUser> FindUserByUsernameAsync(string username);
+        /// <summary>
+        /// Creates a user in the DB. 
+        /// </summary>
+        Task<IdentityResult> CreateUserAsync(BaseUser user, string password);
+        /// <summary>
+        /// Checks if a user is already in a role and if not it assigns him the role 
+        /// </summary>
+        Task<IdentityResult> AssignUserRoleAsync(BaseUser user, string role);
+        /// <summary>
+        /// Retrieve the total user count 
+        /// </summary>
+        Task<int> GetUserCountAsync();
+        /// <summary>
+        /// Retrieve the total Dispatcher count
+        /// </summary>
+        Task<int> GetDispatcherCountAsync();
+        /// <summary>
+        /// Retrieve the total Broker count
+        /// </summary>
+        Task<int> GetBrokerCountAsync();
+        /// <summary>
+        /// Retrieve the all current users that have a company name added to their account as a list of BaseUser
+        /// </summary>
+        Task<IEnumerable<BaseUser>> GetAllUsersFromACompany();
 
 
 
