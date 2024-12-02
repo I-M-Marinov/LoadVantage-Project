@@ -98,6 +98,7 @@ builder.Services.AddScoped<IAdminLoadBoardService, AdminLoadBoardService>();
 builder.Services.AddScoped<IAdminLoadStatusService, AdminLoadStatusService>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IAdminChatService, AdminChatService>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
 
 // =================================================== // 
@@ -150,16 +151,18 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-	if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
 	app.UseMigrationsEndPoint();
-    builder.Configuration.AddUserSecrets<Program>(); 
+    builder.Configuration.AddUserSecrets<Program>();
+    app.UseDeveloperExceptionPage();  // For development errors
+
 }
 else
 {
-	app.UseExceptionHandler("/Home/Error");
-	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-	app.UseHsts();
+	app.UseExceptionHandler("/Error/Error");  // General error handler
+	app.UseStatusCodePagesWithReExecute("/Error/{0}");  // Handles status code errors (404, 500, etc.)
+	app.UseHsts(); // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 }
 
 app.UseHttpsRedirection();
@@ -217,6 +220,13 @@ app.UseEndpoints(endpoints =>
 		name: "AdminChat",
 		areaName: "Admin",
 		pattern: "Admin/{controller=AdminChat}/{action=Index}/{id?}",
+		defaults: new { area = "Admin" }
+	);
+
+	endpoints.MapAreaControllerRoute(
+		name: "Statistics",
+		areaName: "Admin",
+		pattern: "Admin/{controller=Statistics}/{action=Index}/{id?}",
 		defaults: new { area = "Admin" }
 	);
 
