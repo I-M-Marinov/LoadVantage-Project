@@ -9,6 +9,9 @@ using LoadVantage.Core.Models.Image;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
+using static LoadVantage.Common.GeneralConstants.SuccessMessages;
+
 namespace LoadVantage.Core.Services
 {
 	public class ImageService : IImageService
@@ -65,7 +68,7 @@ namespace LoadVantage.Core.Services
             return new DeleteImageResult
             {
                 IsSuccess = result.StatusCode == HttpStatusCode.OK,
-                Message = result.StatusCode == HttpStatusCode.OK ? "Image deleted successfully." : "Image deletion failed."
+                Message = result.StatusCode == HttpStatusCode.OK ? ImageWasDeletedSuccessfully : ImageWasNotDeletedSuccessfully
             };
         }
 
