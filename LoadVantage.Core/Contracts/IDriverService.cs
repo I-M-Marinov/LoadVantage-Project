@@ -50,5 +50,11 @@ namespace LoadVantage.Core.Contracts
 		/// Retrieve all drivers from the DB that have a truck assigned 
 		/// </summary>
 		Task<List<Driver>> GetDriversWithTrucksAsync();
-	}
+
+        /// <summary>
+        /// Retrieve all drivers from the DB 
+        /// </summary>
+        Task<IEnumerable<Driver>> GetAllDrivers();
+
+    }
 }

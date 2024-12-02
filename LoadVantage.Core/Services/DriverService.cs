@@ -1,16 +1,14 @@
-﻿using CloudinaryDotNet.Actions;
-using LoadVantage.Common.Enums;
-using Microsoft.AspNetCore.Identity;
+﻿using LoadVantage.Common.Enums;
 using Microsoft.EntityFrameworkCore;
 
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Driver;
 using LoadVantage.Core.Models.Profile;
-using LoadVantage.Core.Models.Truck;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.Identity.Client;
-using System.Diagnostics;
+
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
+
 
 
 namespace LoadVantage.Core.Services
@@ -32,7 +30,7 @@ namespace LoadVantage.Core.Services
 		{
 			var user = await userService.GetUserByIdAsync(userId);
 
-			ProfileViewModel profile = await profileService.GetUserInformation(user!.Id);
+			ProfileViewModel? profile = await profileService.GetUserInformation(user!.Id);
 
 			var drivers = await context.Drivers
 				.Include(d => d.Truck)
@@ -54,7 +52,7 @@ namespace LoadVantage.Core.Services
 
 			var driverViewModel = new DriversViewModel()
 			{
-				Profile = profile,
+				Profile = profile!,
 				Drivers = drivers,
 				NewDriver = new DriverViewModel(),
 				EditedDriver = new DriverViewModel()
@@ -71,7 +69,7 @@ namespace LoadVantage.Core.Services
 			var driver = await context.Drivers
 				.Include(d => d.Truck)
 				.Where(d => d.IsFired == false)
-				.Where(d => d.DispatcherId == user.Id)
+				.Where(d => d.DispatcherId == user!.Id)
 				.Where(d => d.DriverId == id)
 				.FirstOrDefaultAsync();
 
@@ -119,7 +117,7 @@ namespace LoadVantage.Core.Services
 
 			if (driver == null)
 			{
-				throw new KeyNotFoundException("Driver not found.");
+				throw new KeyNotFoundException(DriverWasNotFound);
 			}
 
 			driver.FirstName = model.FirstName;
@@ -138,7 +136,7 @@ namespace LoadVantage.Core.Services
 
 			if (driver == null)
 			{
-				throw new KeyNotFoundException("Driver not found.");
+				throw new KeyNotFoundException(DriverWasNotFound);
 			}
 
 			driver.IsBusy = false; // set work status to false 
@@ -156,7 +154,7 @@ namespace LoadVantage.Core.Services
 				.Where(d => d.IsAvailable)
 				.Where(d => d.IsBusy == false)
 				.Where(d => d.IsFired == false)
-				.Where(d => d.DispatcherId == user.Id)
+				.Where(d => d.DispatcherId == user!.Id)
 				.OrderBy(d => d.FirstName)
 				.ToListAsync();
 
@@ -168,11 +166,11 @@ namespace LoadVantage.Core.Services
 
 			var load = await context.Loads
 				.Include(l => l.BookedLoad)
-				.Include(l => l.BookedLoad.Driver)
+				.Include(l => l.BookedLoad!.Driver)
 				.FirstOrDefaultAsync(l =>
 					l.Id == loadId &&
 					l.Status == LoadStatus.Booked &&
-					l.BookedLoad.DispatcherId == userId);
+					l.BookedLoad!.DispatcherId == userId);
 
 
 
@@ -189,7 +187,7 @@ namespace LoadVantage.Core.Services
 				return false;
 			}
 
-			if (load.BookedLoad.Driver != null) // if there is another driver assigned, change his work status IsBusy to false
+			if (load.BookedLoad!.Driver != null) // if there is another driver assigned, change his work status IsBusy to false
 			{
 				load.BookedLoad.Driver.IsBusy = false;
 				await context.SaveChangesAsync();
@@ -209,11 +207,20 @@ namespace LoadVantage.Core.Services
 			var user = await userService.GetCurrentUserAsync();
 
 			var driversWithTrucks = await context.Drivers
-				.Where(d => d.TruckId != null && d.DispatcherId == user.Id)
+				.Where(d => d.TruckId != null && d.DispatcherId == user!.Id)
 				.Where(d => d.IsBusy == false) // get only drivers with trucks and not working at the moment
 				.ToListAsync();
 
 			return driversWithTrucks;
 		}
-	}
+
+        public async Task<IEnumerable<Driver>> GetAllDrivers()
+        {
+            var allDrivers = await context.Drivers
+                .ToListAsync();
+
+			return allDrivers;
+        }
+
+    }
 }
