@@ -34,51 +34,70 @@
 </head>
 
 <header id="header" class="header">
-
-	<div class="">
-		<div class="logo-container">
-			<a class="logo d-flex align-items-left" sp-area="" asp-controller="Home" asp-action="Index">
-				<div id="triangle" class="d-sm-none d-md-block">
-					<svg id="Layer_1" data-name="Layer 1" version="1.1" viewBox="0 0 2000 2000">
-						<polygon
-							class="cls-1"
-							points="928 781 1021 951 784.5 1371.97 1618 1371.97 1530.32 1544 509 1539 928 781"
-						></polygon>
-						<polygon
-							class="cls-3"
-							points="1618 1371.97 784.5 1371.97 874.93 1211 1346 1211 923.1 456 1110.06 456 1618 1371.97"
-						></polygon>
-						<g id="Layer_2" data-name="Layer 2">
-							<polygon
-								class="cls-2"
-								points="418 1372.74 509 1539 928 781 1162.32 1211 1346 1211 923.1 456 418 1372.74"
-							></polygon>
-						</g>
-					</svg>
-				</div>
-				<span class="d-none d-lg-block">LoadVantage</span>
-			</a>
+	
+	<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+		<div class="loadVantage-icon">
+			<svg id="Layer_1" data-name="Layer 1" version="1.1" viewBox="0 0 2000 2000">
+				<polygon
+					class="cls-1"
+					points="928 781 1021 951 784.5 1371.97 1618 1371.97 1530.32 1544 509 1539 928 781"
+				></polygon>
+				<polygon
+					class="cls-3"
+					points="1618 1371.97 784.5 1371.97 874.93 1211 1346 1211 923.1 456 1110.06 456 1618 1371.97"
+				></polygon>
+				<g id="Layer_2" data-name="Layer 2">
+					<polygon
+						class="cls-2"
+						points="418 1372.74 509 1539 928 781 1162.32 1211 1346 1211 923.1 456 418 1372.74"
+					></polygon>
+				</g>
+			</svg>
 		</div>
-	</div><!-- End Logo -->
+	</a>
+		<span class="d-lg-block loadVantage">LoadVantage</span>
 
-	<div class="d-flex justify-content-center">
-		<ul class="navbar-nav d-flex justify-content-between mb-2 mb-lg-0" id="links-area-layout">
+	<nav class="d-flex justify-content-center flex-grow-1">
+		<ul class="nav ml-auto" id="links-area-layout">
+
 			<li class="nav-item">
-				<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><button class="fancy-project-button">Home</button></a>
+				<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+					<button class="fancy-project-button">Home</button>
+				</a>
 			</li>
-@* 			<li class="nav-item">
-				<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy"><button class="fancy-project-button">Privacy</button></a>
-			</li> *@
 
-			<partial name="_LoginPartial" />
+
+			<li class="nav-item">
+				<partial name="_LoginPartial" />
+			</li>
 		</ul>
-		
-	</div>
+	</nav>
+
+
+	<button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"><i class="bx bx-menu"></i></span>
+	</button>
+
+</header>
+
+
+<div class="collapse navbar-collapse" id="navbarNav">
+	<ul class="navbar-nav">
+		<li class="nav-item">
+			<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+				<button class="fancy-project-button">Home</button>
+			</a>
+		</li>
+
+		<li class="nav-item">
+			<partial name="_LoginPartial" />
+		</li>
+	</ul>
+</div>
 
 
 
 
-</header><!-- End Header -->
 <body style="background: rgb(131,58,180);background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(29,255,253,1) 100%, rgba(252,176,69,1) 100%);">
 
 
@@ -144,3 +163,5 @@
 </body>
 
 </html>
+
+
