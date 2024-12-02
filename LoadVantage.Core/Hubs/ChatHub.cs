@@ -24,6 +24,5 @@ namespace LoadVantage.Core.Hubs
 			await Clients.User(senderId).SendAsync("ReceiveMessage", chatMessageViewModel);
 			await Clients.User(receiverId).SendAsync("ReceiveMessage", chatMessageViewModel);
 		}
-
 	}
 }

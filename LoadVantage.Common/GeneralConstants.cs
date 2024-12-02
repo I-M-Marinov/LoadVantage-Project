@@ -1,4 +1,6 @@
 ﻿
+using static System.Net.Mime.MediaTypeNames;
+
 namespace LoadVantage.Common
 {
 	public static class GeneralConstants
@@ -48,7 +50,10 @@ namespace LoadVantage.Common
 
             public const string InvalidCityOrStateSpecified = "Invalid city or state specified.";
             public const string ErrorRetrievingCoordinates = "Error retrieving coordinates.";
-            public const string ErrorCreatingLoad = "There was an error creating the load. Please check your input and try again.";
+            public const string ErrorValidatingTheCityAndState = "Error validating the cities and states.";
+            public const string CityAndStateNotProvided = "City and state must be provided.";
+
+			public const string ErrorCreatingLoad = "There was an error creating the load. Please check your input and try again.";
             public const string ErrorUpdatingThisLoad = "An error occurred while trying to update the load.";
             public const string ErrorUpdatingLoad = "Load was not updated !";
 
@@ -58,9 +63,18 @@ namespace LoadVantage.Common
             public const string ErrorUnpostingLoad = "An error occured and the load was not unposted.";
             public const string ErrorUnpostingLoads = "An error occured and the loads were not unposted.";
 
-            public const string UnableToBookTheLoad = "Unable to book the load.It may no longer be available.";
+            public const string NoPermissionToCancel = "You do not have permission to cancel the carrier for this load.";
+            public const string FailedToCancelLoadCarrier = "Failed to cancel the carrier. Please try again.";
+            public const string FailedToCancelLoadBroker = "Unable to cancel the booking. Please check the load's status.";
+
+			public const string LoadNotInBookedStatus = "This load is not currently in status Booked.";
+			public const string UnableToBookTheLoad = "Unable to book the load.It may no longer be available.";
             public const string UnableToMarkLoadDelivered = "Unable to mark the load as delivered. Ensure the load is in the Booked status.";
             public const string ErrorDeliveringLoad = "There was an error and the load was not marked as delivered.";
+            public const string CannotMarkLoadDeliveredWithoutADriver = "There is no driver assigned on the load. You cannot deliver without a driver !";
+            public const string NoPermissionToSeeTheLoad = "You do not have permission to see this load.";
+            public const string LoadNotFound = "The load you are looking for was not found.";
+
 
 			// USER
 
@@ -75,6 +89,7 @@ namespace LoadVantage.Common
             public const string InvalidUserModelOrRoleAdded = "Invalid user model or invalid role selected!";
             public const string InvalidAdminModelOrRoleAdded = "Invalid administrator model or invalid role selected!";
             public const string FailedToUpdateTheUser = "Failed to update the user!";
+            public const string InvalidUserType = "User needs to be either a Dispatcher or a Broker.";
 
 
 			// SESSION
@@ -100,13 +115,18 @@ namespace LoadVantage.Common
 
 			// DRIVER
 
+			public const string DriverWasNotFound = "Driver was not found.";
 			public const string DriverWasNotCreated = "The driver was not created successfully.";
 			public const string DriverCreateError = "Error ! Driver was not created.";
 			public const string DriverDoesNotExist = "The driver you are looking for does not exist.";
 			public const string DriverWasNotAssignedToTheLoad = "Failed to assign the driver to the load. Please check the details and try again.";
 			public const string DriverCurrentlyUnderALoad = "Driver is currently doing a load and cannot leave the truck.";
 			public const string DriverAlreadyOnAnotherLoad = "Status change unsuccessful ! Driver might already be on another load.";
+			public const string ErrorRetrievingDrivers = "An error occurred while retrieving drivers.";
 
+			// IMAGE 
+
+			public const string ImageWasNotDeletedSuccessfully = "Image deletion failed.";
 
 
 
@@ -126,8 +146,11 @@ namespace LoadVantage.Common
             public const string LoadsUnpostedSuccessfully = "All loads were unposted successfully.";
             public const string LoadWasRestoredSuccessfully = "The load was restored successfully.";
             public const string LoadWasMovedBackToBookedSuccessfully = "The load's status was changed successfully back to Booked";
+            public const string LoadRepostedAgain = "The load is reposted again looking for a carrier.";
+            public const string LoadReturnedToBrokerSuccessfully = "Load was successfully returned to the broker.";
 
-            public const string LoadWasBookSuccessfully = "Load was booked successfully!";
+
+			public const string LoadWasBookSuccessfully = "Load was booked successfully!";
             public const string LoadWasDeliveredSuccessfully = "Load was delivered successfully!";
 
 			// PROFILE
@@ -150,9 +173,14 @@ namespace LoadVantage.Common
             public const string DriverWasUpdatedSuccessfully = "The driver was updated successfully.";
             public const string DriverWasFiredSuccessfully = "The driver was fired successfully.";
             public const string DriverWasAssignedToLoadSuccessfully = "Driver assigned to the load successfully!";
-        }
 
-        public static class ActiveTabs
+			// IMAGE 
+
+			public const string ImageWasDeletedSuccessfully = "Image deleted successfully.";
+
+		}
+
+		public static class ActiveTabs
         {
 
             // LOAD BOARD TABS 
@@ -202,7 +230,6 @@ namespace LoadVantage.Common
 
 	        public const string ErrorTryLater = "An unkown error occurred. Please try again later.";
 	        
-
 
 
         }

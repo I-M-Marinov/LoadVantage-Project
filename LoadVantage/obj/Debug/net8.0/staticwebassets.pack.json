@@ -2093,6 +2093,10 @@
       "PackagePath": "staticwebassets\\css\\home-page.css"
     },
     {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\not-found-page.css",
+      "PackagePath": "staticwebassets\\css\\not-found-page.css"
+    },
+    {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
@@ -2109,12 +2113,56 @@
       "PackagePath": "staticwebassets\\favicon2.ico"
     },
     {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\award1.png",
+      "PackagePath": "staticwebassets\\images\\award1.png"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\award2.png",
+      "PackagePath": "staticwebassets\\images\\award2.png"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\award3.png",
+      "PackagePath": "staticwebassets\\images\\award3.png"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\award4.png",
+      "PackagePath": "staticwebassets\\images\\award4.png"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\award5.png",
+      "PackagePath": "staticwebassets\\images\\award5.png"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\award6.png",
+      "PackagePath": "staticwebassets\\images\\award6.png"
+    },
+    {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\default-user-image.jpg",
       "PackagePath": "staticwebassets\\images\\default-user-image.jpg"
     },
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\default-user-image.png",
       "PackagePath": "staticwebassets\\images\\default-user-image.png"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\partner1.svg",
+      "PackagePath": "staticwebassets\\images\\partner1.svg"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\partner2.svg",
+      "PackagePath": "staticwebassets\\images\\partner2.svg"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\partner3.png",
+      "PackagePath": "staticwebassets\\images\\partner3.png"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\truck-background.gif",
+      "PackagePath": "staticwebassets\\images\\truck-background.gif"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\truck-background1.png",
+      "PackagePath": "staticwebassets\\images\\truck-background1.png"
     },
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\js\\site.js",

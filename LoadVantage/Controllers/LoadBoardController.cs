@@ -47,6 +47,7 @@ namespace LoadVantage.Controllers
 			return RedirectToAction(nameof(LoadBoard));
 		}
 
+		[HttpGet]
 		[DispatcherOnly]
 		public IActionResult GetPostedLoadsTable(Guid userId)
 		{

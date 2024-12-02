@@ -34,6 +34,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5TaGFyZWRcX0FkbWluU2lkZWJhclBhcnRpYWxWaWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/Chat/AdminChatWindow.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cQ2hhdFxBZG1pbkNoYXRXaW5kb3cuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/Chat/_ChatMessagesPartialView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cQ2hhdFxfQ2hhdE1lc3NhZ2VzUGFydGlhbFZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/Chat/_ChatUserInfoPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cQ2hhdFxfQ2hhdFVzZXJJbmZvUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/LoadBoardManagement/LoadBoardManagement.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cTG9hZEJvYXJkTWFuYWdlbWVudFxMb2FkQm9hcmRNYW5hZ2VtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -72,6 +84,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/Profile/_AdminProfileImagePartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cUHJvZmlsZVxfQWRtaW5Qcm9maWxlSW1hZ2VQYXJ0aWFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/Statistics/Statistics.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cU3RhdGlzdGljc1xTdGF0aXN0aWNzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Areas/Admin/Views/Admin/UserManagement/UserManagement.cshtml]
@@ -116,6 +132,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Driver/ShowDrivers.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJpdmVyXFNob3dEcml2ZXJzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Error/404.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXJyb3JcNDA0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Marinov/source/repos/LoadVantage-Project/LoadVantage/Views/Home/Index.cshtml]

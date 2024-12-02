@@ -19,6 +19,11 @@ body {
   color: #444444;
 }
 
+body {
+    position: relative;
+    min-height: 100vh; /* Ensure the body takes full height */
+}
+
 a {
   color: #4154f1;
   text-decoration: none;
@@ -391,16 +396,8 @@ h6 {
   padding-left: 20px;
   flex-direction: row;
   justify-content: center;
-  /* Toggle Sidebar Button */
-  /* Search Bar */
-}
 
-/*.header .toggle-sidebar-btn {
-  font-size: 32px;
-  padding-left: 10px;
-  cursor: pointer;
-  color: #012970;
-}*/
+}
 
 .header .search-bar {
   min-width: 360px;
@@ -462,20 +459,13 @@ h6 {
   color: #012970;
 }
 
-#links-area-layout {
-    gap: 2.5em;
-    flex-direction: row;
-    flex-shrink: 1;
-    margin-top: -4.90em;
-}
-
 
 /*--------------------------------------------------------------
 # Header Nav
 --------------------------------------------------------------*/
-    .header-nav ul {
-        list-style: none;
-    }
+.header-nav ul {
+    list-style: none;
+}
 
 .header-nav>ul {
   margin: 0;
@@ -801,7 +791,7 @@ h6 {
 #profile-nav span,
 #create-load-nav span,
 #chat-nav span,
-#truck-nav span,{
+#truck-nav span{
     font-weight: 700 !important;
 }
 
@@ -1313,10 +1303,14 @@ h6 {
 # Footer
 --------------------------------------------------------------*/
 .footer {
-  padding: 20px 0;
-  font-size: 14px;
-  transition: all 0.3s;
-  border-top: 1px solid #cddfff;
+    padding: 20px 0;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s;
+    border-top: 1px solid #cddfff;
+    position: absolute;
+    bottom: -1em;
+    right: 55em;
 }
 
 .footer .copyright {
