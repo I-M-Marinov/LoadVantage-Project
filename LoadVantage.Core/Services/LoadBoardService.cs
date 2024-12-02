@@ -1,14 +1,14 @@
-﻿using LoadVantage.Common.Enums;
-using LoadVantage.Core.Models.Profile;
-using LoadVantage.Infrastructure.Data.Models;
-using LoadVantage.Infrastructure.Data;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Load;
 using LoadVantage.Core.Models.LoadBoard;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
+using LoadVantage.Common.Enums;
+using LoadVantage.Infrastructure.Data.Models;
+using LoadVantage.Infrastructure.Data;
+
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Core.Services
 {
@@ -17,33 +17,19 @@ namespace LoadVantage.Core.Services
 	{
 		private readonly LoadVantageDbContext context;
 		public readonly IProfileService profileService;
+		public readonly ILoadHelperService loadHelperService;
 
 
 
-		public LoadBoardService(LoadVantageDbContext _context, IProfileService _profileService)
+		public LoadBoardService(LoadVantageDbContext _context, IProfileService _profileService, ILoadHelperService _loadHelperService)
 		{
 			context = _context;
 			profileService = _profileService;
+            loadHelperService = _loadHelperService;
 
-		}
+        }
 
-		public async Task<IEnumerable<Load>> GetAllLoads(Guid userId)
-		{
-			var allLoads = await context.Loads
-				.Include(l => l.Broker)
-				.Include(l => l.PostedLoad)
-				.Include(l => l.BookedLoad)
-				.ThenInclude(bl => bl.Driver)
-				.Include(l => l.BookedLoad)
-				.ThenInclude(bl => bl.Dispatcher)
-				.ThenInclude(d => d.Trucks)
-				.ThenInclude(t => t.Driver) 
-				.Include(l => l.DeliveredLoad)
-				.ToListAsync();
-
-
-			return allLoads;
-		}
+		
 
 		public async Task<IEnumerable<LoadViewModel>> GetAllPostedLoadsAsync(Guid userId)
 		{
@@ -72,7 +58,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task<LoadBoardViewModel> GetBrokerLoadBoardAsync(Guid userId)
 		{
-			var allLoads = await GetAllLoads(userId);
+			var allLoads = await loadHelperService.GetAllLoads();
 
 			var createdLoads = allLoads
 				.Where(load => load.Status == LoadStatus.Created)
@@ -203,7 +189,7 @@ namespace LoadVantage.Core.Services
 		public async Task<LoadBoardViewModel> GetDispatcherLoadBoardAsync(Guid userId)
 		{
 			
-			var allLoads = await GetAllLoads(userId);
+			var allLoads = await loadHelperService.GetAllLoads();
 
 			var createdLoads = new List<LoadViewModel>();
 
@@ -233,7 +219,7 @@ namespace LoadVantage.Core.Services
 
 			var bookedLoads = allLoads
 				.Where(load => load.Status == LoadStatus.Booked)
-				.Where(load => load.BookedLoad.DispatcherId == userId)
+				.Where(load => load.BookedLoad!.DispatcherId == userId)
 				.OrderBy(l => l.PickupTime)
 				.ThenByDescending(l => l.OriginCity)
 				.ThenByDescending(l => l.OriginState)
@@ -251,27 +237,27 @@ namespace LoadVantage.Core.Services
 					Weight = load.Weight,
 					Status = load.Status.ToString(),
 					BrokerId = load.BrokerId,
-					DispatcherId = load.BookedLoad.DispatcherId,
+					DispatcherId = load.BookedLoad!.DispatcherId,
 					DriverId = load.BookedLoad.DriverId
 				})
 				.ToList();
 
 			var deliveredLoads = allLoads
 				.Where(load => load.Status == LoadStatus.Delivered)
-				.Where(load => load.BookedLoad.DispatcherId == userId)
+				.Where(load => load.BookedLoad!.DispatcherId == userId)
 				.OrderBy(l => l.DeliveryTime)
 				.ThenByDescending(l => l.OriginCity)
 				.ThenByDescending(l => l.OriginState)
 				.Select(load => new DeliveredLoadViewModel
 				{
-					Id = load.DeliveredLoad.Id,
+					Id = load.DeliveredLoad!.Id,
 					LoadLocations = $"{load.OriginCity}, {load.OriginState} to {load.DestinationCity}, {load.DestinationState}",
 					Distance = load.Distance,
 					Price = load.Price,
 					DeliveredOn = load.DeliveredLoad.DeliveredDate,
 					BrokerName = load.Broker.FullName,
-					DispatcherName = load.BookedLoad.Dispatcher.FullName,
-					DriverName = load.BookedLoad.Driver.FullName
+					DispatcherName = load.BookedLoad!.Dispatcher.FullName,
+					DriverName = load.BookedLoad!.Driver!.FullName
 				})
 				.ToList();
 
@@ -286,11 +272,11 @@ namespace LoadVantage.Core.Services
 				PostedLoads = postedLoads,
 				BookedLoads = bookedLoads,
 				DeliveredLoads = deliveredLoads,
-				Profile = userProfile
+				Profile = userProfile!
 			};
 		}
 
-		public async Task<Dictionary<LoadStatus, int>> GetLoadCountsForBrokerAsync(Guid brokerId)
+		private async Task<Dictionary<LoadStatus, int>> GetLoadCountsForBrokerAsync(Guid brokerId)
 		{
 			var loadCounts = await context.Loads
 				.Where(load => load.BrokerId == brokerId)
@@ -306,7 +292,7 @@ namespace LoadVantage.Core.Services
 			return loadCounts;
 		}
 
-		public async Task<Dictionary<LoadStatus, int>> GetLoadCountsForDispatcherAsync(Guid dispatcherId)
+		private async Task<Dictionary<LoadStatus, int>> GetLoadCountsForDispatcherAsync(Guid dispatcherId)
 		{
 			var loadCounts = await context.Loads
 				.Include(l => l.BookedLoad)
@@ -343,10 +329,9 @@ namespace LoadVantage.Core.Services
 					{ nameof(Dispatcher), dispatcherLoadCounts }
 				};
 			}
-			else
-			{
-				throw new ArgumentException("Invalid user type");
-			}
+			
+			throw new ArgumentException(InvalidUserType);
+			
 		}
 	}
 }

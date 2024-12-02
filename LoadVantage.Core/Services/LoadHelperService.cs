@@ -21,7 +21,24 @@ namespace LoadVantage.Core.Services
 			context = _context;
 		}
 
-		public (string FormattedCity, string FormattedState) FormatLocation(string city, string state)
+        public async Task<IEnumerable<Load>> GetAllLoads()
+        {
+            var allLoads = await context.Loads
+                .Include(l => l.Broker)
+                .Include(l => l.PostedLoad)
+                .Include(l => l.BookedLoad)
+                .ThenInclude(bl => bl.Driver)
+                .Include(l => l.BookedLoad)
+                .ThenInclude(bl => bl.Dispatcher)
+                .ThenInclude(d => d.Trucks)
+                .ThenInclude(t => t.Driver)
+                .Include(l => l.DeliveredLoad)
+                .ToListAsync();
+
+
+            return allLoads;
+        }
+        public (string FormattedCity, string FormattedState) FormatLocation(string city, string state)
 		{
 			string formattedCity = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(city.Trim().ToLower());
 			string formattedState = state.Trim().ToUpper();
@@ -41,10 +58,10 @@ namespace LoadVantage.Core.Services
 
 			if (load.BrokerId == userId)
 			{
-				return true; // Brokers can always see their own loads 
+				return true; // If the user is  the Broker on the load return TRUE 
 			}
 
-			if (load.BookedLoad?.DispatcherId == userId)
+			if (load.BookedLoad!.DispatcherId == userId)
 			{
 				return load.Status == LoadStatus.Booked || load.Status == LoadStatus.Delivered;
 			}
@@ -65,7 +82,7 @@ namespace LoadVantage.Core.Services
 
 			return new BrokerInfoViewModel
 			{
-				BrokerName = load.Broker.FullName,
+				BrokerName = load!.Broker.FullName,
 				BrokerEmail = load.Broker.Email,
 				BrokerPhone = load.Broker.PhoneNumber
 			};

@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 namespace LoadVantage.Core.Contracts
 {
 	public interface ILoadHelperService
-	{
-		(string FormattedCity, string FormattedState) FormatLocation(string city, string state);
+    {
+        Task<IEnumerable<Load>> GetAllLoads();
+        (string FormattedCity, string FormattedState) FormatLocation(string city, string state);
 		Task<bool> CanUserViewLoadAsync(Guid userId, Guid loadId);
 		BrokerInfoViewModel CreateBrokerInfo(Load? load);
 		DispatcherInfoViewModel CreateDispatcherInfo(BookedLoad? bookedLoad);
