@@ -1,7 +1,5 @@
 ﻿using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Driver;
-using LoadVantage.Core.Models.Truck;
-using LoadVantage.Core.Services;
 using LoadVantage.Extensions;
 using LoadVantage.Filters;
 using Microsoft.AspNetCore.Authorization;
@@ -60,12 +58,12 @@ namespace LoadVantage.Controllers
 			{
 				await driverService.AddDriverAsync(driversViewModel.NewDriver, userId);
 				TempData.SetSuccessMessage(DriverWasAddedSuccessfully);
-				return RedirectToAction("ShowDrivers", new { userId = userId });
+				return RedirectToAction("ShowDrivers", new { userId });
 			}
 			catch (Exception ex)
 			{
 				TempData.SetErrorMessage(DriverCreateError);
-				return RedirectToAction("ShowDrivers", new { userId = userId });
+				return RedirectToAction("ShowDrivers", new { userId });
 			}
 		}
 
@@ -92,7 +90,7 @@ namespace LoadVantage.Controllers
 
 			if (!ModelState.IsValid)
 			{
-				return RedirectToAction("ShowDrivers", new { userId = userId });
+				return RedirectToAction("ShowDrivers", new { userId });
 			}
 
 			try
@@ -102,11 +100,10 @@ namespace LoadVantage.Controllers
 				await driverService.UpdateDriverAsync(editedDriver);
 				TempData.SetSuccessMessage(DriverWasUpdatedSuccessfully);
 
-				return RedirectToAction("ShowDrivers", new { userid = userId });
+				return RedirectToAction("ShowDrivers", new { userId });
 			}
 			catch (KeyNotFoundException ex)
 			{
-				TempData["ErrorMessage"] = ex.Message;
 				return NotFound(DriverDoesNotExist);
 			}
 			catch (Exception ex)
@@ -139,59 +136,45 @@ namespace LoadVantage.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAvailableDrivers()
 		{
-			try
+			var availableDrivers = await driverService.GetAvailableDriversAsync();
+			var driverList = availableDrivers.Select(d => new
 			{
-				var availableDrivers = await driverService.GetAvailableDriversAsync();
-				var driverList = availableDrivers.Select(d => new
-				{
-					Id = d.DriverId,
-					Name = d.FullName
-				});
+				Id = d.DriverId,
+				Name = d.FullName
+			});
 
-				return Json(driverList); 
-			}
-			catch (Exception ex)
-			{
-				return StatusCode(500, "An error occurred while retrieving drivers.");
-			}
+			return Json(driverList); 
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> GetDriversWithTrucks()
 		{
-			try
+			var drivers = await driverService.GetDriversWithTrucksAsync();
+			var driverList = drivers.Select(d => new
 			{
-				var drivers = await driverService.GetDriversWithTrucksAsync();
-				var driverList = drivers.Select(d => new
-				{
-					DriverId = d.DriverId, 
-					Name = d.FullName
-				});
+				DriverId = d.DriverId, 
+				Name = d.FullName
+			});
 
-				return Json(driverList);
-			}
-			catch (Exception ex)
-			{
-				return StatusCode(500, "An error occurred while retrieving drivers.");
-			}
+			return Json(driverList);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> AssignADriverToLoad(Guid loadId, Guid driverId)
 		{
-			Guid userId = User.GetUserId().Value; 
+			Guid userId = User.GetUserId()!.Value; 
 
 			bool result = await driverService.AssignADriverToLoadAsync(loadId, driverId, userId);
 
 			if (!result)
 			{
 				TempData.SetErrorMessage(DriverWasNotAssignedToTheLoad);
-				return RedirectToAction("LoadDetails", "Load", new {loadId = loadId}); 
+				return RedirectToAction("LoadDetails", "Load", new { loadId}); 
 			}
 
 			TempData.SetSuccessMessage(DriverWasAssignedToLoadSuccessfully);
-			return RedirectToAction("LoadDetails", "Load", new { loadId = loadId });
+			return RedirectToAction("LoadDetails", "Load", new { loadId });
 		}
 
 
