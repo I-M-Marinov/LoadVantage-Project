@@ -231,10 +231,18 @@
 							</form>
 						}
 
-						<a asp-action="ChatWithBrokerWindow" asp-controller="Chat" asp-route-brokerId="@Model.BrokerId" class="btn btn-outline-primary" id="chatWithBrokerBtn">
+						<a asp-area="Admin" asp-action="ChatWithBroker" asp-controller="AdminChat" asp-route-brokerId="@Model.BrokerId" class="btn btn-outline-primary" id="chatWithBrokerBtn">
 							<i class="bi bi-chat-text-fill"></i>
 							<span class="d-none d-sm-inline">PM the Broker</span>
 						</a>
+						
+						@if (Model.Status == LoadStatus.Booked.ToString() || Model.Status == LoadStatus.Delivered.ToString())
+						{
+							<a asp-area="Admin" asp-action="ChatWithDispatcher" asp-controller="AdminChat" asp-route-dispatcherId="@Model.DispatcherId" class="btn btn-outline-primary" id="chatWithDispatcherBtn">
+								<i class="bi bi-chat-text-fill"></i>
+								<span class="d-none d-sm-inline">PM the Dispatcher</span>
+							</a>
+						}
 
 						<form asp-area="Admin" asp-controller="AdminLoad" asp-action="GetLoadInfo" method="get" id="refreshLoadForm">
 							<input type="hidden" name="loadId" value="@Model.Id" />
