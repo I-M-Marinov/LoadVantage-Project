@@ -49,9 +49,8 @@
 
 		<li class="nav-item chat-nav">
 
-
-			<form method="get" action="@Url.Action("ChatWindow", "Chat")">
-
+			<form method="get" asp-area="Admin" asp-controller="AdminChat" asp-action="AdminChatWindow">
+				<input type="hidden" name="adminId" value="@Model.Id" />
 				<button type="submit" class="nav-link collapsed" id="chat-nav">
 					<i class="bx bxs-chat"></i>
 					<span>Chat</span>
@@ -63,9 +62,8 @@
 		
 		<li class="nav-item trucks-nav">
 
-
-			<form method="get" action="@Url.Action("ShowTrucks", "Truck")">
-				<input type="hidden" name="userId" value="@Model.Id" />
+			<form method="get" asp-area="Admin" asp-controller="Statistics" asp-action="Statistics">
+				<input type="hidden" name="adminId" value="@Model.Id" />
 				<button type="submit" class="nav-link collapsed" id="statistics">
 					<i class="bi bi-graph-up"></i>
 					<span>Statistics</span>
@@ -74,18 +72,6 @@
 
 		</li>
 
-		<li class="nav-item driver-nav">
-
-			<form method="get" action="@Url.Action("ShowDrivers", "Driver")">
-				<input type="hidden" name="userId" value="@Model.Id" />
-				<button type="submit" class="nav-link collapsed" id="driver-nav">
-					<i class="bi bi-person-fill"></i>
-					<span>Drivers</span>
-				</button>
-			</form>
-
-		</li>
-	
 
 		<!-- End Profile Page Nav -->
 
