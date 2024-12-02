@@ -9,8 +9,12 @@ header, .navbar, .sidebar {
     color: #ffffff !important;
 }
 
-button, input, select, textarea {
+input, select, textarea {
     color: #ffffff !important;
+}
+
+button #fancy-project-button {
+    color: rgba(189,62,189,0.9) !important;
 }
 
 a {
@@ -43,7 +47,8 @@ img {
 .logo img,
 .broker-info.card img,
 .nav-item.dropdown img,
-.img-fluid {
+.img-fluid,
+#not-found-page-image {
     box-shadow: none !important;
 }
 
