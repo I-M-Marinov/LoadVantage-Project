@@ -5,7 +5,7 @@ using LoadVantage.Extensions;
 using LoadVantage.Core.Contracts;
 using LoadVantage.Areas.Admin.Contracts;
 using LoadVantage.Areas.Admin.Models.Profile;
-
+using Microsoft.AspNetCore.Authorization;
 using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
@@ -13,6 +13,7 @@ using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Areas.Admin.Controllers
 {
+	[Authorize]
     [AdminOnly]
 	[Area("Admin")]
 

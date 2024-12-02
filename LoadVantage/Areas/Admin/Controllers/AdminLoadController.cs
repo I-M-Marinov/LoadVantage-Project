@@ -47,7 +47,7 @@ namespace LoadVantage.Areas.Admin.Controllers
 
 				if (loadToShow == null)
 				{
-					return NotFound("You do not have permission to see this load.");
+					return NotFound(NoPermissionToSeeTheLoad);
 				}
 
 				return View("~/Areas/Admin/Views/Admin/Load/LoadInformation.cshtml", loadToShow);
@@ -55,7 +55,7 @@ namespace LoadVantage.Areas.Admin.Controllers
 			catch (Exception e)
 			{
 				TempData.SetErrorMessage(e.Message);
-				return RedirectToAction("GetLoadInfo", new { loadId });
+				return RedirectToAction("GetLoadInfo", new { loadId }); 
 			}
 		}
 

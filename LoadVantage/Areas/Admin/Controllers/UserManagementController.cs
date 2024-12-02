@@ -1,20 +1,18 @@
-﻿using LoadVantage.Areas.Admin.Contracts;
-using LoadVantage.Areas.Admin.Models.User;
-using LoadVantage.Extensions;
-using LoadVantage.Filters;
-using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-using static LoadVantage.Common.GeneralConstants.UserImage;
-using static LoadVantage.Common.GeneralConstants.UserRoles;
+using LoadVantage.Extensions;
+using LoadVantage.Filters;
+using LoadVantage.Core.Contracts;
+using LoadVantage.Infrastructure.Data.Models;
+using LoadVantage.Areas.Admin.Contracts;
+using LoadVantage.Areas.Admin.Models.User;
+
+
 using static LoadVantage.Common.GeneralConstants.AdministratorManagement;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
-using LoadVantage.Core.Models.Truck;
-using static LoadVantage.Common.GeneralConstants;
-using LoadVantage.Core.Services;
-using LoadVantage.Core.Contracts;
+
 
 
 namespace LoadVantage.Areas.Admin.Controllers

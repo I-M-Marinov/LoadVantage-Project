@@ -149,7 +149,7 @@ namespace LoadVantage.Areas.Admin.Controllers
 		{
 			var currentUser = await userService.GetCurrentUserAsync();
 
-			var (unreadMessages, unreadCount) = await chatService.GetUnreadMessagesAsync(currentUser.Id);
+			var (unreadMessages, unreadCount) = await chatService.GetUnreadMessagesAsync(currentUser!.Id);
 
 			return Json(new { messages = unreadMessages, unreadCount = unreadCount });
 		}
