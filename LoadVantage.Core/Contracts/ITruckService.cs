@@ -1,4 +1,5 @@
 ﻿using LoadVantage.Core.Models.Truck;
+using LoadVantage.Infrastructure.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,5 +44,11 @@ namespace LoadVantage.Core.Contracts
 		/// Unassigns a driver from a truck. Resets both truck and driver as Available.
 		/// </summary>
 		Task<bool> ParkTruckAsync(Guid truckId, Guid driverId);
-	}
+
+        /// <summary>
+        /// Retrieves all trucks from the DB.
+        /// </summary>
+        Task<IEnumerable<Truck>> GetAllTrucksAsync();
+
+    }
 }

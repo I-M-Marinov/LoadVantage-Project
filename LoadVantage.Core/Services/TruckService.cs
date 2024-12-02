@@ -200,5 +200,13 @@ namespace LoadVantage.Core.Services
 			return result > 0; // true if one or more lines were affected 
 		}
 
+        public async Task<IEnumerable<Truck>> GetAllTrucksAsync()
+        {
+            var allTrucks = await context.Trucks
+                .ToListAsync();
+
+            return allTrucks;
+        }
+
 	}
 }
