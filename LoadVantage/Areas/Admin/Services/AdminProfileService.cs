@@ -1,15 +1,13 @@
-﻿using LoadVantage.Core.Contracts;
-using LoadVantage.Core.Models.Image;
-using LoadVantage.Core.Models.Profile;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+using LoadVantage.Core.Contracts;
 using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 using LoadVantage.Areas.Admin.Contracts;
-using Microsoft.EntityFrameworkCore;
-using static LoadVantage.Common.GeneralConstants.UserImage;
-using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using LoadVantage.Areas.Admin.Models.Profile;
+
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Areas.Admin.Services
 {
@@ -73,7 +71,7 @@ namespace LoadVantage.Areas.Admin.Services
 
             if (admin == null)
             {
-                throw new Exception("User not found.");
+                throw new Exception(UserNotFound);
             }
 
             if (admin.Id != Guid.Parse(model.Id) || admin.Position != model.Position) // If the user tries to change position or id from the hidden fields returns the same model 
@@ -179,16 +177,16 @@ namespace LoadVantage.Areas.Admin.Services
 
         private bool AreUserPropertiesEqual(BaseUser admin, AdminProfileViewModel model)
         {
-	        return admin.Id == Guid.Parse(model.Id) &&
-	               admin.Position == model.Position &&
-	               admin.FirstName == model.FirstName &&
-	               admin.LastName == model.LastName &&
-	               admin.UserName == model.Username &&
-	               admin.CompanyName == model.CompanyName &&
-	               admin.PhoneNumber == model.PhoneNumber &&
-	               admin.Email == model.Email;
+            return admin.Id == Guid.Parse(model.Id) &&
+                   admin.Position == model.Position &&
+                   admin.FirstName == model.FirstName &&
+                   admin.LastName == model.LastName &&
+                   admin.UserName == model.Username &&
+                   admin.CompanyName == model.CompanyName &&
+                   admin.PhoneNumber == model.PhoneNumber &&
+                   admin.Email == model.Email;
         }
-	}
+    }
 
 
 }
