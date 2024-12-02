@@ -1,0 +1,23 @@
+﻿@{
+	ViewBag.Title = "404 - Page Not Found";
+	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+}
+
+
+<body id="page-not-found-body">
+
+	
+<div id="page-not-found-text">
+	<h3 id="page-not-found-h3">We could not find the page you are looking for..</h3>
+	<p>Don't worry, that happens sometimes.</p> <br/>
+		<p>Let's go back to: </p>
+
+	<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+		<button class="fancy-project-button">Home</button>
+	</a></div>
+
+<div id="page-not-found-image-container">
+	<img src="/images/truck-background.gif" alt="404 Image" id="not-found-page-image">
+</div>
+
+</body>
