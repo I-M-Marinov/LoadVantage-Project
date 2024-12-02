@@ -33,7 +33,57 @@ namespace LoadVantage.Core.Services
             loadHelperService = _loadHelperService;
 	    }
 
-        public async Task<LoadViewModel> GetLoadByIdAsync(Guid loadId)
+	    public async Task<LoadViewModel?> GetLoadDetailsAsync(Guid loadId, Guid userId)
+	    {
+
+		    var userAllowedToView = await loadHelperService.CanUserViewLoadAsync(userId, loadId);
+
+			if (!userAllowedToView)
+		    {
+			    return null;
+		    }
+
+		    var load = await context.Loads
+			    .Include(l => l.BookedLoad)
+			    .ThenInclude(bl => bl!.Dispatcher)
+			    .Include(l => l.BookedLoad!.Driver)
+			    .ThenInclude(d => d!.Truck)
+			    .Include(l => l.DeliveredLoad)
+			    .FirstOrDefaultAsync(l => l.Id == loadId);
+
+		    if (load == null)
+		    {
+			    throw new Exception(LoadCouldNotBeRetrieved);
+		    }
+
+		    var dispatcherInfo = loadHelperService.CreateDispatcherInfo(load.BookedLoad);
+		    var driverInfo = loadHelperService.CreateDriverInfo(load.BookedLoad);
+		    var userProfile = await profileService.GetUserInformation(userId);
+
+		    var loadViewModel = new LoadViewModel
+		    {
+			    Id = load.Id,
+			    OriginCity = load.OriginCity,
+			    OriginState = load.OriginState,
+			    DestinationCity = load.DestinationCity,
+			    DestinationState = load.DestinationState,
+			    PickupTime = load.PickupTime,
+			    DeliveryTime = load.DeliveryTime,
+			    PostedPrice = load.Price,
+			    Distance = load.Distance,
+			    Weight = load.Weight,
+			    Status = load.Status.ToString(),
+			    BrokerId = load.BrokerId,
+			    DispatcherId = load.BookedLoad?.DispatcherId,
+			    DispatcherInfo = dispatcherInfo,
+			    DriverInfo = driverInfo,
+			    UserProfile = userProfile
+		    };
+
+		    return loadViewModel;
+
+	    }
+		public async Task<LoadViewModel> GetLoadByIdAsync(Guid loadId)
         {
             var load = await context.Loads.FindAsync(loadId);
 
@@ -62,35 +112,140 @@ namespace LoadVantage.Core.Services
         }
         public async Task<Guid> CreateLoadAsync(LoadViewModel model, Guid brokerId)
         {
-            double calculatedDistance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(model.OriginCity, model.OriginState, model.DestinationCity, model.DestinationState);
-	        
-            var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(model.OriginCity, model.OriginState);
-            var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(model.DestinationCity, model.DestinationState);
+	        double calculatedDistance = 0;
+
+			try
+	        {
+		        calculatedDistance =
+			        await distanceCalculatorService.GetDistanceBetweenCitiesAsync(model.OriginCity, model.OriginState,
+				        model.DestinationCity, model.DestinationState);
+			}
+	        catch (Exception e)
+	        {
+		        throw new Exception(e.Message);
+	        }
+
+	        var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(model.OriginCity, model.OriginState);
+	        var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(model.DestinationCity, model.DestinationState);
 
 
-            var load = new Load
-            {
-                Id = Guid.NewGuid(),
-                CreatedDate = DateTime.Now, 
-                OriginCity = originFormattedCity,
-                OriginState = originFormattedState,
-                DestinationCity = destinationFormattedCity,
-                DestinationState = destinationFormattedState,
-                PickupTime = model.PickupTime,
-                DeliveryTime = model.DeliveryTime,
-                Distance = calculatedDistance,
-                Price = model.PostedPrice,
-                Weight = model.Weight,
-                BrokerId = brokerId,
-                Status = LoadStatus.Created
-            };
+	        var load = new Load
+	        {
+		        Id = Guid.NewGuid(),
+		        CreatedDate = DateTime.Now,
+		        OriginCity = originFormattedCity,
+		        OriginState = originFormattedState,
+		        DestinationCity = destinationFormattedCity,
+		        DestinationState = destinationFormattedState,
+		        PickupTime = model.PickupTime,
+		        DeliveryTime = model.DeliveryTime,
+		        Distance = calculatedDistance,
+		        Price = model.PostedPrice,
+		        Weight = model.Weight,
+		        BrokerId = brokerId,
+		        Status = LoadStatus.Created
+	        };
 
-            await context.Loads.AddAsync(load);
-            await context.SaveChangesAsync();
+	        await context.Loads.AddAsync(load);
+	        await context.SaveChangesAsync();
 
-            return load.Id;
-        }
-        public async Task<bool> PostLoadAsync(Guid loadId)
+	        return load.Id;
+		}
+		public async Task<bool> EditLoadAsync(Guid loadId, LoadViewModel model)
+		{
+			var load = await context.Loads.FindAsync(loadId);
+
+			if (load == null)
+			{
+				return false; // Load not found
+			}
+
+			var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(model.OriginCity, model.OriginState);
+			var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(model.DestinationCity, model.DestinationState);
+
+			// If any changes in the Origin City or State
+			bool originChanged = load.OriginCity != originFormattedCity || load.OriginState != originFormattedState;
+			// If any changes in the Destination City or State
+			bool destinationChanged = load.DestinationCity != destinationFormattedCity || load.DestinationState != destinationFormattedState;
+
+			bool pickupTimeChanged = load.PickupTime != model.PickupTime;
+			bool deliveryTimeChanged = load.DeliveryTime != model.DeliveryTime;
+			bool priceChanged = load.Price != model.PostedPrice;
+			bool weightChanged = load.Weight != model.Weight;
+
+			bool changes = originChanged || destinationChanged ||
+							 pickupTimeChanged || deliveryTimeChanged ||
+							 priceChanged || weightChanged;
+
+			if (!changes)
+			{
+				return false;
+			}
+
+			// Update properties
+			load.Id = loadId;
+			load.OriginCity = originFormattedCity;
+			load.OriginState = originFormattedState;
+			load.DestinationCity = destinationFormattedCity;
+			load.DestinationState = destinationFormattedState;
+			load.PickupTime = model.PickupTime;
+			load.DeliveryTime = model.DeliveryTime;
+			load.Price = model.PostedPrice;
+			load.Weight = model.Weight;
+
+			if (originChanged || destinationChanged) // if either of the two is TRUE ----> Recalculate the distance 
+			{
+				try
+				{
+					var distance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(
+						model.OriginCity,
+						model.OriginState,
+						model.DestinationCity,
+						model.DestinationState
+					);
+
+					load.Distance = distance;
+
+					context.Loads.Update(load);
+					await context.SaveChangesAsync();
+
+					return true;
+				}
+				catch (Exception e)
+				{
+					throw new Exception(ErrorUpdatingThisLoad);
+				}
+			}
+
+			context.Loads.Update(load);
+			await context.SaveChangesAsync();
+
+			return true;
+		}
+		public async Task<bool> CancelLoadAsync(Guid loadId)
+		{
+			var load = await context.Loads
+				.Include(l => l.BookedLoad)
+				.FirstOrDefaultAsync(l => l.Id == loadId);
+
+			if (load == null)
+			{
+				return false;
+			}
+
+			if (load.Status == LoadStatus.Booked)
+			{
+				await CancelLoadBookingAsync(loadId, load.BrokerId); // Cancel the carrier first if the load is in Booked Status
+			}
+			// Update status to cancelled (soft delete)
+
+			load.Status = LoadStatus.Cancelled;
+			context.Loads.Update(load);
+			await context.SaveChangesAsync();
+
+			return true;
+		}
+		public async Task<bool> PostLoadAsync(Guid loadId)
         {
             var load = await context.Loads
                 .Include(l => l.PostedLoad)
@@ -165,77 +320,6 @@ namespace LoadVantage.Core.Services
 
 	        return true;
         }
-		public async Task<bool> EditLoadAsync(Guid loadId, LoadViewModel model)
-        {
-            var load = await context.Loads.FindAsync(loadId);
-
-            if (load == null)
-            {
-                return false; // Load not found
-            }
-
-            var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(model.OriginCity, model.OriginState);
-            var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(model.DestinationCity, model.DestinationState);
-
-            // If any changes in the Origin City or State
-            bool originChanged = load.OriginCity != originFormattedCity || load.OriginState != originFormattedState;
-            // If any changes in the Destination City or State
-            bool destinationChanged = load.DestinationCity != destinationFormattedCity || load.DestinationState != destinationFormattedState; 
-
-            bool pickupTimeChanged = load.PickupTime != model.PickupTime;
-            bool deliveryTimeChanged = load.DeliveryTime != model.DeliveryTime;
-            bool priceChanged = load.Price != model.PostedPrice;
-            bool weightChanged = load.Weight != model.Weight;
-
-            bool changes = originChanged || destinationChanged || 
-                             pickupTimeChanged || deliveryTimeChanged ||
-                             priceChanged || weightChanged;
-
-            if (!changes)
-            {
-	             return false;
-            }
-
-			// Update properties
-			load.Id = loadId;
-            load.OriginCity = originFormattedCity;
-            load.OriginState = originFormattedState;
-            load.DestinationCity = destinationFormattedCity;
-            load.DestinationState = destinationFormattedState;
-            load.PickupTime = model.PickupTime;
-            load.DeliveryTime = model.DeliveryTime;
-            load.Price = model.PostedPrice;
-            load.Weight = model.Weight;
-
-            if (originChanged || destinationChanged) // if either of the two is TRUE ----> Recalculate the distance 
-            {
-                try
-                {
-                    var distance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(
-                        model.OriginCity,
-                        model.OriginState,
-                        model.DestinationCity,
-                        model.DestinationState
-                    );
-
-                    load.Distance = distance;
-
-                    context.Loads.Update(load);
-                    await context.SaveChangesAsync();
-
-                    return true;
-                }
-				catch (Exception e)
-				{
-					throw new Exception(ErrorUpdatingThisLoad);
-				}
-			}
-
-            context.Loads.Update(load);
-            await context.SaveChangesAsync();
-
-            return true;
-        }
         public async Task<bool> BookLoadAsync(Guid loadId, Guid dispatcherId)
         {
             var load = await context.Loads
@@ -272,19 +356,14 @@ namespace LoadVantage.Core.Services
 		        .ThenInclude(bl => bl!.Driver)
 		        .FirstOrDefaultAsync(l => l.Id == loadId);
 
-	        if (load == null)
-	        {
-		        throw new Exception("Load not found.");
-	        }
-
 	        if (load.BrokerId != userId)
 	        {
-		        throw new UnauthorizedAccessException("You do not have permission to cancel the carrier for this load.");
+		        throw new UnauthorizedAccessException(NoPermissionToCancel);
 	        }
 
 	        if (load.BookedLoad == null || load.Status != LoadStatus.Booked)
 	        {
-		        throw new InvalidOperationException("This load is not currently booked.");
+		        throw new InvalidOperationException(LoadNotInBookedStatus);
 	        }
 
 	        if (load.BookedLoad.DriverId != null)
@@ -308,17 +387,17 @@ namespace LoadVantage.Core.Services
 
 	        if (load == null)
 	        {
-		        throw new Exception("Load not found.");
+		        throw new Exception(LoadNotFound);
 	        }
 
 	        if (load.BookedLoad?.DispatcherId != userId)
 	        {
-		        throw new UnauthorizedAccessException("You do not have permission to cancel this booking.");
+		        throw new UnauthorizedAccessException(NoPermissionToCancel);
 	        }
 
 	        if (load.BookedLoad == null || load.Status != LoadStatus.Booked)
 	        {
-		        throw new InvalidOperationException("This load is not currently booked.");
+		        throw new InvalidOperationException(LoadNotInBookedStatus);
 	        }
 
 	        if (load.BookedLoad.DriverId != null)
@@ -346,8 +425,8 @@ namespace LoadVantage.Core.Services
 
 	        if (!load.BookedLoad.DriverId.HasValue)
 	        {
-				return false;
-			}
+		        throw new ArgumentException(CannotMarkLoadDeliveredWithoutADriver);
+	        }
 
 	        var driver = await context.Drivers
 		        .Where(d => d.DriverId == load.BookedLoad.DriverId)
@@ -373,82 +452,7 @@ namespace LoadVantage.Core.Services
 	        
 	        return true;
         }
-		public async Task<bool> CancelLoadAsync(Guid loadId)
-        {
-	        var load = await context.Loads
-		        .Include(l => l.BookedLoad)
-		        .FirstOrDefaultAsync(l => l.Id == loadId);
-
-			if (load == null)
-            {
-                return false;
-            }
-
-            if (load.Status == LoadStatus.Booked)
-            {
-	            await CancelLoadBookingAsync(loadId, load.BrokerId); // Cancel the carrier first if the load is in Booked Status
-			}
-			// Update status to cancelled (soft delete)
-
-			load.Status = LoadStatus.Cancelled;
-            context.Loads.Update(load);
-            await context.SaveChangesAsync();
-
-            return true;
-        }
-        public async Task<LoadViewModel?> GetLoadDetailsAsync(Guid loadId, Guid userId)
-        {
-	        var userAllowedToView = await loadHelperService.CanUserViewLoadAsync(userId, loadId);
-
-			if (!userAllowedToView)
-	        {
-		        return null;
-	        }
-
-			var load = await context.Loads
-		        .Include(l => l.BookedLoad) 
-		        .ThenInclude(bl => bl!.Dispatcher)
-		        .Include(l => l.BookedLoad!.Driver) 
-		        .ThenInclude(d => d!.Truck) 
-		        .Include(l => l.DeliveredLoad) 
-		        .FirstOrDefaultAsync(l => l.Id == loadId);
-
-			if (load == null)
-            { 
-                throw new Exception(LoadCouldNotBeRetrieved);
-            }
-
-			var dispatcherInfo = loadHelperService.CreateDispatcherInfo(load.BookedLoad);
-			var driverInfo = loadHelperService.CreateDriverInfo(load.BookedLoad);
-            var userProfile = await profileService.GetUserInformation(userId);
-
-
-
-			var loadViewModel = new LoadViewModel
-            {
-                Id = load.Id,
-                OriginCity = load.OriginCity,
-                OriginState = load.OriginState,
-                DestinationCity = load.DestinationCity,
-                DestinationState = load.DestinationState,
-                PickupTime = load.PickupTime,
-                DeliveryTime = load.DeliveryTime,
-                PostedPrice = load.Price,
-                Distance = load.Distance,
-                Weight = load.Weight,
-                Status = load.Status.ToString(),
-                BrokerId = load.BrokerId,
-                DispatcherId = load.BookedLoad?.DispatcherId,
-                DispatcherInfo = dispatcherInfo,
-				DriverInfo = driverInfo,
-                UserProfile = userProfile
-			};
-
-            return loadViewModel;
-
-        }
-
-
+        
 	}
 
 }  
