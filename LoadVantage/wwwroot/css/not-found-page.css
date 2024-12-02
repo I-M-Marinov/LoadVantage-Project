@@ -1,0 +1,51 @@
+﻿
+#page-not-found-body {
+    font-family: Nunito;
+    font-weight: 700;
+    color: black;
+    background: black !important;
+    display: flex;
+    flex-direction:column;
+    
+}
+
+#not-found-page-image {
+    margin: 0 auto;
+    display: block;
+    margin-top: -11.5em;
+    max-width: 50%;
+    opacity: 0;
+    transform: scale(0);
+    animation: scaleImage 2s ease-in-out forwards, fadeInImage 2s ease-in-out forwards;
+}
+
+#page-not-found-h3,
+#page-not-found-text p {
+    color: white;
+}
+
+#page-not-found-text{
+    margin-top: 0.5em;
+}
+
+@keyframes scaleImage {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInImage {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
