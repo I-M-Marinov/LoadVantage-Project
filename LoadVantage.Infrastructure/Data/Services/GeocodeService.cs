@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
+
 namespace LoadVantage.Infrastructure.Data.Services
 {
     public class GeocodeService : IGeocodeService
@@ -17,9 +19,11 @@ namespace LoadVantage.Infrastructure.Data.Services
 
         public async Task<(double Latitude, double Longitude)> GetCoordinatesAsync(string city, string state)
         {
-            if (string.IsNullOrWhiteSpace(city) || string.IsNullOrWhiteSpace(state))
-                throw new ArgumentException("City and state must be provided.");
-
+	        if (string.IsNullOrWhiteSpace(city) || string.IsNullOrWhiteSpace(state))
+	        {
+		        throw new ArgumentException(CityAndStateNotProvided);
+			}
+	        
             var geocodeUrl = $"https://api.opencagedata.com/geocode/v1/json?q={Uri.EscapeDataString(city)},{Uri.EscapeDataString(state)}&key={_geocodeApiKey}";
 
             var response = await _httpClient.GetAsync(geocodeUrl);
@@ -34,8 +38,10 @@ namespace LoadVantage.Infrastructure.Data.Services
             var results = data["results"];
 
             if (results == null || !results.HasValues)
-                throw new Exception("No geocoding results found.");
-
+            {
+	            throw new Exception("No geocoding results found.");
+			}
+            
             double latitude = results[0]["geometry"]["lat"].Value<double>();
             double longitude = results[0]["geometry"]["lng"].Value<double>();
 
