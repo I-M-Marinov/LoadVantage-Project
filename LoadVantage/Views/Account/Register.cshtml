@@ -12,9 +12,7 @@
 <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
 	<div class="card mb-3" style="max-width: 600px; width: 100%;">
 
-		<!-- Adjust width -->
 		<div class="card-body p-4">
-			<!-- Add padding for better spacing -->
 			<div class="pt-4 pb-2">
 				<h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
 				<p class="text-center small">Enter your personal details to create account</p>
@@ -24,8 +22,9 @@
 				<div asp-validation-summary="ModelOnly" class="invalid-feedback" role="alert"></div>
 
 				<div class="row g-4">
-					<!-- Add gutter for spacing between columns -->
+
 					<!-- Left Column -->
+
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
 							<input asp-for="Email" class="form-control" autocomplete="email" aria-required="true" placeholder="name@example.com"/>
@@ -50,6 +49,7 @@
 					</div>
 
 					<!-- Right Column -->
+
 					<div class="col-md-6">
 						<div class="form-floating mb-3">
 							<input asp-for="Company" class="form-control" autocomplete="company" aria-required="true" placeholder="Company"/>
@@ -79,6 +79,7 @@
 				</div>
 
 				<!-- Hidden field for Role -->
+
 				<input type="hidden" asp-for="Role" value="User"/>
 
 				<button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
