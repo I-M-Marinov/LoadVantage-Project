@@ -296,104 +296,126 @@ $("#updateProfileForm").submit(function (event) {
 --------------------------------------------------------------------------------------*/
 
 
- const chatHubConnection = new signalR.HubConnectionBuilder()
-            .withUrl("/chatHub")
-            .build();
+if (window.isUserAuthorized === "true") {
 
-        chatHubConnection.start().then(() => {
-            console.log("SignalR ChatHub connection initialized.");
+    const chatHubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/chatHub")
+        .build();
 
-            chatHubConnection.on("ReceiveMessage", function (chatMessage) {
-                displayMessage(chatMessage);
-            });
+    chatHubConnection.start().then(() => {
+        console.log("SignalR ChatHub connection initialized.");
 
-       
-            document.querySelector("form").addEventListener("submit", function (event) {
+        // Check if the "chat-messages-container" exists
+        const messageContainer = document.getElementById("chat-messages-container");
+        if (!messageContainer) {
+            console.warn("Chat messages container not found. Skipping message handling.");
+            return;
+        }
+
+        // Handle incoming messages
+        chatHubConnection.on("ReceiveMessage", function (chatMessage) {
+            displayMessage(chatMessage);
+        });
+
+        // Attach submit event listener if the form exists
+        const form = document.querySelector("form");
+        if (form) {
+            form.addEventListener("submit", function (event) {
                 event.preventDefault();
 
-                const messageContent = document.querySelector("input[name='messageContent']").value;
-                const receiverId = document.querySelector("input[name='receiverId']").value;
-                const senderId = document.getElementById("senderId").value;
+                const messageContentInput = document.querySelector("input[name='messageContent']");
+                const receiverIdInput = document.querySelector("input[name='receiverId']");
+                const senderIdElement = document.getElementById("senderId");
 
-                chatHubConnection.invoke("SendMessage", senderId, receiverId, messageContent)
-                    .then(() => {
-                        console.log("Message sent successfully.");
+                if (messageContentInput && receiverIdInput && senderIdElement) {
+                    const messageContent = messageContentInput.value;
+                    const receiverId = receiverIdInput.value;
+                    const senderId = senderIdElement.value;
 
-                        document.querySelector("input[name='messageContent']").value = "";
-                    })
-                    .catch(err => {
-                        console.error("Error sending message: " + err);
-                    });
-            });
-
-             const hasChats = document.getElementById("chat-messages-container") !== null;
-
-    if (hasChats) {
-
-            document.querySelector('#chat-messages-container').addEventListener('click', function (e) {
-                const messageElement = e.target.closest('.chat-message');
-                if (messageElement && messageElement.classList.contains('received')) {
-                    const senderId = messageElement.getAttribute('data-sender-id');
-                    const receiverId = messageElement.getAttribute('data-receiver-id');
-
-                    markMessagesAsRead(senderId, receiverId);
-
-                    messageElement.classList.add('read');
+                    chatHubConnection.invoke("SendMessage", senderId, receiverId, messageContent)
+                        .then(() => {
+                            console.log("Message sent successfully.");
+                            messageContentInput.value = "";
+                        })
+                        .catch(err => {
+                            console.error("Error sending message: " + err);
+                        });
+                } else {
+                    console.error("Form inputs are missing.");
                 }
             });
-        };
-
-        // Sanitize the message
-        function sanitizeMessage(message) {
-            const element = document.createElement('div');
-            element.innerText = message;
-            return element.innerHTML;
+        } else {
+            console.warn("Form element not found. Skipping form submission handling.");
         }
 
-        // Display the message
-        function displayMessage(chatMessage) {
-            const messageContainer = document.getElementById("chat-messages-container");
+        // Mark messages as read when clicked
+        messageContainer.addEventListener('click', function (e) {
+            const messageElement = e.target.closest('.chat-message');
+            if (messageElement && messageElement.classList.contains('received')) {
+                const senderId = messageElement.getAttribute('data-sender-id');
+                const receiverId = messageElement.getAttribute('data-receiver-id');
 
-            const messageElement = document.createElement("div");
-            messageElement.classList.add("chat-message");
+                markMessagesAsRead(senderId, receiverId);
 
-            const senderId = document.getElementById("senderId").value;
-            if (chatMessage.senderId === senderId) {
-                messageElement.classList.add("sent");
-                messageElement.setAttribute("data-is-received", "false");
-            } else {
-                messageElement.classList.add("received");
-                messageElement.setAttribute("data-is-received", "true");
+                messageElement.classList.add('read');
             }
+        });
+    }).catch(err => {
+        console.error("Error initializing SignalR connection: " + err);
+    });
 
-            messageElement.setAttribute("data-message-id", chatMessage.id);
-            messageElement.setAttribute("data-sender-id", chatMessage.senderId);
-            messageElement.setAttribute("data-receiver-id", chatMessage.receiverId);
+    // Sanitize the message
+    function sanitizeMessage(message) {
+        const element = document.createElement('div');
+        element.innerText = message;
+        return element.innerHTML;
+    }
 
-            const messageContent = document.createElement("div");
-            messageContent.classList.add("message-content");
-            messageContent.innerHTML = sanitizeMessage(chatMessage.content);  // Sanitization
-
-            const messageTimestamp = document.createElement("div");
-            messageTimestamp.classList.add("message-timestamp");
-            messageTimestamp.innerText = new Date(chatMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-            messageElement.appendChild(messageContent);
-            messageElement.appendChild(messageTimestamp);
-
-            if (chatMessage.isRead) {
-                messageElement.classList.add("read");
-            }
-
-            messageContainer.appendChild(messageElement);
-
-            // Scroll to the bottom of the message container
-            if (messageContainer) {
-                messageContainer.scrollTop = messageContainer.scrollHeight;
-            }
+    // Display the message
+    function displayMessage(chatMessage) {
+        const messageContainer = document.getElementById("chat-messages-container");
+        if (!messageContainer) {
+            console.warn("Message container not found. Cannot display message.");
+            return;
         }
-    
-});
+
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("chat-message");
+
+        const senderId = document.getElementById("senderId")?.value;
+        if (chatMessage.senderId === senderId) {
+            messageElement.classList.add("sent");
+            messageElement.setAttribute("data-is-received", "false");
+        } else {
+            messageElement.classList.add("received");
+            messageElement.setAttribute("data-is-received", "true");
+        }
+
+        messageElement.setAttribute("data-message-id", chatMessage.id);
+        messageElement.setAttribute("data-sender-id", chatMessage.senderId);
+        messageElement.setAttribute("data-receiver-id", chatMessage.receiverId);
+
+        const messageContent = document.createElement("div");
+        messageContent.classList.add("message-content");
+        messageContent.innerHTML = sanitizeMessage(chatMessage.content); // Sanitization
+
+        const messageTimestamp = document.createElement("div");
+        messageTimestamp.classList.add("message-timestamp");
+        messageTimestamp.innerText = new Date(chatMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        messageElement.appendChild(messageContent);
+        messageElement.appendChild(messageTimestamp);
+
+        if (chatMessage.isRead) {
+            messageElement.classList.add("read");
+        }
+
+        messageContainer.appendChild(messageElement);
+
+        // Scroll to the bottom of the message container
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+};
 
 
 
