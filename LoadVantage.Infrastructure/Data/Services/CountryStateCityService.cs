@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
+
 namespace LoadVantage.Infrastructure.Data.Services
 {
     public class CountryStateCityService : ICountryStateCityService
@@ -41,21 +43,35 @@ namespace LoadVantage.Infrastructure.Data.Services
             using (var response = await httpClient.SendAsync(request))
             {
                 response.EnsureSuccessStatusCode();
+
                 return await response.Content.ReadAsStringAsync();
             }
         }
 
         public async Task<bool> ValidateCitiesAsync(string originCity, string originState, string destCity, string destState)
         {
-            bool isOriginValid = await IsValidCityStateAsync("US", originState, originCity);
-            bool isDestValid = await IsValidCityStateAsync("US", destState, destCity);
+	        try
+	        {
+		        bool isOriginValid = await IsValidCityStateAsync("US", originState, originCity);
+		        bool isDestValid = await IsValidCityStateAsync("US", destState, destCity);
 
-            return isOriginValid && isDestValid;
+		        return isOriginValid && isDestValid;
+			}
+	        catch (Exception e)
+	        {
+		        throw new Exception(e.Message);
+	        }
+
         }
 
         private async Task<bool> IsValidCityStateAsync(string country, string stateCode, string city)
         {
 	        var citiesJson = await GetCitiesAsync(country, stateCode);
+
+	        if (string.IsNullOrWhiteSpace(citiesJson))
+	        {
+		        throw new Exception(ErrorValidatingTheCityAndState);
+	        }
 
 	        var cities = JsonConvert.DeserializeObject<List<CityDto>>(citiesJson); 
 
