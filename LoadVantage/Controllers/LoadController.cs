@@ -49,10 +49,11 @@ namespace LoadVantage.Controllers
             {
                 var loadToShow = await loadService.GetLoadDetailsAsync(loadId,user.Id);
 
-                if (loadToShow == null)
+                if (loadToShow == null) // if for any of the reasons when a user is not allowed to see a load it returns null 
                 {
-                    return NotFound("You do not have permission to see this load.");
-                }
+	                TempData.SetErrorMessage(NoPermissionToSeeTheLoad);
+	                return RedirectToAction("LoadBoard","LoadBoard");
+				}
 
                 return View(loadToShow);
             }
@@ -176,15 +177,15 @@ namespace LoadVantage.Controllers
 
         public async Task<IActionResult> CancelLoad(Guid loadId)
         {
-            TempData["isEditing"] = false;
+	        if (loadId == Guid.Empty)
+	        {
+		        TempData.SetErrorMessage(LoadCouldNotBeRetrieved + " " + LoadIdInvalid);
+		        return View("LoadDetails");
+	        }
 
-            Guid? userId = User.GetUserId();
+	        TempData["isEditing"] = false;
 
-            if (loadId == Guid.Empty)
-            {
-                TempData.SetErrorMessage(LoadCouldNotBeRetrieved + " " + LoadIdInvalid);
-                return View("LoadDetails");
-            }
+	        Guid? userId = User.GetUserId();
 
             LoadViewModel load = await loadService.GetLoadByIdAsync(loadId);
 
@@ -371,9 +372,9 @@ namespace LoadVantage.Controllers
         {
 	        Guid? userId = User.GetUserId();
 
-			if (userId == null)
+			if (string.IsNullOrEmpty(userId.ToString()))
 			{
-				return Unauthorized();
+				return NotFound();
 			}
 
 			try
@@ -382,11 +383,11 @@ namespace LoadVantage.Controllers
 
 		        if (success)
 		        {
-			        TempData.SetSuccessMessage("The load is reposted again looking for a carrier."); 
+			        TempData.SetSuccessMessage(LoadRepostedAgain); 
 		        }
 		        else
 		        {
-                    TempData.SetErrorMessage("Failed to cancel the carrier. Please try again.");
+                    TempData.SetErrorMessage(FailedToCancelLoadCarrier);
 		        }
 	        }
 	        catch (Exception ex)
@@ -398,7 +399,8 @@ namespace LoadVantage.Controllers
         }
 
         [HttpPost]
-        [DispatcherOnly]
+        [ValidateAntiForgeryToken]
+		[DispatcherOnly]
         public async Task<IActionResult> ReturnLoadToBroker(Guid loadId)
         {
 	        Guid? userId = User.GetUserId();
@@ -407,12 +409,13 @@ namespace LoadVantage.Controllers
 
 	        if (success)
 	        {
-                TempData.SetSuccessMessage("Load was successfully returned to the broker.");
+                TempData.SetSuccessMessage(LoadReturnedToBrokerSuccessfully);
                 return RedirectToAction("LoadDetails", new { loadId });
 	        }
 
-			return NotFound("Unable to cancel the booking. Please check the load's status.");
-        }
+	        TempData.SetSuccessMessage(FailedToCancelLoadBroker);
+	        return RedirectToAction("LoadDetails", new { loadId });
+		}
 
 		[HttpPost]
         [ValidateAntiForgeryToken]
@@ -427,16 +430,21 @@ namespace LoadVantage.Controllers
 		        if (!success)
 		        {
 			        TempData.SetErrorMessage(UnableToMarkLoadDelivered);
-			        return RedirectToAction("LoadDetails", new { id = loadId });
+			        return RedirectToAction("LoadDetails", new {  loadId });
 		        }
 
 		        TempData.SetSuccessMessage(LoadWasDeliveredSuccessfully);
 		        return RedirectToAction("LoadBoard", "LoadBoard");
 	        }
-	        catch (Exception ex)
+	        catch (ArgumentException ex)
+	        {
+		        TempData.SetErrorMessage(ex.Message);
+		        return RedirectToAction("LoadDetails", new {  loadId });
+	        }
+			catch (Exception ex)
 	        {
                 TempData.SetErrorMessage(ErrorDeliveringLoad);
-		        return RedirectToAction("LoadDetails", new { id = loadId });
+		        return RedirectToAction("LoadDetails", new { loadId });
 	        }
         }
 	}
