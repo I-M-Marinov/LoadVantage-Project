@@ -3,53 +3,28 @@ main {
     padding: 20px;
     background: rgb(131, 58, 180);
     background: linear-gradient(90deg, rgba(131, 58, 180, 1) 0%, rgba(29, 255, 253, 1) 100%, rgba(252, 176, 69, 1) 100%);
+    font-family: Nunito;
+    box-shadow: 0 0 0 2px rgb(0, 148, 215), 8px 8px 0 0 rgb(146, 16, 234);
 }
 
-/* Truck Animation */
-.custom-truck-animation {
-    position: relative;
-    height: 200px;
-    margin: 40px 0;
-    overflow: hidden;
-}
-
-.custom-truck {
-    position: absolute;
-    left: -150px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 100px;
-    height: 50px;
-    background-image: url('truck-icon.png'); /* Replace with your truck image */
-    background-size: contain;
-    background-repeat: no-repeat;
-    animation: custom-drive 5s linear infinite;
-}
-
-@keyframes custom-drive {
-    0% {
-        left: -150px;
-    }
-
-    100% {
-        left: 100%;
-    }
-}
-
-/* Slogan Section */
-.custom-slogan {
+.custom-slogan,
+.custom-slogan2 {
     text-align: center;
     margin: 50px 0;
     color: white;
 }
 
-    .custom-slogan h1 {
-        font-size: 2rem;
-        font-weight: bold;
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    }
+.custom-slogan h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
 
-/* Dynamic Cards */
+.custom-slogan2 {
+    font-weight: 800 !important;
+    text-shadow: 0 26px 58px 0 rgba(0, 0, 0, .22), 0 5px 14px 0 rgba(0, 0, 0, .18) !important;
+}
+
 .custom-cards {
     display: flex;
     justify-content: space-around;
@@ -81,8 +56,10 @@ main {
 }
 
 .custom-card-front {
-    background-color: #fff;
+    background-color: #ffffff;
     color: #333;
+    border: 2px black solid;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4), 0px 7px 13px -3px rgba(0, 0, 0, 0.3), inset 0px -3px 0px rgba(0, 0, 0, 0.2);
 }
 
 .custom-card-back {
@@ -92,6 +69,7 @@ main {
     padding: 20px;
     font-size: 1rem;
 }
+
 
 .custom-card.flipped .custom-card-front {
     transform: rotateY(180deg);
@@ -104,11 +82,60 @@ main {
 .custom-card h3 {
     font-size: 1.5rem;
     font-weight: bold;
+    color: rgb(131, 58, 180);
     margin: 0;
 }
+.custom-card-front:nth-of-type(2n+1):hover {
+    transform: rotateX(5deg) rotateZ(10deg);
+    transition: transform 3s ease;
+    cursor: pointer;
+    color: ghostwhite;
+}
 
+.custom-card-front:nth-of-type(2n):hover {
+    transform: rotateX(15deg) rotateZ(5deg);
+    transition: transform 3s ease;
+    cursor: pointer;
+    color: ghostwhite;
+}
 
-/*TRUCK ANIMATION */
+.custom-card h3:hover {
+    
+}
+
+/****************************************************************************
+    TRUCK ANIMATION
+****************************************************************************/
+
+.custom-truck-animation {
+    position: relative;
+    height: 200px;
+    margin: 40px 0;
+    overflow: hidden;
+}
+
+.custom-truck {
+    position: absolute;
+    left: -150px;
+    top: 50%;
+    transform: translateY(-70%);
+    width: 100px;
+    height: 50px;
+    background-image: url('truck-icon.png'); /* Replace with your truck image */
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: custom-drive 2s linear infinite;
+}
+
+@keyframes custom-drive {
+    0% {
+        left: -250px;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
 
 .loader {
     width: fit-content;
@@ -122,10 +149,10 @@ main {
     width: fit-content;
     height: fit-content;
     position: absolute;
-    bottom: 25%;
+    bottom: 27%;
     right: -10%;
-    animation: roadAnimation 10s linear infinite !important;
-    z-index: 3000;
+    animation: roadAnimation 15s linear infinite !important;
+    z-index: 6000;
 }
 
 .cityBuildings2 {
@@ -133,8 +160,8 @@ main {
     height: fit-content;
     position: absolute;
     bottom: 25%;
-    right: -35%;
-    animation: roadAnimation 15s linear infinite !important;
+    right: -6%;
+    animation: roadAnimation 18s linear infinite !important;
 }
 
 .cityBuildings3 {
@@ -146,6 +173,27 @@ main {
     animation: roadAnimation 20s linear infinite !important;
 }
 
+.car1 {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    bottom: -2%;
+    right: -10%;
+    animation: roadAnimation 8s linear infinite !important;
+    z-index: 3002;
+}
+
+.car2 {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    bottom: 17%;
+    right: -10%;
+    animation: roadAnimation 12s linear infinite !important;
+    z-index: 3001;
+}
+
+
 .truckWrapper {
     width: 100em;
     height: 150px;
@@ -156,17 +204,15 @@ main {
     justify-content: flex-end;
     overflow-x: hidden;
 }
-/* truck upper body */
 .truckBody {
     width: 130px;
     height: fit-content;
     margin-bottom: 0.75em;
     position: absolute;
     left: 10%;
-
+    z-index: 5000;
     animation: motion 1s linear infinite;
 }
-/* truck suspension animation*/
 @keyframes motion {
     0% {
         transform: translateY(0px);
@@ -180,7 +226,6 @@ main {
         transform: translateY(0px);
     }
 }
-/* truck's tires */
 .truckTires {
     width: 130px;
     height: fit-content;
@@ -191,6 +236,7 @@ main {
     position: absolute;
     bottom: 0;
     left: 10%;
+    z-index: 5000;
 }
 
 .truckTires svg {
@@ -236,7 +282,8 @@ main {
     bottom: 0;
     right: 10%;
     height: 60px;
-    animation: roadAnimation 5s linear infinite;
+    z-index: 5001;
+    animation: roadAnimation 19s linear infinite;
 }
 
 @keyframes roadAnimation {
@@ -250,11 +297,362 @@ main {
 }
 
 
-/****************************************************************************/
-.navbar-toggler {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    color: black;
-    z-index: 5000;
+/****************************************************************************
+    NAVBAR TOGGLE
+****************************************************************************/
+
+custom-navbar-toggler {
+    position: relative;
+    width: 40px;
+    height: 30px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    z-index: 1050; /* Ensure it stays above other elements */
+}
+
+/* The individual lines of the hamburger icon */
+.custom-navbar-line {
+    width: 30px;
+    height: 4px;
+    background-color: #333; /* Change the color to whatever you prefer */
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for the button */
+.custom-navbar-toggler:hover .custom-navbar-line {
+    background-color: #ff6347; /* Change color on hover (optional) */
+}
+
+/* Styles for the transition effect when toggled */
+.custom-navbar-toggler.active .custom-navbar-line:nth-child(1) {
+    transform: translateY(10px) rotate(45deg);
+}
+
+.custom-navbar-toggler.active .custom-navbar-line:nth-child(2) {
+    opacity: 0;
+}
+
+.custom-navbar-toggler.active .custom-navbar-line:nth-child(3) {
+    transform: translateY(-10px) rotate(-45deg);
+}
+
+/****************************************************************************
+    MEET OUR PARTNERS SECTION 
+****************************************************************************/
+
+#meet-our-partners {
+    margin: 3em 3em 0 3em;
+    text-align: center;
+    padding: 50px 20px;
+    background: rgb(0,124,237);
+    background: radial-gradient(circle, rgba(0,124,237,1) 0%, rgba(148,233,221,1) 100%);
+    border-radius: 1em;
+    box-shadow: 0px 25px 80px rgba(0, 0, 0, 0.5);
+}
+
+.section-title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Container for the cards */
+.partners-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Individual Partner Card */
+.partner-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.partner-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Logo Styling */
+.partner-logo {
+    max-width: 100px;
+    max-height: 100px;
+    margin: 0 auto 20px;
+    object-fit: contain;
+}
+
+/* Description Styling */
+.partner-description {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .partners-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .partner-card {
+        width: 90%; /* Full width on smaller screens */
+    }
+}
+
+
+/****************************************************************************
+   AWARDS
+****************************************************************************/
+
+
+.awards-container {
+    font-family: Nunito;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 5em;
+    box-shadow: 0px 25px 80px rgba(0, 0, 0, 0.5);
+}
+
+.awards-left,
+.awards-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.awards-main-content {
+
+    flex: 1;
+    text-align: center;
+    padding: 0 0.15em;
+    margin: 0.5em;
+    background: rgba(148,233,221,1);
+    border: 2px black solid;
+    border-radius: 0.5em;
+    
+}
+
+.award-badge {
+    width: 100px;
+    height: 100px;
+    border: 2px rgb(131, 58, 180) solid;
+    border-radius: 5%;
+    padding: 0.5em;
+    object-fit: contain;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 9px 30px rgba(255, 149, 5, 0.1);
+}
+
+.award-badge:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.awards-main-content h2 {
+    font-family: Nunito;
+    font-weight: 550;
+    font-size: 35px;
+    margin-bottom: 10px;
+    color: #0f2070;
+}
+
+.awards-main-content p {
+    font-family: Nunito;
+    font-weight: 550;
+    font-size: 18px;
+    color: #555;
+}
+
+.awards-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    padding: 20px;
+    gap: 20px;
+}
+
+.awards-left,
+.awards-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.awards-main-content {
+    text-align: center;
+    flex: 1; /* Expands to fill space between left and right */
+    padding: 0 20px;
+}
+
+.award-badge {
+    width: 100px;
+    height: 100px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .award-badge:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .awards-container {
+        flex-direction: column; /* Stacks everything vertically */
+        align-items: center;
+    }
+
+    .awards-left,
+    .awards-right {
+        flex-direction: row; /* Make badges horizontal */
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .awards-main-content {
+        margin: 20px 0;
+    }
+
+    .award-badge {
+        width: 80px; /* Adjust badge size for smaller screens */
+    }
+}
+
+
+
+
+
+
+
+#site-footer {
+    font-family: Nunito;
+    background-color: rgba(0,0,0,0.22);
+    border-radius: 0.5em;
+    color: #fff;
+    padding: 40px 20px;
+    font-family: 'Nunito', sans-serif;
+    line-height: 1.25;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+    #site-footer:hover {
+        box-shadow: 0px 9px 30px rgba(255, 149, 5, 0.3);
+        transform: scale(1.02);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+.footer-container {
+    font-family: Nunito;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-column {
+    flex: 1 1 calc(25% - 20px);
+    min-width: 200px;
+}
+
+.footer-column h3 {
+    font-family: Nunito;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: #0ef804;
+}
+
+.footer-column p,
+.footer-column ul {
+    font-family: Nunito;
+    margin: 0;
+    font-size: 0.85em;
+}
+
+.footer-column ul {
+    font-family: Nunito;
+    list-style: none;
+    padding: 0;
+}
+
+.links-footer-column-3{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+.footer-column ul li a {
+color: #fff;
+text-decoration: none;
+}
+
+.footer-column ul li a:hover {
+    text-decoration: underline;
+}
+
+.social-icons {
+    display: flex;
+    gap: 0.5em;
+}
+
+.social-icons a {
+color: #fff;
+font-size: 2.5em;
+transition: color 0.5s;
+}
+
+.social-icons a:hover {
+    color: rgb(131, 58, 180);
+}
+
+.footer-bottom {
+    font-family: Nunito;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.8em;
+    border-top: 1px solid #444;
+    padding-top: 10px;
+    color: #aaa;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-column {
+        flex: 1 1 100%;
+    }
 }
