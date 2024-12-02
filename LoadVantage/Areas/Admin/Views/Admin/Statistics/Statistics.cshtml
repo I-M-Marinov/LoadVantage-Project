@@ -1,0 +1,266 @@
+﻿@using LoadVantage.Areas.Admin.Models.Statistics
+@using LoadVantage.Common.Enums
+@model AllStatsViewModel
+
+@{
+
+    Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
+    ViewData["Title"] = "Statistics";
+
+    Model.LoadCountsByStatus.TryGetValue(LoadStatus.Created.ToString(), out int createdLoads);
+    Model.LoadCountsByStatus.TryGetValue(LoadStatus.Available.ToString(), out int postedLoads);
+    Model.LoadCountsByStatus.TryGetValue(LoadStatus.Booked.ToString(), out int bookedLoads);
+    Model.LoadCountsByStatus.TryGetValue(LoadStatus.Delivered.ToString(), out int deliveredLoads);
+    Model.LoadCountsByStatus.TryGetValue(LoadStatus.Cancelled.ToString(), out int cancelledLoads);
+
+}
+
+
+<!-- ======= Header ======= -->
+@await Html.PartialAsync("~/Areas/Admin/Views/AdminShared/_AdminHeaderPartialView.cshtml", Model.Profile)
+
+<!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+@await Html.PartialAsync("~/Areas/Admin/Views/AdminShared/_AdminSidebarPartialView.cshtml", Model.Profile)
+
+<!-- End Sidebar -->
+
+
+<main id="main" class="main-statistics">
+
+	<div class="pagetitle">
+		<h1>Statistics</h1>
+
+	</div><!-- End Page Title -->
+
+	
+	<section class="section">
+
+		<section class="row">
+			<div class="col-xl-12">
+				<!-- Flippable Card -->
+
+				<div class="card-container-statistics">
+					<div class="card-flip-statistics">
+						<!-- Front Side -->
+						<div class="card-front-statistics">
+							<div class="card-body card-statistics pt-4 d-flex flex-column align-items-center" id="totalLoadsStatistics">
+								<h5 class="card-title-statistics">Total Loads</h5>
+								<h3> <i class="bx bxs-package"></i> @Model.LoadCountsByStatus.Values.Sum()</h3>
+								<p>Click to show by Status </p>
+							</div>
+						</div>
+						<!-- Back Side -->
+						<div class="card-back-statistics">
+							<div class="card-body card-statistics">
+								<h5 class="card-title">Loads by Status</h5>
+								<div class="pieChart" id="pieChart"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="card-container-statistics">
+					<div class="card-flip-statistics">
+						<!-- Front Side -->
+						<div class="card-front-statistics">
+							<div class="card-body card-statistics pt-4 d-flex flex-column align-items-center" id="totalLoadsStatistics">
+								<h5 class="card-title-statistics">Total Users</h5>
+								<h3> <i class="bx bxs-package"></i> @Model.LoadCountsByStatus.Values.Sum()</h3>
+								<p>Click to show by Position </p>
+							</div>
+						</div>
+						<!-- Back Side -->
+						<div class="card-back-statistics">
+							<div class="card-body card-statistics">
+								<h5 class="card-title">Loads by Status</h5>
+								<div class="pieChart" id="pieChart2"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="card-container-statistics">
+					<div class="card-flip-statistics">
+						<!-- Front Side -->
+						<div class="card-front-statistics">
+							<div class="card-body card-statistics pt-4 d-flex flex-column align-items-center" id="totalLoadsStatistics">
+								<h5 class="card-title-statistics">Total Users</h5>
+								<h3> <i class="bx bxs-package"></i> @Model.LoadCountsByStatus.Values.Sum()</h3>
+								<p>Click to show by Position </p>
+							</div>
+						</div>
+						<!-- Back Side -->
+						<div class="card-back-statistics">
+							<div class="card-body card-statistics">
+								<h5 class="card-title">Loads by Status</h5>
+								<div class="pieChart" id="pieChart3"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</section>
+	</section>
+
+
+
+</main>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
+<script>
+
+    /*--------------------------
+    # TOGGLE SIDE BAR
+    --------------------------*/
+
+    if (document.querySelector('.toggle-sidebar-btn')) {
+
+        document.querySelector('.toggle-sidebar-btn').addEventListener('click', function (e) {
+
+            document.body.classList.toggle('toggle-sidebar');
+        });
+    }
+
+    /*-------------------------------------------------------------------------------------
+    # PIE CHART 1
+    --------------------------------------------------------------------------------------*/
+    
+    document.addEventListener("DOMContentLoaded", () => {
+        var options = {
+            chart: {
+                height: 330,
+                type: 'pie',
+                toolbar: { show: true },
+                fontFamily: 'Nunito, sans-serif', // Specify the font family here
+                fontSize: '11px'
+            },
+            series: [@createdLoads, @postedLoads, @bookedLoads, @deliveredLoads, @cancelledLoads],
+            labels: ['Created', 'Posted', 'Booked', 'Delivered', 'Cancelled'],
+            theme: {
+                mode: 'light', // Light or dark mode
+                palette: 'palette2', // Predefined color palettes
+                fontFamily: 'Nunito, sans-serif' // Global font for the chart
+            },
+            tooltip: {
+                style: {
+                    fontFamily: 'Nunito, sans-serif', // Font for tooltips
+                    fontSize: '11px'
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#pieChart"), options);
+        chart.render();
+    });
+
+    /*-------------------------------------------------------------------------------------
+    # PIE CHART 2
+    --------------------------------------------------------------------------------------*/
+
+    document.addEventListener("DOMContentLoaded", () => {
+        var options = {
+            chart: {
+                height: 330,
+                type: 'pie',
+                toolbar: { show: true },
+                fontFamily: 'Nunito, sans-serif', // Specify the font family here
+                fontSize: '11px'
+            },
+            series: [@createdLoads, @postedLoads, @bookedLoads, @deliveredLoads, @cancelledLoads],
+            labels: ['Created', 'Posted', 'Booked', 'Delivered', 'Cancelled'],
+            theme: {
+                mode: 'light', // Light or dark mode
+                palette: 'palette2', // Predefined color palettes
+                fontFamily: 'Nunito, sans-serif', // Global font for the chart
+                fontSize: '10px'
+
+            },
+            tooltip: {
+                style: {
+                    fontFamily: 'Nunito, sans-serif', // Font for tooltips
+                    fontSize: '11px'
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#pieChart2"), options);
+        chart.render();
+    });
+
+    /*-------------------------------------------------------------------------------------
+    # PIE CHART 2
+    --------------------------------------------------------------------------------------*/
+
+    document.addEventListener("DOMContentLoaded", () => {
+        var options = {
+            chart: {
+                height: 330,
+                type: 'pie',
+                toolbar: { show: true },
+                fontFamily: 'Nunito, sans-serif', // Specify the font family here
+                fontSize: '11px'
+            },
+            series: [@createdLoads, @postedLoads, @bookedLoads, @deliveredLoads, @cancelledLoads],
+            labels: ['Created', 'Posted', 'Booked', 'Delivered', 'Cancelled'],
+            theme: {
+                mode: 'light', // Light or dark mode
+                palette: 'palette2', // Predefined color palettes
+                fontFamily: 'Nunito, sans-serif', // Global font for the chart
+                fontSize: '10px'
+
+            },
+            tooltip: {
+                style: {
+                    fontFamily: 'Nunito, sans-serif', // Font for tooltips
+                    fontSize: '11px'
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#pieChart3"), options);
+        chart.render();
+    });
+
+    // Prevent card flip when clicking on the toolbar
+
+        
+    document.querySelector("#pieChart").addEventListener("click", (event) => {
+        if (event.target.closest(".apexcharts-toolbar")) {
+            event.stopPropagation();
+        }
+    });
+
+    document.querySelector("#pieChart2").addEventListener("click", (event) => {
+        if (event.target.closest(".apexcharts-toolbar")) {
+            event.stopPropagation();
+        }
+    });
+
+    document.querySelector("#pieChart3").addEventListener("click", (event) => {
+        if (event.target.closest(".apexcharts-toolbar")) {
+            event.stopPropagation();
+        }
+    });
+  
+
+
+    /*-------------------------------------------------------------------------------------
+    # FLIP FUNCTIONALITY
+    --------------------------------------------------------------------------------------*/
+    document.querySelectorAll(".card-container-statistics").forEach((container) => {
+      container.addEventListener("click", () => {
+        container.classList.toggle("flipped");
+      });
+    });
+
+
+</script>
+
