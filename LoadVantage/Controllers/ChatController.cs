@@ -6,6 +6,10 @@ using LoadVantage.Core.Models.Chat;
 using LoadVantage.Extensions;
 using LoadVantage.Infrastructure.Data.Models;
 using static LoadVantage.Common.GeneralConstants.TempMessages;
+using System.Text.Json;
+using NuGet.Protocol.Plugins;
+using LoadVantage.Core.Services;
+using Microsoft.AspNetCore.SignalR;
 
 namespace LoadVantage.Controllers
 {
@@ -68,7 +72,7 @@ namespace LoadVantage.Controllers
 		[HttpGet]
 		public async Task<IActionResult> ChatWithBrokerWindow(Guid brokerId)
 		{
-			ChatViewModel model = await BuildChatViewModel(brokerId);
+			ChatViewModel model = await chatService.BuildChatViewModel(brokerId);
 			return View("ChatWindow", model);
 		}
 
@@ -94,12 +98,12 @@ namespace LoadVantage.Controllers
 
 			if (lastChat.SenderId == currentUser.Id)
 			{
-				model = await BuildChatViewModel(lastChat.ReceiverId);
+				model = await chatService.BuildChatViewModel(lastChat.ReceiverId);
 
 			}
 			else if (lastChat.ReceiverId == currentUser.Id)
 			{
-				model = await BuildChatViewModel(lastChat.SenderId);
+				model = await chatService.BuildChatViewModel(lastChat.SenderId);
 			}
 
 			return View("ChatWindow", model);
@@ -150,35 +154,6 @@ namespace LoadVantage.Controllers
 			return Ok();
 		}
 
-		private async Task<ChatViewModel> BuildChatViewModel(Guid userId)
-		{
-			var currentUser = await userService.GetCurrentUserAsync();
-			
-			// Fetch chat users, messages, and user info and the current user's profile 
-			var chatUsers = await chatService.GetChatUsersAsync(currentUser.Id);
-			var userInfo = await userService.GetChatUserInfoAsync(userId);
-			var messages = await chatService.GetMessagesAsync(currentUser.Id, userId);
-			var profile = await profileService.GetUserInformation(currentUser.Id);
-
-			// Build the ChatViewModel
-			var chatViewModel = new ChatViewModel
-			{
-				Users = chatUsers ?? new List<UserChatViewModel>(),
-				CurrentChatUserId = userId,
-				Messages = messages.Select(m => new ChatMessageViewModel
-				{
-					Id = m.Id,
-					SenderId = m.SenderId,
-					ReceiverId = m.ReceiverId,
-					Content = m.Content,
-					Timestamp = m.Timestamp,
-					IsRead = m.IsRead
-				}).ToList(),
-				UserInfo = userInfo,
-				Profile = profile
-			};
-
-			return chatViewModel;
-		}
+		
 	}
 }
