@@ -39,8 +39,7 @@ namespace LoadVantage.Infrastructure.Data.Models
         [StringLength(EmailMaxLength)]
         public override string Email { get; set; }
 
-        [Required]
-        public override string PasswordHash { get; set; }
+        public override string? PasswordHash { get; set; }
 
         [Phone]
         [StringLength(UserPhoneNumberMaxLength)]
