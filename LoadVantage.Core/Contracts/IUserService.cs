@@ -21,14 +21,14 @@ namespace LoadVantage.Core.Contracts
 		/// Retrieves the currently authorized User or returns null if not authorized.
 		/// </summary>
 		Task<BaseUser?> GetCurrentUserAsync();
-	    /// <summary>
-	    /// Finds the User by his email address
-	    /// </summary>
+		/// <summary>
+		/// Finds the User by his email address
+		/// </summary>
 		Task<BaseUser?> FindUserByEmailAsync(string email);
-	    /// <summary>
-	    /// Retrieve all the claims for a user 
-	    /// </summary>
-	    Task<IEnumerable<Claim>> GetUserClaimsAsync(BaseUser user);
+		/// <summary>
+		/// Retrieve all the claims for a user 
+		/// </summary>
+		Task<IEnumerable<Claim>> GetUserClaimsAsync(BaseUser user);
 	    /// <summary>
 	    /// Adds a User Claim  
 	    /// </summary>
@@ -89,6 +89,16 @@ namespace LoadVantage.Core.Contracts
         /// Retrieve the all current users that have a company name added to their account as a list of BaseUser
         /// </summary>
         Task<IEnumerable<BaseUser>> GetAllUsersFromACompany();
+        /// <summary>
+        /// Deletes the current stored password for a user
+        /// </summary>
+		Task<IdentityResult> DeleteUserPassword(BaseUser user);
+		/// <summary>
+		/// Resets the password for a user to the default reset password
+		/// </summary>
+		Task<IdentityResult> AddUserDefaultPassword(BaseUser user);
+
+
 
 
 

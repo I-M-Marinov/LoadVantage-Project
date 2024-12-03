@@ -1,19 +1,21 @@
-﻿using LoadVantage.Core.Contracts;
+﻿using System.Net;
+using System.Security.Claims;
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+
+using LoadVantage.Core.Contracts;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
-using System.Security.Claims;
+using LoadVantage.Core.Models.Chat;
 using LoadVantage.Core.Models.Image;
 using LoadVantage.Core.Models.Profile;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+
 using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
-using LoadVantage.Core.Models.Chat;
-
-
+using static LoadVantage.Common.GeneralConstants.SecretString;
 
 #nullable disable
 
@@ -62,7 +64,9 @@ namespace LoadVantage.Core.Services
 		public async Task<BaseUser> FindUserByEmailAsync(string email)
 		{
 			if (string.IsNullOrWhiteSpace(email))
-				throw new ArgumentException("Email cannot be null or empty.", nameof(email));
+			{
+				throw new ArgumentException(EmailCannotBeNull, nameof(email));
+			}
 
 			return await userManager.FindByEmailAsync(email);
 		}
@@ -70,7 +74,9 @@ namespace LoadVantage.Core.Services
 		public async Task<BaseUser> FindUserByUsernameAsync(string username)
 		{
 			if (string.IsNullOrWhiteSpace(username))
-				throw new ArgumentException("Username cannot be null or empty.", nameof(username));
+			{
+				throw new ArgumentException(UserNameCannotBeNull, nameof(username));
+			}
 
 			return await userManager.FindByNameAsync(username);
 		}
@@ -78,22 +84,30 @@ namespace LoadVantage.Core.Services
 		public async Task<IdentityResult> CreateUserAsync(BaseUser user, string password)
 		{
 			if (user == null)
-				throw new ArgumentNullException(nameof(user));
+			{
+				throw new ArgumentNullException(UserCannotBeNull);
+			}
 
 			if (string.IsNullOrWhiteSpace(password))
-				throw new ArgumentException("Password cannot be null or empty.", nameof(password));
+			{
+				throw new ArgumentException(PasswordCannotBeNull, nameof(password));
+			}
 
 			return await userManager.CreateAsync(user, password);
 		}
 
 		public async Task<IdentityResult> AssignUserRoleAsync(BaseUser user, string role)
 		{
-
 			if (user == null)
-				throw new ArgumentNullException(nameof(user));
+			{
+				throw new ArgumentNullException(UserCannotBeNull);
+			}
 
 			if (string.IsNullOrWhiteSpace(role))
-				throw new ArgumentException("Role cannot be null or empty.", nameof(role));
+			{
+				throw new ArgumentException(RoleCannotBeNull, nameof(role));
+			}
+
 
 			var isAlreadyInRole = await userManager.IsInRoleAsync(user, role);
 
@@ -102,7 +116,7 @@ namespace LoadVantage.Core.Services
 				return await userManager.AddToRoleAsync(user, role);
 			}
 
-			throw new ArgumentException("That role is already assigned to the user.", nameof(role));
+			throw new ArgumentException(RoleAlreadyAssignedToUser, nameof(role));
 
 		}
 
@@ -155,6 +169,7 @@ namespace LoadVantage.Core.Services
 
 	        return user;
         }
+
 		public async Task UpdateUserImageAsync(Guid userId, IFormFile file)
         {
 	        var user = await GetUserByIdAsync(userId);
@@ -212,23 +227,20 @@ namespace LoadVantage.Core.Services
 
 			if (userImage.Id == DefaultImageId)
 			{
-				return; // no need to do anything if the user is already with the default image 
+				return; // no need to do anything if the user is already with the default user image 
 			}
 
-			if (userImage != null)
+            var deleteResult = await imageService.DeleteImageAsync(userImage.PublicId);
+            
+			if (!deleteResult.IsSuccess)
             {
-                var deleteResult = await imageService.DeleteImageAsync(userImage.PublicId);
-                
-				if (!deleteResult.IsSuccess)
-                {
-                    throw new Exception($"{ErrorRemovingImage} {deleteResult.Message}");
-                }
-
-                context.UsersImages.Remove(userImage);
-				user.UserImageId = DefaultImageId;
-                await context.SaveChangesAsync();
+                throw new Exception($"{ErrorRemovingImage} {deleteResult.Message}");
             }
 
+            context.UsersImages.Remove(userImage);
+			user.UserImageId = DefaultImageId; // assign the default user image 
+			await context.SaveChangesAsync();
+            
         }
 
         public async Task<string> GetUserImageUrlAsync(Guid userId)
@@ -273,10 +285,14 @@ namespace LoadVantage.Core.Services
         public async Task<IdentityResult> AddUserClaimAsync(BaseUser user, Claim claim)
         {
 	        if (user == null)
+	        {
 		        throw new ArgumentNullException(nameof(user));
+			}
 
 	        if (claim == null)
+	        {
 		        throw new ArgumentNullException(nameof(claim));
+			}
 
 	        return await userManager.AddClaimAsync(user, claim);
         }
@@ -284,11 +300,16 @@ namespace LoadVantage.Core.Services
         public async Task<IdentityResult> AddUserClaimsAsync(BaseUser user, IEnumerable<Claim> claims)
         {
 	        if (user == null)
+	        {
 		        throw new ArgumentNullException(nameof(user));
+			}
 
-	        if (claims == null || !claims.Any())
-		        throw new ArgumentException("Claims cannot be null or empty.", nameof(claims));
 
+	        if (claims == null || claims.Any())
+	        {
+		        throw new ArgumentException(ClaimsCannotBeNull, nameof(claims));
+			}
+	        
 	        return await userManager.AddClaimsAsync(user, claims);
         }
 
@@ -297,7 +318,7 @@ namespace LoadVantage.Core.Services
             return await context.Users.CountAsync();
         }
 
-        public async Task<int> GetDispatcherCountAsync()
+		public async Task<int> GetDispatcherCountAsync()
         {
             return await context.Users.CountAsync(user => user.Position == nameof(Dispatcher));
         }
@@ -316,7 +337,26 @@ namespace LoadVantage.Core.Services
             return usersWithCompanyName;
         }
 
+        public async Task<IdentityResult> DeleteUserPassword(BaseUser user)
+        {
+	        if (user == null)
+	        {
+		        throw new ArgumentNullException(nameof(user), UserCannotBeNull);
+	        }
 
-    }
+	        return await userManager.RemovePasswordAsync(user);
+        }
+
+        public async Task<IdentityResult> AddUserDefaultPassword(BaseUser user)
+        {
+	        if (user == null)
+	        {
+		        throw new ArgumentNullException(nameof(user), UserCannotBeNull);
+	        }
+
+	        return await userManager.AddPasswordAsync(user, PasswordDefaultAfterReset);
+        }
+
+	}
 
 }
