@@ -102,7 +102,7 @@ namespace LoadVantage.Areas.Admin.Services
         {
             var trucks = await truckService.GetAllTrucksAsync();
 
-            var availableTrucks = trucks.Count(truck => !truck.IsAvailable && truck.IsActive);
+            var availableTrucks = trucks.Count(truck => truck.IsActive);
             var decommissionedTrucks = trucks.Count(truck => !truck.IsActive);
 
             return (availableTrucks, decommissionedTrucks);
