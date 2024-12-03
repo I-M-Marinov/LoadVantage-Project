@@ -225,7 +225,7 @@
 							<form id="restoreLoadForm" asp-area="Admin" asp-action="RestoreLoad" asp-controller="AdminLoad" method="post" id="restoreLoadBtn">
 								@Html.AntiForgeryToken()
 								<input type="hidden" name="loadId" value="@Model.Id" />
-								<button type="submit" class="btn btn-outline-success">
+								<button type="submit" class="btn btn-outline-success" id="restoreLoadBtn">
 									<i class="ri-arrow-go-back-fill"></i> Restore Load
 								</button>
 							</form>
