@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
 using LoadVantage.Common.Enums;
@@ -8,8 +9,6 @@ using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Infrastructure.Data.Contracts;
 
-using System.Globalization;
-using Microsoft.Extensions.Logging;
 
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
@@ -19,18 +18,24 @@ namespace LoadVantage.Core.Services
     public class LoadStatusService : ILoadStatusService
     {
 	    public readonly IProfileService profileService;
-	    public readonly ILogger<LoadStatusService> logger;
 	    public readonly LoadVantageDbContext context;
 	    public readonly IDistanceCalculatorService distanceCalculatorService;
         public readonly ILoadHelperService loadHelperService;
+        private readonly IHtmlSanitizerService htmlSanitizer;
 
-	    public LoadStatusService(IProfileService _profileService, LoadVantageDbContext _context, IDistanceCalculatorService _distanceCalculatorService, ILogger<LoadStatusService> _logger, ILoadHelperService _loadHelperService)
+
+		public LoadStatusService(
+			IProfileService _profileService, 
+			LoadVantageDbContext _context, 
+			IDistanceCalculatorService _distanceCalculatorService, 
+			ILoadHelperService _loadHelperService,
+			IHtmlSanitizerService _htmlSanitizer)
 	    {
 		    profileService = _profileService;
-		    logger = _logger;
             context = _context;
             distanceCalculatorService = _distanceCalculatorService;
             loadHelperService = _loadHelperService;
+			htmlSanitizer = _htmlSanitizer;
 	    }
 
 	    public async Task<LoadViewModel?> GetLoadDetailsAsync(Guid loadId, Guid userId)
@@ -112,21 +117,27 @@ namespace LoadVantage.Core.Services
         }
         public async Task<Guid> CreateLoadAsync(LoadViewModel model, Guid brokerId)
         {
-	        double calculatedDistance = 0;
+			// sanitize the origin and destination city and state
+	        var sanitizedOriginCity = htmlSanitizer.Sanitize(model.OriginCity);
+	        var sanitizedOriginState = htmlSanitizer.Sanitize(model.OriginState);
+	        var sanitizedDestinationCity = htmlSanitizer.Sanitize(model.DestinationCity);
+	        var sanitizedDestinationState = htmlSanitizer.Sanitize(model.DestinationState);
+
+			double calculatedDistance = 0;
 
 			try
 	        {
 		        calculatedDistance =
-			        await distanceCalculatorService.GetDistanceBetweenCitiesAsync(model.OriginCity, model.OriginState,
-				        model.DestinationCity, model.DestinationState);
+			        await distanceCalculatorService.GetDistanceBetweenCitiesAsync(sanitizedOriginCity, sanitizedOriginState,
+				        sanitizedDestinationCity, sanitizedDestinationState);
 			}
 	        catch (Exception e)
 	        {
 		        throw new Exception(e.Message);
 	        }
 
-	        var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(model.OriginCity, model.OriginState);
-	        var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(model.DestinationCity, model.DestinationState);
+	        var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(sanitizedOriginCity, sanitizedOriginState);
+	        var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(sanitizedDestinationCity, sanitizedDestinationState);
 
 
 	        var load = new Load
@@ -160,8 +171,16 @@ namespace LoadVantage.Core.Services
 				return false; // Load not found
 			}
 
-			var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(model.OriginCity, model.OriginState);
-			var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(model.DestinationCity, model.DestinationState);
+
+			// sanitize the origin and destination city and state if the load is found 
+
+			var sanitizedOriginCity = htmlSanitizer.Sanitize(model.OriginCity);
+			var sanitizedOriginState = htmlSanitizer.Sanitize(model.OriginState);
+			var sanitizedDestinationCity = htmlSanitizer.Sanitize(model.DestinationCity);
+			var sanitizedDestinationState = htmlSanitizer.Sanitize(model.DestinationState);
+
+			var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(sanitizedOriginCity, sanitizedOriginState);
+			var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(sanitizedDestinationCity, sanitizedDestinationState);
 
 			// If any changes in the Origin City or State
 			bool originChanged = load.OriginCity != originFormattedCity || load.OriginState != originFormattedState;
@@ -434,7 +453,7 @@ namespace LoadVantage.Core.Services
 
 
 			load.Status = LoadStatus.Delivered; // load is marked delivered
-			driver.IsBusy = false; // driver is freed up to get another load
+			driver!.IsBusy = false; // driver is freed up to get another load
 
 	        var deliveredLoad = new DeliveredLoad
 	        {
