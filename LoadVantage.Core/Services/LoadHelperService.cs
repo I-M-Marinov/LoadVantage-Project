@@ -61,7 +61,7 @@ namespace LoadVantage.Core.Services
 				return true; // If the user is  the Broker on the load return TRUE 
 			}
 
-			if (load.BookedLoad!.DispatcherId == userId)
+			if (load.BookedLoad != null && load.BookedLoad!.DispatcherId == userId) // If the load is Booked and the Dispatcher on it is the User return TRUE
 			{
 				return load.Status == LoadStatus.Booked || load.Status == LoadStatus.Delivered;
 			}
