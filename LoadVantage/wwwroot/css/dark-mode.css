@@ -21,7 +21,7 @@ a {
     color: #90caf9 !important;
 }
 
-h1, h2, h3, h4, h5, h6, h7, h8 {
+h1, h2, h4, h6, h7, h8 {
     color: white !important;
 }
 
@@ -306,6 +306,15 @@ input{
     color: white !important;
 }
 
+#restoreLoadBtn {
+    border: 2px solid #198754 !important;
+    color: white !important;
+}
+
+#restoreLoadBtn:hover {
+    background: #198754 !important;
+}
+
 
 #unpostLoadBtn,
 #unpostAllBtn {
@@ -382,4 +391,35 @@ input{
 
 .form-label select {
     color: black;
+}
+
+.card-title-statistics,
+.card-title-statistics h3 i {
+    color: black !important;
+}
+
+#totalLoadsStatistics,
+#totalUsersStatistics,
+#totalDriversStatistics,
+#totalTrucksStatistics,
+#totalRevenueStatistics {
+    background-color: #333333 !important;
+    color: white !important;
+}
+
+.card-title-statistics {
+    color: #0094ff !important;
+}
+
+#createUserForm form-control {
+    border: 2px solid #0094ff !important;
+}
+
+
+#position-select-element select{
+    color: black !important;
+}
+
+.header-nav .profile .dropdown-item {
+    color: white !important;
 }
