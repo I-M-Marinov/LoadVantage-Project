@@ -30,7 +30,7 @@ namespace LoadVantage.Common
         public static class SecretString
         {
 			public const string PasswordSecretWord = "password";
-			public const string NewlyCreatedUserPassword = "randomPassword123";
+			public const string PasswordDefaultAfterReset = "password1";
 
         }
 
@@ -91,6 +91,23 @@ namespace LoadVantage.Common
             public const string FailedToUpdateTheUser = "Failed to update the user!";
             public const string InvalidUserType = "User needs to be either a Dispatcher or a Broker.";
 
+            public const string TooManyFailedLoginAttempts = "Too many failed login attempts. You can try again after {0}.";
+            public const string RoleAssignmentFailed = "Role assignment failed: {0}";
+
+
+
+
+
+			public const string EmailCannotBeNull = "Email cannot be null or empty.";
+            public const string UserNameCannotBeNull = "Username cannot be null or empty.";
+            public const string PasswordCannotBeNull = "Password cannot be null or empty.";
+            public const string RoleCannotBeNull = "Role cannot be null or empty.";
+            public const string ClaimsCannotBeNull = "Claims cannot be null or empty.";
+            public const string ModelCannotBeNull = "The model cannot be null";
+			public const string RoleAlreadyAssignedToUser = "That role is already assigned to the user.";
+
+
+
 
 			// SESSION
 
@@ -104,6 +121,7 @@ namespace LoadVantage.Common
 
 			// TRUCK 
 
+			public const string TruckNotFound = "Truck was not found";
 			public const string TruckWasNotCreated = "The truck was not created successfully.";
             public const string TruckCreateError = "Error ! Truck was not created.";
             public const string TruckDoesNotExist = "The truck you are looking for does not exist.";
@@ -111,6 +129,7 @@ namespace LoadVantage.Common
 
             public const string InvalidTruckOrDriver = "Invalid truck or driver selection.";
             public const string ErrorAssigningDriverToTruck = "An error occurred while assigning the driver to the truck.";
+            public const string CannotDeleteTruckInUse = "You cannot delete a truck that is currently in use !";
 
 
 			// DRIVER
@@ -222,14 +241,21 @@ namespace LoadVantage.Common
 	        public const string UserDeactivatedSuccessfully = "User was deactivated successfully.";
 	        public const string UserActivatedSuccessfully = "User was activated successfully.";
 	        public const string UserUpdatedSuccessfully = "User details updated successfully.";
-	        
+	        public const string UserPasswordResetSuccessfully = "User's password was successfully reset to the default user password";
 
-			public const string FailedToDeleteTheUser = "Failed to deactivate the user.";
+	        public const string CannotDeactivateBroker = "Cannot deactivate the broker as they have loads currently in transit.";
+	        public const string CannotDeactivateDispatcher = "Cannot deactivate the dispatcher as they have drivers currently on a job.";
+
+
+
+			public const string FailedToDeactivateTheUser = "Failed to deactivate the user.";
 	        public const string FailedToReactivateThisAccount = "Failed to reactivate the user.";
 	        
 
 	        public const string ErrorTryLater = "An unkown error occurred. Please try again later.";
-	        
+
+	        public const string ResetPasswordFailed = "Resetting the password for this user failed.";
+
 
 
         }
