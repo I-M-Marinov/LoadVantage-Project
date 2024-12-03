@@ -1,15 +1,13 @@
 ﻿using System.Globalization;
+using Ganss.Xss;
 using LoadVantage.Areas.Admin.Contracts;
 using LoadVantage.Areas.Admin.Models.Load;
 using LoadVantage.Common.Enums;
 using LoadVantage.Core.Contracts;
-using LoadVantage.Core.Models.Load;
-using LoadVantage.Core.Services;
-using LoadVantage.Extensions;
+
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Contracts;
-using LoadVantage.Infrastructure.Data.Models;
-using LoadVantage.Infrastructure.Data.Services;
+
 using Microsoft.EntityFrameworkCore;
 
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
@@ -22,15 +20,21 @@ namespace LoadVantage.Areas.Admin.Services
 		private readonly IAdminProfileService adminProfileService;
 		private readonly ILoadHelperService loadHelperService;
 		private IDistanceCalculatorService distanceCalculatorService;
+		private IHtmlSanitizerService htmlSanitizer;
 
 
-
-		public AdminLoadStatusService(LoadVantageDbContext _context, IAdminProfileService _adminProfileService, ILoadHelperService _loadHelperService, IDistanceCalculatorService _distanceCalculatorServiceService)
+		public AdminLoadStatusService(
+			LoadVantageDbContext _context, 
+			IAdminProfileService _adminProfileService, 
+			ILoadHelperService _loadHelperService, 
+			IDistanceCalculatorService _distanceCalculatorServiceService,
+			IHtmlSanitizerService _htmlSanitizer)
 		{
 			context = _context;
 			adminProfileService = _adminProfileService;
 			loadHelperService = _loadHelperService;
 			distanceCalculatorService = _distanceCalculatorServiceService;
+			htmlSanitizer = _htmlSanitizer;
 		}
 
 		public async Task<bool> RestoreLoadAsync(Guid loadId)
@@ -50,6 +54,12 @@ namespace LoadVantage.Areas.Admin.Services
 		}
 		public async Task<bool> EditLoadAsync(Guid loadId, AdminLoadViewModel model)
 		{
+			// sanitize the origin and destination city and state
+			var sanitizedOriginCity = htmlSanitizer.Sanitize(model.OriginCity);
+			var sanitizedOriginState = htmlSanitizer.Sanitize(model.OriginState);
+			var sanitizedDestinationCity = htmlSanitizer.Sanitize(model.DestinationCity);
+			var sanitizedDestinationState = htmlSanitizer.Sanitize(model.DestinationState);
+
 			var load = await context.Loads.FindAsync(loadId);
 
 			if (load == null)
@@ -57,11 +67,12 @@ namespace LoadVantage.Areas.Admin.Services
 				return false; // Load not found
 			}
 
-			var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(model.OriginCity, model.OriginState);
-			var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(model.DestinationCity, model.DestinationState);
+			var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(sanitizedOriginCity, sanitizedOriginState);
+			var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(sanitizedDestinationCity, sanitizedDestinationState);
 
 			// If any changes in the Origin City or State
 			bool originChanged = load.OriginCity != originFormattedCity || load.OriginState != originFormattedState;
+
 			// If any changes in the Destination City or State
 			bool destinationChanged = load.DestinationCity != destinationFormattedCity || load.DestinationState != destinationFormattedState;
 
@@ -94,10 +105,10 @@ namespace LoadVantage.Areas.Admin.Services
 				try
 				{
 					var distance = await distanceCalculatorService.GetDistanceBetweenCitiesAsync(
-						model.OriginCity,
-						model.OriginState,
-						model.DestinationCity,
-						model.DestinationState
+						originFormattedCity,
+						originFormattedState,
+						destinationFormattedCity,
+						destinationFormattedState
 					);
 
 					load.Distance = distance;
