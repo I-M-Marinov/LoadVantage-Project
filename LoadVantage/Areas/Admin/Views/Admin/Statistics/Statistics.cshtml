@@ -13,6 +13,11 @@
     Model.LoadCountsByStatus.TryGetValue(LoadStatus.Delivered.ToString(), out int deliveredLoads);
     Model.LoadCountsByStatus.TryGetValue(LoadStatus.Cancelled.ToString(), out int cancelledLoads);
 
+    var totalRevenue = Model.TotalRevenues;
+    var commission = Math.Ceiling(Model.TotalRevenues * (decimal)0.05);
+    var driversTotal = Model.ActiveDrivers + Model.FiredDrivers;
+    var trucksTotal = Model.DecommissionedTrucks + Model.AvailableTrucks;
+
 }
 
 
@@ -54,7 +59,7 @@
 						<!-- Back Side -->
 						<div class="card-back-statistics">
 							<div class="card-body card-statistics">
-								<h5 class="card-title">Loads by Status</h5>
+                                <h5 class="card-title-statistics">Loads by Status</h5>
 								<div class="pieChart" id="pieChart"></div>
 							</div>
 						</div>
@@ -65,16 +70,16 @@
 					<div class="card-flip-statistics">
 						<!-- Front Side -->
 						<div class="card-front-statistics">
-							<div class="card-body card-statistics pt-4 d-flex flex-column align-items-center" id="totalLoadsStatistics">
+							<div class="card-body card-statistics pt-4 d-flex flex-column align-items-center" id="totalUsersStatistics">
 								<h5 class="card-title-statistics">Total Users</h5>
-								<h3> <i class="bx bxs-package"></i> @Model.LoadCountsByStatus.Values.Sum()</h3>
+                                <h3> <i class="bi bi-person-check-fill"></i> @Model.TotalUserCount</h3>
 								<p>Click to show by Position </p>
 							</div>
 						</div>
 						<!-- Back Side -->
 						<div class="card-back-statistics">
 							<div class="card-body card-statistics">
-								<h5 class="card-title">Loads by Status</h5>
+                                <h5 class="card-title-statistics">Users by Position</h5>
 								<div class="pieChart" id="pieChart2"></div>
 							</div>
 						</div>
@@ -85,22 +90,100 @@
 					<div class="card-flip-statistics">
 						<!-- Front Side -->
 						<div class="card-front-statistics">
-							<div class="card-body card-statistics pt-4 d-flex flex-column align-items-center" id="totalLoadsStatistics">
-								<h5 class="card-title-statistics">Total Users</h5>
-								<h3> <i class="bx bxs-package"></i> @Model.LoadCountsByStatus.Values.Sum()</h3>
-								<p>Click to show by Position </p>
+							<div class="card-body card-statistics pt-4 d-flex flex-column align-items-center" id="totalRevenueStatistics">
+								<h5 class="card-title-statistics">Total Revenue</h5>
+                                <h3> <i class="bi bi-currency-dollar"></i>@totalRevenue</h3>
+								<p>Click to see total and commission </p>
 							</div>
 						</div>
 						<!-- Back Side -->
 						<div class="card-back-statistics">
 							<div class="card-body card-statistics">
-								<h5 class="card-title">Loads by Status</h5>
+								<h5 class="card-title-statistics">Revenue and Commission</h5>
 								<div class="pieChart" id="pieChart3"></div>
 							</div>
 						</div>
 					</div>
 				</div>
+				
+				<div class="card-container-statistics">
+					<div class="card-flip-statistics">
+						<!-- Front Side -->
+						<div class="card-front-statistics">
+							<div class="card-body card-statistics pt-4 d-flex flex-column align-items-center" id="totalDriversStatistics">
+								<h5 class="card-title-statistics">Total Drivers</h5>
+                                <h3> <i class="ri-steering-2-fill"></i> @driversTotal</h3>
+								<p>Click to show Active and Fired</p>
+							</div>
+						</div>
+						<!-- Back Side -->
+						<div class="card-back-statistics">
+							<div class="card-body card-statistics">
+								<h5 class="card-title-statistics">Drivers by Status</h5>
+								<div class="pieChart" id="pieChart4"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="card-container-statistics">
+					<div class="card-flip-statistics">
+						<!-- Front Side -->
+						<div class="card-front-statistics">
+							<div class="card-body card-statistics pt-4 d-flex flex-column align-items-center" id="totalTrucksStatistics">
+								<h5 class="card-title-statistics">Total Trucks</h5>
+                                <h3> <i class="ri-truck-line"></i>@trucksTotal</h3>
+								<p>Click to show by Status </p>
+							</div>
+						</div>
+						<!-- Back Side -->
+						<div class="card-back-statistics">
+							<div class="card-body card-statistics">
+								<h5 class="card-title-statistics">Trucks by Status</h5>
+								<div class="pieChart" id="pieChart5"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+				
+				<div class="card" id="companiesTable">
+                    <div class="card-body ">
+	                    <h5 class="card-title">Companies</h5>
 
+                        <table class="table table-sm">
+	                        <thead>
+	                        <tr>
+		                        <th scope="col">#</th>
+		                        <th scope="col">Company Name</th>
+		                        <th scope="col">Accounts</th>
+	                        </tr>
+	                        </thead>
+	                        <tbody>
+
+	                        @{
+		                        int rowNumber = 1;
+	                        }
+	                        @foreach (var item in Model.GroupedCompanyNames)
+	                        {
+
+		                        <tr>
+			                        <th scope="row">@rowNumber</th>
+			                        <td>
+				                        @item.Key
+			                        </td>
+			                        <td>
+				                        @item.Value
+			                        </td>
+		                        </tr>
+		                        rowNumber++;
+	                        }
+	                        </tbody>
+                        </table>
+
+                    </div>
+                </div>
 			</div>
 		</section>
 	</section>
@@ -130,29 +213,29 @@
     }
 
     /*-------------------------------------------------------------------------------------
-    # PIE CHART 1
+    # PIE CHART 1 // LOADS 
     --------------------------------------------------------------------------------------*/
     
     document.addEventListener("DOMContentLoaded", () => {
         var options = {
             chart: {
-                height: 330,
+                height: 350,
                 type: 'pie',
                 toolbar: { show: true },
                 fontFamily: 'Nunito, sans-serif', // Specify the font family here
-                fontSize: '11px'
+                fontSize: '10px'
             },
             series: [@createdLoads, @postedLoads, @bookedLoads, @deliveredLoads, @cancelledLoads],
             labels: ['Created', 'Posted', 'Booked', 'Delivered', 'Cancelled'],
             theme: {
                 mode: 'light', // Light or dark mode
-                palette: 'palette2', // Predefined color palettes
+                palette: 'palette1', // Predefined color palettes
                 fontFamily: 'Nunito, sans-serif' // Global font for the chart
             },
             tooltip: {
                 style: {
                     fontFamily: 'Nunito, sans-serif', // Font for tooltips
-                    fontSize: '11px'
+                    fontSize: '10px'
                 }
             }
         };
@@ -162,20 +245,20 @@
     });
 
     /*-------------------------------------------------------------------------------------
-    # PIE CHART 2
+    # PIE CHART 2 // BROKERS AND DISPATCHERS
     --------------------------------------------------------------------------------------*/
 
     document.addEventListener("DOMContentLoaded", () => {
         var options = {
             chart: {
-                height: 330,
+                height: 350,
                 type: 'pie',
                 toolbar: { show: true },
                 fontFamily: 'Nunito, sans-serif', // Specify the font family here
-                fontSize: '11px'
+                fontSize: '10px'
             },
-            series: [@createdLoads, @postedLoads, @bookedLoads, @deliveredLoads, @cancelledLoads],
-            labels: ['Created', 'Posted', 'Booked', 'Delivered', 'Cancelled'],
+            series: [@Model.DispatcherCount, @Model.BrokerCount],
+            labels: ['Dispatchers', 'Brokers'],
             theme: {
                 mode: 'light', // Light or dark mode
                 palette: 'palette2', // Predefined color palettes
@@ -186,7 +269,7 @@
             tooltip: {
                 style: {
                     fontFamily: 'Nunito, sans-serif', // Font for tooltips
-                    fontSize: '11px'
+                    fontSize: '10px'
                 }
             }
         };
@@ -196,23 +279,23 @@
     });
 
     /*-------------------------------------------------------------------------------------
-    # PIE CHART 2
+    # PIE CHART 3 // TOTAL REVENUE AND COMMISSION
     --------------------------------------------------------------------------------------*/
 
     document.addEventListener("DOMContentLoaded", () => {
         var options = {
             chart: {
-                height: 330,
+                height: 350,
                 type: 'pie',
                 toolbar: { show: true },
                 fontFamily: 'Nunito, sans-serif', // Specify the font family here
-                fontSize: '11px'
+                fontSize: '10px'
             },
-            series: [@createdLoads, @postedLoads, @bookedLoads, @deliveredLoads, @cancelledLoads],
-            labels: ['Created', 'Posted', 'Booked', 'Delivered', 'Cancelled'],
+            series: [@totalRevenue, @commission],
+            labels: ['Total', 'Comission'],
             theme: {
                 mode: 'light', // Light or dark mode
-                palette: 'palette2', // Predefined color palettes
+                palette: 'palette3', // Predefined color palettes
                 fontFamily: 'Nunito, sans-serif', // Global font for the chart
                 fontSize: '10px'
 
@@ -220,12 +303,80 @@
             tooltip: {
                 style: {
                     fontFamily: 'Nunito, sans-serif', // Font for tooltips
-                    fontSize: '11px'
+                    fontSize: '10px'
                 }
             }
         };
 
         var chart = new ApexCharts(document.querySelector("#pieChart3"), options);
+        chart.render();
+    });
+
+    /*-------------------------------------------------------------------------------------
+    # PIE CHART 4 // DRIVERS 
+    --------------------------------------------------------------------------------------*/
+
+    document.addEventListener("DOMContentLoaded", () => {
+        var options = {
+            chart: {
+                height: 350,
+                type: 'pie',
+                toolbar: { show: true },
+                fontFamily: 'Nunito, sans-serif', // Specify the font family here
+                fontSize: '10px'
+            },
+            series: [@Model.ActiveDrivers, @Model.FiredDrivers],
+            labels: ['Active', 'Fired'],
+            theme: {
+                mode: 'light', // Light or dark mode
+                palette: 'palette5', // Predefined color palettes
+                fontFamily: 'Nunito, sans-serif', // Global font for the chart
+                fontSize: '10px'
+
+            },
+            tooltip: {
+                style: {
+                    fontFamily: 'Nunito, sans-serif', // Font for tooltips
+                    fontSize: '10px'
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#pieChart4"), options);
+        chart.render();
+    });
+
+    /*-------------------------------------------------------------------------------------
+    # PIE CHART 5 // TRUCKS
+    --------------------------------------------------------------------------------------*/
+
+    document.addEventListener("DOMContentLoaded", () => {
+        var options = {
+            chart: {
+                height: 350,
+                type: 'pie',
+                toolbar: { show: true },
+                fontFamily: 'Nunito, sans-serif', // Specify the font family here
+                fontSize: '10px'
+            },
+            series: [@Model.AvailableTrucks, @Model.DecommissionedTrucks],
+            labels: ['Active', 'Decommissioned'],
+            theme: {
+                mode: 'light', // Light or dark mode
+                palette: 'palette5', // Predefined color palettes
+                fontFamily: 'Nunito, sans-serif', // Global font for the chart
+                fontSize: '10px'
+
+            },
+            tooltip: {
+                style: {
+                    fontFamily: 'Nunito, sans-serif', // Font for tooltips
+                    fontSize: '10px'
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#pieChart5"), options);
         chart.render();
     });
 
@@ -245,6 +396,18 @@
     });
 
     document.querySelector("#pieChart3").addEventListener("click", (event) => {
+        if (event.target.closest(".apexcharts-toolbar")) {
+            event.stopPropagation();
+        }
+    });
+
+    document.querySelector("#pieChart4").addEventListener("click", (event) => {
+        if (event.target.closest(".apexcharts-toolbar")) {
+            event.stopPropagation();
+        }
+    });
+
+    document.querySelector("#pieChart5").addEventListener("click", (event) => {
         if (event.target.closest(".apexcharts-toolbar")) {
             event.stopPropagation();
         }
