@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.SignalR;
 using LoadVantage.Core.Hubs;
 using LoadVantage.Core.Models.Chat;
 using LoadVantage.Infrastructure.Data;
+using LoadVantage.Infrastructure.Data.Contracts;
 using Microsoft.EntityFrameworkCore;
 using LoadVantage.Infrastructure.Data.Models;
+
 
 
 namespace LoadVantage.Core.Services
@@ -15,18 +17,20 @@ namespace LoadVantage.Core.Services
 		private readonly LoadVantageDbContext context;
         private readonly IUserService userService;
         private readonly IProfileService profileService;
+        private readonly IHtmlSanitizerService htmlSanitizer;
 
 
-        public ChatService(IHubContext<ChatHub> _chatHub, LoadVantageDbContext _dbContext, IUserService _userService, IProfileService _profileService)
+
+		public ChatService(IHubContext<ChatHub> _chatHub, LoadVantageDbContext _dbContext, IUserService _userService, IProfileService _profileService, IHtmlSanitizerService _htmlSanitizer )
 		{
 			chatHub = _chatHub;
 			context = _dbContext;
             userService = _userService;
             profileService = _profileService;
-
+			htmlSanitizer = _htmlSanitizer;
         }
 
-        public async Task<List<UserChatViewModel>> GetChatUsersAsync(Guid currentUserId,bool includeNewChat = false, Guid? newChatUserId = null)
+		public async Task<List<UserChatViewModel>> GetChatUsersAsync(Guid currentUserId,bool includeNewChat = false, Guid? newChatUserId = null)
 		{
 			var userIds = await context.ChatMessages
 				.Where(m => m.SenderId == currentUserId || m.ReceiverId == currentUserId)
@@ -83,12 +87,15 @@ namespace LoadVantage.Core.Services
 
 		public async Task SendMessageAsync(Guid senderId, Guid receiverId, string content)
 		{
+			
+			var sanitizedContent = htmlSanitizer.Sanitize(content);
+
 			var chatMessage = new ChatMessage
 			{
 				Id = Guid.NewGuid(),
 				SenderId = senderId,
 				ReceiverId = receiverId,
-				Message = content,
+				Message = sanitizedContent,
 				Timestamp = DateTime.UtcNow.ToLocalTime()
 			};
 
