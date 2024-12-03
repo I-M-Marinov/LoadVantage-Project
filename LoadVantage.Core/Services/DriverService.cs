@@ -8,6 +8,7 @@ using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
+using LoadVantage.Infrastructure.Data.Contracts;
 
 
 
@@ -18,12 +19,16 @@ namespace LoadVantage.Core.Services
 		private readonly LoadVantageDbContext context;
 		private readonly IProfileService profileService;
 		private readonly IUserService userService;
+		private readonly IHtmlSanitizerService htmlSanitizer;
 
-		public DriverService(LoadVantageDbContext _context, IProfileService _profileService, IUserService _userService)
+
+		public DriverService(LoadVantageDbContext _context, IProfileService _profileService, IUserService _userService, IHtmlSanitizerService _htmlSanitizer)
 		{
 			context = _context;
 			profileService = _profileService;
 			userService = _userService;
+			htmlSanitizer = _htmlSanitizer;
+
 		}
 
 		public async Task<DriversViewModel> GetAllDriversAsync(Guid userId)
@@ -94,12 +99,18 @@ namespace LoadVantage.Core.Services
 
 		public async Task AddDriverAsync(DriverViewModel model, Guid userId)
 		{
+			// sanitize the input before creating the new driver 
+
+			var sanitizedFirstName = htmlSanitizer.Sanitize(model.FirstName);
+			var sanitizedLastName = htmlSanitizer.Sanitize(model.LastName);
+			var sanitizedLicenseNumber = htmlSanitizer.Sanitize(model.LicenseNumber);
+
 			var driver = new Driver
 			{
 				DriverId = model.Id,
-				FirstName = model.FirstName,
-				LastName = model.LastName,
-				LicenseNumber = model.LicenseNumber,
+				FirstName = sanitizedFirstName,
+				LastName = sanitizedLastName,
+				LicenseNumber = sanitizedLicenseNumber,
 				DispatcherId = userId,
 				TruckId = null,
 				IsAvailable = true,
@@ -120,11 +131,14 @@ namespace LoadVantage.Core.Services
 				throw new KeyNotFoundException(DriverWasNotFound);
 			}
 
-			driver.FirstName = model.FirstName;
-			driver.LastName = model.LastName;
-			driver.LicenseNumber = model.LicenseNumber;
-			driver.IsFired = model.isFired;
-			driver.IsBusy = model.IsBusy;
+			// sanitize the input if the driver is found
+			var sanitizedFirstName = htmlSanitizer.Sanitize(model.FirstName);
+			var sanitizedLastName = htmlSanitizer.Sanitize(model.LastName);
+			var sanitizedLicenseNumber = htmlSanitizer.Sanitize(model.LicenseNumber);
+
+			driver.FirstName = sanitizedFirstName;
+			driver.LastName = sanitizedLastName;
+			driver.LicenseNumber = sanitizedLicenseNumber;
 
 			context.Drivers.Update(driver);
 			await context.SaveChangesAsync();
