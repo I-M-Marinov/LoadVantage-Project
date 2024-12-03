@@ -22,10 +22,6 @@ namespace LoadVantage.Areas.Admin.Contracts
 		/// Retrieves all registered Brokers 
 		/// </summary>
 		Task<IEnumerable<BaseUser>> GetBrokersAsync();
-		/// <summary>
-		/// Updates the User's position  
-		/// </summary>
-		Task UpdateUserPositionAsync(Guid userId, string position);
 		Task<IEnumerable<Claim>> GetAdminClaimsAsync(BaseUser administrator);
 		Task UpdateUserImageAsync(Guid userId, IFormFile file);
 		Task DeleteUserImageAsync(Guid userId, Guid imageId);

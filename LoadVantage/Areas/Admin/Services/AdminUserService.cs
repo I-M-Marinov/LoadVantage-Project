@@ -16,20 +16,17 @@ namespace LoadVantage.Areas.Admin.Services
 	{
 
 		private readonly UserManager<BaseUser> userManager;
-		private readonly IUserService userService;
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly LoadVantageDbContext context;
 		private readonly IImageService imageService;
 
 		public AdminUserService(
 			UserManager<BaseUser> _userManager, 
-			IUserService _userService, 
 			IHttpContextAccessor _httpContextAccessor, 
 			LoadVantageDbContext _context, 
 			IImageService _imageService)
 		{
 			userManager = _userManager;
-			userService = _userService;
 			httpContextAccessor = _httpContextAccessor;
 			context = _context;
 			imageService = _imageService;
@@ -80,16 +77,6 @@ namespace LoadVantage.Areas.Admin.Services
 				.Where(u => u is Broker)
 				.ToListAsync();
 		}
-		public async Task UpdateUserPositionAsync(Guid userId, string position)
-		{
-			var user = await userService.GetUserByIdAsync(userId);
-
-			if (user != null)
-			{
-				user.Position = position;
-				await userManager.UpdateAsync(user);
-			}
-		}
 		public async Task<IEnumerable<Claim>> GetAdminClaimsAsync(BaseUser administrator)
 		{
 			var claims = await userManager.GetClaimsAsync(administrator);
@@ -130,7 +117,6 @@ namespace LoadVantage.Areas.Admin.Services
 
 
 				// Add reference to the user in the User's table
-
 				user!.UserImageId = userImage.Id;
 				await userManager.UpdateAsync(user);
 
