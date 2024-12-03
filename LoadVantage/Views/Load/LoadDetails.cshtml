@@ -324,7 +324,7 @@
 							
 			@if (@Model.UserProfile.Position is nameof(Dispatcher))
 			{
-				<a asp-action="ChatWithBrokerWindow" asp-controller="Chat" asp-route-brokerId="@Model.BrokerId" class="btn btn-outline-primary" id="chatWithBrokerBtn">
+				<a asp-action="ChatWithBrokerWindow" asp-controller="Chat" asp-route-brokerId="@Model.BrokerId" class="btn btn-outline-primary" id="chatWithBrokerBtn" title="PM the Broker">
 					<i class="bi bi-chat-text-fill"></i>
 					<span class="d-none d-sm-inline">PM the Broker</span>
 				</a>
@@ -341,8 +341,8 @@
 				}
 				
 			}
-							
-			<form asp-action="LoadDetails" asp-controller="Load" method="get" id="refreshLoadForm">
+
+			<form asp-action="LoadDetails" asp-controller="Load" method="get" id="refreshLoadForm" title="Refresh the load">
 				<input type="hidden" name="loadId" value="@Model.Id" />
 				<button id="refreshLoadInfoButton" class="btn btn-outline-info">
 					<i class="bx  bx-refresh"></i>
@@ -366,7 +366,7 @@
 					</form>
 				}
 
-				<form asp-action="DeliverALoad" asp-controller="Load" method="post" id="deliverLoadForm">
+				<form asp-action="DeliverALoad" asp-controller="Load" method="post" id="deliverLoadForm" title="Mark Load as Delivered">
 					@Html.AntiForgeryToken()
 					<input type="hidden" name="loadId" value="@Model.Id" />
 
