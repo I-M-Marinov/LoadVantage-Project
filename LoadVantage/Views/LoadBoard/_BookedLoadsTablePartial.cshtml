@@ -39,9 +39,8 @@
 			<td>
 				<form method="get" action="@Url.Action("LoadDetails", "Load")">
 					<input type="hidden" name="loadId" value="@load.Id"/>
-					<button class="btn btn-warning view-button">
-						<i class="ri-clipboard-line"></i>
-						<span>View</span>
+					<button class="view-button">
+						<i class="bi bi-info-circle" title="Open the information for this load."></i>
 					</button>
 				</form>
 			</td>

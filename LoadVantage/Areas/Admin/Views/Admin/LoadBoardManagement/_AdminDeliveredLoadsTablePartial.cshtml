@@ -34,9 +34,8 @@
 			<td>
 				<form method="get" asp-area="Admin" asp-controller="AdminLoad" asp-action="GetLoadInfo">
 					<input type="hidden" name="loadId" value="@load.Id"/>
-					<button class="btn btn-warning view-button">
-						<i class="bx bx-info-square"></i>
-						<span>View</span>
+					<button class="view-button">
+						<i class="bi bi-info-circle" title="Open the information for this load."></i>
 					</button>
 				</form>
 			</td>
