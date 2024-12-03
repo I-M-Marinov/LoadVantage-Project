@@ -36,7 +36,7 @@ namespace LoadVantage.Core.Services
 			var postedLoads = await context.Loads
 				.Include(load => load.PostedLoad)
 				.Where(load => load.Status == LoadStatus.Available)
-				.OrderByDescending(load => load.PostedLoad.PostedDate)
+				.OrderByDescending(load => load.PostedLoad!.PostedDate)
 				.ToListAsync();
 
 			return postedLoads.Select(load => new LoadViewModel()
@@ -126,7 +126,7 @@ namespace LoadVantage.Core.Services
 					Weight = load.Weight,
 					Status = load.Status.ToString(),
 					BrokerId = load.BrokerId,
-					DispatcherId = load.BookedLoad.DispatcherId,
+					DispatcherId = load.BookedLoad!.DispatcherId,
 					DriverId = load.BookedLoad.DriverId,
 
 					// Include Dispatcher Info if available
@@ -143,7 +143,7 @@ namespace LoadVantage.Core.Services
 					DriverInfo = load.BookedLoad.DriverId != null
 						? new DriverInfoViewModel
 						{
-							DriverName = load.BookedLoad.Driver.FullName,
+							DriverName = load.BookedLoad!.Driver!.FullName,
 							DriverLicenseNumber = load.BookedLoad.Driver.LicenseNumber
 						}
 						: null
@@ -160,14 +160,14 @@ namespace LoadVantage.Core.Services
 				.ThenByDescending(l => l.OriginState)
 				.Select(load => new DeliveredLoadViewModel
 				{
-					Id = load.DeliveredLoad.Id,
+					Id = load.DeliveredLoad!.Id,
 					LoadLocations = $"{load.OriginCity}, {load.OriginState} to {load.DestinationCity}, {load.DestinationState}",
 					Distance = load.Distance,
 					Price = load.Price,
 					DeliveredOn = load.DeliveredLoad.DeliveredDate,
 					BrokerName = load.Broker.FullName,
-					DispatcherName = load.BookedLoad.Dispatcher.FullName,
-					DriverName = load.BookedLoad.Driver.FullName
+					DispatcherName = load.BookedLoad!.Dispatcher.FullName,
+					DriverName = load.BookedLoad!.Driver!.FullName
 				})
 				.ToList();
 
@@ -180,7 +180,7 @@ namespace LoadVantage.Core.Services
 				PostedLoads = postedLoads,
 				BookedLoads = bookedLoads,
 				DeliveredLoads = deliveredLoads,
-				Profile = userProfile
+				Profile = userProfile!
 			};
 
 			return loadBoardViewModel;
