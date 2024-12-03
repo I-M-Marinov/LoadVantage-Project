@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using static LoadVantage.Infrastructure.Data.SeedData.SeedData;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -71,6 +70,12 @@ builder.Services.AddCors(options =>
 			.AllowAnyHeader());
 });
 
+// =============== Register Utility services ============== // 
+
+builder.Services.AddSingleton<IHtmlSanitizerService, HtmlSanitizerService>();				// Add the Sanitizer Service 
+
+// =================================================== // 
+
 // =============== Register USER services ============== // 
 
 builder.Services.AddScoped<IImageService, ImageService>();									// Add the Image Service 
@@ -103,7 +108,6 @@ builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
 // =================================================== // 
 
-
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {
@@ -126,8 +130,6 @@ builder.Services.ConfigureApplicationCookie(options =>
 	options.SlidingExpiration = false;
 
 });
-
-
 
 var app = builder.Build();
 
