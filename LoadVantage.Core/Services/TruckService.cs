@@ -4,6 +4,7 @@ using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Profile;
 using LoadVantage.Core.Models.Truck;
 using LoadVantage.Infrastructure.Data;
+using LoadVantage.Infrastructure.Data.Contracts;
 using LoadVantage.Infrastructure.Data.Models;
 
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
@@ -17,12 +18,14 @@ namespace LoadVantage.Core.Services
 		private readonly LoadVantageDbContext context;
 		private readonly IProfileService profileService;
 		private readonly IUserService userService;
+		private readonly IHtmlSanitizerService htmlSanitizer;
 
-		public TruckService(LoadVantageDbContext _context, IProfileService _profileService, IUserService _userService)
+		public TruckService(LoadVantageDbContext _context, IProfileService _profileService, IUserService _userService, IHtmlSanitizerService _htmlSanitizer)
 		{
 			context = _context;
 			profileService = _profileService;
 			userService = _userService;
+			htmlSanitizer = _htmlSanitizer;
 		}
 
 		public async Task<TrucksViewModel> GetAllTrucksAsync(Guid userId)
@@ -90,12 +93,17 @@ namespace LoadVantage.Core.Services
 
 		public async Task AddTruckAsync(TruckViewModel model, Guid userId)
 		{
+			var sanitizedTruckNumber = htmlSanitizer.Sanitize(model.TruckNumber);
+			var sanitizedTruckMake = htmlSanitizer.Sanitize(model.Make);
+			var sanitizedTruckModel = htmlSanitizer.Sanitize(model.Model);
+			var sanitizedTruckYear = htmlSanitizer.Sanitize(model.Year);
+
 			var truck = new Truck
 			{
-				TruckNumber = model.TruckNumber,
-				Make = model.Make,
-				Model = model.Model,
-				Year = int.Parse(model.Year),
+				TruckNumber = sanitizedTruckNumber,
+				Make = sanitizedTruckMake,
+				Model = sanitizedTruckModel,
+				Year = int.Parse(sanitizedTruckYear),
 				DispatcherId = userId,
 				DriverId = null,
 				IsAvailable = true,
@@ -108,17 +116,22 @@ namespace LoadVantage.Core.Services
 
 		public async Task UpdateTruckAsync(TruckViewModel model)
 		{
+			var sanitizedTruckNumber = htmlSanitizer.Sanitize(model.TruckNumber);
+			var sanitizedTruckMake = htmlSanitizer.Sanitize(model.Make);
+			var sanitizedTruckModel = htmlSanitizer.Sanitize(model.Model);
+			var sanitizedTruckYear = htmlSanitizer.Sanitize(model.Year);
+
 			var truck = await context.Trucks.FindAsync(model.Id);
 
 			if (truck == null)
 			{
-				throw new KeyNotFoundException("Truck not found.");
+				throw new KeyNotFoundException(TruckNotFound);
 			}
 
-			truck.TruckNumber = model.TruckNumber;
-			truck.Make = model.Make;
-			truck.Model = model.Model;
-			truck.Year = int.Parse(model.Year);
+			truck.TruckNumber = sanitizedTruckNumber;
+			truck.Make = sanitizedTruckMake;
+			truck.Model = sanitizedTruckModel;
+			truck.Year = int.Parse(sanitizedTruckYear);
 
 			context.Trucks.Update(truck);
 			await context.SaveChangesAsync();
@@ -130,12 +143,12 @@ namespace LoadVantage.Core.Services
 
             if (truck == null)
             {
-                throw new KeyNotFoundException("Truck not found.");
+                throw new KeyNotFoundException(TruckNotFound);
             }
 
             if (!truck.IsAvailable)
             {
-	            throw new InvalidOperationException("You cannot delete a truck that is currently in use !");
+	            throw new InvalidOperationException(CannotDeleteTruckInUser);
 			}
 
             truck.IsAvailable = false; // set availability to false before decommissioning the truck 
