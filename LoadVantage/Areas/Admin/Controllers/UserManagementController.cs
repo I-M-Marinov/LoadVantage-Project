@@ -1,19 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using LoadVantage.Extensions;
 using LoadVantage.Filters;
 using LoadVantage.Core.Contracts;
-using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Areas.Admin.Contracts;
 using LoadVantage.Areas.Admin.Models.User;
 
-
 using static LoadVantage.Common.GeneralConstants.AdministratorManagement;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
-
-
 
 namespace LoadVantage.Areas.Admin.Controllers
 {
@@ -24,19 +19,16 @@ namespace LoadVantage.Areas.Admin.Controllers
 	{
 		private readonly IUserManagementService userManagementService;
 		private readonly IAdminProfileService adminProfileService;
-		private readonly UserManager<BaseUser> userManager;
-		private readonly RoleManager<Role> roleManager;
 		private readonly IUserService userService;
 
-		public UserManagementController(IUserManagementService _userManagementService, IAdminProfileService _adminProfileService, 
-			UserManager<BaseUser> _userManager, RoleManager<Role> _roleManager, IUserService _userService)
+		public UserManagementController(
+			IUserManagementService _userManagementService, 
+			IAdminProfileService _adminProfileService, 
+			 IUserService _userService)
 		{
 			userManagementService = _userManagementService;
 			adminProfileService = _adminProfileService;
-			userManager = _userManager;
-			roleManager = _roleManager;
 			userService = _userService;
-
 		}
 
 		[HttpGet]
@@ -54,7 +46,7 @@ namespace LoadVantage.Areas.Admin.Controllers
                 users = await userManagementService.GetUsersAsync(pageNumber, pageSize);
             }
 
-            totalUsers = await userManagementService.GetTotalUsersCountAsync();
+            totalUsers = await userService.GetUserCountAsync();
 
             var adminProfile = await adminProfileService.GetAdminInformation(adminId);
 
@@ -68,6 +60,7 @@ namespace LoadVantage.Areas.Admin.Controllers
 	            CurrentPage = pageNumber,
 	            SearchTerm = searchTerm
             };
+
             return View("~/Areas/Admin/Views/Admin/UserManagement/UserManagement.cshtml", model);
         }
 
@@ -171,11 +164,11 @@ namespace LoadVantage.Areas.Admin.Controllers
 
 			try
 			{
-				var isDeleted = await userManagementService.DeactivateUserAsync(userId);
+				var isDeactivated = await userManagementService.DeactivateUserAsync(userId);
 
-				if (!isDeleted)
+				if (!isDeactivated)
 				{
-					TempData.SetErrorMessage(FailedToDeleteTheUser);
+					TempData.SetErrorMessage(FailedToDeactivateTheUser);
 					return RedirectToAction("UserManagement", new { adminId });
 				}
 
@@ -187,11 +180,17 @@ namespace LoadVantage.Areas.Admin.Controllers
 				TempData.SetErrorMessage(ex.Message); // "User not found"
 				return RedirectToAction("UserManagement", new { adminId });
 			}
+			catch (InvalidOperationException ex)
+			{
+				TempData.SetErrorMessage(ex.Message); // Cannot deactivate Dispatcher or Broker ( active drivers or active loads )
+				return RedirectToAction("UserManagement", new { adminId });
+			}
 			catch (Exception ex)
 			{
 				TempData.SetErrorMessage($"An error occurred: {ex.Message}");
 				return RedirectToAction("UserManagement", new { adminId });
 			}
+			
 		}
 
 		[HttpPost]
@@ -285,7 +284,24 @@ namespace LoadVantage.Areas.Admin.Controllers
 			}
 		}
 
-		
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+
+		public async Task<IActionResult> ResetUserPassword(Guid userId)
+		{
+			var adminId = User.GetAdminId();
+
+			var result = await userManagementService.ResetPasswordToDefaultAsync(userId);
+
+			if (!result.Succeeded)
+			{
+				TempData.SetErrorMessage(ResetPasswordFailed);
+				return RedirectToAction("UserManagement", new { adminId });
+			}
+
+			TempData.SetSuccessMessage(UserPasswordResetSuccessfully);
+			return RedirectToAction("UserManagement", new { adminId });
+		}
 
 	}
 }
