@@ -289,7 +289,14 @@
 												</button>
 											</form>
 										}
-
+										
+										<form class="resetUserPassword" asp-area="Admin" asp-action="ResetUserPassword" asp-controller="UserManagement" method="post">
+											@Html.AntiForgeryToken()
+											<input type="hidden" name="userId" value="@user.Id"/>
+											<button type="submit" class="btn btn-sm btn-success" title="Reset this user's password to the default password">
+												<i class="bx bx-reset"></i>
+											</button>
+										</form>
 										
 									</div>
 								</td>
@@ -319,9 +326,10 @@
 
 </main>
 
-<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
+@* <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+ *@
 
 <script>
 
