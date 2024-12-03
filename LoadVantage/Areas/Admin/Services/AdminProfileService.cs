@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 using LoadVantage.Core.Contracts;
 using LoadVantage.Infrastructure.Data.Models;
-using LoadVantage.Infrastructure.Data;
 using LoadVantage.Areas.Admin.Contracts;
 using LoadVantage.Areas.Admin.Models.Profile;
-
+using LoadVantage.Infrastructure.Data.Contracts;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Areas.Admin.Services
@@ -16,20 +14,24 @@ namespace LoadVantage.Areas.Admin.Services
         private readonly IUserService userService;
         private readonly IAdminUserService adminUserService;
         private readonly UserManager<BaseUser> adminUserManager;
-        private readonly LoadVantageDbContext context;
         private readonly SignInManager<BaseUser> adminSignInManager;
         private readonly IProfileHelperService profileHelperService;
+        private readonly IHtmlSanitizerService htmlSanitizer;
 
-        public AdminProfileService(LoadVantageDbContext _context, IUserService _userService, UserManager<BaseUser> _adminUserManager,
-
-			SignInManager<BaseUser> _adminSignInManager, IProfileHelperService _profileHelperService, IAdminUserService _adminUserService)
+        public AdminProfileService(
+	        IUserService _userService,
+	        IAdminUserService _adminUserService,
+			UserManager<BaseUser> _adminUserManager,
+			SignInManager<BaseUser> _adminSignInManager, 
+	        IProfileHelperService _profileHelperService, 
+	        IHtmlSanitizerService _htmlSanitizer)
         {
             userService = _userService;
             adminUserService = _adminUserService;
             adminUserManager = _adminUserManager;
-            context = _context;
             adminSignInManager = _adminSignInManager;
             profileHelperService = _profileHelperService;
+            htmlSanitizer = _htmlSanitizer;
         }
 
         public async Task<AdminProfileViewModel?> GetAdminInformation(Guid adminId)
@@ -41,12 +43,9 @@ namespace LoadVantage.Areas.Admin.Services
                 throw new Exception(UserNotFound);
             }
 
-            var userImageUrl = await context.UsersImages
-                .Where(ui => ui.Id == user.UserImageId)
-                .Select(ui => ui.ImageUrl)
-                .FirstOrDefaultAsync();
+            var adminImageUrl = await userService.GetUserImageUrlAsync(adminId);
 
-            var adminProfile = new AdminProfileViewModel()
+			var adminProfile = new AdminProfileViewModel()
             {
                 Id = user.Id.ToString(),
                 FirstName = user.FirstName,
@@ -56,8 +55,8 @@ namespace LoadVantage.Areas.Admin.Services
                 CompanyName = user.CompanyName!,
                 PhoneNumber = user.PhoneNumber!,
                 Email = user.Email!,
-                UserImageUrl = userImageUrl
-            };
+                UserImageUrl = adminImageUrl
+			};
 
             adminProfile.AdminImageFileUploadModel = new AdminImageFileUploadModel();
             adminProfile.AdminChangePasswordViewModel = new AdminChangePasswordViewModel();
@@ -69,7 +68,14 @@ namespace LoadVantage.Areas.Admin.Services
         {
             var admin = await adminUserService.GetAdminByIdAsync(adminId);
 
-            if (admin == null)
+            var sanitizedFirstName = htmlSanitizer.Sanitize(model.FirstName);
+            var sanitizedLastName = htmlSanitizer.Sanitize(model.LastName);
+            var sanitizedUserName = htmlSanitizer.Sanitize(model.Username);
+            var sanitizedCompanyName = htmlSanitizer.Sanitize(model.CompanyName);
+            var sanitizedPhoneNumber = htmlSanitizer.Sanitize(model.PhoneNumber);
+            var sanitizedEmail = htmlSanitizer.Sanitize(model.Email);
+
+			if (admin == null)
             {
                 throw new Exception(UserNotFound);
             }
@@ -79,34 +85,46 @@ namespace LoadVantage.Areas.Admin.Services
                 return model;
             }
 
-            if (await profileHelperService.IsEmailTakenAsync(model.Email, admin.Id))
+            if (await profileHelperService.IsEmailTakenAsync(sanitizedEmail, admin.Id))
             {
                 throw new InvalidOperationException(EmailIsAlreadyTaken);
             }
 
-            if (await profileHelperService.IsUsernameTakenAsync(model.Username, admin.Id))
+            if (await profileHelperService.IsUsernameTakenAsync(sanitizedUserName, admin.Id))
             {
                 throw new InvalidDataException(UserNameIsAlreadyTaken);
             }
 
-            if (AreUserPropertiesEqual(admin, model))
+            var sanitizedModel = new AdminProfileViewModel()
+            {
+	            Id = model.Id,
+	            Username = sanitizedUserName,
+	            Email = sanitizedEmail,
+	            FirstName = sanitizedFirstName,
+	            LastName = sanitizedLastName,
+	            CompanyName = sanitizedCompanyName,
+	            Position = model.Position,
+	            PhoneNumber = sanitizedPhoneNumber
+            };
+
+			if (AreUserPropertiesEqual(admin, sanitizedModel))
             {
                 throw new Exception(NoChangesMadeToProfile);
             }
 
-            await UpdateAdminClaimsAsync(admin, model);
+            await UpdateAdminClaimsAsync(admin, sanitizedModel);
 
             // Update the user's properties ( NOT THE ID ) 
 
-            admin.FirstName = model.FirstName;
-            admin.LastName = model.LastName;
-            admin.UserName = model.Username;
-            admin.CompanyName = model.CompanyName;
-            admin.PhoneNumber = model.PhoneNumber;
-            admin.Email = model.Email;
+            admin.FirstName = sanitizedFirstName;
+            admin.LastName = sanitizedLastName;
+            admin.UserName = sanitizedUserName;
+            admin.CompanyName = sanitizedCompanyName;
+            admin.PhoneNumber = sanitizedPhoneNumber;
+            admin.Email = sanitizedEmail;
 
-            admin.NormalizedUserName = model.Username.ToUpperInvariant(); // normalized username
-            admin.NormalizedEmail = model.Email.ToUpperInvariant(); // normalized email address
+            admin.NormalizedUserName = sanitizedModel.Username.ToUpperInvariant(); // normalized username
+            admin.NormalizedEmail = sanitizedModel.Email.ToUpperInvariant(); // normalized email address
 
             var result = await adminUserManager.UpdateAsync(admin);
 
@@ -115,9 +133,9 @@ namespace LoadVantage.Areas.Admin.Services
                 throw new Exception(UserProfileUpdateFailed);
             }
 
-            var userImage = await context.UsersImages.SingleOrDefaultAsync(u => u.Id == admin.UserImageId);
+            var adminImageUrl = await userService.GetUserImageUrlAsync(adminId);
 
-            return new AdminProfileViewModel
+			return new AdminProfileViewModel
 			{
                 Id = admin.Id.ToString(),
                 Username = admin.UserName,
@@ -127,42 +145,46 @@ namespace LoadVantage.Areas.Admin.Services
                 Email = admin.Email,
                 FirstName = admin.FirstName,
                 LastName = admin.LastName,
-                UserImageUrl = userImage.ImageUrl
-            };
+                UserImageUrl = adminImageUrl
+			};
         }
-
         public async Task<IdentityResult> ChangePasswordAsync(Administrator admin, string currentPassword, string newPassword)
         {
+	        var sanitizedCurrentPassword = htmlSanitizer.Sanitize(currentPassword);
+	        var sanitizedNewPassword = htmlSanitizer.Sanitize(newPassword);
+
             if (admin == null)
             {
                 throw new ArgumentNullException(nameof(admin), UserCannotBeNull);
             }
 
-            if (currentPassword == newPassword)
+            if (sanitizedCurrentPassword == sanitizedNewPassword)
             {
                 return IdentityResult.Failed(new IdentityError
                 {
-                    Description = CurrentAndNewPasswordCannotMatch
+                    Description = CurrentAndNewPasswordCannotMatch // this happened to me before :) 
                 });
             }
 
-            var result = await adminUserManager.ChangePasswordAsync(admin, currentPassword, newPassword);
+            var result = await adminUserManager.ChangePasswordAsync(admin, sanitizedCurrentPassword, sanitizedNewPassword);
 
             if (result.Succeeded)
             {
                 await adminSignInManager.SignOutAsync(); // Log Out 
-                await adminSignInManager.PasswordSignInAsync(admin, newPassword, false,
+                await adminSignInManager.PasswordSignInAsync(admin, sanitizedNewPassword, false,
                     false); // Log back in again with the new password
             }
 
             return result;
         }
-
         private async Task UpdateAdminClaimsAsync(BaseUser admin, AdminProfileViewModel model)
         {
-	        var existingClaims = await adminUserService.GetAdminClaimsAsync(admin);
-	        var claimsToAddOrUpdate = profileHelperService.GetMissingClaims(existingClaims, model.FirstName, model.LastName, model.Username,
-		        model.Position);
+	        var sanitizedFirstName = htmlSanitizer.Sanitize(model.FirstName);
+	        var sanitizedLastName = htmlSanitizer.Sanitize(model.LastName);
+	        var sanitizedUserName = htmlSanitizer.Sanitize(model.Username);
+
+			var existingClaims = await adminUserService.GetAdminClaimsAsync(admin);
+	        var claimsToAddOrUpdate = profileHelperService.GetMissingClaims(existingClaims, sanitizedFirstName, sanitizedLastName, sanitizedUserName, model.Position);
 
 	        if (claimsToAddOrUpdate.Any())
 	        {
@@ -174,7 +196,6 @@ namespace LoadVantage.Areas.Admin.Services
 	        }
 
         }
-
         private bool AreUserPropertiesEqual(BaseUser admin, AdminProfileViewModel model)
         {
             return admin.Id == Guid.Parse(model.Id) &&
@@ -187,6 +208,4 @@ namespace LoadVantage.Areas.Admin.Services
                    admin.Email == model.Email;
         }
     }
-
-
 }
