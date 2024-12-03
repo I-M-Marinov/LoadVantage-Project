@@ -1,11 +1,12 @@
 ﻿using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 using LoadVantage.Core.Contracts;
-using LoadVantage.Core.Models.Profile;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Identity;
+
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Core.Services
 {
@@ -17,7 +18,10 @@ namespace LoadVantage.Core.Services
 
 
 
-		public ProfileHelperService(LoadVantageDbContext _context, IUserService _userService, UserManager<BaseUser> _userManager)
+		public ProfileHelperService(
+			LoadVantageDbContext _context, 
+			IUserService _userService, 
+			UserManager<BaseUser> _userManager)
 		{
 			userService = _userService;
 			context = _context;
@@ -27,13 +31,14 @@ namespace LoadVantage.Core.Services
 		public async Task<bool> IsUsernameTakenAsync(string username, Guid currentUserId)
 		{
 			var existingUser = await FindUserByUsernameAsync(username);
+
 			return existingUser != null && existingUser.Id != currentUserId;
 		}
 		public async Task<bool> IsEmailTakenAsync(string email, Guid currentUserId)
 		{
 			if (string.IsNullOrWhiteSpace(email))
 			{
-				throw new ArgumentException("Email cannot be null or empty.", nameof(email));
+				throw new ArgumentException(EmailCannotBeNull, nameof(email));
 			}
 
 			var isEmailTaken = await context.Users.AnyAsync(user => user.Email == email && user.Id != currentUserId);
@@ -60,10 +65,12 @@ namespace LoadVantage.Core.Services
 
 			return missingClaims;
 		}
-		public async Task<BaseUser> FindUserByUsernameAsync(string username)
+		public async Task<BaseUser?> FindUserByUsernameAsync(string username)
 		{
 			if (string.IsNullOrWhiteSpace(username))
-				throw new ArgumentException("Username cannot be null or empty.", nameof(username));
+			{
+				throw new ArgumentException(UserNameCannotBeNull, nameof(username));
+			}
 
 			return await userManager.FindByNameAsync(username);
 		}
