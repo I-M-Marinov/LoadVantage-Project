@@ -61,6 +61,7 @@
 						<h6>@Model.FullName</h6>
 						<span>@Model.Position</span>
 					</li>
+
 					<li>
 						<hr class="dropdown-divider">
 					</li>
@@ -81,7 +82,7 @@
 					</li>
 
 					<li>
-						<form method="get" action="@Url.Action("Privacy", "Home")">
+						<form method="get" asp-area="" asp-controller="Home" asp-action="Privacy">
 							<button type="submit" class="dropdown-item d-flex align-items-center">
 								<i class="ri  ri-question-fill"></i>
 								<span>Privacy Policy</span>
