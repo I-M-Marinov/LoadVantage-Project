@@ -56,5 +56,10 @@ namespace LoadVantage.Core.Contracts
         /// </summary>
         Task<IEnumerable<Driver>> GetAllDrivers();
 
-    }
+        /// <summary>
+        /// Retrieves the number of drivers for the current user. 
+        /// </summary>
+        Task<int> GetDriverCount(Guid userId);
+
+	}
 }

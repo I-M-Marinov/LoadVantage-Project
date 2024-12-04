@@ -236,5 +236,13 @@ namespace LoadVantage.Core.Services
 			return allDrivers;
         }
 
-    }
+        public async Task<int> GetDriverCount(Guid userId)
+        {
+			var driverCount = await context.Drivers
+				.Where(d => d.DispatcherId == userId)
+				.CountAsync();
+
+			return driverCount;
+        }
+	}
 }
