@@ -2,6 +2,7 @@
 @using LoadVantage.Core.Models.Profile
 @using LoadVantage.Extensions
 @using LoadVantage.Infrastructure.Data.Models
+@using Dispatcher = LoadVantage.Infrastructure.Data.Models.Dispatcher
 
 @model ProfileViewModel
 
@@ -50,9 +51,26 @@
 			    <div class="card">
 				    <div class="card-body loads-card pt-2 d-flex flex-column align-items-left">
 
-					    <h2>Loads</h2>
+					    @if (Model.Position is nameof(Broker))
+					    {
+						    <h2>Loads</h2>
+					    }
+					    else
+					    {
+						    <h2>Drivers, Trucks & Loads</h2>
+					    }
+
 					    <div class="social-links mt-2">
 						    <div class="status-row">
+							    @if (Model.Position is nameof(Dispatcher))
+							    {
+									<div class="badge bg-primary profile-loads">
+										<i class="ri-steering-2-fill"></i>Drivers
+								    </div>
+									<div class="badge bg-success profile-loads">
+										<i class="ri-truck-fill"></i>Trucks
+								    </div>
+							    }
 							    @if (Model.Position is nameof(Broker))
 							    {
 								    <div class="badge bg-primary profile-loads">
@@ -62,15 +80,22 @@
 									    <i class="bi bi-check-circle me-1"></i>Posted
 								    </div>
 							    }
-							    
+
 							    <div class="badge bg-warning profile-loads">
 								    <i class="bi bi-bookmark me-1"></i>Booked
 							    </div>
 							    <div class="badge bg-info profile-loads">
 								    <i class="bi bi-truck me-1"></i>Delivered
 							    </div>
+
+
 						    </div>
 						    <div class="count-row">
+							    @if (Model.Position is nameof(Dispatcher))
+							    {
+								    <div>@ViewBag.DriversCount</div>
+								    <div>@ViewBag.TrucksCount</div>
+							    }
 							    @if (Model.Position is nameof(Broker))
 							    {
 								    <div>@ViewBag.CreatedLoadsCount</div>
@@ -78,6 +103,8 @@
 							    }
 							    <div>@ViewBag.BookedLoadsCount</div>
 							    <div>@ViewBag.DeliveredLoadsCount</div>
+
+
 						    </div>
 					    </div>
 
@@ -240,18 +267,6 @@
 					    </div><!-- End Bordered Tabs -->
 				    </div>
 			    </div>
-
-			    <!-- Card with titles, buttons, and links -->
-			    <div class="card">
-				    <div class="card-body">
-					    <h5 class="card-title">Card with titles, buttons, and links</h5>
-					    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-					    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-					    <p class="card-text"><a href="#" class="btn btn-primary">Button</a></p>
-					    <a href="#" class="card-link">Card link</a>
-					    <a href="#" class="card-link">Another link</a>
-				    </div>
-			    </div><!-- End Card with titles, buttons, and links -->
 
 		    </div>
 	    </div>
