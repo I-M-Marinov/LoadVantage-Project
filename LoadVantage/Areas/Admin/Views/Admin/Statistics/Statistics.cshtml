@@ -187,7 +187,10 @@
 			</div>
 		</section>
 	</section>
-
+	
+	
+	<div class="stripe">
+	</div>
 
 
 </main>
@@ -219,7 +222,8 @@
     document.addEventListener("DOMContentLoaded", () => {
         var options = {
             chart: {
-                height: 350,
+                height: 250,
+                offsetY: 0,
                 type: 'pie',
                 toolbar: { show: true },
                 fontFamily: 'Nunito, sans-serif', // Specify the font family here
@@ -231,6 +235,11 @@
                 mode: 'light', // Light or dark mode
                 palette: 'palette1', // Predefined color palettes
                 fontFamily: 'Nunito, sans-serif' // Global font for the chart
+            },
+            legend: {
+                position: 'top', // Place legend above to prevent stretching
+                horizontalAlign: 'center',
+                fontSize: '10px',
             },
             tooltip: {
                 style: {
@@ -245,26 +254,32 @@
     });
 
     /*-------------------------------------------------------------------------------------
-    # PIE CHART 2 // BROKERS AND DISPATCHERS
+    # PIE CHART 2 // BROKERS AND DISPATCHERS AND ADMINISTRATORS
     --------------------------------------------------------------------------------------*/
 
     document.addEventListener("DOMContentLoaded", () => {
         var options = {
             chart: {
-                height: 350,
+                height: 250,
+                offsetY: 0,
                 type: 'pie',
                 toolbar: { show: true },
                 fontFamily: 'Nunito, sans-serif', // Specify the font family here
                 fontSize: '10px'
             },
-            series: [@Model.DispatcherCount, @Model.BrokerCount],
-            labels: ['Dispatchers', 'Brokers'],
+            series: [@Model.DispatcherCount, @Model.BrokerCount, @Model.TotalUserCount-(@Model.BrokerCount+@Model.DispatcherCount)],
+            labels: ['Dispatchers', 'Brokers', "Administrators"],
             theme: {
                 mode: 'light', // Light or dark mode
-                palette: 'palette2', // Predefined color palettes
+                palette: 'palette5', // Predefined color palettes
                 fontFamily: 'Nunito, sans-serif', // Global font for the chart
                 fontSize: '10px'
 
+            },
+            legend: {
+                position: 'top', // Place legend above to prevent stretching
+                horizontalAlign: 'center',
+                fontSize: '9px',
             },
             tooltip: {
                 style: {
@@ -285,8 +300,9 @@
     document.addEventListener("DOMContentLoaded", () => {
         var options = {
             chart: {
-                height: 350,
+                height: 250,
                 type: 'pie',
+                offsetY: 0,
                 toolbar: { show: true },
                 fontFamily: 'Nunito, sans-serif', // Specify the font family here
                 fontSize: '10px'
@@ -297,8 +313,13 @@
                 mode: 'light', // Light or dark mode
                 palette: 'palette3', // Predefined color palettes
                 fontFamily: 'Nunito, sans-serif', // Global font for the chart
-                fontSize: '10px'
+                fontSize: '9px',
 
+            },
+            legend: {
+                position: 'top', // Place legend above to prevent stretching
+                horizontalAlign: 'center',
+                fontSize: '10px',
             },
             tooltip: {
                 style: {
@@ -319,7 +340,8 @@
     document.addEventListener("DOMContentLoaded", () => {
         var options = {
             chart: {
-                height: 350,
+                height: 250,
+                offsetY: 0,
                 type: 'pie',
                 toolbar: { show: true },
                 fontFamily: 'Nunito, sans-serif', // Specify the font family here
@@ -333,6 +355,11 @@
                 fontFamily: 'Nunito, sans-serif', // Global font for the chart
                 fontSize: '10px'
 
+            },
+            legend: {
+                position: 'top', // Place legend above to prevent stretching
+                horizontalAlign: 'center',
+                fontSize: '9px',
             },
             tooltip: {
                 style: {
@@ -353,7 +380,8 @@
     document.addEventListener("DOMContentLoaded", () => {
         var options = {
             chart: {
-                height: 350,
+                height: 250,
+                offsetY: 0,
                 type: 'pie',
                 toolbar: { show: true },
                 fontFamily: 'Nunito, sans-serif', // Specify the font family here
@@ -368,6 +396,11 @@
                 fontSize: '10px'
 
             },
+            legend: {
+                position: 'top', // Place legend above to prevent stretching
+                horizontalAlign: 'center',
+                fontSize: '9px',
+            },
             tooltip: {
                 style: {
                     fontFamily: 'Nunito, sans-serif', // Font for tooltips
@@ -380,39 +413,25 @@
         chart.render();
     });
 
-    // Prevent card flip when clicking on the toolbar
+    // Prevent card flip when clicking on the toolbar or on the pie chart itself 
 
-        
-    document.querySelector("#pieChart").addEventListener("click", (event) => {
-        if (event.target.closest(".apexcharts-toolbar")) {
-            event.stopPropagation();
-        }
-    });
 
-    document.querySelector("#pieChart2").addEventListener("click", (event) => {
-        if (event.target.closest(".apexcharts-toolbar")) {
-            event.stopPropagation();
-        }
-    });
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll(".pieChart").forEach(pieChart => {
+            pieChart.addEventListener("click", (event) => {
 
-    document.querySelector("#pieChart3").addEventListener("click", (event) => {
-        if (event.target.closest(".apexcharts-toolbar")) {
-            event.stopPropagation();
-        }
-    });
+                if (event.target.closest(".apexcharts-toolbar")) {
+                    event.stopPropagation();
+                    return;
+                }
 
-    document.querySelector("#pieChart4").addEventListener("click", (event) => {
-        if (event.target.closest(".apexcharts-toolbar")) {
-            event.stopPropagation();
-        }
+                if (event.target.closest("path")) {
+                    event.stopPropagation();
+                    return;
+                }
+            });
+        });
     });
-
-    document.querySelector("#pieChart5").addEventListener("click", (event) => {
-        if (event.target.closest(".apexcharts-toolbar")) {
-            event.stopPropagation();
-        }
-    });
-  
 
 
     /*-------------------------------------------------------------------------------------
