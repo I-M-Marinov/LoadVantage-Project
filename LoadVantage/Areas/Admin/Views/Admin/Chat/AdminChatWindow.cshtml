@@ -90,7 +90,6 @@
 								@await Html.PartialAsync("~/Areas/Admin/Views/Admin/Chat/_ChatMessagesPartialView.cshtml", Model.Messages)
 							</div>
 
-
 							<!-- Message Sending Form -->
 
 							<form asp-area="Admin" asp-action="SendMessage" asp-controller="AdminChat" method="post" class="mt-3">
@@ -107,15 +106,52 @@
 					</div>
 				</div>
 		    }
+			else
+			{
+					<div id="noChatsContainer">
+						<h5>@ViewData["Message"]</h5>
+						<p>To start a chat with a Broker or Dispatcher please view any Load on the Load Board or go to User Management.</p>
 
+					<div class="button-row">
+							
+							<form asp-action="ReturnToLoadBoard" asp-controller="LoadBoardManagement" method="post" id="backToLoadBoardButton">
+								@Html.AntiForgeryToken()
+								<button type="submit" class="btn btn-info">
+									<i class="bx bxs-dashboard"></i> LoadBoard
+								</button>
+							</form>
+
+							<form method="get" asp-area="Admin" asp-controller="UserManagement" asp-action="UserManagement" id="backToUserManagementButton">
+								<input type="hidden" name="adminId" value="@Model.Profile.Id" />
+								<button type="submit" class="btn btn-info">
+									<i class="bx bxs-user"></i>
+									<span>User Management</span>
+								</button>
+							</form>
+
+						</div>
+
+
+					</div>
+
+			}
 		   
 	    </div>
     </div>
 
 </main><!-- End #main -->
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- SignalR  -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.5/signalr.min.js"></script>
+
+
+<!-- jQuery -->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<!-- jQuery Validation -->
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
 
 
 <script>
@@ -188,6 +224,127 @@
 		}
 
 		// Loading Chat Messages //
+	}
+
+	/*-------------------------------------------------------------------------------------
+	# SIGNALR CHAT HUB
+	--------------------------------------------------------------------------------------*/
+
+	const chatHubConnection = new signalR.HubConnectionBuilder()
+		.withUrl("/chatHub")
+		.build();
+
+	chatHubConnection.start().then(() => {
+		console.log("SignalR ChatHub connection initialized.");
+
+		// Check if the "chat-messages-container" exists
+		const messageContainer = document.getElementById("chat-messages-container");
+		if (!messageContainer) {
+			console.warn("Chat messages container not found. Skipping message handling.");
+			return;
+		}
+
+		// Handle incoming messages
+		chatHubConnection.on("ReceiveMessage", function (chatMessage) {
+			displayMessage(chatMessage);
+		});
+
+		// Attach submit event listener if the form exists
+		const form = document.querySelector("form");
+		if (form) {
+			form.addEventListener("submit", function (event) {
+				event.preventDefault();
+
+				const messageContentInput = document.querySelector("input[name='messageContent']");
+				const receiverIdInput = document.querySelector("input[name='receiverId']");
+				const senderIdElement = document.getElementById("senderId");
+
+				if (messageContentInput && receiverIdInput && senderIdElement) {
+					const messageContent = messageContentInput.value;
+					const receiverId = receiverIdInput.value;
+					const senderId = senderIdElement.value;
+
+					chatHubConnection.invoke("SendMessage", senderId, receiverId, messageContent)
+						.then(() => {
+							messageContentInput.value = "";
+						})
+						.catch(err => {
+							console.error("Error sending message: " + err);
+						});
+				} else {
+					console.error("Form inputs are missing.");
+				}
+			});
+		} else {
+			console.warn("Form element not found. Skipping form submission handling.");
+		}
+
+		// Mark messages as read when clicked
+		messageContainer.addEventListener('click', function (e) {
+			const messageElement = e.target.closest('.chat-message');
+			if (messageElement && messageElement.classList.contains('received')) {
+				const senderId = messageElement.getAttribute('data-sender-id');
+				const receiverId = messageElement.getAttribute('data-receiver-id');
+
+				markMessagesAsRead(senderId, receiverId);
+
+				messageElement.classList.add('read');
+			}
+		});
+	}).catch(err => {
+		console.error("Error initializing SignalR connection: " + err);
+	});
+
+	// Sanitize the message
+	function sanitizeMessage(message) {
+		const element = document.createElement('div');
+		element.innerText = message;
+		return element.innerHTML;
+	}
+
+	// Display the message
+	function displayMessage(chatMessage) {
+		const messageContainer = document.getElementById("chat-messages-container");
+		if (!messageContainer) {
+			console.warn("Message container not found. Cannot display message.");
+			return;
+		}
+
+		const messageElement = document.createElement("div");
+		messageElement.classList.add("chat-message");
+
+		const senderId = document.getElementById("senderId")?.value;
+		if (chatMessage.senderId === senderId) {
+			messageElement.classList.add("sent");
+			messageElement.setAttribute("data-is-received", "false");
+		} else {
+			messageElement.classList.add("received");
+			messageElement.setAttribute("data-is-received", "true");
+		}
+
+		messageElement.setAttribute("data-message-id", chatMessage.id);
+		messageElement.setAttribute("data-sender-id", chatMessage.senderId);
+		messageElement.setAttribute("data-receiver-id", chatMessage.receiverId);
+
+		const messageContent = document.createElement("div");
+		messageContent.classList.add("message-content");
+		messageContent.innerHTML = sanitizeMessage(chatMessage.content); // Sanitization
+
+		const messageTimestamp = document.createElement("div");
+		messageTimestamp.classList.add("message-timestamp");
+		messageTimestamp.innerText = new Date(chatMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+		messageElement.appendChild(messageContent);
+		messageElement.appendChild(messageTimestamp);
+
+		if (chatMessage.isRead) {
+			messageElement.classList.add("read");
+		}
+
+		messageContainer.appendChild(messageElement);
+
+		// Scroll to the bottom of the message container
+		messageContainer.scrollTop = messageContainer.scrollHeight;
 	}
 
 </script>
