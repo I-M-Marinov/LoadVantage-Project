@@ -49,6 +49,11 @@ namespace LoadVantage.Core.Contracts
         /// Retrieves all trucks from the DB.
         /// </summary>
         Task<IEnumerable<Truck>> GetAllTrucksAsync();
+        /// <summary>
+        /// Retrieves the number of trucks for the current user. 
+        /// </summary>
+        Task<int> GetTruckCount(Guid userId);
+
 
     }
 }

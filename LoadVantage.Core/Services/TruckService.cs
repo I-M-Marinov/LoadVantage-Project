@@ -148,7 +148,7 @@ namespace LoadVantage.Core.Services
 
             if (!truck.IsAvailable)
             {
-	            throw new InvalidOperationException(CannotDeleteTruckInUser);
+	            throw new InvalidOperationException(CannotDeleteTruckInUse);
 			}
 
             truck.IsAvailable = false; // set availability to false before decommissioning the truck 
@@ -221,5 +221,13 @@ namespace LoadVantage.Core.Services
             return allTrucks;
         }
 
+        public async Task<int> GetTruckCount(Guid userId)
+        {
+		    var trucksCount = await context.Trucks
+		        .Where(t => t.DispatcherId == userId)
+		        .CountAsync();
+
+	        return trucksCount;
+		}
 	}
 }
