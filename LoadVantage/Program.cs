@@ -157,7 +157,7 @@ if (app.Environment.IsDevelopment())
 {
 	app.UseMigrationsEndPoint();
     builder.Configuration.AddUserSecrets<Program>();
-    app.UseDeveloperExceptionPage();  // For development errors
+    //app.UseDeveloperExceptionPage();  // For development errors
 
 }
 else
