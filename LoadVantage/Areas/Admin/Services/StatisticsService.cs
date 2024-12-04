@@ -8,21 +8,21 @@ namespace LoadVantage.Areas.Admin.Services
 	public class StatisticsService : IStatisticsService
     {
         private readonly IAdminProfileService adminProfileService;
+        private readonly IAdminUserService adminUserService;
         private readonly ILoadHelperService loadHelperService;
-        private readonly IUserService userService;
         private readonly IDriverService driverService;
         private readonly ITruckService truckService;
 
         public StatisticsService(
-            IAdminProfileService _adminProfileService, 
+            IAdminProfileService _adminProfileService,
+            IAdminUserService _adminUserService,
             ILoadHelperService _loadHelperService, 
-            IUserService _userService,
             IDriverService _driverService,
             ITruckService _truckService)
         {
             adminProfileService = _adminProfileService;
+            adminUserService = _adminUserService;
             loadHelperService = _loadHelperService;
-            userService = _userService;
             driverService = _driverService;
             truckService = _truckService;
         }
@@ -37,7 +37,7 @@ namespace LoadVantage.Areas.Admin.Services
             var companies = await GetGroupedCompanyNamesAsync();
             var driverCounts = await GetDriverCountsAsync();
             var truckCounts = await GetTruckCountsAsync();
-            var totalRevenue = await GetTotalRevenues();
+            var totalRevenue = await GetTotalRevenuesAsync();
 
 
 
@@ -59,29 +59,43 @@ namespace LoadVantage.Areas.Admin.Services
             return allStatsViewModel;
         }
 
+        public async Task<int> GetTotalLoadCountAsync()
+        {
+	        return await loadHelperService.GetAllLoadCountsAsync();
+        }
+		public async Task<int> GetTotalUserCountAsync()
+        {
+            return await adminUserService.GetUserCountAsync();
+        }
+        public async Task<decimal> GetTotalRevenuesAsync()
+        {
+	        var allLoads = await loadHelperService.GetAllLoads();
+
+	        var revenues = allLoads
+		        .Where(l => l.Status == LoadStatus.Delivered)
+		        .Sum(l => l.Price);
+
+	        return revenues;
+        }
         private async Task<Dictionary<string, int>> GetLoadCountsByStatusAsync()
         {
-            var allLoads = await loadHelperService.GetAllLoads();
+	        var allLoads = await loadHelperService.GetAllLoads();
 
-            return allLoads
-                .GroupBy(load => load.Status)
-                .ToDictionary(g => g.Key.ToString(), g => g.Count());
+	        return allLoads
+		        .GroupBy(load => load.Status)
+		        .ToDictionary(g => g.Key.ToString(), g => g.Count());
         }
-        private async Task<int> GetTotalUserCountAsync()
+		private async Task<int> GetDispatcherCountAsync()
         {
-            return await userService.GetUserCountAsync();
-        }
-        private async Task<int> GetDispatcherCountAsync()
-        {
-            return await userService.GetDispatcherCountAsync();
+            return await adminUserService.GetDispatcherCountAsync();
         }
         private async Task<int> GetBrokerCountAsync()
         {
-            return await userService.GetBrokerCountAsync();
+            return await adminUserService.GetBrokerCountAsync();
         }
         private async Task<Dictionary<string, int>> GetGroupedCompanyNamesAsync()
         {
-            var allUsers = await userService.GetAllUsersFromACompany();
+            var allUsers = await adminUserService.GetAllUsersFromACompany();
 
             var groupedUsers = allUsers
                 .GroupBy(user => user.CompanyName)
@@ -107,16 +121,7 @@ namespace LoadVantage.Areas.Admin.Services
 
             return (availableTrucks, decommissionedTrucks);
         }
-        private async Task<decimal> GetTotalRevenues()
-        {
-            var allLoads = await loadHelperService.GetAllLoads();
-
-            var revenues = allLoads
-                .Where(l => l.Status == LoadStatus.Delivered)  
-                .Sum(l => l.Price);  
-
-            return revenues;
-        }
+        
 
     }
 }
