@@ -198,19 +198,21 @@
 							</td>
 							<td class="text-center">
 								<div id="actionButtons" class="d-flex p-2 gap-1 justify-content-center justify-items-center">
+
+									<button type="button" class="btn btn-outline-primary edit-truck-btn btn-sm " data-id="@truck.Id">Edit</button>
+
 									@if (truck.IsAvailable && truck.DriverName == "N/A")
 									{
-										<button type="button" class="btn btn-outline-primary edit-truck-btn btn-sm " data-id="@truck.Id">Edit</button>
 										<button type="button" class="btn btn-outline-danger btn-sm truck-delete-btn " data-truck-id="@truck.Id">Delete</button>
 									}
 
-									@if (!truck.IsAvailable && truck.DriverId != null) 
+									@if (!truck.IsAvailable && truck.DriverId != null)
 									{
 										<form asp-action="ParkTruck" asp-controller="Truck" method="post">
 											@Html.AntiForgeryToken()
-											<input type="hidden" name="truckId" value="@truck.Id" />
-											<input type="hidden" name="driverId" value="@truck.DriverId" />
-												<button type="submit" class="btn btn-outline-warning btn-sm driver-unassign-btn ">Park</button>
+											<input type="hidden" name="truckId" value="@truck.Id"/>
+											<input type="hidden" name="driverId" value="@truck.DriverId"/>
+											<button type="submit" class="btn btn-outline-warning btn-sm driver-unassign-btn ">Park</button>
 										</form>
 									}
 								</div>
