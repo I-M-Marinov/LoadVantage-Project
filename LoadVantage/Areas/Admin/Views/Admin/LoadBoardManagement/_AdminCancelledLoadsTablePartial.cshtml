@@ -14,7 +14,6 @@
 			<th>Delivery Time</th>
 			<th>Price</th>
 			<th>Distance</th>
-			<th>Status</th>
 			<th>Actions</th>
 		</tr>
 	</thead>
@@ -30,12 +29,7 @@
 				<td>@load.DeliveryTime.ToString("dd/MM/yyyy HH:mm")</td>
 				<td>$@load.PostedPrice</td>
 				<td>@(load.Distance.HasValue ? Math.Round(load.Distance.Value) : 0)</td>
-				<td>
-					@if (load.DriverId != null)
-					{
-						<div><i class="ri-truck-fill"> en route</i></div>
-					}
-				</td>
+
 				<td>
 					<form method="get" asp-area="Admin" asp-controller="AdminLoad" asp-action="GetLoadInfo">
 						<input type="hidden" name="loadId" value="@load.Id"/>

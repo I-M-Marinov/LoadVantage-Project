@@ -40,7 +40,6 @@
 	});
 
 	function markMessagesAsRead(senderId, receiverId) {
-		console.log(`Marking messages from ${senderId} to ${receiverId} as read`);
 
 		const receivedMessages = document.querySelectorAll(
 				`.chat-message[data-sender-id="${senderId}"][data-receiver-id="${receiverId}"]:not(.read)`
@@ -50,14 +49,14 @@
 			url: "/Chat/MarkMessageAsRead",
 			data: { senderId: senderId, receiverId: receiverId },
 			headers: {
-				'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+				'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() // AntiForgery Key
 			},
 			success: function () {
 
 				receivedMessages.forEach(message => {
 					message.classList.add('read');
 
-				}); console.log("Messages marked as read.");
+				}); 
 
 			},
 			error: function (xhr) {
