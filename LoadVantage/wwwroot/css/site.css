@@ -651,11 +651,26 @@ body {
 .details-buttons-container button,
 .btn btn-outline-danger,
 #chatWithBrokerBtn,
-#chatWithDispatcherBtn {
+#chatWithDispatcherBtn{
     font-family: Nunito;
     font-size: 0.90rem;
     font-weight: 700;
     border: 2px solid;
+}
+
+#chatWithUserBtn {
+    width: 2.1em;
+    height: 2.1em;
+    display: flex;
+    flex-direction: column;
+    font-family: Nunito;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid;
+    padding: 0.5em;
+    justify-content: center;
+    align-items: center;
+    
 }
 
 #editLoadButton {
@@ -946,6 +961,17 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1em;
+}
+
+.status-row-admin, .count-row-admin {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1em;
+}
+
+.count-row-admin div {
+    font-size: 1.2em;
+    color: #056a8b;
 }
 
 .profile-loads {
@@ -1255,11 +1281,16 @@ body {
     font-weight: 525 !important;
     font-size: 0.90em;
 }
+
+.edit-driver-btn,
+.fire-driver-btn{
+    border: 2px solid;
+}
 /*-------------------------------------------------------------------------------------
 # ADD AND EDIT TRUCK MODALS CSS 
 --------------------------------------------------------------------------------------*/
 #addTruckForm div label,
-#addDriverForm div label{
+#addDriverForm div label {
     background-color: #5a99f5;
     font-weight: 600;
     border-bottom: 2px #8c1db8 solid;
@@ -1430,13 +1461,16 @@ body {
 
 .driver-unassign-btn {
     border: 2px solid #ffc008 !important;
+    color: black !important;
 }
 
-.edit-truck-btn {
+.edit-truck-btn,
+.edit-driver-btn {
     border: 2px solid #0d6efd !important;
 }
 
-.truck-delete-btn {
+.truck-delete-btn,
+.fire-driver-btn {
     border: 2px solid #dc3545 !important;
 }
 
@@ -1487,8 +1521,8 @@ body {
 }
 
 #asignDriverBtn {
-    font-size: 1.10rem !important;
-    padding: 0.20em !important;
+    font-size: 1rem !important;
+    padding: 0.25em !important;
 }
 
 
@@ -1583,18 +1617,21 @@ body {
 
 }
 
-#admin-icon i{
-    font-family: Nunito !important;
-    font-weight: 800 !important;
-    font-size: 18px;
+#admin-icon .ri-user-star-fill {
+  
+    font-size: 18px !important;
     color: #8c1db8;
+    margin-left: -0.5em;
+}
+
+#admin-icon {
+    font-family: Nunito !important;
+    font-weight: 700 !important;
 }
 
 #chattingWithWindow {
-    margin-top: 4em;
-    margin: 0 auto;
-    width: 50%;
-    height: 50%;
+    justify-content: center;
+    align-items: center;
 }
 
 #yourUsername,
@@ -1612,19 +1649,24 @@ body {
     cursor: pointer;
     width: 350px;
     height: auto;
+    position: relative; /* Positioning context for z-index */
+    z-index: 10; /* Set a higher z-index to place it above other elements */
 }
 
 
 .card-container-statistics:nth-of-type(2) {
-    margin-left: 48em;  
+    margin-left: 0em;  
 }
 
+.card-container-statistics:nth-of-type(1) {
+    margin-left: 48em;
+}
 .card-container-statistics:nth-of-type(3) {
     margin-left: 24em;
 }
 
 .card-container-statistics:nth-of-type(4) {
-    margin-top: 20em;
+    margin-top: 25em;
 }
 
 .card-container-statistics:nth-of-type(5) {
@@ -1638,12 +1680,13 @@ body {
     margin-bottom: 30px;
     border-radius: 5px;
     box-shadow: 0px 0 35px rgba(1, 50, 112, 0.1);
+    z-index: 2;
 }
 
 .card-title-statistics {
-    padding: 20px 0 15px 0;
+    padding: 10px 0 10px 0;
     font-size: 22px;
-    font-weight: 600;
+    font-weight: 500;
     color: #012970;
     font-family: "Poppins", sans-serif;
 }
@@ -1656,9 +1699,24 @@ body {
     position: relative;
 }
 
+.pieChart {
+    margin-top: 0.25em;
+    height: 290px;
+    z-index: 2;
+}
+
+.apexcharts-svg{
+    z-index: 2;
+}
+
 .card-container-statistics.flipped .card-flip-statistics {
     transform: rotateY(180deg);
 }
+
+.apexcharts-series.apexcharts-pie-series {
+    z-index: 2000;
+}
+
 
 .card-front-statistics,
 .card-back-statistics {
@@ -1689,13 +1747,13 @@ body {
 
 #totalRevenueStatistics i {
     color: #28a745;
-    font-size: 1.2em;
+    font-weight: 900;
     padding: 0;
 }
 #companiesTable {
     margin-left: 24em;
     margin-top: 18em;
-    width: 23em;
+    width: 23.3em;
     height: auto;
 }
 
@@ -1705,7 +1763,20 @@ body {
 
 .card-back-statistics{
     max-height: 10em !important;
+    z-index: 2;
 }
+
+.stripe {
+    width: 100%;
+    height: 180px;
+    background-color: rgba(255, 255, 255, 0.3); /* White with 30% opacity */
+    position: absolute;
+    top: 36%;
+    left: 0%;
+    transform: translateY(-50%);
+    z-index: 1 !important;
+}
+
 /*-------------------------------------------------------------------------------------
 # RESPONSIVE FOR THE STATISTICS CARDS ( NO FLEXBOX POSSIBLE, DUE TO POSITION ABOSLUTE )
 --------------------------------------------------------------------------------------*/
@@ -2004,5 +2075,11 @@ body {
     }
 }
 
+.profile-loads .ri-truck-fill{
+    margin-right: 0.2em !important;
+}
 
-
+.button-row {
+    display: flex; /* Makes the container a flexbox */
+    gap: 10px; /* Adds spacing between buttons */
+}
