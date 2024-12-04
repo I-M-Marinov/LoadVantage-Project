@@ -20,22 +20,19 @@ namespace LoadVantage.Areas.Admin.Controllers
 	public class AdminController : Controller
 	{
 		private readonly IUserService userService;
-		private readonly IProfileService profileService;
 		private readonly IAdminProfileService adminProfileService;
 		private readonly IAdminUserService adminUserService;
-		private readonly ILoadBoardService loadBoardService;
+		private readonly IStatisticsService statisticsService;
 
 		public AdminController(IUserService _userService,
-			IProfileService _profileService,
 			IAdminProfileService _adminProfileService,
 			IAdminUserService _adminUserService, 
-			ILoadBoardService _loadBoardService)
+			IStatisticsService _statisticsService)
 		{
 			userService = _userService;
-			profileService = _profileService;
 			adminProfileService = _adminProfileService;
 			adminUserService = _adminUserService;
-			loadBoardService = _loadBoardService;
+			statisticsService = _statisticsService;
 		}
 
 		[HttpGet]
@@ -44,7 +41,11 @@ namespace LoadVantage.Areas.Admin.Controllers
 		{
 			var user = await userService.GetCurrentUserAsync();
 
-			AdminProfileViewModel? adminProfileInformation = await adminProfileService.GetAdminInformation(user.Id);
+			ViewBag.TotalRevenue = await statisticsService.GetTotalRevenuesAsync();
+			ViewBag.UsersCount = await statisticsService.GetTotalUserCountAsync();
+			ViewBag.LoadsCount = await statisticsService.GetTotalLoadCountAsync();
+
+			AdminProfileViewModel ? adminProfileInformation = await adminProfileService.GetAdminInformation(user.Id);
 
 			return View("~/Areas/Admin/Views/Admin/Profile/AdminProfile.cshtml", adminProfileInformation);
 		}
