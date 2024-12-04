@@ -8,6 +8,8 @@ using System.Net;
 using System.Security.Claims;
 
 using static LoadVantage.Common.GeneralConstants.UserImage;
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
+using static LoadVantage.Common.GeneralConstants.SecretString;
 
 
 namespace LoadVantage.Areas.Admin.Services
@@ -150,6 +152,45 @@ namespace LoadVantage.Areas.Admin.Services
 			}
 
 		}
+        public async Task<int> GetUserCountAsync()
+        {
+            return await context.Users.CountAsync();
+        }
+        public async Task<int> GetDispatcherCountAsync()
+        {
+            return await context.Users.CountAsync(user => user.Position == nameof(Dispatcher));
+        }
+        public async Task<int> GetBrokerCountAsync()
+        {
+            return await context.Users.CountAsync(user => user.Position == nameof(Broker));
+        }
+        public async Task<IEnumerable<BaseUser>> GetAllUsersFromACompany()
+        {
+            var usersWithCompanyName = await context.Users
+                .Where(user => !string.IsNullOrEmpty(user.CompanyName))
+                .ToListAsync();
 
-	}
+            return usersWithCompanyName;
+        }
+        public async Task<IdentityResult> DeleteUserPassword(BaseUser user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user), UserCannotBeNull);
+            }
+
+            return await userManager.RemovePasswordAsync(user);
+        }
+        public async Task<IdentityResult> AddUserDefaultPassword(BaseUser user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user), UserCannotBeNull);
+            }
+
+            return await userManager.AddPasswordAsync(user, PasswordDefaultAfterReset);
+        }
+
+
+    }
 }
