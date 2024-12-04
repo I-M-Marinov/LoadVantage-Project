@@ -135,6 +135,11 @@ namespace LoadVantage.Controllers
 			{
 				return NotFound(TruckDoesNotExist);
 			}
+			catch (InvalidOperationException ex)
+			{
+				TempData.SetErrorMessage(ex.Message);
+				return RedirectToAction("ShowTrucks", new { userid = userId });
+			}
 		}
 
 		[HttpPost]
