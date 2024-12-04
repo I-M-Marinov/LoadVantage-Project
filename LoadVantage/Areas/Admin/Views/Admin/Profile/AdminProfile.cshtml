@@ -52,31 +52,27 @@
 				</div>
 
 				<div class="card">
-					<div class="card-body loads-card pt-2 d-flex flex-column align-items-left">
+					<div class="card-body loads-card pt-2 d-flex flex-column align-items-center">
 
-						<h2></h2>
+						<h2>Revenue, Users & Loads</h2>
 						<div class="social-links mt-2">
-							<div class="status-row">
-
-								<div class="badge bg-primary profile-loads">
-									<i class="bi bi-star me-1"></i>Created
-								</div>
+							<div class="status-row-admin">
 								<div class="badge bg-success profile-loads">
-									<i class="bi bi-check-circle me-1"></i>Posted
+									<i class="bi bi-currency-dollar me-1"></i>Revenue
+								</div>
+								<div class="badge bg-primary profile-loads">
+									<i class="bi bi bi-person-check-fill me-1"></i>Users
 								</div>
 								<div class="badge bg-warning profile-loads">
-									<i class="bi bi-bookmark me-1"></i>Booked
+									<i class="bx bxs-package me-1"></i>Loads
 								</div>
-								<div class="badge bg-info profile-loads">
-									<i class="bi bi-truck me-1"></i>Delivered
-								</div>
+
 							</div>
-							<div class="count-row">
+							<div class="count-row-admin">
 							
-								<div>@ViewBag.CreatedLoadsCount</div>
-								<div>@ViewBag.PostedLoadsCount</div>
-								<div>@ViewBag.BookedLoadsCount</div>
-								<div>@ViewBag.DeliveredLoadsCount</div>
+								<div>$@ViewBag.TotalRevenue</div>
+								<div>@ViewBag.UsersCount</div>
+								<div>@ViewBag.LoadsCount</div>
 							</div>
 						</div>
 
@@ -239,19 +235,6 @@
 						</div><!-- End Bordered Tabs -->
 					</div>
 				</div>
-
-				<!-- Card with titles, buttons, and links -->
-				<div class="card">
-					<div class="card-body">
-						<h5 class="card-title">Card with titles, buttons, and links</h5>
-						<h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-						<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-						<p class="card-text"><a href="#" class="btn btn-primary">Button</a></p>
-						<a href="#" class="card-link">Card link</a>
-						<a href="#" class="card-link">Another link</a>
-					</div>
-				</div><!-- End Card with titles, buttons, and links -->
-
 			</div>
 		</div>
 	</section>
