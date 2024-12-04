@@ -73,36 +73,6 @@ namespace LoadVantage.Core.Contracts
         /// Checks if a user is already in a role and if not it assigns him the role 
         /// </summary>
         Task<IdentityResult> AssignUserRoleAsync(BaseUser user, string role);
-        /// <summary>
-        /// Retrieve the total user count 
-        /// </summary>
-        Task<int> GetUserCountAsync();
-        /// <summary>
-        /// Retrieve the total Dispatcher count
-        /// </summary>
-        Task<int> GetDispatcherCountAsync();
-        /// <summary>
-        /// Retrieve the total Broker count
-        /// </summary>
-        Task<int> GetBrokerCountAsync();
-        /// <summary>
-        /// Retrieve the all current users that have a company name added to their account as a list of BaseUser
-        /// </summary>
-        Task<IEnumerable<BaseUser>> GetAllUsersFromACompany();
-        /// <summary>
-        /// Deletes the current stored password for a user
-        /// </summary>
-		Task<IdentityResult> DeleteUserPassword(BaseUser user);
-		/// <summary>
-		/// Resets the password for a user to the default reset password
-		/// </summary>
-		Task<IdentityResult> AddUserDefaultPassword(BaseUser user);
-
-
-
-
-
-
 
     }
 

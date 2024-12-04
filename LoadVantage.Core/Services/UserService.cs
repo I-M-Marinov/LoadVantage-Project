@@ -15,7 +15,6 @@ using LoadVantage.Core.Models.Profile;
 
 using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
-using static LoadVantage.Common.GeneralConstants.SecretString;
 
 #nullable disable
 
@@ -305,56 +304,13 @@ namespace LoadVantage.Core.Services
 			}
 
 
-	        if (claims == null || claims.Any())
-	        {
-		        throw new ArgumentException(ClaimsCannotBeNull, nameof(claims));
+
+			if (claims == null || !claims.Any())
+			{
+				throw new ArgumentException(ClaimsCannotBeNull, nameof(claims));
 			}
 	        
 	        return await userManager.AddClaimsAsync(user, claims);
-        }
-
-        public async Task<int> GetUserCountAsync()
-        {
-            return await context.Users.CountAsync();
-        }
-
-		public async Task<int> GetDispatcherCountAsync()
-        {
-            return await context.Users.CountAsync(user => user.Position == nameof(Dispatcher));
-        }
-
-        public async Task<int> GetBrokerCountAsync()
-        {
-            return await context.Users.CountAsync(user => user.Position == nameof(Broker));
-        }
-
-        public async Task<IEnumerable<BaseUser>> GetAllUsersFromACompany()
-        {
-			var usersWithCompanyName = await context.Users
-                .Where(user => !string.IsNullOrEmpty(user.CompanyName))
-                .ToListAsync();
-
-            return usersWithCompanyName;
-        }
-
-        public async Task<IdentityResult> DeleteUserPassword(BaseUser user)
-        {
-	        if (user == null)
-	        {
-		        throw new ArgumentNullException(nameof(user), UserCannotBeNull);
-	        }
-
-	        return await userManager.RemovePasswordAsync(user);
-        }
-
-        public async Task<IdentityResult> AddUserDefaultPassword(BaseUser user)
-        {
-	        if (user == null)
-	        {
-		        throw new ArgumentNullException(nameof(user), UserCannotBeNull);
-	        }
-
-	        return await userManager.AddPasswordAsync(user, PasswordDefaultAfterReset);
         }
 
 	}
