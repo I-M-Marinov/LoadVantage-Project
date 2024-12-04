@@ -27,13 +27,21 @@ namespace LoadVantage.Controllers
 		private readonly IUserService userService;
 		private readonly IProfileService profileService;
 		private readonly ILoadBoardService loadBoardService;
+		private readonly ITruckService truckService;
+		private readonly IDriverService driverService;
 
-		public ProfileController(IUserService _userService,
-			IProfileService _profileService, ILoadBoardService _loadBoardService)
+		public ProfileController(
+			IUserService _userService,
+			IProfileService _profileService, 
+			ILoadBoardService _loadBoardService,
+			ITruckService _truckService,
+			IDriverService _driverService)
 		{
 			userService = _userService;
 			profileService = _profileService;
 			loadBoardService = _loadBoardService;
+			truckService = _truckService;
+			driverService = _driverService;
 		}
 
 
@@ -41,9 +49,24 @@ namespace LoadVantage.Controllers
         public async Task<IActionResult> Profile()
         {
 	        var user = await userService.GetCurrentUserAsync();
+
 			await GetLoadCounts(user);
 
-			ProfileViewModel? userProfileViewModel = await profileService.GetUserInformation(user.Id); 
+			ProfileViewModel? userProfileViewModel = await profileService.GetUserInformation(user.Id);
+
+			try
+			{
+				if (user.Position is nameof(Dispatcher))
+				{
+					await GetTrucksAndDriversCounts(user);
+				}
+			}
+			catch (ArgumentException e)
+			{
+				TempData.SetErrorMessage(e.Message);
+				return View(userProfileViewModel);
+			}
+
             return View(userProfileViewModel);
 
         }
@@ -271,6 +294,25 @@ namespace LoadVantage.Controllers
 			}
 		}
 
+        private async Task GetTrucksAndDriversCounts(BaseUser user)
+        {
+            try
+            {
+				var truckCount = await truckService.GetTruckCount(user.Id);
+				var driversCount = await driverService.GetDriverCount(user.Id);
 
-	}
+				ViewBag.TrucksCount = truckCount > 0 ? truckCount : 0;
+				ViewBag.DriversCount = driversCount > 0 ? driversCount : 0;
+
+			}
+            catch (Exception e)
+            {
+	            ViewBag.TrucksCount = 0;
+	            ViewBag.DriversCount = 0;
+
+				throw new ArgumentException(ErrorRetrievingTruckAndDriverCount);
+            }
+
+        }
+    }
 }
