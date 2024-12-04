@@ -47,7 +47,7 @@ namespace LoadVantage.Core.Services
 			var userImageUrl = await userService.GetUserImageUrlAsync(userId);
 
 
-			var profile = new ProfileViewModel
+			var profile = new ProfileViewModel()
 			{
 				Id = user.Id.ToString(),
 				FirstName = user.FirstName,
@@ -66,7 +66,6 @@ namespace LoadVantage.Core.Services
 
 			return profile;
 		}
-
 		public async Task<ProfileViewModel> UpdateProfileInformation(ProfileViewModel model, Guid userId)
 		{
 			var user = await userService.GetUserByIdAsync(userId);

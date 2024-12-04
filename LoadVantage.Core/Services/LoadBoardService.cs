@@ -329,7 +329,7 @@ namespace LoadVantage.Core.Services
 					{ nameof(Dispatcher), dispatcherLoadCounts }
 				};
 			}
-			
+
 			throw new ArgumentException(InvalidUserType);
 			
 		}

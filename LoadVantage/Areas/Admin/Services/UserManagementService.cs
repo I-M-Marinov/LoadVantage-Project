@@ -28,19 +28,22 @@ namespace LoadVantage.Areas.Admin.Services
 		private readonly RoleManager<Role> roleManager;
 		private readonly IUserService userService;
 		private readonly IHtmlSanitizerService htmlSanitizer;
+        private readonly IAdminUserService adminUserService;
 
 		public UserManagementService(
 			LoadVantageDbContext _context, 
 			UserManager<BaseUser> _userManager, 
 			RoleManager<Role> _roleManager, 
 			IUserService _userService,
-			IHtmlSanitizerService _htmlSanitizer)
+			IHtmlSanitizerService _htmlSanitizer,
+            IAdminUserService _adminUserService)
 		{
 			context = _context;
 			userManager = _userManager;
 			roleManager = _roleManager;
 			userService = _userService;
 			htmlSanitizer = _htmlSanitizer;
+			adminUserService = _adminUserService;
 		}
 
         public async Task<List<UserManagementViewModel>> GetUsersAsync(int pageNumber , int pageSize)
@@ -413,14 +416,14 @@ namespace LoadVantage.Areas.Admin.Services
 		        throw new ArgumentException(UserNotFound);
 	        }
 
-	        var removePasswordResult = await userService.DeleteUserPassword(user);
+	        var removePasswordResult = await adminUserService.DeleteUserPassword(user);
 
 	        if (!removePasswordResult.Succeeded)
 	        {
 		        return removePasswordResult;
 	        }
 
-	        var addPasswordResult = await userService.AddUserDefaultPassword(user);
+	        var addPasswordResult = await adminUserService.AddUserDefaultPassword(user);
 
 	        return addPasswordResult;
         }
