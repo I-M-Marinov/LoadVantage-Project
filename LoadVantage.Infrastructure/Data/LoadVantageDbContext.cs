@@ -12,17 +12,17 @@ namespace LoadVantage.Infrastructure.Data
 
 		}
 
-        public DbSet<Administrator> Administrators { get; set; }
-        public DbSet<Broker> Brokers { get; set; }
-		public DbSet<Dispatcher> Dispatchers { get; set; }
-		public DbSet<Truck> Trucks { get; set; }
-		public DbSet<Driver> Drivers { get; set; }
-        public DbSet<Load> Loads { get; set; }
-        public DbSet<BookedLoad> BookedLoads { get; set; }
-        public DbSet<PostedLoad> PostedLoads { get; set; }
-        public DbSet<DeliveredLoad> DeliveredLoads { get; set; }
-        public DbSet<UserImage> UsersImages { get; set; }
-        public DbSet<ChatMessage> ChatMessages { get; set; }
+        public virtual DbSet<Administrator> Administrators { get; set; }
+        public virtual DbSet<Broker> Brokers { get; set; }
+		public virtual DbSet<Dispatcher> Dispatchers { get; set; }
+		public virtual DbSet<Truck> Trucks { get; set; }
+		public virtual DbSet<Driver> Drivers { get; set; }
+        public virtual DbSet<Load> Loads { get; set; }
+        public virtual DbSet<BookedLoad> BookedLoads { get; set; }
+        public virtual DbSet<PostedLoad> PostedLoads { get; set; }
+        public virtual DbSet<DeliveredLoad> DeliveredLoads { get; set; }
+        public virtual DbSet<UserImage> UsersImages { get; set; }
+        public virtual DbSet<ChatMessage> ChatMessages { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
