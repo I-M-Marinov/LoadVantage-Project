@@ -95,9 +95,6 @@ namespace LoadVantage.Common
             public const string RoleAssignmentFailed = "Role assignment failed: {0}";
 
 
-
-
-
 			public const string EmailCannotBeNull = "Email cannot be null or empty.";
             public const string UserNameCannotBeNull = "Username cannot be null or empty.";
             public const string PasswordCannotBeNull = "Password cannot be null or empty.";
@@ -105,8 +102,6 @@ namespace LoadVantage.Common
             public const string ClaimsCannotBeNull = "Claims cannot be null or empty.";
             public const string ModelCannotBeNull = "The model cannot be null";
 			public const string RoleAlreadyAssignedToUser = "That role is already assigned to the user.";
-
-
 
 
 			// SESSION
@@ -143,12 +138,16 @@ namespace LoadVantage.Common
 			public const string DriverAlreadyOnAnotherLoad = "Status change unsuccessful ! Driver might already be on another load.";
 			public const string ErrorRetrievingDrivers = "An error occurred while retrieving drivers.";
 
+
+			public const string ErrorRetrievingTruckAndDriverCount = "There was an error retrieving truck and driver counts.";
+
+
 			// IMAGE 
 
 			public const string ImageWasNotDeletedSuccessfully = "Image deletion failed.";
 
 
-
+			public const string NoResultsFound = "There are no users that match your search.";
         }
 
 		public static class SuccessMessages
