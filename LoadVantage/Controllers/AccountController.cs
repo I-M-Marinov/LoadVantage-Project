@@ -1,15 +1,19 @@
-﻿using LoadVantage.Core.Models.Account;
-using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
-using static LoadVantage.Extensions.TempDataExtension;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+
+using LoadVantage.Extensions;
+using LoadVantage.Core.Contracts;
+using LoadVantage.Core.Models.Account;
+using LoadVantage.Infrastructure.Data.Contracts;
+using LoadVantage.Infrastructure.Data.Models;
+
+using static LoadVantage.Common.ValidationConstants;
+using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 using static LoadVantage.Common.GeneralConstants.UserRoles;
 using static LoadVantage.Common.GeneralConstants.TempMessages;
-using static LoadVantage.Common.ValidationConstants;
-using System.Security.Claims;
-using LoadVantage.Core.Contracts;
-using LoadVantage.Extensions;
+
 
 namespace LoadVantage.Controllers
 {
@@ -19,12 +23,18 @@ namespace LoadVantage.Controllers
         private readonly IUserService userService;
         private readonly SignInManager<BaseUser> signInManager;
         private readonly RoleManager<Role> roleManager;
+        private readonly IHtmlSanitizerService htmlSanitizer;
 
-        public AccountController(IUserService _userService, SignInManager<BaseUser> _signInManager, RoleManager<Role> _roleManager)
+        public AccountController(
+	        IUserService _userService, 
+	        SignInManager<BaseUser> _signInManager, 
+	        RoleManager<Role> _roleManager,
+	        IHtmlSanitizerService _htmlSanitizer)
 		{
             userService = _userService;
             signInManager = _signInManager;
             roleManager = _roleManager;
+            htmlSanitizer = _htmlSanitizer;
         }
 
 
@@ -54,6 +64,7 @@ namespace LoadVantage.Controllers
             }
 
             var existingEmail = await userService.FindUserByEmailAsync(model.Email);
+
             if (existingEmail != null)
             {
                 ModelState.AddModelError("Email", EmailAlreadyExists);
@@ -123,7 +134,10 @@ namespace LoadVantage.Controllers
                 return View(model);
             }
 
-            var user = await userService.FindUserByUsernameAsync(model.UserName);
+            var sanitizedUserName = htmlSanitizer.Sanitize(model.UserName);
+            var sanitizedPassword = htmlSanitizer.Sanitize(model.Password);
+
+			var user = await userService.FindUserByUsernameAsync(sanitizedUserName);
 
             if (user != null)
             {
@@ -133,9 +147,15 @@ namespace LoadVantage.Controllers
 		            return View(model);
 	            }
 
-				var result = await signInManager.PasswordSignInAsync(user, model.Password, false, false);
+	            if (user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.UtcNow)
+	            {
+		            var lockoutLiftDateTime = user.LockoutEnd.Value.ToLocalTime().ToString("hh:mm tt");
+					ModelState.AddModelError(string.Empty, string.Format(TooManyFailedLoginAttempts, lockoutLiftDateTime));
+					return View(model);
+				}
 
-                
+				var result = await signInManager.PasswordSignInAsync(user, sanitizedPassword, false, true);
+
 				if (result.Succeeded)
                 {
                     var claims = GetMissingClaims(User.Claims, user.FirstName, user.LastName, user.UserName, user.Position);
@@ -147,7 +167,7 @@ namespace LoadVantage.Controllers
 
                     await signInManager.SignInAsync(user, isPersistent: false);
 
-                   return await RedirectToProfile(user);
+                   return RedirectToProfile(user);
 
                 }
 				
@@ -185,14 +205,19 @@ namespace LoadVantage.Controllers
 			return missingClaims; 
 		}
 
-        private async Task<IActionResult> RedirectToProfile(BaseUser user)
+        private IActionResult RedirectToProfile(BaseUser user)
         {
 	        if (user is Administrator)
-		        return  RedirectToAction("AdminProfile", "Admin", new { area = "Admin" }); // Redirect to Admin Profile in the Admin area
-	        if (user is Dispatcher || user is Broker)
-		        return RedirectToAction("Profile", "Profile"); // Redirect to Profile page
+	        {
+		        return RedirectToAction("AdminProfile", "Admin", new { area = "Admin" }); // Redirect to Admin Profile in the Admin area
+			}
 
-	        return  RedirectToAction("Index", "Home");
+	        if (user is Dispatcher || user is Broker)
+	        {
+		        return RedirectToAction("Profile", "Profile"); // Redirect to Profile page
+			}
+
+			return RedirectToAction("Index", "Home"); // Redirect to the Home page alternatively
         }
 
 	}
