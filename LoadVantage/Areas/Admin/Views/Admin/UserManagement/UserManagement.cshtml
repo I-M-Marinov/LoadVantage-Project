@@ -269,6 +269,13 @@
 											<i class="bi bi-person-lines-fill"></i>
 										</button>
 
+U										@if (user.Id != Model.AdminProfile.Id)
+										{
+											<a asp-area="Admin" asp-action="StartChatWithUser" asp-controller="AdminChat" asp-route-userId="@user.Id" class="btn btn-outline-primary" id="chatWithUserBtn">
+												<i class="bi bi-chat-text-fill" title="Start a chat with the user."></i>
+											</a>
+										}
+
 										@if (user.IsActive)
 										{
 											<form class="deactivateUserForm" asp-area="Admin" asp-action="DeactivateUser" asp-controller="UserManagement" method="post">
