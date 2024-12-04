@@ -1,12 +1,6 @@
 ﻿using LoadVantage.Areas.Admin.Models.Chat;
 using LoadVantage.Core.Contracts;
-using LoadVantage.Core.Hubs;
 using LoadVantage.Core.Models.Chat;
-using LoadVantage.Core.Services;
-using LoadVantage.Infrastructure.Data.Models;
-using LoadVantage.Infrastructure.Data;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 using LoadVantage.Areas.Admin.Contracts;
 
 namespace LoadVantage.Areas.Admin.Services
