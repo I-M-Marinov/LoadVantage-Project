@@ -33,10 +33,18 @@ namespace LoadVantage.Core.Services
                 .ThenInclude(d => d.Trucks)
                 .ThenInclude(t => t.Driver)
                 .Include(l => l.DeliveredLoad)
+                .AsNoTracking()
                 .ToListAsync();
 
 
             return allLoads;
+        }
+
+        public async Task<int> GetAllLoadCountsAsync()
+        {
+	        var totalLoads = await context.Loads.CountAsync();
+
+	        return totalLoads;
         }
         public (string FormattedCity, string FormattedState) FormatLocation(string city, string state)
 		{
