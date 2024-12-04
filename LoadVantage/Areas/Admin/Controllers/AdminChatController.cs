@@ -83,7 +83,7 @@ namespace LoadVantage.Areas.Admin.Controllers
 
 	        var chatUsers = await chatService.GetChatUsersAsync(currentUserId);
 	        var messages = await chatService.GetMessagesAsync(currentUserId, receiverId);
-	        var brokerInfo = await userService.GetChatUserInfoAsync(receiverId);
+	        var userInfo = await userService.GetChatUserInfoAsync(receiverId);
 	        var profile = await adminProfileService.GetAdminInformation(currentUserId);
 
 
@@ -101,7 +101,7 @@ namespace LoadVantage.Areas.Admin.Controllers
 			        IsRead = m.IsRead
 
 		        }).ToList(),
-		        UserInfo = brokerInfo,
+		        UserInfo = userInfo,
 		        Profile = profile
 	        };
 
@@ -109,17 +109,9 @@ namespace LoadVantage.Areas.Admin.Controllers
         }
 
 		[HttpGet]
-		public async Task<IActionResult> ChatWithBroker(Guid brokerId)
+		public async Task<IActionResult> StartChatWithUser(Guid userId)
 		{
-			AdminChatViewModel model = await adminChatService.BuildChatViewModel(brokerId);
-
-			return View("~/Areas/Admin/Views/Admin/Chat/AdminChatWindow.cshtml", model);
-		}
-
-		[HttpGet]
-		public async Task<IActionResult> ChatWithDispatcher(Guid dispatcherId)
-		{
-			AdminChatViewModel model = await adminChatService.BuildChatViewModel(dispatcherId);
+			AdminChatViewModel model = await adminChatService.BuildChatViewModel(userId);
 
 			return View("~/Areas/Admin/Views/Admin/Chat/AdminChatWindow.cshtml", model);
 		}
