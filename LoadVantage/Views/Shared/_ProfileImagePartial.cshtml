@@ -19,7 +19,7 @@
 				
 				
 					<div class="pt-2">
-						<button id="uploadImageButton" type="button" class="btn btn-primary btn-sm" title="Upload new profile image">
+						<button id="uploadImageButton" type="button" class="btn btn-primary btn-sm" title="Upload a new profile image">
 							<i class="ri  ri-attachment-2"></i>
 						</button>
 						<button id="submitButton" type="submit" class="btn btn-success btn-sm">
@@ -32,7 +32,7 @@
 				<!-- Form to Delete Current Profile Image -->
 				<form asp-controller="Profile" asp-action="DeleteProfileImage" method="post" class="d-inline">
 					@Html.AntiForgeryToken()
-					<button id="removeImageButton" type="submit" class="btn btn-danger btn-sm" title="Remove my profile image">
+					<button id="removeImageButton" type="submit" class="btn btn-danger btn-sm" title="Remove the profile image">
 						<i class="bi-trash"></i>
 					</button>
 				</form>
