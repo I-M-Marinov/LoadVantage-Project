@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<RunSettings>
+  <DataCollection>
+    <DataCollectors>
+      <DataCollector friendlyName="Code Coverage" uri="datacollector://Microsoft/CodeCoverage/1.0" />
+    </DataCollectors>
+  </DataCollection>
+</RunSettings>

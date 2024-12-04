@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadVantage.Infrastructure"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadVantage.Common", "LoadVantage.Common\LoadVantage.Common.csproj", "{2EF89354-99E8-49BE-839C-D1F0C757C6B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadVantage.Core", "LoadVantage.Core\LoadVantage.Core.csproj", "{69845C6F-EBA2-41FD-8798-7F7059CB0D31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadVantage.Core", "LoadVantage.Core\LoadVantage.Core.csproj", "{69845C6F-EBA2-41FD-8798-7F7059CB0D31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadVantage.Tests", "LoadVantage.Tests\LoadVantage.Tests.csproj", "{A1BD2DC9-F508-40B7-B316-FC54DBF81F7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{69845C6F-EBA2-41FD-8798-7F7059CB0D31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69845C6F-EBA2-41FD-8798-7F7059CB0D31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69845C6F-EBA2-41FD-8798-7F7059CB0D31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1BD2DC9-F508-40B7-B316-FC54DBF81F7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1BD2DC9-F508-40B7-B316-FC54DBF81F7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1BD2DC9-F508-40B7-B316-FC54DBF81F7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1BD2DC9-F508-40B7-B316-FC54DBF81F7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
