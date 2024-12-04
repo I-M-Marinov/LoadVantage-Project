@@ -20,18 +20,23 @@ namespace LoadVantage.Areas.Admin.Controllers
 		private readonly IUserManagementService userManagementService;
 		private readonly IAdminProfileService adminProfileService;
 		private readonly IUserService userService;
+        private readonly IAdminUserService adminUserService;
 
-		public UserManagementController(
+
+        public UserManagementController(
 			IUserManagementService _userManagementService, 
 			IAdminProfileService _adminProfileService, 
-			 IUserService _userService)
+			 IUserService _userService,
+             IAdminUserService _adminUserService)
 		{
 			userManagementService = _userManagementService;
 			adminProfileService = _adminProfileService;
 			userService = _userService;
-		}
+            adminUserService = _adminUserService;
 
-		[HttpGet]
+        }
+
+        [HttpGet]
 		public async Task<IActionResult> UserManagement(Guid adminId, int pageNumber = 1, int pageSize = 5, string searchTerm = "")
         {
             IEnumerable<UserManagementViewModel> users;
@@ -40,13 +45,18 @@ namespace LoadVantage.Areas.Admin.Controllers
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 users = await userManagementService.SearchUsersAsync(searchTerm);
+
+                if (!users.Any())
+                {
+					TempData.SetErrorMessage(NoResultsFound);
+				}
 			}
             else
             {
                 users = await userManagementService.GetUsersAsync(pageNumber, pageSize);
             }
 
-            totalUsers = await userService.GetUserCountAsync();
+            totalUsers = await adminUserService.GetUserCountAsync();
 
             var adminProfile = await adminProfileService.GetAdminInformation(adminId);
 
