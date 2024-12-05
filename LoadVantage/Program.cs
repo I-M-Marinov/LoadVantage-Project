@@ -1,4 +1,5 @@
 using System.Threading.RateLimiting;
+using CloudinaryDotNet;
 using LoadVantage.Areas.Admin.Contracts;
 using LoadVantage.Areas.Admin.Services;
 using LoadVantage.Core.Contracts;
@@ -72,12 +73,12 @@ builder.Services.AddCors(options =>
 
 // =============== Register Utility services ============== // 
 
-builder.Services.AddSingleton<IHtmlSanitizerService, HtmlSanitizerService>();				// Add the Sanitizer Service 
+builder.Services.AddSingleton<IHtmlSanitizerService, HtmlSanitizerService>();               // Add the Sanitizer Service 
 
 // =================================================== // 
 
 // =============== Register USER services ============== // 
-
+builder.Services.AddScoped<IAccountService, AccountService>();                              // Add the Account Service 
 builder.Services.AddScoped<IImageService, ImageService>();									// Add the Image Service 
 builder.Services.AddScoped<IProfileService, ProfileService>();                              // Add the Profile Service 
 builder.Services.AddScoped<IProfileHelperService, ProfileHelperService>();                  // Add the Profile Helper Service 
