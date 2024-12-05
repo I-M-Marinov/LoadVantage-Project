@@ -216,7 +216,7 @@ namespace LoadVantage.Tests.Core.Services
 		public async Task FindUserByEmailAsync_ShouldReturnNull_WhenUserNotFound()
 		{
 			var email = "nobody@whatever.com";
-			_mockUserManager.Setup(um => um.FindByEmailAsync(email)).ReturnsAsync((BaseUser)null);
+			_mockUserManager.Setup(um => um.FindByEmailAsync(email)).ReturnsAsync((User)null);
 
 			var result = await _userService.FindUserByEmailAsync(email);
 
@@ -259,7 +259,7 @@ namespace LoadVantage.Tests.Core.Services
 		[Test]
 		public void CreateUserAsync_ShouldThrowArgumentNullException_WhenUserIsNull()
 		{
-			BaseUser user = null;
+			User user = null;
 
 			string password = "password123";
 
@@ -291,7 +291,7 @@ namespace LoadVantage.Tests.Core.Services
 
 			string password = "password456";  
 
-			_mockUserManager.Setup(um => um.CreateAsync(It.IsAny<BaseUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+			_mockUserManager.Setup(um => um.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
 
 			var result = await _userService.CreateUserAsync(user, password);
 
@@ -303,7 +303,7 @@ namespace LoadVantage.Tests.Core.Services
 		[Test]
 		public void AssignUserRoleAsync_ShouldThrowArgumentNullException_WhenUserIsNull()
 		{
-			BaseUser user = null;
+			User user = null;
 			string role = "Admin";
 
 			var ex = Assert.ThrowsAsync<ArgumentNullException>(async () => await _userService.AssignUserRoleAsync(user, role));
@@ -366,7 +366,7 @@ namespace LoadVantage.Tests.Core.Services
 		{
 			Guid userId = Guid.NewGuid();
 
-			_mockUserManager.Setup(um => um.FindByIdAsync(userId.ToString())).ReturnsAsync((BaseUser)null); 
+			_mockUserManager.Setup(um => um.FindByIdAsync(userId.ToString())).ReturnsAsync((User)null); 
 
 			var ex = Assert.ThrowsAsync<Exception>(async () => await _userService.GetUserInformation(userId));
 
@@ -568,7 +568,7 @@ namespace LoadVantage.Tests.Core.Services
 		[Test]
 		public void AddUserClaimAsync_ShouldThrowArgumentNullException_WhenUserIsNull()
 		{
-			BaseUser user = null;
+			User user = null;
 
 			var claim = new Claim("Role", "Admin");
 
@@ -610,7 +610,7 @@ namespace LoadVantage.Tests.Core.Services
 		[Test]
 		public async Task AddUserClaimsAsync_ShouldThrowArgumentNullException_WhenUserIsNull()
 		{
-			BaseUser user = null;
+			User user = null;
 
 			var claims = new List<Claim>
 			{
