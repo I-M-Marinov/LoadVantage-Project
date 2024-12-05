@@ -1,6 +1,4 @@
-﻿
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 using LoadVantage.Common.Enums;
 using LoadVantage.Core.Contracts;

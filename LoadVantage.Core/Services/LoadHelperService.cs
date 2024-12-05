@@ -39,7 +39,6 @@ namespace LoadVantage.Core.Services
 
             return allLoads;
         }
-
         public async Task<int> GetAllLoadCountsAsync()
         {
 	        var totalLoads = await context.Loads.CountAsync();

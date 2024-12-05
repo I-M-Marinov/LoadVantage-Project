@@ -7,6 +7,7 @@ using LoadVantage.Infrastructure.Data.Contracts;
 using LoadVantage.Infrastructure.Data.Models;
 
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
+using System.Security.Claims;
 
 namespace LoadVantage.Core.Services
 {
@@ -153,7 +154,7 @@ namespace LoadVantage.Core.Services
 
 
 			var existingClaims = await profileHelperService.GetClaimsAsync(user);
-			var claimsToAddOrUpdate = profileHelperService.GetMissingClaims(existingClaims, sanitizedFirstName, sanitizedLastName, sanitizedUserName, model.Position);
+			var claimsToAddOrUpdate = profileHelperService.GetMissingClaims(existingClaims, sanitizedFirstName, sanitizedLastName, sanitizedUserName, model.Position) ?? new List<Claim>();
 
 			if (claimsToAddOrUpdate.Any())
 			{
