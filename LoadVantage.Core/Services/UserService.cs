@@ -36,7 +36,7 @@ namespace LoadVantage.Core.Services
             imageService = _imageService;
 		}
 
-		
+
 
 		public async Task<BaseUser> GetUserByIdAsync(Guid userId)
         {

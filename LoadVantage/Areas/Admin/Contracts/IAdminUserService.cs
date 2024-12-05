@@ -1,5 +1,4 @@
 ﻿using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -49,5 +48,5 @@ namespace LoadVantage.Areas.Admin.Contracts
         /// Retrieve the total Broker count
         /// </summary>
         Task<int> GetBrokerCountAsync();
-    }
+	}
 }
