@@ -28,7 +28,6 @@ namespace LoadVantage.Tests.Core.Services
 			_dbContext = new LoadVantageDbContext(options);
 			_loadHelperService = new LoadHelperService(_dbContext);
 
-
 		}
 
 		[TearDown]

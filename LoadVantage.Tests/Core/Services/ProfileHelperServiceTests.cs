@@ -36,7 +36,6 @@ namespace LoadVantage.Tests.Core.Services
 			var mockOptions = new Mock<IOptions<IdentityOptions>>();
 			mockOptions.Setup(o => o.Value).Returns(new IdentityOptions());
 
-			// Mock UserManager
 			_mockUserManager = new Mock<UserManager<BaseUser>>(
 				mockUserStore.Object,
 				mockOptions.Object,
