@@ -1,18 +1,13 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 using LoadVantage.Extensions;
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Account;
-using LoadVantage.Infrastructure.Data.Contracts;
 using LoadVantage.Infrastructure.Data.Models;
 
-using static LoadVantage.Common.ValidationConstants;
-using static LoadVantage.Common.GeneralConstants.ErrorMessages;
-using static LoadVantage.Common.GeneralConstants.UserRoles;
 using static LoadVantage.Common.GeneralConstants.TempMessages;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 
 namespace LoadVantage.Controllers
@@ -21,22 +16,13 @@ namespace LoadVantage.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService userService;
-        private readonly SignInManager<BaseUser> signInManager;
-        private readonly RoleManager<Role> roleManager;
-        private readonly IHtmlSanitizerService htmlSanitizer;
+        private readonly IAccountService accountService;
 
-        public AccountController(
-	        IUserService _userService, 
-	        SignInManager<BaseUser> _signInManager, 
-	        RoleManager<Role> _roleManager,
-	        IHtmlSanitizerService _htmlSanitizer)
-		{
-            userService = _userService;
-            signInManager = _signInManager;
-            roleManager = _roleManager;
-            htmlSanitizer = _htmlSanitizer;
-        }
-
+        public AccountController(IUserService _userService, IAccountService _accountService)
+        {
+	        userService = _userService;
+            accountService = _accountService;
+		}
 
         [HttpGet]
         [AllowAnonymous]
@@ -47,76 +33,39 @@ namespace LoadVantage.Controllers
         }
 
         [HttpPost]
-		[AllowAnonymous]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-
-		public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+	        if (!ModelState.IsValid)
+	        {
+		        return View(model);
+	        }
 
-            if (!ValidPositions.Contains(model.Position))
-            {
-                ModelState.AddModelError("Position", InvalidPositionSelected);
-                return View(model);
-            }
+	        var (result, errorKey) = await accountService.RegisterUserAsync(model);
 
-            var existingEmail = await userService.FindUserByEmailAsync(model.Email);
+	        if (result.Succeeded)
+	        {
+		        TempData.SetSuccessMessage(LoginWithNewAccount);
+		        return RedirectToAction(nameof(Login));
+	        }
 
-            if (existingEmail != null)
-            {
-                ModelState.AddModelError("Email", EmailAlreadyExists);
-                return View(model);
-            }
+	        if (errorKey != null)
+	        {
+		        ModelState.AddModelError(errorKey, result.Errors.FirstOrDefault()?.Description ?? "An error occurred.");
+	        }
+	        else
+	        {
+		        foreach (var error in result.Errors)
+		        {
+			        ModelState.AddModelError(string.Empty, error.Description);
+		        }
+	        }
 
-            var existingUser = await userService.FindUserByUsernameAsync(model.UserName);
-            if (existingUser != null)
-            {
-                ModelState.AddModelError("Username", UserNameAlreadyExists);
-                return View(model);
-            }
-
-            Role? role = await roleManager.FindByNameAsync(model.Role);
-
-			var defaultImageId = await userService.GetOrCreateDefaultImageAsync();
-
-			User user = new User
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                CompanyName = model.Company,
-                Position = model.Position,
-                Email = model.Email,
-                UserName = model.UserName,
-                Role = role!,
-                UserImageId = defaultImageId
-			};
-
-            var result = await userService.CreateUserAsync(user, model.Password);
-
-            if (result.Succeeded)
-            {
-                await userService.AssignUserRoleAsync(user, UserRoleName);
-                await userService.AddUserClaimAsync(user, new Claim("Position", user.Position ?? ""));
-                await userService.AddUserClaimAsync(user, new Claim("FirstName", user.FirstName ?? ""));
-                await userService.AddUserClaimAsync(user, new Claim("LastName", user.LastName ?? ""));
-                await userService.AddUserClaimAsync(user, new Claim("UserName", user.UserName ?? ""));
-
-                TempData.SetSuccessMessage(LoginWithNewAccount);
-                return RedirectToAction(nameof(Login));
-            }
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-
-            return View(model);
+	        return View(model);
         }
 
-        [HttpGet]
+		[HttpGet]
         [AllowAnonymous]
         public IActionResult Login()
         {
@@ -129,85 +78,43 @@ namespace LoadVantage.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
 
-            var sanitizedUserName = htmlSanitizer.Sanitize(model.UserName);
-            var sanitizedPassword = htmlSanitizer.Sanitize(model.Password);
+			var (result, message) = await accountService.LoginAsync(model.UserName, model.Password);
 
-			var user = await userService.FindUserByUsernameAsync(sanitizedUserName);
+			if (result == SignInResult.Success)
+			{
+				return await RedirectToProfile();
+			}
 
-            if (user != null)
-            {
-	            if (!user.IsActive)
-	            {
-		            ModelState.AddModelError(string.Empty, ThisAccountIsInactive);
-		            return View(model);
-	            }
+			if (!string.IsNullOrEmpty(message))
+			{
+				ModelState.AddModelError(string.Empty, message);
+			}
 
-	            if (user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.UtcNow)
-	            {
-		            var lockoutLiftDateTime = user.LockoutEnd.Value.ToLocalTime().ToString("hh:mm tt");
-					ModelState.AddModelError(string.Empty, string.Format(TooManyFailedLoginAttempts, lockoutLiftDateTime));
-					return View(model);
-				}
+			return View(model);
 
-				var result = await signInManager.PasswordSignInAsync(user, sanitizedPassword, false, true);
-
-				if (result.Succeeded)
-                {
-                    var claims = GetMissingClaims(User.Claims, user.FirstName, user.LastName, user.UserName, user.Position);
-
-					if (claims.Count != 0)
-                    {
-                        await userService.AddUserClaimsAsync(user, claims);
-                    }
-
-                    await signInManager.SignInAsync(user, isPersistent: false);
-
-                   return RedirectToProfile(user);
-
-                }
-				
-				ModelState.AddModelError(string.Empty, InvalidUserNameOrPassword);
-                return View(model);
-
-            }
-
-            ModelState.AddModelError(string.Empty, InvalidUserNameOrPassword);
-            return View(model);
         }
 
         [Authorize]
+        [HttpGet]
 		public async Task<IActionResult> Logout()
         {
-	        await signInManager.SignOutAsync();
+	        await accountService.LogOutAsync();
+
 	        TempData.SetSuccessMessage(LoggedOutOfAccount);
-	        return RedirectToAction("Login", "Account", new { area = "" });
+	        return RedirectToAction("Login", "Account");
         }
 
-        private List<Claim> GetMissingClaims(IEnumerable<Claim> existingClaims, string firstName, string lastName, string userName, string userPosition)
+		
+        private async Task<IActionResult> RedirectToProfile()
         {
-			var claims = new List<Claim>
-			{
-				new Claim("FirstName", firstName),
-				new Claim("LastName", lastName),
-				new Claim("UserName", userName),
-				new Claim("Position", userPosition),
-			};
+			var user = await userService.GetCurrentUserAsync(); 
 
-			var missingClaims = claims.Where(claim =>
-				!existingClaims.Any(c => c.Type == claim.Type && c.Value == claim.Value)
-			).ToList();
-
-			return missingClaims; 
-		}
-
-        private IActionResult RedirectToProfile(BaseUser user)
-        {
-	        if (user is Administrator)
+			if (user is Administrator)
 	        {
 		        return RedirectToAction("AdminProfile", "Admin", new { area = "Admin" }); // Redirect to Admin Profile in the Admin area
 			}
