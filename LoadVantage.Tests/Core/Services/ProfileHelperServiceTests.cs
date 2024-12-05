@@ -5,14 +5,12 @@ using Moq;
 using NUnit.Framework;
 
 using LoadVantage.Core.Contracts;
-using LoadVantage.Core.Models.Profile;
 using LoadVantage.Core.Services;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 
 namespace LoadVantage.Tests.Core.Services
