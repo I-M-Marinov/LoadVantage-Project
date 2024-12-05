@@ -350,6 +350,7 @@ namespace LoadVantage.Tests.Core.Services
 		[Test]
 		public async Task UpdateUserClaimsAsync_ShouldDoNothing_WhenAllClaimsAreUpToDate()
 		{
+			// Arrange
 			var user = new User
 			{
 				Id = Guid.NewGuid(),
@@ -364,25 +365,41 @@ namespace LoadVantage.Tests.Core.Services
 				Position = "Dispatcher"
 			};
 
+			var sanitizedFirstName = "UpToDateFirstName"; 
+			var sanitizedLastName = "UpToDateLastName";   
+			var sanitizedUserName = "UpToDateUser";       
+
+			_mockHtmlSanitizerService.Setup(s => s.Sanitize(It.IsAny<string>()))
+				.Returns<string>(input =>
+					input == model.FirstName ? sanitizedFirstName :
+					input == model.LastName ? sanitizedLastName :
+					input == model.Username ? sanitizedUserName :
+					input); 
+
 			var existingClaims = new List<Claim>
 			{
-				new Claim("FirstName", "UpToDateFirstName"),
-				new Claim("LastName", "UpToDateLastName"),
-				new Claim("UserName", "UpToDateUser"),
+				new Claim("FirstName", sanitizedFirstName),
+				new Claim("LastName", sanitizedLastName),
+				new Claim("UserName", sanitizedUserName),
 				new Claim("Position", "Dispatcher")
 			};
 
 			_mockProfileHelperService.Setup(s => s.GetClaimsAsync(It.IsAny<BaseUser>())).ReturnsAsync(existingClaims);
-			_mockProfileHelperService
-				.Setup(s => s.GetMissingClaims(existingClaims, model.FirstName, model.LastName, model.Username, model.Position))
-				.Returns(new List<Claim>());
 
+			_mockProfileHelperService
+				.Setup(s => s.GetMissingClaims(existingClaims, sanitizedFirstName, sanitizedLastName, sanitizedUserName, model.Position))
+				.Returns(new List<Claim>()); 
+
+			
 			await _profileService.UpdateUserClaimsAsync(user, model);
 
 			_mockProfileHelperService.Verify(s => s.GetClaimsAsync(user), Times.Once);
-			_mockProfileHelperService.Verify(s => s.GetMissingClaims(existingClaims, model.FirstName, model.LastName, model.Username, model.Position), Times.Once);
-			_mockUserManager.Verify(u => u.RemoveClaimsAsync(It.IsAny<BaseUser>(), It.IsAny<IEnumerable<Claim>>()), Times.Never); 
-			_mockUserManager.Verify(u => u.AddClaimsAsync(It.IsAny<BaseUser>(), It.IsAny<IEnumerable<Claim>>()), Times.Never);   
+			_mockProfileHelperService.Verify(
+				s => s.GetMissingClaims(existingClaims, sanitizedFirstName, sanitizedLastName, sanitizedUserName, model.Position),
+				Times.Once);
+
+			_mockUserManager.Verify(u => u.RemoveClaimsAsync(It.IsAny<BaseUser>(), It.IsAny<IEnumerable<Claim>>()), Times.Never);
+			_mockUserManager.Verify(u => u.AddClaimsAsync(It.IsAny<BaseUser>(), It.IsAny<IEnumerable<Claim>>()), Times.Never);
 		}
 
 		[Test]
