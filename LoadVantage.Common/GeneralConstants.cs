@@ -12,18 +12,17 @@ namespace LoadVantage.Common
 
 			public const string DispatcherPositionName = "Dispatcher";
 			public const string BrokerPositionName = "Broker";
-			public const string DriverPositionName = "Driver";
 			public const string AdminPositionName = "Administrator";
 
-			public static readonly string[] ValidPositions = { DispatcherPositionName, BrokerPositionName, AdminPositionName };
+			public static readonly string[] ValidPositions = { DispatcherPositionName, BrokerPositionName };
 			public static readonly string[] ValidRoles = { AdminRoleName, UserRoleName };
 			
 		}
 
 		public static class TempMessages
 		{
-			public const string LoginWithNewAccount = "Login with your new account";
-			public const string LoggedOutOfAccount = "You have been logged out of your account";
+			public const string LoginWithNewAccount = "Login with your new account.";
+			public const string LoggedOutOfAccount = "You have been logged out of your account.";
 			public const string NoRecentChats = "You have no recent chats.";
 		}
 
@@ -46,7 +45,7 @@ namespace LoadVantage.Common
 
             public const string LoadCouldNotBeRetrieved = "Load could not be retrieved.";
             public const string LoadIdInvalid = "Load id is not valid.";
-            public const string ErrorCancellingLoad = "There was an error cancelling the load";
+            public const string ErrorCancellingLoad = "There was an error cancelling the load.";
 
             public const string InvalidCityOrStateSpecified = "Invalid city or state specified.";
             public const string ErrorRetrievingCoordinates = "Error retrieving coordinates.";
@@ -57,7 +56,7 @@ namespace LoadVantage.Common
             public const string ErrorUpdatingThisLoad = "An error occurred while trying to update the load.";
             public const string ErrorUpdatingLoad = "Load was not updated !";
 
-            public const string LoadIsNotInCorrectStatus = "This load cannot be posted. It is not with status \"Created\"";
+            public const string LoadIsNotInCorrectStatus = "This load cannot be posted. It is not with status \"Created\".";
             public const string LoadIsAlreadyPosted = "This load is already posted.";
             public const string ErrorPostingLoad = "An error occured and the load was not posted.";
             public const string ErrorUnpostingLoad = "An error occured and the load was not unposted.";
@@ -135,8 +134,6 @@ namespace LoadVantage.Common
 			public const string DriverDoesNotExist = "The driver you are looking for does not exist.";
 			public const string DriverWasNotAssignedToTheLoad = "Failed to assign the driver to the load. Please check the details and try again.";
 			public const string DriverCurrentlyUnderALoad = "Driver is currently doing a load and cannot leave the truck.";
-			public const string DriverAlreadyOnAnotherLoad = "Status change unsuccessful ! Driver might already be on another load.";
-			public const string ErrorRetrievingDrivers = "An error occurred while retrieving drivers.";
 
 
 			public const string ErrorRetrievingTruckAndDriverCount = "There was an error retrieving truck and driver counts.";
@@ -163,7 +160,6 @@ namespace LoadVantage.Common
             public const string LoadUnpostedSuccessfully = "Load was unposted successfully.";
             public const string LoadsUnpostedSuccessfully = "All loads were unposted successfully.";
             public const string LoadWasRestoredSuccessfully = "The load was restored successfully.";
-            public const string LoadWasMovedBackToBookedSuccessfully = "The load's status was changed successfully back to Booked";
             public const string LoadRepostedAgain = "The load is reposted again looking for a carrier.";
             public const string LoadReturnedToBrokerSuccessfully = "Load was successfully returned to the broker.";
 

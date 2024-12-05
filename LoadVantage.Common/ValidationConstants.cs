@@ -10,6 +10,7 @@
 		public const string InvalidUserNameOrPassword = "Invalid username or password.";
 		public const string ThisAccountIsInactive = "The account you are trying to log in with has been deactivated.";
 		public const string InvalidPositionSelected = "The selected position is invalid.";
+		public const string InvalidRoleSelected = "The selected role is not a valid one.";
 
         public static class LoadValidations
         {
