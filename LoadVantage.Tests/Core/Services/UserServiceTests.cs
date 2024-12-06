@@ -21,7 +21,6 @@ using UserImage = LoadVantage.Infrastructure.Data.Models.UserImage;
 
 namespace LoadVantage.Tests.Core.Services
 {
-	[TestFixture]
 	public class UserServiceTests
 	{
 		private Mock<UserManager<BaseUser>> _mockUserManager;
