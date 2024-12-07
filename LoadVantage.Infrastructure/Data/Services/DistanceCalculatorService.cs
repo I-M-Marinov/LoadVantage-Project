@@ -1,9 +1,10 @@
-﻿using LoadVantage.Infrastructure.Data.Contracts;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+
 using Newtonsoft.Json.Linq;
+
+using LoadVantage.Infrastructure.Data.Contracts;
 using static LoadVantage.Common.GeneralConstants.Conversion;
-using static LoadVantage.Common.GeneralConstants.ErrorMessages;
+using static LoadVantage.Common.GeneralConstants.DistanceCalculator;
 
 
 namespace LoadVantage.Infrastructure.Data.Services
@@ -50,7 +51,7 @@ namespace LoadVantage.Infrastructure.Data.Services
             }
             catch (Exception ex)
             {
-                throw new Exception("Error extracting distance from the response.", ex);
+                throw new Exception(ErrorExtractingDistance, ex);
             }
 
             return distanceInMeters / OneMileInMeters; // Convert to miles
