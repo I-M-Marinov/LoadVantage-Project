@@ -1,7 +1,7 @@
-﻿using LoadVantage.Areas.Admin.Models.Chat;
-using LoadVantage.Core.Contracts;
+﻿using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Chat;
 using LoadVantage.Areas.Admin.Contracts;
+using LoadVantage.Areas.Admin.Models.AdminChat;
 
 namespace LoadVantage.Areas.Admin.Services
 {

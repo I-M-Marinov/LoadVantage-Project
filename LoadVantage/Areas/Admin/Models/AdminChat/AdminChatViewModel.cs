@@ -1,7 +1,7 @@
 ﻿using LoadVantage.Areas.Admin.Models.Profile;
 using LoadVantage.Core.Models.Chat;
 
-namespace LoadVantage.Areas.Admin.Models.Chat
+namespace LoadVantage.Areas.Admin.Models.AdminChat
 {
 	public class AdminChatViewModel
 	{

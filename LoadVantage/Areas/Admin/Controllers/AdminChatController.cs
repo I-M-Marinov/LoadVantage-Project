@@ -1,5 +1,5 @@
 ﻿using LoadVantage.Areas.Admin.Contracts;
-using LoadVantage.Areas.Admin.Models.Chat;
+using LoadVantage.Areas.Admin.Models.AdminChat;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
