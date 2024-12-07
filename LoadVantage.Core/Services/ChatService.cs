@@ -1,10 +1,11 @@
-﻿using LoadVantage.Core.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SignalR;
+
 using LoadVantage.Core.Hubs;
+using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Chat;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Contracts;
-using Microsoft.EntityFrameworkCore;
 using LoadVantage.Infrastructure.Data.Models;
 
 
@@ -87,7 +88,7 @@ namespace LoadVantage.Core.Services
 
 		public async Task SendMessageAsync(Guid senderId, Guid receiverId, string content)
 		{
-			
+
 			var sanitizedContent = htmlSanitizer.Sanitize(content);
 
 			var chatMessage = new ChatMessage
@@ -183,11 +184,6 @@ namespace LoadVantage.Core.Services
 
             return chatViewModel;
         }
-
-        
-
 	}
-
-
 }
 

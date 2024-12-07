@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 using LoadVantage.Filters;
 using LoadVantage.Extensions;
 using LoadVantage.Core.Contracts;
 using LoadVantage.Areas.Admin.Contracts;
 using LoadVantage.Areas.Admin.Models.Profile;
-using Microsoft.AspNetCore.Authorization;
+
 using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
@@ -235,7 +236,5 @@ namespace LoadVantage.Areas.Admin.Controllers
 			return RedirectToAction(nameof(AdminProfile));
 		}
 	}
-
-	
 }
 
