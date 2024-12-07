@@ -94,7 +94,7 @@
 
 							<!-- Message Sending Form -->
 
-							<form asp-action="SendMessage" asp-controller="Chat" method="post" class="mt-3">
+							<form id="chatForm" asp-action="SendMessage" asp-controller="Chat" method="post" class="mt-3">
 								@Html.AntiForgeryToken()
 								<input type="hidden" name="receiverId" value="@Model.UserInfo.Id" />
 								<input type="hidden" id="senderId" value="@Model.Profile.Id" />
@@ -240,9 +240,9 @@
 		});
 
 		// Attach submit event listener if the form exists
-		const form = document.querySelector("form");
-		if (form) {
-			form.addEventListener("submit", function (event) {
+		const chatForm = document.getElementById("chatForm");
+		if (chatForm) {
+			chatForm.addEventListener("submit", function (event) {
 				event.preventDefault();
 
 				const messageContentInput = document.querySelector("input[name='messageContent']");
