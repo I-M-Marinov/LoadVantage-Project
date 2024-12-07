@@ -40,7 +40,7 @@ namespace LoadVantage.Areas.Admin.Services
 		{
 			context = _context;
 			userManager = _userManager;
-			roleManager = _roleManager;
+			roleManager = _roleManager; 
 			userService = _userService;
 			htmlSanitizer = _htmlSanitizer;
 			adminUserService = _adminUserService;
@@ -290,7 +290,7 @@ namespace LoadVantage.Areas.Admin.Services
 	        var users = await context.Users
 		        .Include(u => u.UserImage).ToListAsync();
 
-	        BaseUser user = users.First(u => u.Id == userId);
+	        BaseUser? user = users.FirstOrDefault(u => u.Id == userId);
 
 			if (user == null)
 			{
@@ -353,7 +353,7 @@ namespace LoadVantage.Areas.Admin.Services
 	        var users = await context.Users
 		        .Include(u => u.UserImage).ToListAsync();
 
-	        BaseUser user = users.First(u => u.Id == userId);
+	        BaseUser? user = users.FirstOrDefault(u => u.Id == userId);
 
 	        if (user == null)
 	        {
