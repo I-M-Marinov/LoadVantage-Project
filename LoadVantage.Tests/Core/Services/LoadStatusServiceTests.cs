@@ -24,7 +24,7 @@ namespace LoadVantage.Tests.Core.Services
 		private IProfileService _profileService;
 		private LoadVantageDbContext _dbContext;
 		private IDistanceCalculatorService _mockDistanceCalculatorService;
-		private ILoadHelperService _mockLoadHelperService;
+		private Mock<ILoadHelperService> _mockLoadHelperService;
 		private Mock<IHtmlSanitizerService> _mockHtmlSanitizerService;
 
 
@@ -41,7 +41,7 @@ namespace LoadVantage.Tests.Core.Services
 			mockOptions.Setup(o => o.Value).Returns(new IdentityOptions());
 
 			_mockDistanceCalculatorService = Mock.Of<IDistanceCalculatorService>();
-			_mockLoadHelperService = Mock.Of<ILoadHelperService>();
+			_mockLoadHelperService = new Mock<ILoadHelperService>();
 			_profileService = Mock.Of<IProfileService>();
 			_mockHtmlSanitizerService = new Mock<IHtmlSanitizerService>();
 
@@ -49,7 +49,7 @@ namespace LoadVantage.Tests.Core.Services
 				_profileService,
 				_dbContext,
 				_mockDistanceCalculatorService,
-				_mockLoadHelperService,
+				_mockLoadHelperService.Object,
 				_mockHtmlSanitizerService.Object
 			);
 
@@ -232,6 +232,159 @@ namespace LoadVantage.Tests.Core.Services
 		}
 
 		[Test]
+		public void CreateLoadAsync_ShouldThrowException_WhenDistanceCalculationFails()
+		{
+			Guid brokerId = Guid.NewGuid();
+			var loadViewModel = new LoadViewModel
+			{
+				OriginCity = "Sacramento",
+				OriginState = "CA",
+				DestinationCity = "Kent",
+				DestinationState = "WA",
+				PickupTime = DateTime.Now.AddHours(1),
+				DeliveryTime = DateTime.Now.AddHours(3),
+				PostedPrice = 500.0m,
+				Weight = 1200
+			};
+
+			var mockDistanceCalculatorService = new Mock<IDistanceCalculatorService>();
+			var mockLoadHelperService = new Mock<ILoadHelperService>();
+			var mockHtmlSanitizerService = new Mock<IHtmlSanitizerService>();
+
+			mockHtmlSanitizerService.Setup(x => x.Sanitize(It.IsAny<string>()))
+				.Returns((string input) => input);
+
+			mockDistanceCalculatorService.Setup(x =>
+					x.GetDistanceBetweenCitiesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+						It.IsAny<string>()))
+				.ThrowsAsync(new Exception("Distance calculation failed"));
+
+			var loadStatusService = new LoadStatusService(
+				_profileService,
+				_dbContext,
+				mockDistanceCalculatorService.Object,
+				mockLoadHelperService.Object,
+				mockHtmlSanitizerService.Object
+			);
+
+			var ex = Assert.ThrowsAsync<Exception>(async () => await loadStatusService.CreateLoadAsync(loadViewModel, brokerId));
+			Assert.That(ex.Message, Is.EqualTo("Distance calculation failed"));
+		}
+
+		[Test]
+		public async Task CreateLoadAsync_ShouldFormatLocationsCorrectly()
+		{
+			Guid brokerId = Guid.NewGuid();
+
+			var loadViewModel = new LoadViewModel
+			{
+				OriginCity = "sacramento",
+				OriginState = "ca",
+				DestinationCity = "kent",
+				DestinationState = "wa",
+				PickupTime = DateTime.Now.AddHours(1),
+				DeliveryTime = DateTime.Now.AddHours(3),
+				PostedPrice = 500.0m,
+				Weight = 1200
+			};
+
+			var formattedOriginCity = "Sacramento";
+			var formattedOriginState = "CA";
+			var formattedDestinationCity = "Kent";
+			var formattedDestinationState = "WA";
+
+			var mockDistanceCalculatorService = new Mock<IDistanceCalculatorService>();
+			var mockHtmlSanitizerService = new Mock<IHtmlSanitizerService>();
+			var loadHelperService = new LoadHelperService(_dbContext);
+
+			var calculatedDistance = 666.0;
+
+			mockHtmlSanitizerService.Setup(x => x.Sanitize(It.IsAny<string>()))
+				.Returns((string input) => input);
+
+			mockDistanceCalculatorService.Setup(x =>
+					x.GetDistanceBetweenCitiesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+						It.IsAny<string>()))
+				.ReturnsAsync(calculatedDistance);
+
+			var loadStatusService = new LoadStatusService(
+				_profileService,
+				_dbContext,
+				mockDistanceCalculatorService.Object,
+				loadHelperService,
+				mockHtmlSanitizerService.Object
+			);
+
+			var result = await loadStatusService.CreateLoadAsync(loadViewModel, brokerId);
+
+			var createdLoad = await _dbContext.Loads.FindAsync(result);
+
+			Assert.That(createdLoad, Is.Not.Null);
+			Assert.That(createdLoad.OriginCity, Is.EqualTo(formattedOriginCity));
+			Assert.That(createdLoad.OriginState, Is.EqualTo(formattedOriginState));
+			Assert.That(createdLoad.DestinationCity, Is.EqualTo(formattedDestinationCity));
+			Assert.That(createdLoad.DestinationState, Is.EqualTo(formattedDestinationState));
+		
+		}
+
+		[Test]
+		public async Task CreateLoadAsync_ShouldCalculateDistanceCorrectly()
+		{
+			Guid brokerId = Guid.NewGuid();
+
+			var loadViewModel = new LoadViewModel
+			{
+				OriginCity = "Sacramento",
+				OriginState = "CA",
+				DestinationCity = "Kent",
+				DestinationState = "WA",
+				PickupTime = DateTime.Now.AddHours(1),
+				DeliveryTime = DateTime.Now.AddHours(3),
+				PostedPrice = 500.0m,
+				Weight = 1200
+			};
+
+			var sanitizedCity = "Sacramento";
+			var sanitizedState = "CA";
+			var formattedCity = "Kent";
+			var formattedState = "WA";
+			var expectedDistance = 800.0;
+
+			var mockLoadHelperService = new Mock<ILoadHelperService>();
+			var mockHtmlSanitizerService = new Mock<IHtmlSanitizerService>();
+			var mockDistanceCalculatorService = new Mock<IDistanceCalculatorService>();
+
+			mockDistanceCalculatorService.Setup(x =>
+					x.GetDistanceBetweenCitiesAsync(
+						It.IsAny<string>(),
+						It.IsAny<string>(),
+						It.IsAny<string>(),
+						It.IsAny<string>()))
+				.ReturnsAsync(expectedDistance);
+
+			mockHtmlSanitizerService.Setup(x => x.Sanitize(It.IsAny<string>()))
+				.Returns(sanitizedCity);
+
+			mockLoadHelperService.Setup(x => x.FormatLocation(It.IsAny<string>(), It.IsAny<string>()))
+				.Returns((formattedCity, formattedState));
+
+			var loadStatusService = new LoadStatusService(
+				_profileService,
+				_dbContext,
+				mockDistanceCalculatorService.Object,
+				mockLoadHelperService.Object,
+				mockHtmlSanitizerService.Object
+			);
+
+			var result = await loadStatusService.CreateLoadAsync(loadViewModel, brokerId);
+
+			var createdLoad = await _dbContext.Loads.FindAsync(result);
+
+			Assert.That(createdLoad, Is.Not.Null);
+			Assert.That(createdLoad.Distance, Is.EqualTo(expectedDistance));
+		}
+
+		[Test]
 		public async Task EditLoadAsync_ShouldUpdateLoad_WhenValidChangesAreMade()
 		{
 			Guid loadId = Guid.NewGuid();
@@ -308,6 +461,169 @@ namespace LoadVantage.Tests.Core.Services
 			Assert.That(updatedLoad.Price, Is.EqualTo(updatedModel.PostedPrice));
 			Assert.That(updatedLoad.Weight, Is.EqualTo(updatedModel.Weight));
 			Assert.That(updatedLoad.Distance, Is.EqualTo(recalculatedDistance));
+		}
+
+		[Test]
+		public async Task EditLoadAsync_ShouldReturnFalse_WhenLoadNotFound()
+		{
+			var nonExistentLoadId = Guid.NewGuid();
+			var updatedModel = new LoadViewModel
+			{
+				OriginCity = "Los Angeles",
+				OriginState = "CA",
+				DestinationCity = "Seattle",
+				DestinationState = "WA",
+				PickupTime = DateTime.Now.AddHours(2),
+				DeliveryTime = DateTime.Now.AddHours(4),
+				PostedPrice = 600.0m,
+				Weight = 1400
+			};
+
+			var loadStatusService = new LoadStatusService(
+				_profileService,
+				_dbContext,
+				_mockDistanceCalculatorService,
+				_mockLoadHelperService.Object,
+				_mockHtmlSanitizerService.Object
+			);
+
+			var result = await loadStatusService.EditLoadAsync(nonExistentLoadId, updatedModel);
+
+			Assert.That(result, Is.False);
+		}
+
+		[Test]
+		public async Task EditLoadAsync_ShouldRecalculateDistance_WhenOriginOrDestinationChanges()
+		{
+			Guid loadId = Guid.NewGuid();
+
+			var originalLoad = new Load
+			{
+				Id = loadId,
+				OriginCity = "Sacramento",
+				OriginState = "CA",
+				DestinationCity = "Kent",
+				DestinationState = "WA",
+				PickupTime = DateTime.Now.AddHours(1),
+				DeliveryTime = DateTime.Now.AddHours(3),
+				Price = 500.0m,
+				Weight = 1200,
+				Distance = 800.0
+			};
+
+			await _dbContext.Loads.AddAsync(originalLoad);
+			await _dbContext.SaveChangesAsync();
+
+			var updatedModel = new LoadViewModel
+			{
+				OriginCity = "Los Angeles", 
+				OriginState = "CA",
+				DestinationCity = "Seattle",
+				DestinationState = "WA",
+				PickupTime = DateTime.Now.AddHours(2),
+				DeliveryTime = DateTime.Now.AddHours(4),
+				PostedPrice = 600.0m,
+				Weight = 1400
+			};
+
+			var mockDistanceCalculator = new Mock<IDistanceCalculatorService>();
+			var mockHtmlSanitizerService = new Mock<IHtmlSanitizerService>();
+			var recalculatedDistance = 900.0;
+
+			mockDistanceCalculator
+				.Setup(x => x.GetDistanceBetweenCitiesAsync(
+					It.IsAny<string>(),
+					It.IsAny<string>(),
+					It.IsAny<string>(),
+					It.IsAny<string>()))
+				.ReturnsAsync(recalculatedDistance);
+
+
+			mockHtmlSanitizerService.Setup(x => x.Sanitize(It.IsAny<string>()))
+				.Returns((string input) => input);
+
+
+			var loadStatusService = new LoadStatusService(
+				_profileService,
+				_dbContext,
+				mockDistanceCalculator.Object,
+				_mockLoadHelperService.Object,
+				mockHtmlSanitizerService.Object
+			);
+
+			var result = await loadStatusService.EditLoadAsync(loadId, updatedModel);
+			var updatedLoad = await _dbContext.Loads.FindAsync(loadId);
+
+			Assert.That(result, Is.True);
+			Assert.That(updatedLoad.Distance, Is.EqualTo(recalculatedDistance));
+		}
+
+		[Test]
+		public async Task EditLoadAsync_ShouldReturnFalse_WhenNoChangesAreMade()
+		{
+			Guid loadId = Guid.NewGuid();
+
+			var originalLoad = new Load
+			{
+				Id = loadId,
+				OriginCity = "Sacramento",
+				OriginState = "CA",
+				DestinationCity = "Kent",
+				DestinationState = "WA",
+				PickupTime = DateTime.Now.AddHours(1),
+				DeliveryTime = DateTime.Now.AddHours(3),
+				Price = 500.0m,
+				Weight = 1200,
+				Distance = 800.0
+			};
+
+			await _dbContext.Loads.AddAsync(originalLoad);
+			await _dbContext.SaveChangesAsync();
+
+			var identicalModel = new LoadViewModel
+			{
+				OriginCity = "Sacramento", 
+				OriginState = "CA", 
+				DestinationCity = "Kent", 
+				DestinationState = "WA", 
+				PickupTime = originalLoad.PickupTime,
+				DeliveryTime = originalLoad.DeliveryTime,
+				PostedPrice = originalLoad.Price,
+				Weight = originalLoad.Weight
+			};
+
+
+			var mockDistanceCalculatorService = new Mock<IDistanceCalculatorService>();
+			var mockHtmlSanitizerService = new Mock<IHtmlSanitizerService>();
+			var loadHelperService = new Mock<ILoadHelperService>();
+
+
+			mockHtmlSanitizerService.Setup(x => x.Sanitize(It.IsAny<string>()))
+				.Returns((string input) => input);
+
+			mockDistanceCalculatorService.Setup(x =>
+					x.GetDistanceBetweenCitiesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+						It.IsAny<string>()))
+				.ReturnsAsync((string originCity, string originState, string destinationCity, string destinationState) =>
+				{
+					return 100.0;
+				});
+
+			loadHelperService.Setup(s => s.FormatLocation(It.IsAny<string>(), It.IsAny<string>()))
+				.Returns((string city, string state) => (city, state));
+
+			var loadStatusService = new LoadStatusService(
+				_profileService,
+				_dbContext,
+				mockDistanceCalculatorService.Object,
+				loadHelperService.Object,
+				mockHtmlSanitizerService.Object
+			);
+
+
+			var result = await loadStatusService.EditLoadAsync(loadId, identicalModel);
+
+			Assert.That(result, Is.False);
 		}
 
 		[Test]
