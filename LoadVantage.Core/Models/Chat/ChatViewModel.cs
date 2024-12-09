@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LoadVantage.Core.Models.Profile;
-using LoadVantage.Infrastructure.Data.Models;
+﻿using LoadVantage.Core.Models.Profile;
 
 namespace LoadVantage.Core.Models.Chat
 {

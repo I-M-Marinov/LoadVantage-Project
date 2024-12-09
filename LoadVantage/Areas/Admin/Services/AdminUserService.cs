@@ -191,6 +191,5 @@ namespace LoadVantage.Areas.Admin.Services
             return await userManager.AddPasswordAsync(user, PasswordDefaultAfterReset);
         }
 
-
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
-using static LoadVantage.Common.GeneralConstants;
+
 using static LoadVantage.Common.ValidationConstants.UserImageValidations;
 
 namespace LoadVantage.Core.ValidationAttributes

@@ -13,8 +13,8 @@ using static LoadVantage.Common.GeneralConstants;
 using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.UserRoles;
 using static LoadVantage.Common.GeneralConstants.SecretString;
+
 using UserImage = LoadVantage.Infrastructure.Data.Models.UserImage;
-using System;
 
 
 namespace LoadVantage.Infrastructure.Data.SeedData

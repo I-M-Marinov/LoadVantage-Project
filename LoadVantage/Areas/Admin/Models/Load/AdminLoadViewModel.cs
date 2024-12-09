@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+
 using LoadVantage.Areas.Admin.Models.Profile;
 using LoadVantage.Core.Models.Load;
-using LoadVantage.Core.Models.Profile;
 using LoadVantage.Core.ValidationAttributes;
 using LoadVantage.Infrastructure.Data.Models;
+
 using static LoadVantage.Common.ValidationConstants.LoadValidations;
 
 namespace LoadVantage.Areas.Admin.Models.Load

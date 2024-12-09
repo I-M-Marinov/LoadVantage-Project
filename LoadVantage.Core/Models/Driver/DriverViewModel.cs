@@ -1,7 +1,5 @@
-﻿
-using System.ComponentModel.DataAnnotations;
-using LoadVantage.Core.Models.Truck;
-using static LoadVantage.Common.GeneralConstants;
+﻿using System.ComponentModel.DataAnnotations;
+
 using static LoadVantage.Common.ValidationConstants.DriverValidations;
 
 
