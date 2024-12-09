@@ -121,7 +121,186 @@ namespace LoadVantage.Tests.UnitTests.Core.Services
             Assert.That(result.Last().DestinationCity, Is.EqualTo("Seattle"));
             Assert.That(result.Last().Weight, Is.EqualTo(1200.5));
         }
+
         [Test]
+        public async Task GetAllPostedLoadsAsync_ShouldReturnEmptyList_WhenNoPostedLoadsExist()
+        {
+	        var dispatcherId = Guid.NewGuid();
+
+	        var result = await _loadBoardService.GetAllPostedLoadsAsync(dispatcherId);
+
+	        Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public async Task GetAllPostedLoadsAsync_ShouldReturnEmptyList_WhenNoAvailableLoadsExist()
+        {
+	        var brokerId = Guid.NewGuid();
+	        var dispatcherId = Guid.NewGuid();
+
+	        var loads = new List<Load>
+	        {
+		        new Load
+		        {
+			        Id = Guid.NewGuid(),
+			        OriginCity = "Los Angeles",
+			        OriginState = "CA",
+			        DestinationCity = "Seattle",
+			        DestinationState = "WA",
+					Status = LoadStatus.Created,  
+			        BrokerId = brokerId,
+			        PostedLoad = new PostedLoad
+			        {
+				        PostedDate = new DateTime(2024, 12, 01)
+			        }
+		        }
+	        };
+
+	        _dbContext.Loads.AddRange(loads);
+	        await _dbContext.SaveChangesAsync();
+
+	        var result = await _loadBoardService.GetAllPostedLoadsAsync(dispatcherId);
+
+	        Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public async Task GetAllPostedLoadsAsync_ShouldReturnCorrectPostedLoads_WhenPostedLoadIsNull()
+        {
+	        var brokerId = Guid.NewGuid();
+	        var dispatcherId = Guid.NewGuid();
+
+	        var loads = new List<Load>
+	        {
+		        new Load
+		        {
+			        Id = Guid.NewGuid(),
+			        OriginCity = "Los Angeles",
+			        OriginState = "CA",
+			        DestinationCity = "Seattle",
+			        DestinationState = "WA",
+					Status = LoadStatus.Available,
+			        BrokerId = brokerId,
+			        PostedLoad = null  
+		        }
+	        };
+
+	        _dbContext.Loads.AddRange(loads);
+	        await _dbContext.SaveChangesAsync();
+
+	        var result = await _loadBoardService.GetAllPostedLoadsAsync(dispatcherId);
+
+	        Assert.That(result.Count(), Is.EqualTo(1));
+	        Assert.That(result.First().Id, Is.EqualTo(loads.First().Id));
+        }
+
+        [Test]
+        public async Task GetAllPostedLoadsAsync_ShouldReturnLoadsInDescendingOrderOfPostedDate()
+        {
+	        var brokerId = Guid.NewGuid();
+	        var dispatcherId = Guid.NewGuid();
+
+	        var loads = new List<Load>
+	        {
+		        new Load
+		        {
+			        Id = Guid.NewGuid(),
+			        OriginCity = "Los Angeles",
+			        OriginState = "CA",
+			        DestinationCity = "Seattle",
+			        DestinationState = "WA",
+					Status = LoadStatus.Available,
+			        BrokerId = brokerId,
+			        Price = 1500.00M,
+					PostedLoad = new PostedLoad
+			        {
+				        PostedDate = new DateTime(2024, 12, 01)
+			        }
+		        },
+		        new Load
+		        {
+			        Id = Guid.NewGuid(),
+			        OriginCity = "San Francisco",
+			        OriginState = "CA",
+			        DestinationCity = "Portland",
+			        DestinationState = "OR",
+					Status = LoadStatus.Available,
+			        BrokerId = brokerId,
+					Price = 1000.00M,
+			        PostedLoad = new PostedLoad
+			        {
+				        PostedDate = new DateTime(2024, 12, 02)
+			        }
+		        }
+	        };
+
+	        _dbContext.Loads.AddRange(loads);
+	        await _dbContext.SaveChangesAsync();
+
+	        var result = await _loadBoardService.GetAllPostedLoadsAsync(dispatcherId);
+
+	        Assert.That(result.First().PostedPrice, Is.EqualTo(1000.00M));  
+	        Assert.That(result.Last().PostedPrice, Is.EqualTo(1500.00M)); 
+        }
+
+        [Test]
+        public async Task GetAllPostedLoadsAsync_ShouldReturnEmptyList_WhenDatabaseIsEmpty()
+        {
+	        var dispatcherId = Guid.NewGuid();
+
+	        var result = await _loadBoardService.GetAllPostedLoadsAsync(dispatcherId);
+
+	        Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public async Task GetAllPostedLoadsAsync_ShouldReturnLoadsInCorrectOrder_WhenPostedDateIsSame()
+        {
+	        var brokerId = Guid.NewGuid();
+	        var dispatcherId = Guid.NewGuid();
+
+	        var loads = new List<Load>
+	        {
+		        new Load
+		        {
+			        Id = Guid.NewGuid(),
+			        OriginCity = "San Francisco",
+			        OriginState = "CA",
+			        DestinationCity = "Portland",
+			        DestinationState = "OR",
+					Status = LoadStatus.Available,
+			        BrokerId = brokerId,
+			        PostedLoad = new PostedLoad
+			        {
+				        PostedDate = new DateTime(2024, 12, 01)
+			        }
+		        },
+		        new Load
+		        {
+			        Id = Guid.NewGuid(),
+			        OriginCity = "Los Angeles",
+			        OriginState = "CA",
+			        DestinationCity = "Seattle",
+			        DestinationState = "WA",
+					Status = LoadStatus.Available,
+			        BrokerId = brokerId,
+			        PostedLoad = new PostedLoad
+			        {
+				        PostedDate = new DateTime(2024, 12, 01)
+			        }
+		        }
+	        };
+
+	        _dbContext.Loads.AddRange(loads);
+	        await _dbContext.SaveChangesAsync();
+
+	        var result = await _loadBoardService.GetAllPostedLoadsAsync(dispatcherId);
+
+	        Assert.That(result.Count(), Is.EqualTo(2));  
+	        Assert.That(result.First().Id, Is.Not.EqualTo(result.Last().Id));  
+        }
+
+		[Test]
         public async Task GetBrokerLoadBoardAsync_ShouldReturnValidBrokerLoadBoard()
         {
             var brokerId = Guid.NewGuid();
