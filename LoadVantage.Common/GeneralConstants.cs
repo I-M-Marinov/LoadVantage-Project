@@ -47,8 +47,6 @@ namespace LoadVantage.Common
             public const string LoadIdInvalid = "Load id is not valid.";
             public const string ErrorCancellingLoad = "There was an error cancelling the load.";
 
-            public const string InvalidCityOrStateSpecified = "Invalid city or state specified.";
-            public const string ErrorRetrievingCoordinates = "Error retrieving coordinates.";
             public const string ErrorValidatingTheCityAndState = "Error validating the cities and states.";
             public const string CityAndStateNotProvided = "City and state must be provided.";
 
@@ -251,8 +249,15 @@ namespace LoadVantage.Common
 
 	        public const string ResetPasswordFailed = "Resetting the password for this user failed.";
 
-
-
         }
+
+        public static class DistanceCalculator
+        {
+	        public const string ErrorExtractingDistance = "Error extracting distance from the response.";
+	        public const string InvalidCityOrStateSpecified = "Invalid city or state specified.";
+	        public const string ErrorRetrievingCoordinates = "Error retrieving coordinates.";
+
+
+		}
 	}
 }

@@ -186,9 +186,9 @@
 	        public const string DriverLastNameRequired = "The driver's last name is required.";
 	        public const string DriverLicenseNumberRequired = "The driver's license number is required.";
 
-	        public const string DriverFirstNameInvalid = "Driver's first name must be between 2 and 25 characters.";
-	        public const string DriverLastNameInvalid = "Driver's last name must be between 3 and 25 characters.";
-	        public const string DriverLicenseNumberInvalid = "Driver's license number must be between 8 and 15 characters and no special characters.";
+	        public const string DriverFirstNameInvalid = "First name must be between 2 and 25 characters.";
+	        public const string DriverLastNameInvalid = "Last name must be between 3 and 25 characters.";
+	        public const string DriverLicenseNumberInvalid = "License number must be between 8 and 15 characters ( not special )";
 	       
 
 			public const byte DriverFirstNameMinLength = 2;
