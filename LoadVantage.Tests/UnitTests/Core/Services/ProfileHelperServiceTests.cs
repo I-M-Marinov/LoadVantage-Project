@@ -100,6 +100,49 @@ namespace LoadVantage.Tests.UnitTests.Core.Services
         }
 
         [Test]
+        public async Task IsUsernameTakenAsync_ShouldReturnFalse_WhenUsernameDoesNotExist()
+        {
+	        var username = "newUser";
+	        var currentUserId = Guid.NewGuid();
+
+	        var result = await _profileHelperService.IsUsernameTakenAsync(username, currentUserId);
+
+	        Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public async Task IsUsernameTakenAsync_ShouldReturnTrue_WhenMultipleUsersHaveSameUsername()
+        {
+	        var username = "commonUser";
+	        var currentUserId = Guid.NewGuid();
+
+	        var existingUser = new User()
+	        {
+		        Id = Guid.NewGuid(), 
+		        UserName = username,
+		        FirstName = "John",
+		        LastName = "Doe",
+		        Email = "johndoe@example.com"
+	        };
+
+	        var anotherUser = new User()
+	        {
+		        Id = currentUserId,
+		        UserName = username,
+		        FirstName = "Alice",
+		        LastName = "Smith",
+		        Email = "alice@example.com"
+	        };
+
+	        await _dbContext.Users.AddRangeAsync(existingUser, anotherUser);
+	        await _dbContext.SaveChangesAsync();
+
+	        var result = await _profileHelperService.IsUsernameTakenAsync(username, currentUserId);
+
+	        Assert.That(result, Is.False);
+        }
+
+		[Test]
         public async Task IsEmailTakenAsync_ShouldReturnTrue_WhenEmailIsTakenByOtherUser()
         {
             var email = "batman@chucknorris.com";
@@ -134,6 +177,72 @@ namespace LoadVantage.Tests.UnitTests.Core.Services
         }
 
         [Test]
+        public async Task IsEmailTakenAsync_ShouldReturnTrue_WhenEmailIsTakenByDifferentUser()
+        {
+	        var email = "batman@chucknorris.com";
+	        var currentUserId = Guid.NewGuid();
+
+	        var existingUser = new User()
+	        {
+		        Id = Guid.NewGuid(),
+		        UserName = "joker",
+		        FirstName = "Joker",
+		        LastName = "Smith",
+		        Email = email
+	        };
+
+	        await _dbContext.Users.AddAsync(existingUser);
+	        await _dbContext.SaveChangesAsync();
+
+	        var result = await _profileHelperService.IsEmailTakenAsync(email, currentUserId);
+
+	        Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public async Task IsEmailTakenAsync_ShouldReturnFalse_WhenEmailIsValidButNotTaken()
+        {
+	        var email = "batman@chucknorris.com";
+	        var currentUserId = Guid.NewGuid();
+
+	        var result = await _profileHelperService.IsEmailTakenAsync(email, currentUserId);
+
+	        Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public async Task IsEmailTakenAsync_ShouldReturnTrue_WhenMultipleUsersHaveSameEmail()
+        {
+	        var email = "shared@domain.com";
+	        var currentUserId = Guid.NewGuid();
+
+	        var existingUser = new User()
+	        {
+		        Id = Guid.NewGuid(),
+		        UserName = "user1",
+		        FirstName = "John",
+		        LastName = "Doe",
+		        Email = email
+	        };
+
+	        var anotherUser = new User()
+	        {
+		        Id = currentUserId,
+		        UserName = "user2",
+		        FirstName = "Jane",
+		        LastName = "Smith",
+		        Email = email
+	        };
+
+	        await _dbContext.Users.AddRangeAsync(existingUser, anotherUser);
+	        await _dbContext.SaveChangesAsync();
+
+	        var result = await _profileHelperService.IsEmailTakenAsync(email, currentUserId);
+
+	        Assert.That(result, Is.True);
+        }
+
+		[Test]
         public async Task FindUserByUsernameAsync_ShouldReturnUser_WhenUsernameExists()
         {
             var username = "existingUser";
@@ -154,7 +263,6 @@ namespace LoadVantage.Tests.UnitTests.Core.Services
             Assert.That(result, Is.Not.Null);
             Assert.That(result?.UserName, Is.EqualTo(expectedUser.UserName));
         }
-
 
         [Test]
         public async Task FindUserByUsernameAsync_ShouldReturnNull_WhenUserDoesNotExist()
