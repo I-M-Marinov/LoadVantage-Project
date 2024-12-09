@@ -276,7 +276,7 @@ namespace LoadVantage.Core.Services
 			};
 		}
 
-		private async Task<Dictionary<LoadStatus, int>> GetLoadCountsForBrokerAsync(Guid brokerId)
+		public async Task<Dictionary<LoadStatus, int>> GetLoadCountsForBrokerAsync(Guid brokerId)
 		{
 			var loadCounts = await context.Loads
 				.Where(load => load.BrokerId == brokerId)
@@ -292,7 +292,7 @@ namespace LoadVantage.Core.Services
 			return loadCounts;
 		}
 
-		private async Task<Dictionary<LoadStatus, int>> GetLoadCountsForDispatcherAsync(Guid dispatcherId)
+		public async Task<Dictionary<LoadStatus, int>> GetLoadCountsForDispatcherAsync(Guid dispatcherId)
 		{
 			var loadCounts = await context.Loads
 				.Include(l => l.BookedLoad)

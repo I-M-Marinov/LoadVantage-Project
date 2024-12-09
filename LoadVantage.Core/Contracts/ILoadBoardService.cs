@@ -24,6 +24,10 @@ namespace LoadVantage.Core.Contracts
 	    /// Creates a dictionary with key user type and a value of another dictionary containing the load counts for the loads arranged as load status as the key and count as value.
 	    /// </summary>
 		Task<Dictionary<string, Dictionary<LoadStatus, int>>> GetLoadCountsForUserAsync(Guid userId, string userPosition);
+	    Task<Dictionary<LoadStatus, int>> GetLoadCountsForBrokerAsync(Guid brokerId);
+	    Task<Dictionary<LoadStatus, int>> GetLoadCountsForDispatcherAsync(Guid dispatcherId);
+
+
 
     }
 }
