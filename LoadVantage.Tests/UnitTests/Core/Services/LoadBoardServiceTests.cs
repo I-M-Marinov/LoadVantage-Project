@@ -361,16 +361,527 @@ namespace LoadVantage.Tests.UnitTests.Core.Services
         }
 
         [Test]
-        public void GetLoadCountsForUserAsync_ShouldThrowArgumentException_WhenUserPositionIsInvalid()
+        public async Task GetLoadCountsForBrokerAsync_BrokerHasNoLoads_ReturnsEmptyDictionary()
         {
-            var userId = Guid.NewGuid();
+	        var brokerId = Guid.NewGuid();
 
-            var invalidUserPosition = "InvalidPosition";
+	        var result = await _loadBoardService.GetLoadCountsForBrokerAsync(brokerId);
 
-            Assert.That(async () => await _loadBoardService.GetLoadCountsForUserAsync(userId, invalidUserPosition),
-                Throws.TypeOf<ArgumentException>()
-                    .With.Message.EqualTo(InvalidUserType));
+	        Assert.That(result, Is.Empty);
         }
 
-    }
+        [Test]
+        public async Task GetLoadCountsForBrokerAsync_BrokerHasMultipleStatuses_ReturnsCorrectCounts()
+        {
+	        // Arrange
+	        var brokerId = Guid.NewGuid();
+	       await _dbContext.Loads.AddRangeAsync(
+		        new Load
+		        {
+			        BrokerId = brokerId,
+					OriginCity = "Chicago",
+					OriginState = "IL",
+					DestinationCity = "Dallas",
+					DestinationState = "TX",
+					Status = LoadStatus.Created
+		        },
+		        new Load
+		        {
+			        BrokerId = brokerId,
+					OriginCity = "Mattoon",
+					OriginState = "IL",
+					DestinationCity = "San Antonio",
+					DestinationState = "TX",
+					Status = LoadStatus.Created
+		        },
+		        new Load
+		        {
+			        BrokerId = brokerId,
+			        OriginCity = "Sacramento",
+			        OriginState = "CA",
+			        DestinationCity = "Indianapolis",
+			        DestinationState = "IN",
+					Status = LoadStatus.Available
+		        },
+		        new Load
+		        {
+			        BrokerId = brokerId,
+			        OriginCity = "Boardman",
+			        OriginState = "OH",
+			        DestinationCity = "San Antonio",
+			        DestinationState = "TX",
+					Status = LoadStatus.Delivered
+		        }
+	        );
+	        await _dbContext.SaveChangesAsync();
+
+	        // Act
+	        var result = await _loadBoardService.GetLoadCountsForBrokerAsync(brokerId);
+
+	        // Assert
+	        Assert.That(result, Has.Count.EqualTo(3));
+	        Assert.That(result[LoadStatus.Created], Is.EqualTo(2));
+	        Assert.That(result[LoadStatus.Available], Is.EqualTo(1));
+	        Assert.That(result[LoadStatus.Delivered], Is.EqualTo(1));
+        }
+
+		[Test]
+		public async Task GetLoadCountsForBrokerAsync_BrokerHasMultipleLoadsWithSameStatus_ReturnsCorrectCount()
+		{
+			var brokerId = Guid.NewGuid();
+
+			await _dbContext.Loads.AddRangeAsync(
+				new Load
+				{
+					BrokerId = brokerId,
+					OriginCity = "Chicago",
+					OriginState = "IL",
+					DestinationCity = "Dallas",
+					DestinationState = "TX",
+					Status = LoadStatus.Created
+				},
+				new Load
+				{
+					BrokerId = brokerId,
+					OriginCity = "Mattoon",
+					OriginState = "IL",
+					DestinationCity = "San Antonio",
+					DestinationState = "TX",
+					Status = LoadStatus.Created
+				}
+			);
+			await _dbContext.SaveChangesAsync();
+
+			var result = await _loadBoardService.GetLoadCountsForBrokerAsync(brokerId);
+
+			Assert.That(result, Has.Count.EqualTo(1));
+			Assert.That(result[LoadStatus.Created], Is.EqualTo(2));
+		}
+		[Test]
+		public async Task GetLoadCountsForBrokerAsync_BrokerHasSingleLoad_ReturnsCorrectCount()
+		{
+			var brokerId = Guid.NewGuid();
+
+			await _dbContext.Loads.AddAsync(
+				new Load
+				{
+					BrokerId = brokerId,
+					OriginCity = "Chicago",
+					OriginState = "IL",
+					DestinationCity = "Dallas",
+					DestinationState = "TX",
+					Status = LoadStatus.Created
+				}
+			);
+			await _dbContext.SaveChangesAsync();
+
+			var result = await _loadBoardService.GetLoadCountsForBrokerAsync(brokerId);
+
+			Assert.That(result, Has.Count.EqualTo(1));
+			Assert.That(result[LoadStatus.Created], Is.EqualTo(1));
+		}
+
+		[Test]
+		public async Task GetLoadCountsForBrokerAsync_BrokerIdDoesNotExist_ReturnsEmptyDictionary()
+		{
+			var brokerId = Guid.NewGuid(); 
+
+			var result = await _loadBoardService.GetLoadCountsForBrokerAsync(brokerId);
+			
+			Assert.That(result, Is.Empty);
+		}
+
+		[Test]
+		public async Task GetLoadCountsForDispatcherAsync_DispatcherHasNoLoads_ReturnsEmptyDictionary()
+		{
+			var dispatcherId = Guid.NewGuid();
+
+			var result = await _loadBoardService.GetLoadCountsForDispatcherAsync(dispatcherId);
+
+			Assert.That(result, Is.Empty);
+		}
+
+		[Test]
+		public async Task GetLoadCountsForDispatcherAsync_DispatcherHasMultipleBookedStatuses_ReturnsCorrectCounts()
+		{
+			var dispatcherId = Guid.NewGuid();
+
+			_dbContext.Loads.AddRange(
+				new Load
+				{
+					Status = LoadStatus.Booked,
+					OriginCity = "Chicago",
+					OriginState = "IL",
+					DestinationCity = "Dallas",
+					DestinationState = "TX",
+					BookedLoad = new BookedLoad
+					{
+						DispatcherId = dispatcherId
+					}
+				},
+				new Load
+				{
+					Status = LoadStatus.Booked,
+					OriginCity = "Mattoon",
+					OriginState = "IL",
+					DestinationCity = "San Antonio",
+					DestinationState = "TX",
+					BookedLoad = new BookedLoad
+					{
+						DispatcherId = dispatcherId
+					}
+				},
+				new Load
+				{
+					Status = LoadStatus.Booked,
+					OriginCity = "Sacramento",
+					OriginState = "CA",
+					DestinationCity = "Indianapolis",
+					DestinationState = "IN",
+					BookedLoad = new BookedLoad
+					{
+						DispatcherId = dispatcherId
+					}
+				}
+			);
+			await _dbContext.SaveChangesAsync();
+
+			var result = await _loadBoardService.GetLoadCountsForDispatcherAsync(dispatcherId);
+
+			Assert.That(result, Has.Count.EqualTo(1));
+			Assert.That(result[LoadStatus.Booked], Is.EqualTo(3));
+		}
+
+
+		[Test]
+		public async Task GetLoadCountsForDispatcherAsync_DispatcherHasMultipleBookedLoadsWithSameStatus_ReturnsCorrectCount()
+		{
+			var dispatcherId = Guid.NewGuid();
+
+			_dbContext.Loads.AddRange(
+				new Load
+				{
+					Status = LoadStatus.Booked,
+					OriginCity = "Chicago",
+					OriginState = "IL",
+					DestinationCity = "Dallas",
+					DestinationState = "TX",
+					BookedLoad = new BookedLoad
+					{
+						DispatcherId = dispatcherId
+					}
+				},
+				new Load
+				{
+					Status = LoadStatus.Booked,
+					OriginCity = "Mattoon",
+					OriginState = "IL",
+					DestinationCity = "San Antonio",
+					DestinationState = "TX",
+					BookedLoad = new BookedLoad
+					{
+						DispatcherId = dispatcherId
+					}
+				}
+			);
+			await _dbContext.SaveChangesAsync();
+
+			var result = await _loadBoardService.GetLoadCountsForDispatcherAsync(dispatcherId);
+
+			Assert.That(result, Has.Count.EqualTo(1));
+			Assert.That(result[LoadStatus.Booked], Is.EqualTo(2));
+		}
+
+
+		[Test]
+		public async Task GetLoadCountsForDispatcherAsync_DispatcherIdDoesNotExist_ReturnsEmptyDictionary()
+		{
+			var dispatcherId = Guid.NewGuid(); 
+
+			var result = await _loadBoardService.GetLoadCountsForDispatcherAsync(dispatcherId);
+
+			Assert.That(result, Is.Empty);
+		}
+
+
+		[Test]
+		public async Task GetLoadCountsForDispatcherAsync_LoadWithNullBookedLoad_ReturnsEmptyDictionary()
+		{
+			var dispatcherId = Guid.NewGuid();
+
+			await _dbContext.Loads.AddAsync(new Load 
+					{ 
+						Status = LoadStatus.Booked,
+						OriginCity = "Sacramento",
+						OriginState = "CA",
+						DestinationCity = "Indianapolis",
+						DestinationState = "IN",
+						BookedLoad = null
+					});
+			await _dbContext.SaveChangesAsync();
+
+			var result = await _loadBoardService.GetLoadCountsForDispatcherAsync(dispatcherId);
+
+			Assert.That(result, Is.Empty);
+		}
+
+		[Test]
+		public void GetLoadCountsForUserAsync_ShouldThrowArgumentException_WhenUserPositionIsInvalid()
+		{
+			var userId = Guid.NewGuid();
+
+			var invalidUserPosition = "InvalidPosition";
+
+			Assert.That(async () => await _loadBoardService.GetLoadCountsForUserAsync(userId, invalidUserPosition),
+				Throws.TypeOf<ArgumentException>()
+					.With.Message.EqualTo(InvalidUserType));
+		}
+
+		[Test]
+		public async Task GetLoadCountsForUserAsync_UserIsBroker_ReturnsBrokerLoadCounts()
+		{
+			var userId = Guid.NewGuid();
+
+			var userPosition = nameof(Broker);
+
+			_dbContext.Loads.AddRange(
+				new Load
+				{
+					Status = LoadStatus.Booked,
+					OriginCity = "Chicago",
+					OriginState = "IL",
+					DestinationCity = "Dallas",
+					DestinationState = "TX",
+					BrokerId = userId
+				},
+				new Load
+				{
+					Status = LoadStatus.Available,
+					OriginCity = "Sacramento",
+					OriginState = "CA",
+					DestinationCity = "Indianapolis",
+					DestinationState = "IN",
+					BrokerId = userId
+				},
+				new Load
+				{
+					Status = LoadStatus.Created,
+					OriginCity = "Mattoon",
+					OriginState = "IL",
+					DestinationCity = "San Antonio",
+					DestinationState = "TX",
+					BrokerId = userId
+				}
+			);
+			await _dbContext.SaveChangesAsync();
+
+			var result = await _loadBoardService.GetLoadCountsForUserAsync(userId, userPosition);
+
+			Assert.That(result, Has.Count.EqualTo(1));
+			Assert.That(result[nameof(Broker)], Has.Count.EqualTo(3));
+		}
+
+		[Test]
+		public async Task GetLoadCountsForDispatcherAsync_ValidDispatcherId_ReturnsCorrectLoadCounts()
+		{
+			var dispatcherId = Guid.NewGuid();
+
+			_dbContext.Loads.Add(new Load
+			{
+				BookedLoad = new BookedLoad
+				{
+					DispatcherId = dispatcherId
+				},
+				Status = LoadStatus.Booked,
+				OriginCity = "San Francisco",
+				OriginState = "CA",
+				DestinationCity = "Miami",
+				DestinationState = "FL"
+			});
+
+			_dbContext.Loads.Add(new Load
+			{
+				BookedLoad = new BookedLoad
+				{
+					DispatcherId = dispatcherId
+				},
+				Status = LoadStatus.Booked,
+				OriginCity = "Dallas",
+				OriginState = "TX",
+				DestinationCity = "Boston",
+				DestinationState = "MA"
+			});
+
+			await _dbContext.SaveChangesAsync();
+
+			var result = await _loadBoardService.GetLoadCountsForDispatcherAsync(dispatcherId);
+
+			Assert.That(result[LoadStatus.Booked], Is.EqualTo(2));
+			Assert.That(result.Keys, Contains.Item(LoadStatus.Booked));
+		}
+
+		[Test]
+		public async Task GetLoadCountsForUserAsync_ValidBrokerPosition_ReturnsBrokerLoadCounts()
+		{
+			var brokerId = Guid.NewGuid();
+
+			_dbContext.Loads.Add(new Load
+			{
+				BrokerId = brokerId,
+				Status = LoadStatus.Available,
+				OriginCity = "New York",
+				OriginState = "NY",
+				DestinationCity = "Los Angeles",
+				DestinationState = "CA"
+			});
+
+			await _dbContext.SaveChangesAsync();
+
+			var result = await _loadBoardService.GetLoadCountsForUserAsync(brokerId, nameof(Broker));
+
+			Assert.That(result[nameof(Broker)], Is.Not.Null);
+			Assert.That(result[nameof(Broker)][LoadStatus.Available], Is.EqualTo(1));
+
+			Assert.That(result[nameof(Broker)].Keys, Contains.Item(LoadStatus.Available));
+		}
+
+		[Test]
+		public async Task GetLoadCountsForUserAsync_ValidDispatcherPosition_ReturnsDispatcherLoadCounts()
+		{
+			var dispatcherId = Guid.NewGuid();
+
+			_dbContext.Loads.Add(new Load
+			{
+				BookedLoad = new BookedLoad { DispatcherId = dispatcherId },
+				Status = LoadStatus.Booked,
+				OriginCity = "San Francisco",
+				OriginState = "CA",
+				DestinationCity = "Miami",
+				DestinationState = "FL"
+			});
+
+			await _dbContext.SaveChangesAsync();
+
+			var result = await _loadBoardService.GetLoadCountsForUserAsync(dispatcherId, nameof(Dispatcher));
+
+			Assert.That(result[nameof(Dispatcher)], Is.Not.Null);
+			Assert.That(result[nameof(Dispatcher)][LoadStatus.Booked], Is.EqualTo(1));
+
+			Assert.That(result[nameof(Dispatcher)].Keys, Contains.Item(LoadStatus.Booked));
+		}
+
+		[Test]
+		public void GetLoadCountsForUserAsync_InvalidUserPosition_ThrowsArgumentException()
+		{
+			var userId = Guid.NewGuid();
+			var invalidPosition = "InvalidPosition"; 
+
+			Assert.ThrowsAsync<ArgumentException>(
+				async () => await _loadBoardService.GetLoadCountsForUserAsync(userId, invalidPosition)
+			);
+		}
+
+		[Test]
+		public void GetLoadCountsForUserAsync_NullUserPosition_ThrowsArgumentException()
+		{
+			var userId = Guid.NewGuid();
+
+			Assert.ThrowsAsync<ArgumentException>(
+				async () => await _loadBoardService.GetLoadCountsForUserAsync(userId, null)
+			);
+		}
+
+		[Test]
+		public async Task GetLoadCountsForUserAsync_BrokerWithNoLoads_ReturnsEmptyLoadCounts()
+		{
+			var brokerId = Guid.NewGuid(); 
+
+			var result = await _loadBoardService.GetLoadCountsForUserAsync(brokerId, nameof(Broker));
+
+			Assert.That(result[nameof(Broker)], Is.Empty);
+		}
+
+		[Test]
+		public async Task GetLoadCountsForUserAsync_DispatcherWithNoLoads_ReturnsEmptyLoadCounts()
+		{
+			var dispatcherId = Guid.NewGuid(); // Dispatcher with no loads
+
+			var result = await _loadBoardService.GetLoadCountsForUserAsync(dispatcherId, nameof(Dispatcher));
+
+			Assert.That(result[nameof(Dispatcher)], Is.Empty);
+		}
+
+		[Test]
+		public async Task GetLoadCountsForUserAsync_BrokerWithMultipleStatuses_ReturnsCorrectCounts()
+		{
+			var brokerId = Guid.NewGuid();
+
+			await _dbContext.Loads.AddAsync(new Load
+			{
+				BrokerId = brokerId,
+				Status = LoadStatus.Available,
+				OriginCity = "Chicago",
+				OriginState = "IL",
+				DestinationCity = "New York",
+				DestinationState = "NY"
+			});
+
+			await _dbContext.Loads.AddAsync(new Load
+			{
+				BrokerId = brokerId,
+				Status = LoadStatus.Booked,
+				OriginCity = "Houston",
+				OriginState = "TX",
+				DestinationCity = "Los Angeles",
+				DestinationState = "CA"
+			});
+
+			await _dbContext.SaveChangesAsync();
+
+			var result = await _loadBoardService.GetLoadCountsForUserAsync(brokerId, nameof(Broker));
+
+			Assert.That(result[nameof(Broker)], Is.Not.Null);
+			Assert.That(result[nameof(Broker)][LoadStatus.Available], Is.EqualTo(1));
+			Assert.That(result[nameof(Broker)][LoadStatus.Booked], Is.EqualTo(1));
+		}
+
+		[Test]
+		public async Task GetLoadCountsForUserAsync_MultipleBrokers_ReturnsCorrectLoadCountsForEach()
+		{
+			var brokerId1 = Guid.NewGuid();
+			var brokerId2 = Guid.NewGuid();
+
+			await _dbContext.Loads.AddAsync(new Load
+			{
+				BrokerId = brokerId1,
+				Status = LoadStatus.Available,
+				OriginCity = "San Francisco",
+				OriginState = "CA",
+				DestinationCity = "Miami",
+				DestinationState = "FL"
+			});
+
+			await _dbContext.Loads.AddAsync(new Load
+			{
+				BrokerId = brokerId2,
+				Status = LoadStatus.Booked,
+				OriginCity = "Dallas",
+				OriginState = "TX",
+				DestinationCity = "Boston",
+				DestinationState = "MA"
+			});
+
+			await _dbContext.SaveChangesAsync();
+
+
+			var result1 = await _loadBoardService.GetLoadCountsForUserAsync(brokerId1, nameof(Broker));
+			var result2 = await _loadBoardService.GetLoadCountsForUserAsync(brokerId2, nameof(Broker));
+
+			Assert.That(result1[nameof(Broker)], Is.Not.Null);
+			Assert.That(result1[nameof(Broker)][LoadStatus.Available], Is.EqualTo(1));
+			Assert.That(result2[nameof(Broker)], Is.Not.Null);
+			Assert.That(result2[nameof(Broker)][LoadStatus.Booked], Is.EqualTo(1));
+		}
+
+	}
 }
