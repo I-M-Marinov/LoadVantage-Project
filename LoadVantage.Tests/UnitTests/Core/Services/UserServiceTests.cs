@@ -54,7 +54,7 @@ namespace LoadVantage.Tests.UnitTests.Core.Services
                 _mockImageService.Object);
         }
 
-        [TearDown]
+		[TearDown]
         public void TearDown()
         {
             _dbContext.Database.EnsureDeleted();
@@ -130,7 +130,6 @@ namespace LoadVantage.Tests.UnitTests.Core.Services
 
             _mockUserManager.Verify(um => um.UpdateAsync(testUser), Times.Once);
         }
-
 
         [Test]
         public async Task GetCurrentUserAsync_ShouldReturnNull_WhenUserIdClaimIsMissing()
@@ -687,5 +686,5 @@ namespace LoadVantage.Tests.UnitTests.Core.Services
             Assert.That(result.Succeeded, Is.True);
         }
 
-    }
+	}
 }
