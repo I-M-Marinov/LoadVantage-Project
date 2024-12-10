@@ -464,7 +464,7 @@ namespace LoadVantage.Core.Services
 				Notes = null
 	        };
 
-	        context.DeliveredLoads.Add(deliveredLoad);
+	        await context.DeliveredLoads.AddAsync(deliveredLoad);
 	        await context.SaveChangesAsync();
 	        
 	        return true;
