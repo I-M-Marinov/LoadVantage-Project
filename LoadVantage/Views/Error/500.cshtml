@@ -1,5 +1,5 @@
 ﻿@{
-	ViewBag.Title = "500 - Page Not Found";
+	ViewBag.Title = "Our Neural Highway Hit a Roadblock";
 	Layout = "~/Views/Shared/_LoggedInLayout.cshtml";
 }
 
@@ -7,17 +7,18 @@
 <body id="page-not-found-body">
 
 	
-<div id="page-not-found-text">
-	<h3 id="page-not-found-h3">We could not find the page you are looking for..</h3>
-	<p>Don't worry, that happens sometimes.</p> <br/>
-	<p>Let's go back to: </p>
+<div class="error-container">
+
+	<img src="/images/500.jpeg" style="width: 85%; height: auto; align-self: center;" alt="Error Image" class="error-image">
+
+	<div class="error-text">
+		<h1 style="color: whitesmoke; text-align: center;">Oops! Something is wrong with our neural highway.</h1>
+		<p style="color: whitesmoke; text-align: center;">We're sorry, but there was an issue with our server. Please try again later.</p>
+	</div>
 
 	<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
 		<button class="fancy-project-button">Home</button>
-	</a></div>
-
-<div id="page-not-found-image-container">
-	<img src="/images/truck-background.gif" alt="404 Image" id="not-found-page-image">
+	</a>
 </div>
 
 </body>
