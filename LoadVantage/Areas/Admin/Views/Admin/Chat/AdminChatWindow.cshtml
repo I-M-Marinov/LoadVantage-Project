@@ -98,7 +98,7 @@
 								<input type="hidden" name="receiverId" value="@Model.UserInfo.Id" />
 								<input type="hidden" id="senderId" value="@Model.Profile.Id" />
 								<div class="input-group">
-									<input type="text" name="messageContent" class="form-control" placeholder="Type your message..." required />
+									<input type="text" name="messageContent" class="form-control" placeholder="Type your message..." required autofocus />
 									<button type="submit" class="btn btn-success">Send</button>
 								</div>
 							</form>
@@ -156,7 +156,6 @@
 
 
 <script>
-
 
 	if (document.querySelector('.toggle-sidebar-btn')) {
 
@@ -253,26 +252,11 @@
 		const chatForm = document.getElementById("chatForm");
 		if (chatForm) {
 			chatForm.addEventListener("submit", function (event) {
-				event.preventDefault();
-
+				// No preventDefault() here
 				const messageContentInput = document.querySelector("input[name='messageContent']");
-				const receiverIdInput = document.querySelector("input[name='receiverId']");
-				const senderIdElement = document.getElementById("senderId");
-
-				if (messageContentInput && receiverIdInput && senderIdElement) {
-					const messageContent = messageContentInput.value;
-					const receiverId = receiverIdInput.value;
-					const senderId = senderIdElement.value;
-
-					chatHubConnection.invoke("SendMessage", senderId, receiverId, messageContent)
-						.then(() => {
-							messageContentInput.value = "";
-						})
-						.catch(err => {
-							console.error("Error sending message: " + err);
-						});
-				} else {
-					console.error("Form inputs are missing.");
+				if (!messageContentInput.value.trim()) {
+					event.preventDefault(); // Prevent sending empty messages
+					console.error("Message content is empty.");
 				}
 			});
 		} else {
@@ -307,6 +291,13 @@
 		const messageContainer = document.getElementById("chat-messages-container");
 		if (!messageContainer) {
 			console.warn("Message container not found. Cannot display message.");
+			return;
+		}
+
+		const currentChatReceiverId = document.getElementById("currentChatReceiverId")?.value;
+
+		if (chatMessage.receiverId !== currentChatReceiverId && chatMessage.senderId !== currentChatReceiverId) {
+			console.warn("Message does not belong to the active chat. Ignoring.");
 			return;
 		}
 

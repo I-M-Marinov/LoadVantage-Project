@@ -6,6 +6,7 @@
 <div class="card-body">
 	<div class="d-flex align-items-center justify-content-center mt-3" id="chattingWithWindow">
 		<img src="@Model.ProfilePictureUrl" alt="@Model.FullName" class="profile-img rounded-circle" style="width: 6em; height: 6em;" />
+		<input type="hidden" name="receiverId" value="@Model.Id" id="currentChatReceiverId" />
 		<div class="ms-3">
 			<h5 class="card-title">@Model.FullName</h5>
 			
