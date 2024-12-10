@@ -7,7 +7,6 @@ using LoadVantage.Core.Models.Load;
 using LoadVantage.Infrastructure.Data.Models;
 
 
-
 namespace LoadVantage.Areas.Admin.Services
 {
 	public class AdminLoadBoardService : IAdminLoadBoardService
@@ -100,7 +99,7 @@ namespace LoadVantage.Areas.Admin.Services
 			return postedLoadsModels;
 		}
 
-		private List<AdminLoadViewModel> GetCreatedLoads(IEnumerable<Load> allLoads)
+		public List<AdminLoadViewModel> GetCreatedLoads(IEnumerable<Load> allLoads)
 		{
 			var createdLoads = allLoads
 				.Where(load => load.Status == LoadStatus.Created)
@@ -155,7 +154,7 @@ namespace LoadVantage.Areas.Admin.Services
 			return createdLoads;
 		}
 
-		private List<AdminLoadViewModel> GetPostedLoads(IEnumerable<Load> allLoads)
+		public List<AdminLoadViewModel> GetPostedLoads(IEnumerable<Load> allLoads)
 		{
 			var postedLoads = allLoads
 				.Where(load => load.Status == LoadStatus.Available)
@@ -209,7 +208,7 @@ namespace LoadVantage.Areas.Admin.Services
 			return postedLoads;
 		}
 
-		private List<AdminLoadViewModel> GetBookedLoads(IEnumerable<Load> allLoads)
+		public List<AdminLoadViewModel> GetBookedLoads(IEnumerable<Load> allLoads)
 		{
 			var bookedLoads = allLoads
 				.Where(load => load.Status == LoadStatus.Booked)
@@ -266,7 +265,7 @@ namespace LoadVantage.Areas.Admin.Services
 			return bookedLoads;
 		}
 
-		private List<AdminLoadViewModel> GetDeliveredLoads(IEnumerable<Load> allLoads)
+		public List<AdminLoadViewModel> GetDeliveredLoads(IEnumerable<Load> allLoads)
 		{
 			var deliveredLoads = allLoads
 
@@ -326,7 +325,7 @@ namespace LoadVantage.Areas.Admin.Services
 			return deliveredLoads;
 		}
 
-		private List<AdminLoadViewModel> GetCancelledLoads(IEnumerable<Load> allLoads)
+		public List<AdminLoadViewModel> GetCancelledLoads(IEnumerable<Load> allLoads)
 		{
 			var cancelledLoads = allLoads
 				.Where(load => load.Status == LoadStatus.Cancelled)
