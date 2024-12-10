@@ -154,12 +154,17 @@ input{
 }
 
 .input-group input {
-    background-color: #bbbbbb !important;
+    background-color: #e6ecf6 !important;
     border: 2px #0094ff solid !important;
     color: black !important;
 }
 
-.row.mb-3 input{
+.message-timestamp {
+    color: black !important;
+}
+
+
+.row.mb-3 input {
     color: black !important;
 }
 
@@ -288,11 +293,13 @@ input{
     color: black !important;
 }
 
-#cancelLoadBtn {
+#cancelLoadBtn,
+#cancelCarrierBtn {
     border: 2px solid #ff0000 !important;
 }
 
-#cancelLoadBtn:hover {
+#cancelLoadBtn:hover,
+#cancelCarrierBtn:hover{
     background: #ff0000 !important;
     color: black !important;
 }
