@@ -77,7 +77,7 @@ namespace LoadVantage.Areas.Admin.Services
 
 	        return revenues;
         }
-        private async Task<Dictionary<string, int>> GetLoadCountsByStatusAsync()
+        public async Task<Dictionary<string, int>> GetLoadCountsByStatusAsync()
         {
 	        var allLoads = await loadHelperService.GetAllLoads();
 
@@ -85,25 +85,26 @@ namespace LoadVantage.Areas.Admin.Services
 		        .GroupBy(load => load.Status)
 		        .ToDictionary(g => g.Key.ToString(), g => g.Count());
         }
-		private async Task<int> GetDispatcherCountAsync()
+        public async Task<int> GetDispatcherCountAsync()
         {
             return await adminUserService.GetDispatcherCountAsync();
         }
-        private async Task<int> GetBrokerCountAsync()
+        public async Task<int> GetBrokerCountAsync()
         {
             return await adminUserService.GetBrokerCountAsync();
         }
-        private async Task<Dictionary<string, int>> GetGroupedCompanyNamesAsync()
+        public async Task<Dictionary<string, int>> GetGroupedCompanyNamesAsync()
         {
             var allUsers = await adminUserService.GetAllUsersFromACompany();
 
             var groupedUsers = allUsers
+	            .Where(user => user.CompanyName != "N/A")
                 .GroupBy(user => user.CompanyName)
                 .ToDictionary(group => group.Key!, group => group.Count());
 
             return groupedUsers;
         }
-        private async Task<(int ActiveDrivers, int FiredDrivers)> GetDriverCountsAsync()
+        public async Task<(int ActiveDrivers, int FiredDrivers)> GetDriverCountsAsync()
         {
             var drivers = await driverService.GetAllDrivers();
 
@@ -112,7 +113,7 @@ namespace LoadVantage.Areas.Admin.Services
 
             return (activeDrivers, firedDrivers);
         }
-        private async Task<(int AvailableTrucks, int DecommissionedTrucks)> GetTruckCountsAsync()
+        public async Task<(int AvailableTrucks, int DecommissionedTrucks)> GetTruckCountsAsync()
         {
             var trucks = await truckService.GetAllTrucksAsync();
 
