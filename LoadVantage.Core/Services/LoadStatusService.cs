@@ -461,7 +461,6 @@ namespace LoadVantage.Core.Services
 		        BrokerId = load.BrokerId,
 		        DeliveredDate = DateTime.UtcNow.ToLocalTime(),
 		        BookedLoadId = load.BookedLoad.Id,
-				Notes = null
 	        };
 
 	        await context.DeliveredLoads.AddAsync(deliveredLoad);
