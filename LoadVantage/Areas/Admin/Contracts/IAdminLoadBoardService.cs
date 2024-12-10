@@ -14,11 +14,25 @@ namespace LoadVantage.Areas.Admin.Contracts
 		/// Retrieves all posted loads 
 		/// </summary>
 		Task<IEnumerable<AdminLoadViewModel>> GetAllPostedLoadsAsync(Guid userId);
-
+		/// <summary>
+		/// Retrieves all the loads that are with status Created 
+		/// </summary>
 		List<AdminLoadViewModel> GetCreatedLoads(IEnumerable<Load> allLoads);
+		/// <summary>
+		/// Retrieves all the loads that are with status Available 
+		/// </summary>
 		List<AdminLoadViewModel> GetPostedLoads(IEnumerable<Load> allLoads);
+		/// <summary>
+		/// Retrieves all the loads that are with status Booked 
+		/// </summary>
 		List<AdminLoadViewModel> GetBookedLoads(IEnumerable<Load> allLoads);
+		/// <summary>
+		/// Retrieves all the loads that are with status Delivered 
+		/// </summary>
 		List<AdminLoadViewModel> GetDeliveredLoads(IEnumerable<Load> allLoads);
+		/// <summary>
+		/// Retrieves all the loads that are with status Cancelled 
+		/// </summary>
 		List<AdminLoadViewModel> GetCancelledLoads(IEnumerable<Load> allLoads);
 	}
 }
