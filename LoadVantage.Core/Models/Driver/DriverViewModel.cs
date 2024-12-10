@@ -39,7 +39,5 @@ namespace LoadVantage.Core.Models.Driver
 		public bool IsBusy { get; set; }
 
 
-
-
 	}
 }

@@ -1,8 +1,6 @@
-﻿using System.Security.Claims;
-using LoadVantage.Common.Enums;
+﻿using LoadVantage.Common.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 
 using LoadVantage.Extensions;
 using LoadVantage.Core.Contracts;
@@ -10,14 +8,10 @@ using LoadVantage.Core.Models.Profile;
 using LoadVantage.Core.Models.Image;
 using LoadVantage.Infrastructure.Data.Models;
 
-
 using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.SuccessMessages;
 using static LoadVantage.Common.GeneralConstants.ActiveTabs;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
-
-
-
 
 namespace LoadVantage.Controllers
 {

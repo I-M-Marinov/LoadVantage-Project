@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LoadVantage.Common.Enums
+﻿namespace LoadVantage.Common.Enums
 {
     public enum LoadStatus
     {

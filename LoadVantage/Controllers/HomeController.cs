@@ -5,7 +5,6 @@ using LoadVantage.Core.Contracts;
 using LoadVantage.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Identity;
 
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 

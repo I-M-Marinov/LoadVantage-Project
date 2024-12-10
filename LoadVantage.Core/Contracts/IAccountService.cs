@@ -1,5 +1,4 @@
 ﻿using LoadVantage.Core.Models.Account;
-using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace LoadVantage.Core.Contracts

@@ -1,5 +1,4 @@
 ﻿using LoadVantage.Areas.Admin.Contracts;
-using LoadVantage.Areas.Admin.Models.Statistics;
 using LoadVantage.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

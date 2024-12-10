@@ -143,6 +143,7 @@ namespace LoadVantage.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> AssignDriverToTruck(Guid truckId, Guid driverId)
 		{
 			Guid userId = User.GetUserId()!.Value;
@@ -168,6 +169,7 @@ namespace LoadVantage.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> ParkTruck(Guid truckId, Guid driverId)
 		{
 			Guid userId = User.GetUserId()!.Value;

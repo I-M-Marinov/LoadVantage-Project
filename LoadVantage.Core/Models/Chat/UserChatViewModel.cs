@@ -1,6 +1,4 @@
-﻿
-
-namespace LoadVantage.Core.Models.Chat
+﻿namespace LoadVantage.Core.Models.Chat
 {
 	public class UserChatViewModel
 	{

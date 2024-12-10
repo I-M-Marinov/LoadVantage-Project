@@ -30,8 +30,6 @@
             public const double WeightMinValue = 1.00;
             public const double WeightMaxValue = 48000.00;
 
-            public const int DeliveredLoadNotesMaxLength = 2000;
-
             public const string OriginCityRequired = "Origin city is required.";
             public const string OriginStateRequired = "Origin state is required.";
             public const string DestinationCityRequired = "Destination city is required.";

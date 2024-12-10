@@ -1,7 +1,6 @@
 ﻿using LoadVantage.Common.Enums;
 using LoadVantage.Core.Models.Load;
 using LoadVantage.Core.Models.LoadBoard;
-using LoadVantage.Infrastructure.Data.Models;
 
 namespace LoadVantage.Core.Contracts
 {

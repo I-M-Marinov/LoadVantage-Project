@@ -1,6 +1,4 @@
 ﻿
-using static System.Net.Mime.MediaTypeNames;
-
 namespace LoadVantage.Common
 {
 	public static class GeneralConstants
@@ -50,7 +48,6 @@ namespace LoadVantage.Common
             public const string ErrorValidatingTheCityAndState = "Error validating the cities and states.";
             public const string CityAndStateNotProvided = "City and state must be provided.";
 
-			public const string ErrorCreatingLoad = "There was an error creating the load. Please check your input and try again.";
             public const string ErrorUpdatingThisLoad = "An error occurred while trying to update the load.";
             public const string ErrorUpdatingLoad = "Load was not updated !";
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using static LoadVantage.Common.GeneralConstants;
 
 namespace LoadVantage.Extensions
 {

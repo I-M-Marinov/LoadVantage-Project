@@ -1,9 +1,4 @@
-﻿using LoadVantage.Core.Models.Truck;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using LoadVantage.Core.Models.Driver;
 using LoadVantage.Infrastructure.Data.Models;
 

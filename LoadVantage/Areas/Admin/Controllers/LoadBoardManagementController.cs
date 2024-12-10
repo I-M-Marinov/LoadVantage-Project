@@ -1,15 +1,12 @@
-﻿using LoadVantage.Areas.Admin.Contracts;
-using LoadVantage.Areas.Admin.Models.Load;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+using LoadVantage.Areas.Admin.Contracts;
 using LoadVantage.Core.Contracts;
-using LoadVantage.Core.Models.Load;
-using LoadVantage.Core.Services;
 using LoadVantage.Extensions;
 using LoadVantage.Filters;
 using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
-using static LoadVantage.Common.GeneralConstants.ActiveTabs;
 
 namespace LoadVantage.Areas.Admin.Controllers
 {

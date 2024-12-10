@@ -1,6 +1,5 @@
 ﻿using LoadVantage.Areas.Admin.Models.Load;
 using LoadVantage.Areas.Admin.Models.Profile;
-using LoadVantage.Core.Models.Load;
 
 namespace LoadVantage.Areas.Admin.Models.LoadBoard
 {

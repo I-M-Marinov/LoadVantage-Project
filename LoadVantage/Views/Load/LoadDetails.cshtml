@@ -1,11 +1,8 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using LoadVantage.Common.Enums
-@using LoadVantage.Core.Contracts
 @using LoadVantage.Core.Models.Load;
-@using LoadVantage.Core.Models.Profile
 @using LoadVantage.Extensions
 @using LoadVantage.Infrastructure.Data.Models
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Dispatcher = LoadVantage.Infrastructure.Data.Models.Dispatcher
 @model LoadViewModel
 
@@ -280,12 +277,8 @@
 							</button>
 						</form>
 					}
+
 					break;
-				// case LoadStatus.Delivered:
-				// 	<div class="load-status badge bg-info">
-				// 		<i class="bi bi-truck me-1"></i> Delivered
-				// 	</div>
-				// 	break;
 
 			}
 		}

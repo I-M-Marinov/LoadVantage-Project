@@ -1,6 +1,4 @@
 ﻿using LoadVantage.Areas.Admin.Models.Load;
-using LoadVantage.Core.Models.Load;
-using System.Threading.Tasks;
 
 namespace LoadVantage.Areas.Admin.Contracts
 {

@@ -1,6 +1,4 @@
-﻿using LoadVantage.Core.Models.Load;
-using LoadVantage.Core.Models.Profile;
-using System.Threading.Tasks;
+﻿using LoadVantage.Core.Models.Profile;
 using LoadVantage.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 
