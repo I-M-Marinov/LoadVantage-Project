@@ -18,7 +18,27 @@
 			<p>@message.Content</p>
 		</div>
 		<div class="message-timestamp">
-			<span>@message.Timestamp.ToString("hh:mm tt")</span>
+			<span>
+				@{
+					var now = DateTime.Now;
+					var messageDate = message.Timestamp;
+
+					string displayTime;
+					if (messageDate.Date == now.Date)
+					{
+						displayTime = messageDate.ToString("hh:mm tt");
+					}
+					else if (messageDate.Date == now.Date.AddDays(-1))
+					{
+						displayTime = "Yesterday " + messageDate.ToString("hh:mm tt");
+					}
+					else
+					{
+						displayTime = messageDate.ToString("MMM dd, yyyy hh:mm tt");
+					}
+				}
+				@displayTime
+			</span>
 		</div>
 	</div>
 }
