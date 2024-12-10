@@ -109,7 +109,6 @@ namespace LoadVantage.Controllers
 	        return RedirectToAction("Login", "Account");
         }
 
-		
         private async Task<IActionResult> RedirectToProfile()
         {
 			var user = await userService.GetCurrentUserAsync(); 

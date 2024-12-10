@@ -1,5 +1,4 @@
 using System.Threading.RateLimiting;
-using CloudinaryDotNet;
 using LoadVantage.Areas.Admin.Contracts;
 using LoadVantage.Areas.Admin.Services;
 using LoadVantage.Core.Contracts;
@@ -78,6 +77,7 @@ builder.Services.AddSingleton<IHtmlSanitizerService, HtmlSanitizerService>();   
 // =================================================== // 
 
 // =============== Register USER services ============== // 
+
 builder.Services.AddScoped<IAccountService, AccountService>();                              // Add the Account Service 
 builder.Services.AddScoped<IImageService, ImageService>();									// Add the Image Service 
 builder.Services.AddScoped<IProfileService, ProfileService>();                              // Add the Profile Service 
@@ -150,7 +150,6 @@ using (var scope = app.Services.CreateScope())
 	await SeedLoads(userManager, services);						// Seed the Created loads ( 20 random loads per each Broker )
 	await SeedTrucks(userManager, services);					// Seed the Trucks ( 5 random trucks per each Dispatcher ) 
 	await SeedDrivers(userManager, services);                   // Seed the Drivers ( 5 random drivers per each Dispatcher ) 
-
 }
 
 // Configure the HTTP request pipeline.

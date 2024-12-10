@@ -1,11 +1,4 @@
-﻿using LoadVantage.Areas.Admin.Models.Profile;
-using System.ComponentModel.DataAnnotations;
-
-using static LoadVantage.Common.GeneralConstants.UserImage;
-using static LoadVantage.Common.ValidationConstants.UserValidations;
-using static LoadVantage.Common.ValidationConstants.EditProfile;
-
-namespace LoadVantage.Areas.Admin.Models.User
+﻿namespace LoadVantage.Areas.Admin.Models.User
 {
 	public class UserManagementViewModel
 	{

@@ -1,5 +1,4 @@
 ﻿using LoadVantage.Areas.Admin.Models.Profile;
-using LoadVantage.Areas.Admin.Services;
 
 namespace LoadVantage.Areas.Admin.Models.User
 {

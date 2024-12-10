@@ -83,7 +83,6 @@ namespace LoadVantage.Tests.UnitTests.Core.Services
 
         }
 
-
         [Test]
         public async Task UpdateUserAsync_ShouldReturnSuccess_WhenUpdateIsSuccessful()
         {

@@ -1,8 +1,7 @@
-﻿using Azure.Messaging;
-using LoadVantage.Core.Models.Chat;
-using LoadVantage.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+
+using LoadVantage.Core.Models.Chat;
 
 namespace LoadVantage.Core.Hubs
 {

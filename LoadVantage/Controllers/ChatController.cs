@@ -5,11 +5,9 @@ using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Chat;
 using LoadVantage.Extensions;
 using LoadVantage.Infrastructure.Data.Models;
+
 using static LoadVantage.Common.GeneralConstants.TempMessages;
-using System.Text.Json;
-using NuGet.Protocol.Plugins;
-using LoadVantage.Core.Services;
-using Microsoft.AspNetCore.SignalR;
+
 
 namespace LoadVantage.Controllers
 {

@@ -1,6 +1,7 @@
-﻿using LoadVantage.Core.Models.Load;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+
+using LoadVantage.Core.Models.Load;
 
 namespace LoadVantage.Core.Hubs
 {
