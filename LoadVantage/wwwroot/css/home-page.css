@@ -584,8 +584,9 @@ custom-navbar-toggler {
 .footer-column h3 {
     font-family: Nunito;
     font-size: 1.2em;
+    font-weight: 600;
     margin-bottom: 15px;
-    color: #0ef804;
+    color: #ff6347;
 }
 
 .footer-column p,

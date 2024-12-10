@@ -2080,8 +2080,8 @@ body {
 }
 
 .button-row {
-    display: flex; /* Makes the container a flexbox */
-    gap: 10px; /* Adds spacing between buttons */
+    display: flex; 
+    gap: 10px; 
 }
 
 
@@ -2132,29 +2132,27 @@ body {
 .accordion-button:focus {
     outline: none; 
     background-color: #94deff !important; 
-    color: black; /* Example: Change text color */
-    border: 2px solid black; /* Example: Add a blue border */
+    color: black;
+    border: 2px solid black; 
 }
 
 .accordion-button:hover{
     background: #8360c3;
     color: white;
 }
-/* When the accordion button is clicked and focused */
 .accordion-button:active,
 .accordion-button.active {
     background-color: white; 
-    color: white; /* Example: White text */
-    border-color: #8c1db8; /* Example: Darker border */
+    color: white; 
+    border-color: #8c1db8; 
     box-shadow: none !important;
 }
 
-/* When the accordion button is both active and focused */
 .accordion-button:active:focus,
 .accordion-button.active:focus {
-    background-color: white; /* Example: Darker blue background */
-    color: #fff; /* Example: White text */
-    border-color: #003f7f; /* Example: Even darker border */
+    background-color: white;
+    color: #fff; 
+    border-color: #003f7f; 
 }
 /*-------------------------------------------------------------------------------------
 # SOCIAL LINKS ABOUT THE AUTHOR SECTION
