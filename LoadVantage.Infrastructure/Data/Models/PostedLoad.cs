@@ -1,20 +1,24 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace LoadVantage.Infrastructure.Data.Models
 {
 	public class PostedLoad
 	{
         [Key]
-        public Guid Id { get; set; }
+        [Comment("Unique identifier for a Posted Load")]
+		public Guid Id { get; set; }
 
         [Required]
-        public Guid LoadId { get; set; }
+        [Comment("Unique identifier for the Load")]
+		public Guid LoadId { get; set; }
 
         [ForeignKey(nameof(LoadId))]
         public virtual Load Load { get; set; } = null!;
 
-        public DateTime? PostedDate { get; set; }
+        [Comment("Date and Time when the load was Posted")]
+		public DateTime? PostedDate { get; set; }
 
     }
 }

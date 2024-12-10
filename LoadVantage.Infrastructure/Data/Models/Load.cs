@@ -10,51 +10,66 @@ namespace LoadVantage.Infrastructure.Data.Models
     public class Load
     {
         [Key]
-        public Guid Id { get; set; }
+        [Comment("Unique identifier for a Load")]
+		public Guid Id { get; set; }
 
-        [Required] 
-        public DateTime CreatedDate { get; set; }
+        [Required]
+        [Comment("Date and Time the load was created.")]
+		public DateTime CreatedDate { get; set; }
 
         [Required]
         [StringLength(LoadOriginCityMaxLength)]
+        [Comment("The city the load is originating from")]
 
-        public string OriginCity { get; set; } = null!;
+		public string OriginCity { get; set; } = null!;
 
         [Required]
         [StringLength(StateMinMaxLength)]
+        [Comment("The state the load is originating from")]
 
-        public string OriginState { get; set; } = null!;
+		public string OriginState { get; set; } = null!;
 
         [Required]
         [StringLength(LoadDestinationCityMaxLength)]
+        [Comment("The city the load is consigned to")]
 
-        public string DestinationCity { get; set; } = null!;
+		public string DestinationCity { get; set; } = null!;
 
         [Required]
         [StringLength(StateMinMaxLength)]
-        public string DestinationState { get; set; } = null!;
+        [Comment("The state the load is consigned to")]
+
+		public string DestinationState { get; set; } = null!;
 
         [Required]
-        public DateTime PickupTime { get; set; }
+        [Comment("Date and Time when the load needs to be picked up")]
+		public DateTime PickupTime { get; set; }
 
         [Required]
-        public DateTime DeliveryTime { get; set; }
+        [Comment("Date and Time when the load needs to be delivered at")]
+		public DateTime DeliveryTime { get; set; }
 
-        public double? Distance { get; set; } // Nullable in case the distance is yet to be calculated
+		[Comment("Distance in miles between the Origin and Destinations city and state")]
+		public double? Distance { get; set; } // Nullable in case the distance is yet to be calculated
 
         [Required]
         [Precision(18, 2)]
-        public decimal Price { get; set; }
+        [Comment("Decimal amount paid for moving the load from origin to the destination.")]
+		public decimal Price { get; set; }
 
         [Required]
         [Range(WeightMinValue,WeightMaxValue)]
-        public double Weight { get; set; }
+        [Comment("Weight of the load in lbs")]
+		public double Weight { get; set; }
 
-        // Track current load status
-        public LoadStatus Status { get; set; }
+		// Track current load status
+		[Comment("Status of the load")]
+		public LoadStatus Status { get; set; }
 
         [Required]
-        public Guid BrokerId { get; set; }
+        [Comment("Unique identifier for the Broker")]
+
+		public Guid BrokerId { get; set; }
 
         [ForeignKey(nameof(BrokerId))]
         public virtual Broker Broker { get; set; } = null!;
