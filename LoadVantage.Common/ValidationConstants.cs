@@ -172,6 +172,8 @@
 
 	        public const string TruckNumberRegexPattern = @"^[a-zA-Z0-9]{3,7}$";
 
+            public const byte TruckNumberMaxLength = 7;
+
 			public const byte TruckMakeMinLength = 2;
 			public const byte TruckMakeMaxLength = 30;
 

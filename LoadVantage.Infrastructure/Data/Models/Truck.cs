@@ -2,6 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
+using static LoadVantage.Common.ValidationConstants.TruckValidations;
+
 namespace LoadVantage.Infrastructure.Data.Models
 {
 	public class Truck
@@ -12,22 +14,26 @@ namespace LoadVantage.Infrastructure.Data.Models
 
 		[Required]
 		[Comment("Additional reference number for a truck, usually inside the company it is used in.")]
+        [StringLength(TruckNumberMaxLength)]
 
-		public string TruckNumber { get; set; } = null!;
+        public string TruckNumber { get; set; } = null!;
 
 		[Required]
 		[Comment("Truck Make")]
+        [StringLength(TruckMakeMaxLength)]
 
-		public string Make { get; set; } = null!;
+        public string Make { get; set; } = null!;
 
 		[Required]
 		[Comment("Truck Model")]
+        [StringLength(TruckModelMaxLength)]
 
-		public string Model { get; set; } = null!;
+        public string Model { get; set; } = null!;
 
 		[Required]
 		[Comment("Truck Production Year")]
-		public int Year { get; set; } 
+        [Range(TruckYearMinValue, TruckYearMaxValue)]
+        public int Year { get; set; } 
 
 		[Required]
 		[Comment("Unique identifier for the Dispatcher")]
