@@ -123,7 +123,12 @@
 	        public const string PhoneNumberRequired = "Phone number is required.";
 
 
-	        public const string EmailLengthNotValid = "The length of the email must be between 7 and 50 characters.";
+	        public const string PasswordRequired = "Current password is required.";
+	        public const string NewPasswordRequired = "New password is required.";
+	        public const string ConfirmationPasswordRequired = "Confirmation of the new password is required.";
+
+
+			public const string EmailLengthNotValid = "The length of the email must be between 7 and 50 characters.";
 	        public const string EmailAddressNotValid = "Invalid email address format.";
 	        public const string CompanyNameLengthNotValid = "The length of the company name must be between 3 and 50 characters.";
 	        public const string UserPhoneNumberLengthNotValid = "The length of the phone number must be between 7 and 15 characters.";
@@ -133,8 +138,9 @@
 	        public const string LastNameLengthNotValid = "The length of the lastname must be between 3 and 25 characters.";
 	        public const string NewPasswordLengthNotValid = "The new password must be between 6 and 30 characters long.";
 	        public const string NewAndConfirmPasswordDoNotMatch = "The new password and confirmation password do not match.";
+	        public const string PasswordAndConfirmPasswordDoNotMatch = "The password and confirmation password do not match.";
 
-			// ADMIN USER CREATION 
+			// USER CREATION 
 
 			public const string PasswordLengthNotValid = "The new password must be between 6 and 30 characters long.";
 

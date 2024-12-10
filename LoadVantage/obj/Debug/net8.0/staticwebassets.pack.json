@@ -2113,6 +2113,14 @@
       "PackagePath": "staticwebassets\\favicon2.ico"
     },
     {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\500.jpeg",
+      "PackagePath": "staticwebassets\\images\\500.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\author.jpg",
+      "PackagePath": "staticwebassets\\images\\author.jpg"
+    },
+    {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\award1.png",
       "PackagePath": "staticwebassets\\images\\award1.png"
     },
@@ -2143,6 +2151,10 @@
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\default-user-image.png",
       "PackagePath": "staticwebassets\\images\\default-user-image.png"
+    },
+    {
+      "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\loadVantage-privacy.jpeg",
+      "PackagePath": "staticwebassets\\images\\loadVantage-privacy.jpeg"
     },
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\images\\partner1.svg",
