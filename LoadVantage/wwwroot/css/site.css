@@ -2254,9 +2254,41 @@ ul {
     background: linear-gradient(243deg, rgba(36,242,236,1) 14%, rgba(35,245,236,1) 26%, rgba(129,39,227,1) 78%);
 }
 
-.social-container-author{
+.over-social-container-author {
+    margin-left: -2.5em;
+}
+
+.social-container-author,
+.privacy-policy-title {
     display: flex;
     justify-content: center;
     align-items: center;
     align-content: center;
 }
+
+#author-image {
+    width: 9.5em;
+    height: 9.5em;
+}
+
+.privacy-policy-title{
+    color: black;
+}
+
+.author-container {
+    padding: 0;
+    margin-top: -1.5em;
+    margin-left: 1.5em;
+}
+
+.author-container h4{
+   font-size: 1.5em;
+}
+
+.author-container p {
+    font-size: 1em;
+    color: #6f42c1;
+    font-weight: 600;
+}
+
+
