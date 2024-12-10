@@ -350,10 +350,10 @@ namespace LoadVantage.Controllers
 		        if (!success)
 		        {
                     TempData.SetErrorMessage(UnableToBookTheLoad);
-					return RedirectToAction("LoadDetails", new { id = loadId });
+                    return RedirectToAction("LoadBoard", "LoadBoard");
 		        }
 
-                TempData.SetSuccessMessage(LoadWasBookSuccessfully);
+				TempData.SetSuccessMessage(LoadWasBookSuccessfully);
                 return RedirectToAction("LoadDetails", new { loadId });
 			}
 			catch (Exception ex)
@@ -389,12 +389,17 @@ namespace LoadVantage.Controllers
                     TempData.SetErrorMessage(FailedToCancelLoadCarrier);
 		        }
 	        }
-	        catch (Exception ex)
-	        {
-                TempData.SetErrorMessage(ex.Message);
-	        }
+			catch (Exception ex) when (ex is UnauthorizedAccessException || ex is InvalidOperationException)
+			{
+				TempData.SetErrorMessage(ex.Message);
+				return RedirectToAction("LoadBoard", "LoadBoard");
+			}
+			catch (Exception ex)
+			{
+				TempData.SetErrorMessage(ex.Message);
+			}
 
-	        return RedirectToAction("LoadDetails", new { loadId });
+			return RedirectToAction("LoadDetails", new { loadId });
         }
 
         [HttpPost]
@@ -429,10 +434,10 @@ namespace LoadVantage.Controllers
 		        if (!success)
 		        {
 			        TempData.SetErrorMessage(UnableToMarkLoadDelivered);
-			        return RedirectToAction("LoadDetails", new {  loadId });
+			        return RedirectToAction("LoadBoard", "LoadBoard");
 		        }
 
-		        TempData.SetSuccessMessage(LoadWasDeliveredSuccessfully);
+				TempData.SetSuccessMessage(LoadWasDeliveredSuccessfully);
 		        return RedirectToAction("LoadBoard", "LoadBoard");
 	        }
 	        catch (ArgumentException ex)
