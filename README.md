@@ -96,56 +96,61 @@
     User Guide with screenshots:
   </h2>
 
-   
+<details> 
+    <summary><h3>Home Page</h3></summary>
 <div style="text-align: center;">
-
-  <h3>Home Page</h3>
-  
+ 
+   <p align="center">
    - The Home page consists of a navigation bar with three buttons ( Home, Register, Login ), logo and name, SVG animation of a truck moving, flip cards, 
    "Meet Our Partners" section, "Our Achievements" section, and a footer with links, company information, social links and contact information.
+   </p>
 
    <p align="center">
    <img src="./documentation_images/home-page.png">
    </p>
 </div>
-
+</details>
+<details> 
+ <summary><h3>Register Page</h3></summary>
 <div style="text-align: center;">
-
-  <h3>Register Page</h3>
-  
+   
+   <p align="center">
    - The Register page consists of a navigation bar with three buttons ( Home, Register, Login ) and a form with information needed to register a new user in the application.
+   </p>
 
    <p align="center">
    <img src="./documentation_images/register-page.png">
    </p>
 </div>
+</details> 
 
+<details>
+   <summary><h3>Login Page</h3></summary>
 <div style="text-align: center;">
 
-  <h3>Login Page</h3>
-  
+   <p align="center">
    - The Login page consists of a navigation bar with three buttons ( Home, Register, Login ) and a form with information needed for a registered user to log in.
-
+   </p>
    <p align="center">
    <img src="./documentation_images/login-page.png">
    </p>
 </div>
-
+</details>
+<details>
+ <summary><h3>Profile Page</h3></summary>
 <div style="text-align: center;">
-
-  <h3>Logged in User</h3>
-
-  - After successfully logging in a User would be redirected to the Profile Page
+ <p>
+   - After successfully logging in a User would be redirected to the Profile Page
     </br>
   - The Profile page shows a card containing the User's full name, position and company and below it depending if User is a Dispatcher or Broker there would be counts for Drivers, Trucks, Booked and Delivered Loads ( Dispatchers ) and Created, Posted, Booked and Delivered Loads ( Broker )
     </br>
   - In the tabulated container to the right of the general info card there is a Profile Overview tab, Edit Profile Tab, Edit Picture tab and Change Password Tab
     </br>
-    ###### ⭐ Profile Overview tab shows the information for the currently logged in User.
-    ###### ⭐ Edit Profile Tab lets the User edit any of the information visualized in the overview.
-    ###### ⭐ Edit Picture tab shows the profile picture and gives the User the option to delete it ( default to the generic picture ) or upload a new one.
-    ###### ⭐ Change Password Tab gives the User the option to change his password.
-    
+      <h6>⭐ Profile Overview tab shows the information for the currently logged in User.</h6>
+      <h6>⭐ Edit Profile Tab lets the User edit any of the information visualized in the overview.</h6>
+      <h6>⭐ Edit Picture tab shows the profile picture and gives the User the option to delete it ( default to the generic picture ) or upload a new one.</h6>
+      <h6>⭐ Change Password Tab gives the User the option to change his password.</h6>   
+ </p>
 
    <p align="center">
    <img src="./documentation_images/logged-in-users.png">
@@ -156,3 +161,107 @@
    </p>
    
 </div>
+</details>
+
+<details>
+ <summary><h2>Broker Load Board & Loads</h2></summary>
+ <details>
+ <summary><h3>Broker Load Board & Viewing a Created Load</h3></summary>
+<div style="text-align: center;">
+ <p>
+   - After a Broker opens the Load Board, he will be redirected to the Created Loads Tab, where he can view all the loads that he/she created.
+    </br>
+  - Search available right on the Board, that would filter the loads as the Broker types
+    </br>
+  - Sorting functionality available for each piece of information visualized ( for instance Broker can sort all loads by pickup state or price ascending or descending )
+    </br>
+  - Pagination also available right on the table, Broker can choose how many loads per page to show ( 5, 10, 15 ) or show all loads
+    </br>
+  - Clicking on the button on the right in the "Actions" section will take the Broker to the Load View:
+    </br>
+    <h6>⭐ Edit ---> This action would give the Broker access to edit the load information. Buttons "Save" and "Cancel" appear while load is being edited.</h6>
+    <h6>⭐ Post ---> This action would post the load, essentially changing it's status from Created to Available. </h6>
+    <h6>⭐ Cancel Load ---> This action would cancel the load, removing it entirely from the Broker's Board. </h6>
+    <h6>⭐ Back to Load Board ---> This action would return the Broker back to the Load Board ( and the Created tab ). </h6>
+ </p>
+   
+   <p align="center">
+   <img src="./documentation_images/broker-created-load-view.png">
+   </p>
+   
+   
+</div>
+</details>
+<details>
+ <summary> <h3>Broker Viewing a Posted Load</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - After a Broker posts a load, he/she will be redirected to the Load Board's Posted Loads Tab.
+    </br>
+  - Search, Sorting and Pagiantion is available on every tab of the Load Board. 
+    </br>
+  - Clicking on the button on the right in the "Actions" section will take the Broker to the Load View:
+    </br>
+    <h6>⭐ Edit ---> This action would give the Broker access to edit the load information. Buttons "Save" and "Cancel" appear while load is being edited.</h6>
+    <h6>⭐ Unpost ---> This action would unpost the load, essentially changing it's status from Available back to Created. </h6>
+    <h6>⭐ Unpost All  ---> This action would unpost all loads, that are currently in in status Available and revert them back to Created.</h6>
+    <h6>⭐ Cancel Load ---> This action would cancel the load, removing it entirely from the Broker's Board. </h6>
+    <h6>⭐ Back to Load Board ---> This action would return the Broker back to the Load Board ( and the Created tab ). </h6>
+ </p>
+ 
+   <p align="center">
+   <img src="./documentation_images/broker-posted-load-view.png">
+   </p>
+  
+</div>
+</details>
+<details>
+ <summary><h3>Broker Viewing a Booked Load</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - Any loads that are booked by a Dispatcher, would be sent to the Booked Loads Tab.
+    </br>
+  - Search, Sorting and Pagiantion is available on every tab of the Load Board. 
+    </br>
+  - Clicking on the button on the right in the "Actions" section will take the Broker to the Load View:
+    </br>
+  - Additional details are available to the Broker for the Dispatcher if the load is Booked. When the Dispatcher that booked the load assign a driver, information for that driver would be visualized for the Broker in that same mini window as well.
+    </br>
+    <h6>⭐ Edit ---> This action would give the Broker access to edit the load information. Buttons "Save" and "Cancel" appear while load is being edited.</h6>
+    <h6>⭐ Cancel Carrier ---> This action would cancel the carrier on the load ( and truck if there is one assigned ) and return the load back to status Posted. </h6>
+    <h6>⭐ Cancel Load ---> This action would cancel the load, removing it entirely from the Broker's Board. </h6>
+    <h6>⭐ Details  ---> This action toggles the info mini window on the left side containing info about the Dispatcher and Driver (if there is one assigned).</h6>
+    <h6>⭐ Back to Load Board ---> This action would return the Broker back to the Load Board ( and the Created tab ). </h6>
+ </p>
+
+   <p align="center">
+   <img src="./documentation_images/broker-booked-load-view.png">
+   </p>
+   
+   
+</div>
+</details>
+
+<details>
+ <summary><h3>Broker Load Board Delivered Loads Tab</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - Once a load has a Driver assigned by the Dispatcher that booked the load, he can mark it as delivered. All delivered loads for a Broker go to the Delivered Tab on the Load Board.
+    </br>
+  - Information for the Dispatcher and Driver that finished the load is available to make it easier to sort if needed. 
+    </br>
+ </p>
+
+   <p align="center">
+   <img src="./documentation_images/broker-delivered-loads.png">
+   </p>
+   
+   
+</div>
+</details>
+</details>
+
+
