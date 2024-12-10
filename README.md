@@ -101,10 +101,58 @@
 
   <h3>Home Page</h3>
   
-   - The home page consists of a navigation bar with three buttons, logo and name, SVG animation of a truck moving, flip cards, 
+   - The Home page consists of a navigation bar with three buttons ( Home, Register, Login ), logo and name, SVG animation of a truck moving, flip cards, 
    "Meet Our Partners" section, "Our Achievements" section, and a footer with links, company information, social links and contact information.
 
    <p align="center">
    <img src="./documentation_images/home-page.png">
    </p>
+</div>
+
+<div style="text-align: center;">
+
+  <h3>Register Page</h3>
+  
+   - The Register page consists of a navigation bar with three buttons ( Home, Register, Login ) and a form with information needed to register a new user in the application.
+
+   <p align="center">
+   <img src="./documentation_images/register-page.png">
+   </p>
+</div>
+
+<div style="text-align: center;">
+
+  <h3>Login Page</h3>
+  
+   - The Login page consists of a navigation bar with three buttons ( Home, Register, Login ) and a form with information needed for a registered user to log in.
+
+   <p align="center">
+   <img src="./documentation_images/login-page.png">
+   </p>
+</div>
+
+<div style="text-align: center;">
+
+  <h3>Logged in User</h3>
+
+  - After successfully logging in a User would be redirected to the Profile Page
+    </br>
+  - The Profile page shows a card containing the User's full name, position and company and below it depending if User is a Dispatcher or Broker there would be counts for Drivers, Trucks, Booked and Delivered Loads ( Dispatchers ) and Created, Posted, Booked and Delivered Loads ( Broker )
+    </br>
+  - In the tabulated container to the right of the general info card there is a Profile Overview tab, Edit Profile Tab, Edit Picture tab and Change Password Tab
+    </br>
+    ###### ⭐ Profile Overview tab shows the information for the currently logged in User.
+    ###### ⭐ Edit Profile Tab lets the User edit any of the information visualized in the overview.
+    ###### ⭐ Edit Picture tab shows the profile picture and gives the User the option to delete it ( default to the generic picture ) or upload a new one.
+    ###### ⭐ Change Password Tab gives the User the option to change his password.
+    
+
+   <p align="center">
+   <img src="./documentation_images/logged-in-users.png">
+   </p>
+   
+   <p align="center">
+   <img src="./documentation_images/profile-tabs.png">
+   </p>
+   
 </div>
