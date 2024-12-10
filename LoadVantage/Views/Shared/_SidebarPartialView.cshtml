@@ -17,7 +17,7 @@
 		<li class="nav-item profile-nav">
 
 
-			<form method="get" action="@Url.Action("Profile", "Profile")">
+			<form method="get" asp-area="" asp-controller="Profile" asp-action="Profile">
 				<input type="hidden" name="userId" value="@Model.Id"/>
 				<button type="submit" class="nav-link collapsed" id="profile-nav">
 					<i class="ri-account-pin-box-line"></i>
