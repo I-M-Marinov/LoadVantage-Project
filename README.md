@@ -225,7 +225,7 @@
     </br>
   - Sorting functionality available for each piece of information visualized ( for instance Broker can sort all loads by pickup state or price ascending or descending )
     </br>
-  - Pagination also available right on the table, Broker can choose how many loads per page to show ( 5, 10, 15 ) or show all loads
+  - Paginаtion also available right in the table, Broker can choose how many loads per page to show ( 5, 10, 15 ) or show all loads
     </br>
   - Clicking on the button on the right in the "Actions" section will take the Broker to the Load View:
     </br>
@@ -252,7 +252,7 @@
  <p>
    - After a Broker posts a load, he/she will be redirected to the Load Board's Posted Loads Tab.
     </br>
-  - Search, Sorting and Pagiantion is available on every tab of the Load Board. 
+  - Search, Sorting and Paginаtion is available on every tab of the Load Board. 
     </br>
   - Clicking on the button on the right in the "Actions" section will take the Broker to the Load View:
     </br>
@@ -279,7 +279,7 @@
  <p>
    - Any loads that are booked by a Dispatcher, would be sent to the Booked Loads Tab.
     </br>
-  - Search, Sorting and Pagiantion is available on every tab of the Load Board. 
+  - Search, Sorting and Paginаtion is available on every tab of the Load Board. 
     </br>
   - Clicking on the button on the right in the "Actions" section will take the Broker to the Load View:
     </br>
@@ -336,7 +336,7 @@
  <p>
    - After a Broker posts a load, any Dispather would be able to see it in his Posted Loads Tab on the Load Board Page.
     </br>
-  - Search, Sorting and Pagiantion is available on every tab of the Load Board. 
+  - Search, Sorting and Paginаtion is available on every tab of the Load Board. 
     </br>
   - Clicking on the button on the right in the "Actions" section will take the Dispatcher to the Load View:
     </br>
@@ -361,7 +361,7 @@
  <p>
    - All the loads that a Dispatcher booked would be visible in the Booked Loads Tab on the Load Board Page.
     </br>
-  - Search, Sorting and Pagiantion is available on every tab of the Load Board. 
+  - Search, Sorting and Paginаtion is available on every tab of the Load Board. 
     </br>
   - If there is a Truck and Driver assigned to the load already, the column "Status" would show "en route".
     </br>
@@ -406,7 +406,7 @@
  <!-- Dispatcher Trucks -->
 
 <details>
-<summary> <h3>Dispatcher Trucks Page</h3></summary>
+<summary><h3>Dispatcher Trucks Page</h3></summary>
 <div style="text-align: center;">
 
  <p>
@@ -433,7 +433,7 @@
  <!-- Dispatcher Drivers -->
 
 <details>
-<summary> <h3>Dispatcher Drivers Page</h3></summary>
+<summary><h3>Dispatcher Drivers Page</h3></summary>
 <div style="text-align: center;">
 
  <p>
@@ -462,7 +462,7 @@
  <!-- Administrator Profile Page -->
 
 <details>
-<summary> <h3>Administrator Profile Page</h3></summary>
+<summary><h3>Administrator Profile Page</h3></summary>
 <div style="text-align: center;">
 
  <p>
@@ -485,22 +485,189 @@
  <!-- Administrator Load Board Created Tab Page -->
 
 <details>
-<summary> <h3>Administrator Load Board Created Loads Tab</h3></summary>
+<summary><h3>Administrator Load Board Created Loads Tab</h3></summary>
 <div style="text-align: center;">
 
  <p>
    - An Administrator can see all Created Loads for all Brokers. 
     </br>
-   - Search, Sorting and Pagiantion is available on every tab of the Load Board. 
+   - Search, Sorting and Paginаtion is available on every tab of the Load Board. 
     </br>
-    <h6>⭐ PM the Broker ---> This action will take the Administrator to the Chat Page and open a chat with the Broker of the load he was viewing.</h6>
     <h6>⭐ Edit ---> This action will open the viewed load for changes. </h6>
+    <h6>⭐ PM the Broker ---> This action will take the Administrator to the Chat Page and open a chat with the Broker of the load he was viewing.</h6>
     <h6>⭐ Details  ---> This action toggles the info mini window on the left side containing info about the Broker when the load is in status Created.</h6>
     <h6>⭐ Back to Load Board ---> This action would return the Administrator back to the Load Board ( and the Created tab ). </h6>
  </p>
  
    <p align="center">
    <img src="./documentation_images/admin-created-loads-view.png">
+   </p>
+  
+</div>
+</details>
+
+ <!-- Administrator Load Board Posted Tab Page -->
+
+<details>
+<summary><h3>Administrator Load Board Posted Loads Tab</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - An Administrator can see all Posted Loads for all Brokers, just like Dispatchers. 
+    </br>
+   - Search, Sorting and Paginаtion is available on every tab of the Load Board. 
+    </br>
+    <h6>⭐ Edit ---> This action will open the viewed load for changes. </h6>
+    <h6>⭐ PM the Broker ---> This action will take the Administrator to the Chat Page and open a chat with the Broker of the load he was viewing.</h6>
+    <h6>⭐ Details  ---> This action toggles the info mini window on the left side containing info about the Broker when the load is in status Created.</h6>
+    <h6>⭐ Back to Load Board ---> This action would return the Administrator back to the Load Board ( and the Created tab ). </h6>
+ </p>
+ 
+   <p align="center">
+   <img src="./documentation_images/admin-posted-loads-view.png">
+   </p>
+  
+</div>
+</details>
+
+ <!-- Administrator Load Board Booked Tab Page -->
+
+<details>
+<summary><h3>Administrator Load Board Booked Loads Tab</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - An Administrator can see all Booked Loads for all Brokers. 
+    </br>
+   - Search, Sorting and Paginаtion is available on every tab of the Load Board. 
+    </br>
+   - Similar to the Broker and Dispatcher, if a Booked load has a Driver assigned already in the "Status" column it shows "en route". 
+    </br>
+   - The details mini window will show the Broker information, Dispatcher information and if a Driver is assigned - the Driver information. 
+    </br>
+    <h6>⭐ Edit ---> This action will open the viewed load for changes. </h6>
+    <h6>⭐ PM the Broker ---> This action will take the Administrator to the Chat Page and open a chat with the Broker of the load he was viewing.</h6>
+    <h6>⭐ PM the Dispatcher ---> This action will take the Administrator to the Chat Page and open a chat with the Dispatcher of the load he was viewing.</h6>
+    <h6>⭐ Details  ---> This action toggles the info mini window on the left side containing info about the Broker when the load is in status Created.</h6>
+    <h6>⭐ Back to Load Board ---> This action would return the Administrator back to the Load Board ( and the Created tab ). </h6>
+ </p>
+ 
+   <p align="center">
+   <img src="./documentation_images/admin-booked-loads-view.png">
+   </p>
+  
+</div>
+</details>
+
+ <!-- Administrator Load Board Delivered Tab Page -->
+
+<details>
+<summary><h3>Administrator Load Board Delivered Loads Tab</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - An Administrator can see all Delivered Loads for all Brokers and Dispatchers. 
+    </br>
+   - Search, Sorting and Paginаtion is available on every tab of the Load Board. 
+    </br>
+   - Unline the Brokers and Dispatchers, the Administrator can view each Delivered Load and if need be do any adjustments to it ( edit it ). 
+    </br>
+   - The details mini window will show the Broker information, Dispatcher information and the Driver information. 
+    </br>
+    <h6>⭐ Edit ---> This action will open the viewed load for changes. </h6>
+    <h6>⭐ PM the Broker ---> This action will take the Administrator to the Chat Page and open a chat with the Broker of the load he was viewing.</h6>
+    <h6>⭐ PM the Dispatcher ---> This action will take the Administrator to the Chat Page and open a chat with the Dispatcher of the load he was viewing.</h6>
+    <h6>⭐ Details  ---> This action toggles the info mini window on the left side containing info about the Broker when the load is in status Created.</h6>
+    <h6>⭐ Back to Load Board ---> This action would return the Administrator back to the Load Board ( and the Created tab ). </h6>
+ </p>
+ 
+   <p align="center">
+   <img src="./documentation_images/admin-delivered-loads-view.png">
+   </p>
+  
+</div>
+</details>
+
+ <!-- Administrator Load Board Cancelled Tab Page -->
+
+<details>
+<summary><h3>Administrator Load Board Cancelled Loads Tab</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - An Administrator can see all Cancelled Loads for all Brokers and Dispatchers. 
+    </br>
+   - Search, Sorting and Paginаtion is available on every tab of the Load Board. 
+    </br>
+   - Unlike the Brokers and Dispatchers, the Administrator can not only view each Cancelled Load , but also edit it . 
+    </br>
+   - The details mini window will show the Broker information. 
+    </br>
+    <h6>⭐ Edit ---> This action will open the viewed load for changes. </h6>
+    <h6>⭐ Restore Load ---> This action will allow the Administrator to move the load from status Cancelled to status Created, essentially returning it in the Created Loads tab of the Broker that owns it.</h6>
+    <h6>⭐ PM the Broker ---> This action will take the Administrator to the Chat Page and open a chat with the Broker of the load he was viewing.</h6>
+    <h6>⭐ Details  ---> This action toggles the info mini window on the left side containing info about the Broker when the load is in status Created.</h6>
+    <h6>⭐ Back to Load Board ---> This action would return the Administrator back to the Load Board ( and the Created tab ). </h6>
+ </p>
+ 
+   <p align="center">
+   <img src="./documentation_images/admin-cancelled-loads-view.png">
+   </p>
+  
+</div>
+</details>
+
+
+ <!-- Administrator User Management Page -->
+
+<details>
+<summary><h3>Administrator User Management Page</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - Page contains information for each User and Administrator registered on the platform. 
+    </br>
+   - Search and Paginаtion is available right in the table. Page size is currently set at 5 results/users per page.
+    </br>
+    <h6>⭐ Add User ---> This action will allow the Administrator to add new Users ( Brokers or Dispatchers ) directly. </h6>
+    <h6>⭐ Add Administrator ---> This action will allow the Administrator to add new Administrators directly.</h6>
+    <h6>⭐ Edit User---> This action opens the User or Administrator information in a modal window, letting the Administrator edit it.</h6>
+    <h6>⭐ Chat with User  ---> Allows the Administrator to chat with any of the Users or Administrators on the platform. </h6>
+    <h6>⭐ Deactivate User ---> This action anonymizes the User or Administrator ( deleting all his sensitive informaton from the DB ) and locks the account so it can no longer be used. </h6>
+    <h6>⭐ Reactivate User ---> This action unlocks a locked account. </h6>
+    <h6>⭐ Reset User Password ---> This action resets a User or Administrator's password to a pre-set default password. </h6>
+ </p>
+ 
+   <p align="center">
+   <img src="./documentation_images/admin-user-management.png">
+   </p>
+  
+</div>
+</details>
+
+ <!-- Administrator Statistics Page -->
+
+<details>
+<summary><h3>Administrator Statistics Page</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - Page contains information for: 
+    </br>
+    <h6>⭐Total User Count ( Administrators + Users ) </h6>
+    <h6>⭐Total Revenue ( Amount for all Loads in Status Delivered ) </h6>
+    <h6>⭐Total Loads ( Total count of all Loads in all statuses - Cancelled Loads included ) </h6>
+    <h6>⭐Total Drivers ( Total count of all Drivers, both active and fired drivers counted ) </h6>
+    <h6>⭐Total Trucks ( Total count of all Trucks, both active and decommissioned counted ) </h6>
+    <h6>⭐List of all Companies and the number of accounts per each company that has an account on the platform</h6>
+    </br>
+   - Upon clicking on the total Total Users, Total Revenue, Total Loads, Total Drivers or Total Trucks it flips the card and shows a pie chart showing percentage-wise and counts.
+    </br>
+   - Pie charts can be downloaded as a report in a .SVG, .PNG or .CSV format.
+ </p>
+ 
+   <p align="center">
+   <img src="./documentation_images/admin-statistics.png">
    </p>
   
 </div>
