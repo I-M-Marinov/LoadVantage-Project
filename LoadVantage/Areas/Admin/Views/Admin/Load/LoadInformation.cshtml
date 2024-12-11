@@ -37,7 +37,7 @@
 		<h1>Load</h1>
 		<nav>
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="#">@Model.AdminProfile.Position</a></li>
+				<li class="breadcrumb-item"><a href="#">@Model.AdminProfile!.Position</a></li>
 				<li class="breadcrumb-item"><a href="#">Load Board</a></li>
 				<li class="breadcrumb-item active">Load</li>
 			</ol>
@@ -285,7 +285,7 @@
 					</p>
 					<hr />
 
-					@if (Model.DispatcherInfo.DispatcherName != null)
+					@if (Model.DispatcherInfo?.DispatcherName != null)
 					{
 						<h5 class="card-title">Dispatcher Info</h5>
 						<p class="card-text">
@@ -296,7 +296,7 @@
 						<hr/>
 					}
 
-					@if (Model.DriverInfo.DriverName != null)
+					@if (Model.DriverInfo?.DriverName != null)
 					{
 						<h5 class="card-title">Driver Info</h5>
 						<p class="card-text">

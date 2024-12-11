@@ -35,7 +35,7 @@
 		<h1>Load</h1>
 		<nav>
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="#">@Model.UserProfile.Position</a></li>
+				<li class="breadcrumb-item"><a href="#">@Model.UserProfile!.Position</a></li>
                 <li class="breadcrumb-item"><a href="#">Load Board</a></li>
 				<li class="breadcrumb-item active">Load</li>
 			</ol>
@@ -405,7 +405,7 @@
 					<strong>Phone:</strong> @Model.DispatcherInfo?.DispatcherPhone
 				</p>
 				<hr/>
-				@if (Model.DriverInfo.DriverName != null)
+				@if (Model.DriverInfo?.DriverName != null)
 				{
 					<h5 class="card-title">Driver Info</h5>
 					<p class="card-text">
