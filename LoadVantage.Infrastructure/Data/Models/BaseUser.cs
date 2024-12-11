@@ -47,7 +47,7 @@ namespace LoadVantage.Infrastructure.Data.Models
 		public override string Email { get; set; }
 
 		[Comment("HashedPassword for the user")]
-		public override string? PasswordHash { get; set; }
+        public override string? PasswordHash { get; set; }
 
         [Phone]
         [StringLength(UserPhoneNumberMaxLength)]
