@@ -137,7 +137,7 @@
 </div>
 </details>
 <details>
- <summary><h3>Profile Page</h3></summary>
+ <summary><h2>Profile Page</h2></summary>
 <div style="text-align: center;">
  <p>
    - After successfully logging in a User would be redirected to the Profile Page
@@ -164,7 +164,57 @@
 </details>
 
 <details>
- <summary><h2>Broker Load Board & Loads</h2></summary>
+ <summary><h2>Chat Page</h2></summary>
+<div style="text-align: center;">
+ <p>
+   - Chat Page is available to Users and Administrators alike.
+    </br>
+   - Brokers cannot engage in conversation directly, they need to be contacted by a Dispatcher or an Administrator.
+    </br>
+   - Dispatchers can only contact Brokers through a redirect available to them when viewing a Posted load ( they can contact the broker of the load ).
+    </br>
+   - Administrators can contact both Dispatchers or Brokers using that redirect when viewing a load or go to the User Management Page and use the redirect there.
+    </br>
+     
+ </p>
+
+   <p align="center">
+   <img src="./documentation_images/chat-with-without-messages.png">
+   </p>
+   
+   <p align="center">
+   <img src="./documentation_images/chat-perspective.png">
+   </p>
+   
+</div>
+</details>
+
+<details>
+ <summary><h2>Brokers</h2></summary>
+
+<!-- Broker Create Load -->
+
+<details>
+ <summary><h3>Broker - Create a load</h3></summary>
+<div style="text-align: center;">
+ <p>
+  - Page consists of a simple form for adding new loads in the Broker's Created Loads 
+    </br>
+    <h6>⭐ Create Load ---> Attempt to add a load to the database and to the Broker's loads, if information is valid. </h6>
+    <h6>⭐ Reset ---> This action would reset the form essentially deleting values from the origin and destination city and state, resetting pickup and delivery time to now and setting the Price and Weight to their default value of 1.</h6>
+  
+ </p>
+   
+   <p align="center">
+   <img src="./documentation_images/broker-create-load.png">
+   </p>
+   
+   
+</div>
+</details>
+
+<!-- Broker Load Board Created Loads Tab & Viewing a Created Load -->
+
  <details>
  <summary><h3>Broker Load Board & Viewing a Created Load</h3></summary>
 <div style="text-align: center;">
@@ -192,6 +242,9 @@
    
 </div>
 </details>
+
+<!-- Broker Load Board Posted Loads Tab & Viewing a Posted Load -->
+
 <details>
  <summary> <h3>Broker Viewing a Posted Load</h3></summary>
 <div style="text-align: center;">
@@ -216,6 +269,9 @@
   
 </div>
 </details>
+
+<!-- Broker Load Board Booked Loads Tab & Viewing a Booked Load -->
+
 <details>
  <summary><h3>Broker Viewing a Booked Load</h3></summary>
 <div style="text-align: center;">
@@ -243,6 +299,8 @@
    
 </div>
 </details>
+
+<!-- Broker Load Board Delivered Loads Tab -->
 
 <details>
  <summary><h3>Broker Load Board Delivered Loads Tab</h3></summary>
