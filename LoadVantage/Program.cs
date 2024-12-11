@@ -49,13 +49,13 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddIdentity<BaseUser, Role>(options =>
 	{
-		options.Password.RequireDigit = true;
-		options.SignIn.RequireConfirmedAccount = false;
-		options.Password.RequireNonAlphanumeric = false;
-		options.Password.RequireUppercase = false;
-		options.Lockout.MaxFailedAccessAttempts = 5;
-		options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); 
-		options.User.RequireUniqueEmail = true; // Unique email address 
+		options.Password.RequireDigit = true;									// Passwords are required to have digits in them
+		options.SignIn.RequireConfirmedAccount = false;							// Do not require a confirmed account from the users
+		options.Password.RequireNonAlphanumeric = false;						// Do not require any special characters in the password
+		options.Password.RequireUppercase = false;								// Do not require an upper case letter in the password
+		options.Lockout.MaxFailedAccessAttempts = 5;                            // Max amount of failed attempts before user is Locked Out 
+		options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);       // User is locked out for 5 minutes
+		options.User.RequireUniqueEmail = true;									// Require only unique email addresses		
 	})
 	.AddEntityFrameworkStores<LoadVantageDbContext>() 
 	.AddDefaultTokenProviders();
@@ -98,13 +98,13 @@ builder.Services.AddSignalR();                                                  
 
 // =============== Register ADMIN services ============== // 
 
-builder.Services.AddScoped<IAdminProfileService, AdminProfileService>();
-builder.Services.AddScoped<IAdminUserService, AdminUserService>();
-builder.Services.AddScoped<IAdminLoadBoardService, AdminLoadBoardService>();
-builder.Services.AddScoped<IAdminLoadStatusService, AdminLoadStatusService>();
-builder.Services.AddScoped<IUserManagementService, UserManagementService>();
-builder.Services.AddScoped<IAdminChatService, AdminChatService>();
-builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+builder.Services.AddScoped<IAdminProfileService, AdminProfileService>();					// Add the Admin Profile Service 
+builder.Services.AddScoped<IAdminUserService, AdminUserService>();							// Add the Admin User Service 
+builder.Services.AddScoped<IAdminLoadBoardService, AdminLoadBoardService>();                // Add the Admin Load Board Service 
+builder.Services.AddScoped<IAdminLoadStatusService, AdminLoadStatusService>();              // Add the Admin Load Status Service 
+builder.Services.AddScoped<IUserManagementService, UserManagementService>();                // Add the User Management Service 
+builder.Services.AddScoped<IAdminChatService, AdminChatService>();                          // Add the Admin Chat Service 
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();                        // Add the Statistics Service 
 
 
 // =================================================== // 
@@ -112,24 +112,33 @@ builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(options =>
     {
-        options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+        options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>(); // Auto Enable CSRF Protection Middleware
 
-    });
+	});
 
 builder.Services.AddRazorPages();
 
-// =============== Cookies middleware ============== // 
+// =============== Session Cookies middleware ============== // 
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-	options.LoginPath = "/Account/Login";
-	options.LogoutPath = "/Home/Index";
-	options.ExpireTimeSpan = TimeSpan.FromDays(1);
-	options.Cookie.HttpOnly = true;
-	options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-	options.Cookie.SameSite = SameSiteMode.Strict;
-	options.SlidingExpiration = false;
+	options.LoginPath = "/Account/Login";						 // Redirect to Log In if unauthenticated
+	options.LogoutPath = "/Home/Index";                       // Redirect after Logging Out			
+	options.ExpireTimeSpan = TimeSpan.FromDays(1);               // Cookie lifespan = 1 day;
+	options.Cookie.HttpOnly = true;                              // Prevent JavaScript access
+	options.Cookie.SecurePolicy = CookieSecurePolicy.Always;     // Require HTTPS
+	options.Cookie.SameSite = SameSiteMode.Strict;               // Prevent cross-site cookie use
+	options.SlidingExpiration = false;                           // No sliding expiration
 
+});
+
+// =============== Antiforgery Cookie middleware ============== // 
+
+builder.Services.AddAntiforgery(options =>
+{
+	options.Cookie.HttpOnly = true;										// Prevent JavaScript access
+	options.Cookie.SecurePolicy = CookieSecurePolicy.Always;			// Require HTTPS
+	options.Cookie.SameSite = SameSiteMode.Strict;						// Strict cross-site rules
 });
 
 var app = builder.Build();
@@ -242,6 +251,5 @@ app.UseEndpoints(endpoints =>
 });
 #pragma warning restore ASP0014
 
-//app.MapRazorPages();
 
 app.Run();
