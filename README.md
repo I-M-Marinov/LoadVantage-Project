@@ -97,7 +97,7 @@
   </h2>
 
 <details> 
-    <summary><h3>Home Page</h3></summary>
+    <summary><h2>Home Page</h2></summary>
 <div style="text-align: center;">
  
    <p align="center">
@@ -111,7 +111,7 @@
 </div>
 </details>
 <details> 
- <summary><h3>Register Page</h3></summary>
+ <summary><h2>Register Page</h2></summary>
 <div style="text-align: center;">
    
    <p align="center">
@@ -125,7 +125,7 @@
 </details> 
 
 <details>
-   <summary><h3>Login Page</h3></summary>
+   <summary><h2>Login Page</h2></summary>
 <div style="text-align: center;">
 
    <p align="center">
@@ -321,5 +321,147 @@
 </div>
 </details>
 </details>
+
+<!-- Dispatchers Section -->
+
+<details>
+ <summary><h2>Dispatchers</h2></summary>
+ 
+ <!-- Dispatcher Posted Loads Tab & Viewing a Posted Load -->
+
+<details>
+ <summary> <h3>Dispatcher Viewing a Posted Load</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - After a Broker posts a load, any Dispather would be able to see it in his Posted Loads Tab on the Load Board Page.
+    </br>
+  - Search, Sorting and Pagiantion is available on every tab of the Load Board. 
+    </br>
+  - Clicking on the button on the right in the "Actions" section will take the Dispatcher to the Load View:
+    </br>
+    <h6>⭐ PM the Broker ---> This action will take the Dispatcher to the Chat Page and open a chat with the Broker of the load he was viewing.</h6>
+    <h6>⭐ Book this Load ---> This action will book the load, essentially changing it's status from Available to Booked. Dispatcher will now be able to see that load in the Booked Loads Tab on the Load Board Page.</h6>
+    <h6>⭐ Back to Load Board ---> This action would return the Dispatcher back to the Load Board ( and the Posted tab ). </h6>
+ </p>
+ 
+   <p align="center">
+   <img src="./documentation_images/dispatcher-posted-load-view.png">
+   </p>
+  
+</div>
+</details>
+
+ <!-- Dispatcher Booked Loads Tab & Viewing a Booked Load -->
+
+<details>
+<summary> <h3>Dispatcher Viewing a Booked Load</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - All the loads that a Dispatcher booked would be visible in the Booked Loads Tab on the Load Board Page.
+    </br>
+  - Search, Sorting and Pagiantion is available on every tab of the Load Board. 
+    </br>
+  - If there is a Truck and Driver assigned to the load already, the column "Status" would show "en route".
+    </br>
+  - Clicking on the button on the right in the "Actions" section will take the Dispatcher to the Load View:
+    </br>
+    <h6>⭐ PM the Broker ---> This action will take the Dispatcher to the Chat Page and open a chat with the Broker of the load he was viewing.</h6>
+    <h6>⭐ Select a Driver ---> This action will assign a Driver to the load. From the dropdown the Dispatcher will choose an active driver that is available for a load ( if a driver is not available he will not be shown in the dropdown ) and then save his/her choice. </h6>
+    <h6>⭐ Cancel Load ---> This action will return the load back to the broker ( changing the status of the load from Booked back to Posted ). If there is a Truck & Driver assigned to the load, they will be released, so they can be assigned to another load.</h6>
+    <h6>⭐ Mark as Delivered ---> This action will mark the load as Delivered, release the driver and from this point on the load will be visible only in the Delivered Loads Tab on the Load Board Page ( both for the Broker and Dispatcher ). </h6>
+    <h6>⭐ Back to Load Board ---> This action would return the Dispatcher back to the Load Board ( and the Posted tab ). </h6>
+
+ </p>
+ 
+   <p align="center">
+   <img src="./documentation_images/dispatcher-booked-load-view.png">
+   </p>
+  
+</div>
+</details>
+
+<!-- Dispatcher Load Board Delivered Loads Tab -->
+
+<details>
+ <summary><h3>Dispatcher Load Board Delivered Loads Tab</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - Once the load is marked delivered by the Dispatcher, it will be moved to the Delivered Loads Tab on the Load Board Page.
+    </br>
+  - Information for the Broker, Dispatcher and Driver that delivered the load is available to make it easier to sort if needed. 
+    </br>
+ </p>
+
+   <p align="center">
+   <img src="./documentation_images/dispatcher-delivered-loads-tab.png">
+   </p>
+   
+   
+</div>
+</details>
+
+ <!-- Dispatcher Trucks -->
+
+<details>
+<summary> <h3>Dispatcher Trucks Page</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - The Trucks Page consists of a table with the current number of trucks in the Dispatcher's Fleet.
+    </br>
+  - If there is a Truck and Driver assigned to the load already, the column "Status" would show "en route".
+    </br>
+    <h6>⭐ Add Truck ---> This action will open a modal window and the Dispatcher would have to put the required information before he/she saves the new truck. </h6>
+    <h6>⭐ Edit ---> This action will open a modal window with the selected truck's information loaded in. Dispatcher can edit any property and save it. </h6>
+    <h6>⭐ Park ---> This action parks the truck at the yard. Truck cannot be parked if there is a driver in it and he is currently under a load (doing a load ). </h6>
+    <h6>⭐ Select a driver ---> This action will give an option from the dropdown menu for an active and available Driver for the Dispatcher to assign in the selected truck. </h6>
+    <h6>⭐ Delete ---> This action will essentially remove the truck from the Dispatcher's Fleet. Cannot remove a truck that is being used. Truck need to be parked first.</h6>
+    
+
+ </p>
+ 
+   <p align="center">
+   <img src="./documentation_images/dispatcher-trucks.png">
+   </p>
+  
+</div>
+</details>
+
+ <!-- Dispatcher Drivers -->
+
+<details>
+<summary> <h3>Dispatcher Drivers Page</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - The Drivers Page consists of a table with the current number of drivers in the Dispatcher's Fleet.
+    </br>
+    <h6>⭐ Add Driver ---> This action will open a modal window and the Dispatcher would have to put the required information before he/she saves the new driver. </h6>
+    <h6>⭐ Edit ---> This action will open a modal window with the selected driver's information loaded in. Dispatcher can edit any property and save it. </h6>
+    <h6>⭐ Fire ---> This action will essentially remove the driver from the Dispatcher's driver list.</h6>
+    <h6>✨✨✨ If a Driver is Available the first icon in the "Available" column would be green, otherwise it will show a truck, meaning Driver is assigned in a Truck. In addition if he is in a Truck the "Actions" column will now show "ready for a load".</h6>
+    <h6>✨✨✨ If a Driver is in a Truck and assigned on a load the second icon in the "Available" column will now show a package icon signifying that the driver is under a lot as oposed if he is not it will show a house icon ( meaning he is at home base )</h6>
+
+ </p>
+ 
+   <p align="center">
+   <img src="./documentation_images/dispatcher-drivers.png">
+   </p>
+  
+</div>
+</details>
+
+</details>
+
+<details>
+ <summary><h2>Administrators</h2></summary>
+
+
+</details>
+
+
 
 
