@@ -459,6 +459,52 @@
 <details>
  <summary><h2>Administrators</h2></summary>
 
+ <!-- Administrator Profile Page -->
+
+<details>
+<summary> <h3>Administrator Profile Page</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - Once an Administrator logs in, he/she is redirected to the Profile Page.
+    </br>
+   - The main difference between the Dispatcher and Broker Profile page is the card below the profile picture contains information about the total revenue, total number of users and total number of loads.
+    </br>
+   - The Overview, Edit Profile, Edit Picture and Change Password are also available.
+    </br>
+   <h6>✨✨✨ Key difference here is that Administrators can addd .GIF images as their profile picture, unlike Users</h6>
+ </p>
+ 
+   <p align="center">
+   <img src="./documentation_images/admin-profile.png">
+   </p>
+  
+</div>
+</details>
+
+ <!-- Administrator Load Board Created Tab Page -->
+
+<details>
+<summary> <h3>Administrator Load Board Created Loads Tab</h3></summary>
+<div style="text-align: center;">
+
+ <p>
+   - An Administrator can see all Created Loads for all Brokers. 
+    </br>
+   - Search, Sorting and Pagiantion is available on every tab of the Load Board. 
+    </br>
+    <h6>⭐ PM the Broker ---> This action will take the Administrator to the Chat Page and open a chat with the Broker of the load he was viewing.</h6>
+    <h6>⭐ Edit ---> This action will open the viewed load for changes. </h6>
+    <h6>⭐ Details  ---> This action toggles the info mini window on the left side containing info about the Broker when the load is in status Created.</h6>
+    <h6>⭐ Back to Load Board ---> This action would return the Administrator back to the Load Board ( and the Created tab ). </h6>
+ </p>
+ 
+   <p align="center">
+   <img src="./documentation_images/admin-created-loads-view.png">
+   </p>
+  
+</div>
+</details>
 
 </details>
 
