@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 using LoadVantage.Core.Contracts;
-using LoadVantage.Infrastructure.Data;
-using LoadVantage.Infrastructure.Data.Models;
 using LoadVantage.Core.Models.Chat;
 using LoadVantage.Core.Models.Image;
 using LoadVantage.Core.Models.Profile;
+using LoadVantage.Infrastructure.Data;
+using LoadVantage.Infrastructure.Data.Models;
 
 using static LoadVantage.Common.GeneralConstants.UserImage;
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
@@ -28,7 +28,11 @@ namespace LoadVantage.Core.Services
 		private readonly LoadVantageDbContext context;
         private readonly IImageService imageService;
 
-        public UserService(UserManager<BaseUser> _userManager, IHttpContextAccessor _httpContextAccessor, LoadVantageDbContext _context, IImageService _imageService)
+        public UserService(
+	        UserManager<BaseUser> _userManager, 
+	        IHttpContextAccessor _httpContextAccessor, 
+	        LoadVantageDbContext _context, 
+	        IImageService _imageService)
 		{
             userManager = _userManager;
             httpContextAccessor = _httpContextAccessor;
@@ -303,9 +307,7 @@ namespace LoadVantage.Core.Services
 		        throw new ArgumentNullException(nameof(user));
 			}
 
-
-
-			if (claims == null || !claims.Any())
+			if (claims == null || claims.Any())
 			{
 				throw new ArgumentException(ClaimsCannotBeNull, nameof(claims));
 			}

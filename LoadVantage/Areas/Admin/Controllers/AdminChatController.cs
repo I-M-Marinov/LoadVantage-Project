@@ -66,7 +66,6 @@ namespace LoadVantage.Areas.Admin.Controllers
             return View("~/Areas/Admin/Views/Admin/Chat/AdminChatWindow.cshtml", model);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendMessage(Guid receiverId, string messageContent)

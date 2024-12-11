@@ -19,7 +19,10 @@ namespace LoadVantage.Controllers
 		private readonly IProfileService profileService;
 
 
-		public ChatController(IChatService _chatService, IUserService _userService, IProfileService _profileService)
+		public ChatController(
+			IChatService _chatService, 
+			IUserService _userService, 
+			IProfileService _profileService)
 		{
 		    chatService = _chatService;
 		    userService = _userService;

@@ -16,21 +16,14 @@ namespace LoadVantage.Areas.Admin.Controllers
 	public class LoadBoardManagementController : Controller
 	{
 
-		private readonly IUserService userService;
-		private readonly IProfileService profileService;
-		private readonly IAdminProfileService adminProfileService;
 		private readonly IAdminUserService adminUserService;
 		private readonly IAdminLoadBoardService adminLoadBoardService;
 
-		public LoadBoardManagementController(IUserService _userService,
-			IProfileService _profileService,
-			IAdminProfileService _adminProfileService,
+		public LoadBoardManagementController(
 			IAdminUserService _adminUserService,
 			IAdminLoadBoardService _adminLoadBoardService)
 		{
-			userService = _userService;
-			profileService = _profileService;
-			adminProfileService = _adminProfileService;
+		
 			adminUserService = _adminUserService;
 			adminLoadBoardService = _adminLoadBoardService;
 

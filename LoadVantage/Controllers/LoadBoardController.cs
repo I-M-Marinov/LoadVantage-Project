@@ -14,7 +14,9 @@ namespace LoadVantage.Controllers
 		private readonly IUserService userService;
 		private readonly ILoadBoardService loadBoardService;
 
-		public LoadBoardController(ILoadBoardService _loadBoardService, IUserService _userService)
+		public LoadBoardController(
+			ILoadBoardService _loadBoardService, 
+			IUserService _userService)
 
 		{
 			loadBoardService = _loadBoardService;

@@ -7,11 +7,11 @@ namespace LoadVantage.Areas.Admin.Models.LoadBoard
 	{
 		public Guid UserId { get; set; }
 		public AdminProfileViewModel Profile { get; set; } = null!;
-		public IEnumerable<AdminLoadViewModel> CreatedLoads { get; set; }
-		public IEnumerable<AdminLoadViewModel> PostedLoads { get; set; }
-		public IEnumerable<AdminLoadViewModel> BookedLoads { get; set; }
-		public IEnumerable<AdminLoadViewModel> DeliveredLoads { get; set; }
-		public IEnumerable<AdminLoadViewModel> CancelledLoads { get; set; }
+		public IEnumerable<AdminLoadViewModel> CreatedLoads { get; set; } = null!;
+		public IEnumerable<AdminLoadViewModel> PostedLoads { get; set; } = null!;
+		public IEnumerable<AdminLoadViewModel> BookedLoads { get; set; } = null!;
+		public IEnumerable<AdminLoadViewModel> DeliveredLoads { get; set; } = null!;
+		public IEnumerable<AdminLoadViewModel> CancelledLoads { get; set; } = null!;
 		
 	}
 }

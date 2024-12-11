@@ -7,10 +7,10 @@ namespace LoadVantage.Core.Models.LoadBoard
 	{
 		public Guid UserId { get; set; }
 		public ProfileViewModel Profile { get; set; } = null!;
-		public IEnumerable<LoadViewModel> CreatedLoads { get; set; }
-		public IEnumerable<LoadViewModel> PostedLoads { get; set; }
-		public IEnumerable<LoadViewModel> BookedLoads { get; set; }
-		public IEnumerable<DeliveredLoadViewModel> DeliveredLoads { get; set; }
+		public IEnumerable<LoadViewModel> CreatedLoads { get; set; } = null!;
+		public IEnumerable<LoadViewModel> PostedLoads { get; set; } = null!;
+		public IEnumerable<LoadViewModel> BookedLoads { get; set; } = null!;
+		public IEnumerable<DeliveredLoadViewModel> DeliveredLoads { get; set; } = null!;
 	}
 		
 }

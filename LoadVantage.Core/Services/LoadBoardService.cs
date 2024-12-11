@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Load;
@@ -12,7 +11,6 @@ using static LoadVantage.Common.GeneralConstants.ErrorMessages;
 
 namespace LoadVantage.Core.Services
 {
-	[Authorize]
 	public class LoadBoardService : ILoadBoardService
 	{
 		private readonly LoadVantageDbContext context;

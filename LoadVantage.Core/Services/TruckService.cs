@@ -20,7 +20,11 @@ namespace LoadVantage.Core.Services
 		private readonly IUserService userService;
 		private readonly IHtmlSanitizerService htmlSanitizer;
 
-		public TruckService(LoadVantageDbContext _context, IProfileService _profileService, IUserService _userService, IHtmlSanitizerService _htmlSanitizer)
+		public TruckService(
+			LoadVantageDbContext _context, 
+			IProfileService _profileService, 
+			IUserService _userService, 
+			IHtmlSanitizerService _htmlSanitizer)
 		{
 			context = _context;
 			profileService = _profileService;

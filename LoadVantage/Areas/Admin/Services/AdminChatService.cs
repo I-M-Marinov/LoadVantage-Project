@@ -12,7 +12,10 @@ namespace LoadVantage.Areas.Admin.Services
 		private readonly IChatService chatService;
 
 
-		public AdminChatService(IUserService _userService, IAdminProfileService _adminProfileService, IChatService _chatService)
+		public AdminChatService(
+			IUserService _userService, 
+			IAdminProfileService _adminProfileService, 
+			IChatService _chatService)
 		{
 			userService = _userService;
 			adminProfileService = _adminProfileService;

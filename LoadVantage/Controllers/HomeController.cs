@@ -58,7 +58,6 @@ namespace LoadVantage.Controllers
 		}
 
         [AllowAnonymous]
-
         public IActionResult Privacy()
 		{
 			return View();

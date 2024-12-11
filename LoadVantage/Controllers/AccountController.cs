@@ -18,7 +18,9 @@ namespace LoadVantage.Controllers
         private readonly IUserService userService;
         private readonly IAccountService accountService;
 
-        public AccountController(IUserService _userService, IAccountService _accountService)
+        public AccountController(
+	        IUserService _userService, 
+	        IAccountService _accountService)
         {
 	        userService = _userService;
             accountService = _accountService;

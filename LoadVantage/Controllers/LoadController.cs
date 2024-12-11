@@ -25,7 +25,11 @@ namespace LoadVantage.Controllers
 		private readonly ILoadStatusService loadService;
         private readonly IHubContext<LoadHub> loadHub;
 
-        public LoadController(IProfileService _profileService, ILoadStatusService _loadService, IUserService _userService, IHubContext<LoadHub> _loadHub)
+        public LoadController(
+	        IProfileService _profileService, 
+	        ILoadStatusService _loadService, 
+	        IUserService _userService, 
+	        IHubContext<LoadHub> _loadHub)
 		{
 			profileService = _profileService;
 			userService = _userService;

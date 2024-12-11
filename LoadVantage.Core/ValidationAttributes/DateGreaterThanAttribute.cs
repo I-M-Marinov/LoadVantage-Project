@@ -24,7 +24,7 @@ namespace LoadVantage.Core.ValidationAttributes
             if (currentValue <= comparisonValue)
                 return new ValidationResult(ErrorMessage);
 
-            return ValidationResult.Success;
+            return ValidationResult.Success!;
         }
     }
 }
