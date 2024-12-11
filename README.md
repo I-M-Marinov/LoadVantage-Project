@@ -54,6 +54,7 @@
     <li>JavaScript</li>
     <li>jQuery</li>
     <li>AJAX</li>
+    <li>Figma</li>
     <li>Scalable Vector Graphics</li>
     <li>BoxIcons & RemixIcons</li>
     <li>Simple Datatables</li>
@@ -110,6 +111,7 @@
    </p>
 </div>
 </details>
+
 <details> 
  <summary><h2>Register Page</h2></summary>
 <div style="text-align: center;">
@@ -136,6 +138,20 @@
    </p>
 </div>
 </details>
+
+<details>
+   <summary><h2>Privacy Policy Page</h2></summary>
+<div style="text-align: center;">
+
+   <p align="center">
+   - The Privacy Policy page consists useful information for the application itself and a about the Author section.
+   </p>
+   <p align="center">
+   <img src="./documentation_images/privacy-policy-page.png">
+   </p>
+</div>
+</details>
+
 <details>
  <summary><h2>Profile Page</h2></summary>
 <div style="text-align: center;">
@@ -675,6 +691,124 @@
 
 </details>
 
+<details>
+ <summary>
+ <h2>
+    Additional features: 
+  </h2>
+ </summary>
 
+<!-- Start Responsive Design -->
 
+<details>
+   <summary>
+      <h3>
+          Responsive design
+      </h3>
+    </summary>
+  <div style="text-align: center;">
+ 
+   <p align="center">
+      <img src="./documentation_images/responsive-design.png">
+   </p>
+    
+  </div>
+</details>
+<!-- End Responsive Design -->
 
+ <!-- Start Custom Loader -->
+
+<details>
+   <summary>
+      <h3>
+          Custom loader animation
+      </h3>
+    </summary>
+  <div style="text-align: center;">
+ 
+   <p align="center">
+      <img src="./documentation_images/custom-loader.gif">
+   </p>
+    
+  </div>
+</details>
+
+<!-- End Custom Loader -->
+
+ <!-- Start Custom Truck Animation -->
+
+<details>
+   <summary>
+      <h3>
+          Custom Truck animation
+      </h3>
+    </summary>
+  <div style="text-align: center;">
+ 
+   <p align="center">
+      <img src="./documentation_images/custom-truck-animation.gif">
+   </p>
+    
+  </div>
+</details>
+
+<!-- End Custom Truck Animation-->
+
+ <!-- Start Custom buttons  -->
+
+<details>
+   <summary>
+      <h3>
+          Custom buttons
+      </h3>
+    </summary>
+  <div style="text-align: center;">
+ 
+   <p align="center">
+      <img src="./documentation_images/custom-buttons.gif">
+   </p>
+   <p align="center">
+      <img src="./documentation_images/register-button.gif">
+   </p>
+   <p align="center">
+      <img src="./documentation_images/login-button.gif">
+   </p>
+    <p align="center">
+      <img src="./documentation_images/custom-navigation-buttons.png">
+   </p>
+    
+  </div>
+</details>
+
+<!-- End Custom buttons -->
+
+ <!-- Start Sidebar Toggle and  Dark Theme  -->
+
+<details>
+   <summary>
+      <h3>
+          Sidebar Toggle and  Dark Theme
+      </h3>
+    </summary>
+  <div style="text-align: center;">
+ 
+   <p align="center">
+      <img src="./documentation_images/dark-theme.gif">
+   </p>
+   
+    
+  </div>
+</details>
+
+<!-- End Sidebar Toggle and  Dark Theme -->
+ 
+</details>
+
+<div align="center">
+    <h3>Just for fun:</h3>
+    <p>I have hidden this ASCII art picture in one of the Views, see if you can find it 😏 ( .. no cheating ❗❗  )  </p>
+</div>
+
+<p align="center">
+    <img src="./documentation_images/easter-egg.png" alt="Easter Egg">
+</p>
