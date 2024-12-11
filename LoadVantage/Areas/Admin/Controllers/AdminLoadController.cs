@@ -31,6 +31,8 @@ namespace LoadVantage.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[Route("LoadInfo")]
+
 		public async Task<IActionResult> GetLoadInfo(Guid loadId)
 		{
 

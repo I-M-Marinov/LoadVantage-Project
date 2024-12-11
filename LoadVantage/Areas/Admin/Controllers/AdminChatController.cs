@@ -34,7 +34,8 @@ namespace LoadVantage.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AdminChatWindow()
+        [Route("AdminChatWindow")]
+		public async Task<IActionResult> AdminChatWindow()
         {
             var currentUser = await userService.GetCurrentUserAsync();
 
@@ -108,6 +109,7 @@ namespace LoadVantage.Areas.Admin.Controllers
         }
 
 		[HttpGet]
+		[Route("StartChatWithUser")]
 		public async Task<IActionResult> StartChatWithUser(Guid userId)
 		{
 			AdminChatViewModel model = await adminChatService.BuildChatViewModel(userId);

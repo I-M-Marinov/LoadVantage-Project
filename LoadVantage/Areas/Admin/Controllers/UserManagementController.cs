@@ -37,6 +37,8 @@ namespace LoadVantage.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [Route("UserManagement")]
+
 		public async Task<IActionResult> UserManagement(Guid adminId, int pageNumber = 1, int pageSize = 5, string searchTerm = "")
         {
             IEnumerable<UserManagementViewModel> users;

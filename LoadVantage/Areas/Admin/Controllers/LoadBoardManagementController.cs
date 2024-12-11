@@ -30,6 +30,7 @@ namespace LoadVantage.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[Route("LoadBoardManagement")]
 		public async Task<IActionResult> LoadBoardManagement()
 		{
 			Administrator user = adminUserService.GetCurrentAdministratorAsync().Result;

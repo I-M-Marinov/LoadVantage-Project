@@ -18,6 +18,8 @@ namespace LoadVantage.Areas.Admin.Controllers
         }
 
 		[HttpGet]
+		[Route("Statistics")]
+
 		public async Task<IActionResult> Statistics(Guid adminId)
         {
 

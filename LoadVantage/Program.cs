@@ -221,17 +221,31 @@ app.UseEndpoints(endpoints =>
 	);
 
 	endpoints.MapAreaControllerRoute(
-		name: "Admin_LoadBoard",
+		name: "Admin_default",
 		areaName: "Admin",
-		pattern: "Admin/{controller=LoadBoardManagement}/{action=Index}/{id?}",
-		defaults: new { area = "Admin" }
+		pattern: "Admin/LoadBoardManagement/{action=Index}/{id?}",
+		defaults: new { area = "Admin", controller = "LoadBoardManagement" }
 	);
 
 	endpoints.MapAreaControllerRoute(
-		name: "AdminChat",
+		name: "Admin_default",
 		areaName: "Admin",
-		pattern: "Admin/{controller=AdminChat}/{action=Index}/{id?}",
-		defaults: new { area = "Admin" }
+		pattern: "Admin/AdminChat/{action=Index}/{id?}",
+		defaults: new { area = "Admin", controller = "AdminChat" }
+	);
+
+	endpoints.MapAreaControllerRoute(
+		name: "Admin_default",
+		areaName: "Admin",
+		pattern: "Admin/AdminChat/StartChatWithUser/{id?}",
+		defaults: new { area = "Admin", controller = "AdminChat" }
+	);
+
+	endpoints.MapAreaControllerRoute(
+		name: "Admin_default",
+		areaName: "Admin",
+		pattern: "Admin/AdminLoad/{action=Index}/{id?}",
+		defaults: new { area = "Admin", controller = "AdminLoad" }
 	);
 
 	endpoints.MapAreaControllerRoute(
