@@ -31,6 +31,7 @@ builder.Services.AddRateLimiter(_ => _
 if (builder.Environment.IsDevelopment())
 {
 	builder.Configuration.AddUserSecrets<Program>();
+	builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 }
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -38,7 +39,6 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<LoadVantageDbContext>(options =>
 	options.UseSqlServer(connectionString));
 
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddSession(options =>
 {
