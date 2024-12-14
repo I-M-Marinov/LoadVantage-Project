@@ -307,12 +307,12 @@ namespace LoadVantage.Core.Services
 		        throw new ArgumentNullException(nameof(user));
 			}
 
-			if (claims == null || claims.Any())
+			if (claims == null || !claims.Any())
 			{
 				throw new ArgumentException(ClaimsCannotBeNull, nameof(claims));
 			}
-	        
-	        return await userManager.AddClaimsAsync(user, claims);
+
+			return await userManager.AddClaimsAsync(user, claims);
         }
 
 	}
