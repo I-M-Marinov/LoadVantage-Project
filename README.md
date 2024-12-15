@@ -812,3 +812,7 @@
 <p align="center">
     <img src="./documentation_images/easter-egg.png" alt="Easter Egg">
 </p>
+
+<div align="center">
+    <h3>If you like this project 💯 please give it a star ⭐ :) See you next time ! 	😉</h3>
+</div>
