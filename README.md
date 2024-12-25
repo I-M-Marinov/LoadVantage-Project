@@ -782,6 +782,21 @@
 
 <!-- End Custom buttons -->
 
+<details>
+   <summary>
+      <h3>
+          Custom cards
+      </h3>
+    </summary>
+  <div style="text-align: center;">
+ 
+   <p align="center">
+      <img src="./documentation_images/cards.gif">
+   </p>
+  
+  </div>
+</details>
+
  <!-- Start Sidebar Toggle and  Dark Theme  -->
 
 <details>
