@@ -1312,6 +1312,10 @@ body {
     margin-top: 3em;
 }
 
+#editDriverForm {
+    margin-top: 2em;
+}
+
 #editTruckForm div label {
     margin-top: 1rem;
     background-color: #5a99f5;
@@ -1335,13 +1339,32 @@ body {
 }
 
 #editTruckForm .modal-footer,
-#addTruckForm .modal-footer {
+#addTruckForm .modal-footer,
+#addDriverForm .modal-footer,
+#editDriverForm .modal-footer {
     justify-content: center;
     align-items: center;
 }
 
+#addDriverForm .modal-footer {
+    border: none;
+    margin-top: -2em;
+}
+#editDriverForm .modal-footer {
+    border: none;
+    margin-top: 2em;
+    margin-bottom: -2.5em;
+}
+
+#editTruckForm .modal-footer,
+#addTruckForm .modal-footer {
+    border: none;
+}
+
+
+
 #addTruckForm .modal-body,
-#editTruckModal .modal-body{
+#editTruckModal .modal-body {
     margin-bottom: 0 !important;
 }
 
