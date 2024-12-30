@@ -49,7 +49,12 @@ namespace LoadVantage.Core.Services
 					LicenseNumber = d.LicenseNumber,
 					TruckNumber = d.Truck != null ? d.Truck.TruckNumber : "N/A",
 					IsAvailable = d.IsAvailable,
-					IsBusy = d.IsBusy
+					IsBusy = d.IsBusy,
+					CurrentLoad = context.BookedLoads
+						.Where(bl => bl.DriverId == d.DriverId && bl.Load.Status == LoadStatus.Booked )
+						.Select(bl => bl.Load.OriginCity + ", " + bl.Load.OriginState + " to " +
+						              bl.Load.DestinationCity + ", " + bl.Load.DestinationState)
+						.FirstOrDefault() ?? "N/A"
 				})
 				.OrderBy(d => d.IsAvailable)
 				.ThenBy(d => d.FirstName)
