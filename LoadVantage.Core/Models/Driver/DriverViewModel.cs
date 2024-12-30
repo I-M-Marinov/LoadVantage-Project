@@ -38,6 +38,7 @@ namespace LoadVantage.Core.Models.Driver
 		[Display(Name = "On a load")]
 		public bool IsBusy { get; set; }
 
+		public string CurrentLoad { get; set; } = "N/A";
 
 	}
 }
