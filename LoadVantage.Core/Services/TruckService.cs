@@ -228,7 +228,7 @@ namespace LoadVantage.Core.Services
         public async Task<int> GetTruckCount(Guid userId)
         {
 		    var trucksCount = await context.Trucks
-		        .Where(t => t.DispatcherId == userId)
+		        .Where(t => t.DispatcherId == userId && t.IsActive)
 		        .CountAsync();
 
 	        return trucksCount;
