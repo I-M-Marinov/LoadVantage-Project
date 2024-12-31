@@ -6,9 +6,9 @@ using LoadVantage.Core.Models.Driver;
 using LoadVantage.Core.Models.Profile;
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Models;
+using LoadVantage.Infrastructure.Data.Contracts;
 
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
-using LoadVantage.Infrastructure.Data.Contracts;
 
 
 

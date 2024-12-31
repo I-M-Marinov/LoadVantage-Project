@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 using LoadVantage.Core.Contracts;
 using LoadVantage.Core.Models.Image;
@@ -7,7 +8,6 @@ using LoadVantage.Infrastructure.Data.Contracts;
 using LoadVantage.Infrastructure.Data.Models;
 
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
-using System.Security.Claims;
 
 namespace LoadVantage.Core.Services
 {
