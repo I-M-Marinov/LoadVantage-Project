@@ -38,6 +38,15 @@
 					}
 				}
 				@displayTime
+				@if (!message.IsRead)
+				{
+					<span class="check-messages"><i class="bx bx-check"></i></span>
+				}
+				else
+				{
+					<span class="check-messages"><i class="bx bx-check-double"></i></span>
+					
+				}
 			</span>
 		</div>
 	</div>
