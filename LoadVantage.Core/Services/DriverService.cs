@@ -244,7 +244,7 @@ namespace LoadVantage.Core.Services
         public async Task<int> GetDriverCount(Guid userId)
         {
 			var driverCount = await context.Drivers
-				.Where(d => d.DispatcherId == userId)
+				.Where(d => d.DispatcherId == userId && d.IsFired == false)
 				.CountAsync();
 
 			return driverCount;
