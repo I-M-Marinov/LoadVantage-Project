@@ -1001,6 +1001,14 @@ body {
     opacity: 1;
 }
 
+.check-messages {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    display: flex;
+    flex-direction: row;
+    margin-top: -0.1em;
+    margin-left: 0.1em;
+}
 /*-------------------------------------------------------------------------------------
 # MESSAGES PARTIAL CSS
 --------------------------------------------------------------------------------------*/
@@ -1090,8 +1098,12 @@ body {
     margin-top: 2px;
 }
 
+.message-timestamp span{
+    display: flex;
+}
+
 .chat-message.sent .message-timestamp {
-    text-align: right; 
+    text-align: right;
     align-self: flex-end;
 }
 
@@ -2313,5 +2325,7 @@ ul {
     color: #6f42c1;
     font-weight: 600;
 }
+
+
 
 
