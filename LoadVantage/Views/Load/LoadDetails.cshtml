@@ -419,6 +419,25 @@
 			</button>
 		</div>
 	}
+	else
+	{
+		<div class="card position-absolute responsive" id="booking-details">
+
+			<div class="card-body">
+				@if (Model.DriverInfo?.DriverName != null)
+				{
+					<h5 class="card-title">Driver Info</h5>
+					<p class="card-text">
+						<strong>Name:</strong> @Model.DriverInfo?.DriverName <br/>
+						<strong>License:</strong> @Model.DriverInfo?.DriverLicenseNumber
+					</p>
+				}
+			</div>
+			<button class="badge-info" data-bs-toggle="collapse" data-bs-target="#bookingDetails">
+				hide
+			</button>
+		</div>
+	}
 </div>
 
 
