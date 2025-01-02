@@ -831,3 +831,21 @@
 <div align="center">
     <h3>If you like this project 💯 please give it a star ⭐ :) See you next time ! 	😉</h3>
 </div>
+
+<details>
+   <summary>
+      <h2>
+         Updates:
+      </h2>
+    </summary>
+  <div style="text-align: center;">
+ 
+   <p align="center">
+    - Added the Current load information in the Driver's Table in the ShowDrivers View for all Dispatchers
+   </p>
+   <p align="center">
+   - Added the Total Miles for each driver in the Driver's Table in the ShowDriver View for all Dispatchers
+   </p>
+    
+  </div>
+</details>
