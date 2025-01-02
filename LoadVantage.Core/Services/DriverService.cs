@@ -54,7 +54,10 @@ namespace LoadVantage.Core.Services
 						.Where(bl => bl.DriverId == d.DriverId && bl.Load.Status == LoadStatus.Booked )
 						.Select(bl => bl.Load.OriginCity + ", " + bl.Load.OriginState + " to " +
 						              bl.Load.DestinationCity + ", " + bl.Load.DestinationState)
-						.FirstOrDefault() ?? "N/A"
+						.FirstOrDefault() ?? "N/A",
+					TotalMiles = context.DeliveredLoads
+						.Where(dl => dl.DriverId == d.DriverId)
+						.Sum(dl => dl.Load.Distance)
 				})
 				.OrderBy(d => d.IsAvailable)
 				.ThenBy(d => d.FirstName)
