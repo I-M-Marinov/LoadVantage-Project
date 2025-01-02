@@ -164,6 +164,7 @@
 							<th class="text-center" scope="col">Truck Number</th>
 							<th class="text-center" scope="col">Available</th>
 							<th class="text-center" scope="col">Current Load</th>
+							<th class="text-center" scope="col">Total miles</th>
 							<th class="text-center" scope="col">Actions</th>
 						</tr>
 					</thead>
@@ -185,6 +186,7 @@
 									</span>
 								</td>
 								<td class="text-center">@driver.CurrentLoad</td>
+								<td class="text-center">@Math.Round(driver.TotalMiles.Value)</td>
 								<td class="text-center">
 									@if (!driver.IsBusy && driver.IsAvailable)
 									{
