@@ -39,6 +39,7 @@ namespace LoadVantage.Core.Models.Driver
 		public bool IsBusy { get; set; }
 
 		public string CurrentLoad { get; set; } = "N/A";
+		public double? TotalMiles { get; set; }
 
 	}
 }
