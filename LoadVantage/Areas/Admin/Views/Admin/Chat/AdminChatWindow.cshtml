@@ -73,6 +73,10 @@
 										   class="chat-user-link d-flex align-items-center">
 											<img src="@chatUser.ProfilePictureUrl" class="chat-user-image rounded-circle" style="width: 4em; height: 4em;" />
 											<span class="ms-3">@chatUser.FullName</span>
+											@if (Model.Messages.Any(m => !m.IsRead && Model.CurrentChatUserId == chatUser.Id))
+											{
+												<span class="check-messages"><i class="bx bxs-message-rounded-error"></i></span>
+											}
 										</a>
 									</li>
 								}
