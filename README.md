@@ -831,3 +831,27 @@
 <div align="center">
     <h3>If you like this project 💯 please give it a star ⭐ :) See you next time ! 	😉</h3>
 </div>
+
+<details>
+   <summary>
+      <h2>
+         Updates:
+      </h2>
+    </summary>
+  <div style="text-align: center;">
+ 
+   <p align="center">
+    - Added the Current load information in the Driver's Table in the ShowDrivers View for all Dispatchers
+   </p>
+   <p align="center">
+   - Added the Total Miles for each driver in the Driver's Table in the ShowDriver View for all Dispatchers
+   </p>
+    <p align="center">
+   - Added icons in the ChatWindow View to show users when a message is sent and when it is read ( one check when sent and two checks when it is read )
+   </p>
+    <p align="center">
+   - Added an update for Dispatchers in the LoadDetails View that would now show the currently assigned driver to the load, if any ( in the same fashion as it shows the basic Dispatcher and Driver info for a Broker on a booked load ).
+   </p>
+    
+  </div>
+</details>
