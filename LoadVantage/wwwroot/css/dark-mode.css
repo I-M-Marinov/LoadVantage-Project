@@ -202,7 +202,8 @@ input{
 #bookLoadButton,
 #markAsDeliveredBtn,
 #driversDropdown,
-#backToUserManagementButton button {
+#backToUserManagementButton button,
+#showMapButton {
     background: #333333 !important;
     color: #ffffff !important;
 }
@@ -249,11 +250,13 @@ input{
     color: white !important;
 }
 
-#backToLoadBoardButton button {
+#backToLoadBoardButton button,
+#showMapButton {
     border: 2px solid #0094ff !important;
 }
 
-#backToLoadBoardButton button:hover {
+#backToLoadBoardButton button:hover,
+#showMapButton:hover{
     background: #0094ff !important;
     color: white !important;
 }
