@@ -47,6 +47,5 @@ namespace LoadVantage.Infrastructure.Data.Services
 
             return (latitude, longitude);
         }
-
-    }
+	}
 }
