@@ -60,8 +60,9 @@ namespace LoadVantage.Areas.Admin.Models.Load
         [DisplayName("Weight")]
         [Range(WeightMinValue, WeightMaxValue, ErrorMessage = WeightRangeInvalid)]
         public double Weight { get; set; }
+        public string? MapUrl { get; set; }
 
-        [DisplayName("Status")]
+		[DisplayName("Status")]
         public string? Status { get; set; }
         public Guid BrokerId { get; set; }
         public Broker? Broker { get; set; }
