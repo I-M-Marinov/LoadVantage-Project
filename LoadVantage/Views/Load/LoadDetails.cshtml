@@ -386,6 +386,13 @@
 			</button>
 		</form>
 
+		@if (Model.MapUrl != null)
+		{
+			<button id="showMapButton" class="btn btn-outline-info" data-bs-toggle="collapse" data-bs-target="#staticMap">
+				Show Map
+			</button>
+		}
+
 	</div>
 
 </div>
@@ -446,13 +453,12 @@
 
 </div>
 
-	<div id="staticMap" class="collapse show" style="position: absolute; bottom:45px; right: 20px;">
-	<img src="@Model.MapUrl" alt="Map showing origin and destination" style="width: 100%; height: 100%;" />
+	<div id="staticMap" class="collapse">
+		<img src="@Model.MapUrl" alt="Map showing origin and destination" style="width: 100%; height: 100%;" />
 		<button class="badge-info" data-bs-toggle="collapse" data-bs-target="#staticMap">
-		hide
-	</button>
-</div>
-
+			close
+		</button>
+	</div>
 
 </main><!-- End #main -->
 
