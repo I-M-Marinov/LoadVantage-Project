@@ -74,7 +74,7 @@ namespace LoadVantage.Infrastructure.Data.Services
                 var (originLat, originLon) = await geocodeService.GetCoordinatesAsync(originCity, originState);
                 var (destLat, destLon) = await geocodeService.GetCoordinatesAsync(destCity, destState);
 
-                return await GetDistanceAsync(originLat, originLon, destLat, destLon);
+				return await GetDistanceAsync(originLat, originLon, destLat, destLon);
             }
             catch (Exception)
             {
