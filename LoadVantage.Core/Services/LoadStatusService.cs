@@ -20,6 +20,8 @@ namespace LoadVantage.Core.Services
 	    public readonly IDistanceCalculatorService distanceCalculatorService;
         public readonly ILoadHelperService loadHelperService;
         private readonly IHtmlSanitizerService htmlSanitizer;
+		private readonly IGeocodeService geocodeService;
+		private readonly IMapBoxService mapBoxService;
 
 
 		public LoadStatusService(
@@ -27,13 +29,17 @@ namespace LoadVantage.Core.Services
 			LoadVantageDbContext _context, 
 			IDistanceCalculatorService _distanceCalculatorService, 
 			ILoadHelperService _loadHelperService,
-			IHtmlSanitizerService _htmlSanitizer)
+			IHtmlSanitizerService _htmlSanitizer,
+			IGeocodeService _geocodeService,
+			IMapBoxService _mapBoxService)
 	    {
 		    profileService = _profileService;
             context = _context;
             distanceCalculatorService = _distanceCalculatorService;
             loadHelperService = _loadHelperService;
 			htmlSanitizer = _htmlSanitizer;
+			geocodeService = _geocodeService;
+			mapBoxService = _mapBoxService;
 	    }
 
 	    public async Task<LoadViewModel?> GetLoadDetailsAsync(Guid loadId, Guid userId)
@@ -63,7 +69,9 @@ namespace LoadVantage.Core.Services
 		    var driverInfo = loadHelperService.CreateDriverInfo(load.BookedLoad);
 		    var userProfile = await profileService.GetUserInformation(userId);
 
-		    var loadViewModel = new LoadViewModel
+		    var mapUrl = mapBoxService.GetStaticMapUrl(load.OriginLatitude, load.OriginLongitude, load.DestinationLatitude,load.DestinationLongitude);
+
+			var loadViewModel = new LoadViewModel
 		    {
 			    Id = load.Id,
 			    OriginCity = load.OriginCity,
@@ -75,7 +83,8 @@ namespace LoadVantage.Core.Services
 			    PostedPrice = load.Price,
 			    Distance = load.Distance,
 			    Weight = load.Weight,
-			    Status = load.Status.ToString(),
+				MapUrl = mapUrl,
+				Status = load.Status.ToString(),
 			    BrokerId = load.BrokerId,
 			    DispatcherId = load.BookedLoad?.DispatcherId,
 			    DispatcherInfo = dispatcherInfo,
@@ -83,7 +92,7 @@ namespace LoadVantage.Core.Services
 			    UserProfile = userProfile
 		    };
 
-		    return loadViewModel;
+			return loadViewModel;
 
 	    }
 		public async Task<LoadViewModel> GetLoadByIdAsync(Guid loadId)
@@ -137,8 +146,10 @@ namespace LoadVantage.Core.Services
 	        var (originFormattedCity, originFormattedState) = loadHelperService.FormatLocation(sanitizedOriginCity, sanitizedOriginState);
 	        var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(sanitizedDestinationCity, sanitizedDestinationState);
 
+	        var originCoordinates = await geocodeService.GetCoordinatesAsync(sanitizedOriginCity, sanitizedOriginState);
+	        var destinationCoordinates = await geocodeService.GetCoordinatesAsync(sanitizedDestinationCity, sanitizedDestinationCity);
 
-	        var load = new Load
+			var load = new Load
 	        {
 		        Id = Guid.NewGuid(),
 		        CreatedDate = DateTime.Now,
@@ -146,7 +157,11 @@ namespace LoadVantage.Core.Services
 		        OriginState = originFormattedState,
 		        DestinationCity = destinationFormattedCity,
 		        DestinationState = destinationFormattedState,
-		        PickupTime = model.PickupTime,
+				OriginLatitude = originCoordinates.Latitude, // add the origin latitude to the DB
+				OriginLongitude = originCoordinates.Longitude, // add the origin longitude to the DB
+				DestinationLatitude = destinationCoordinates.Latitude, // add the destination latitude to the DB
+				DestinationLongitude = destinationCoordinates.Longitude, // add the destination longitude to the DB
+				PickupTime = model.PickupTime,
 		        DeliveryTime = model.DeliveryTime,
 		        Distance = calculatedDistance,
 		        Price = model.PostedPrice,
