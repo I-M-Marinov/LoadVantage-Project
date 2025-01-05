@@ -852,6 +852,10 @@
     <p align="center">
    - Added an update for Dispatchers in the LoadDetails View that would now show the currently assigned driver to the load, if any ( in the same fashion as it shows the basic Dispatcher and Driver info for a Broker on a booked load ).
    </p>
-    
+   <p align="center">
+   - Added an additional service - MapBox Service that would be visualizing the origin and destination on a static map directly in the Load Views. 
+    <img src="./documentation_images/static-map.png" alt="Static Map">
+   </p>
+   
   </div>
 </details>
