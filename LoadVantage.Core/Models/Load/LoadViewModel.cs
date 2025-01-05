@@ -59,6 +59,8 @@ namespace LoadVantage.Core.Models.Load
 
         [DisplayName("Status")]
         public string? Status { get; set; }
+        public string? MapUrl { get; set; }
+
 		public Guid BrokerId { get; set; }
         public Guid? DispatcherId { get; set; }
         public Guid? DriverId { get; set; }
