@@ -15,6 +15,12 @@ namespace LoadVantage.Infrastructure.Data.Services
 
 		public string GetStaticMapUrl(double? originLatitude, double? originLongitude, double? destinationLatitude, double? destinationLongitude)
 		{
+			if (originLatitude == null || originLongitude == null || destinationLatitude == null ||
+			    destinationLongitude == null)
+			{
+				return null;
+			}
+
 			var mapUrl = $"https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/";
 
 			mapUrl += $"pin-s-a+1ee80c({originLongitude},{originLatitude})"; 
@@ -33,7 +39,7 @@ namespace LoadVantage.Infrastructure.Data.Services
 			double centerLatitude = (minLatitude + maxLatitude) / 2;
 			int zoomLevel = 5; 
 
-			mapUrl += $"/{centerLongitude},{centerLatitude},{zoomLevel}/1200x700";
+			mapUrl += $"/{centerLongitude},{centerLatitude},{zoomLevel}/1100x700";
 
 			mapUrl += $"?access_token={_mapboxApiKey}";
 
