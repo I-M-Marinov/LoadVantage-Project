@@ -39,7 +39,7 @@ body {
 
 .header {
     background-color: #f8f9fa;
-    padding: 10px 20px; 
+    padding: 10px 20px;
 }
 
 .navbar-toggler {
@@ -191,6 +191,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
+    z-index: 9999;
 }
 
 #links-area-layout {
@@ -552,6 +553,32 @@ body {
     font-size: 15px;
 }
 
+#staticMap {
+    z-index: 1060;
+    position: absolute;
+    top: 6em;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+#staticMap.collapse.show {
+    max-height: 800px; 
+    opacity: 1;
+}
+#staticMap2 {
+    z-index: 1060;
+    position: absolute;
+    top: 1.5em;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+#staticMap2.collapse.show {
+    max-height: 800px;
+    opacity: 1;
+}
 /*--------------------------------------------------------------
 # LOADING SPINNER 
 --------------------------------------------------------------*/
@@ -565,7 +592,6 @@ body {
     top: 105%;
     left: 49%;
     transform: translate(-50%, -50%);
-
     width: 35.4px;
     height: 35.4px;
     --clr: rgb(163, 46, 217);
