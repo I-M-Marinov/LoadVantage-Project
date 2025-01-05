@@ -392,60 +392,67 @@
 				
 </div>
 	
-<div id="bookingDetails" class="collapse show">
+	<div id="bookingDetails" class="collapse show">
 
-	@if (Model.Status == LoadStatus.Booked.ToString() && Model.UserProfile.Position == nameof(Broker))
-	{
-		<div class="card position-absolute responsive" id="booking-details">
-			<div class="card-body">
-				<h5 class="card-title">Dispatcher Info</h5>
-				<p class="card-text">
-					<strong>Name:</strong> @Model.DispatcherInfo?.DispatcherName <br/>
-					<strong>Email:</strong> @Model.DispatcherInfo?.DispatcherEmail<br/>
-					<strong>Phone:</strong> @Model.DispatcherInfo?.DispatcherPhone
-				</p>
-				<hr/>
-				@if (Model.DriverInfo?.DriverName != null)
-				{
-					<h5 class="card-title">Driver Info</h5>
+		@if (Model.Status == LoadStatus.Booked.ToString() && Model.UserProfile.Position == nameof(Broker))
+		{
+			<div class="card position-absolute responsive" id="booking-details">
+				<div class="card-body">
+					<h5 class="card-title">Dispatcher Info</h5>
 					<p class="card-text">
-						<strong>Name:</strong> @Model.DriverInfo?.DriverName <br/>
-						<strong>License:</strong> @Model.DriverInfo?.DriverLicenseNumber
+						<strong>Name:</strong> @Model.DispatcherInfo?.DispatcherName <br/>
+						<strong>Email:</strong> @Model.DispatcherInfo?.DispatcherEmail<br/>
+						<strong>Phone:</strong> @Model.DispatcherInfo?.DispatcherPhone
 					</p>
-				}
+					<hr/>
+					@if (Model.DriverInfo?.DriverName != null)
+					{
+						<h5 class="card-title">Driver Info</h5>
+						<p class="card-text">
+							<strong>Name:</strong> @Model.DriverInfo?.DriverName <br/>
+							<strong>License:</strong> @Model.DriverInfo?.DriverLicenseNumber
+						</p>
+					}
+				</div>
+				<button class="badge-info" data-bs-toggle="collapse" data-bs-target="#bookingDetails">
+					hide
+				</button>
 			</div>
-			<button class="badge-info" data-bs-toggle="collapse" data-bs-target="#bookingDetails">
-				hide
-			</button>
+		}
+		else
+		{
+			@if (Model.DriverInfo?.DriverName != null)
+			{
+						
+				<div class="card position-absolute responsive" id="booking-details">
+
+					<div class="card-body">
+						@if (Model.DriverInfo?.DriverName != null)
+						{
+							<h5 class="card-title">Driver Info</h5>
+							<p class="card-text">
+								<strong>Name:</strong> @Model.DriverInfo?.DriverName <br/>
+								<strong>License:</strong> @Model.DriverInfo?.DriverLicenseNumber
+							</p>
+						}
+					</div>
+					<button class="badge-info" data-bs-toggle="collapse" data-bs-target="#bookingDetails">
+						hide
+					</button>
 				</div>
 			}
-			else
-			{
-				@if (Model.DriverInfo?.DriverName != null)
-				{
-					
-					<div class="card position-absolute responsive" id="booking-details">
-
-						<div class="card-body">
-							@if (Model.DriverInfo?.DriverName != null)
-							{
-								<h5 class="card-title">Driver Info</h5>
-								<p class="card-text">
-									<strong>Name:</strong> @Model.DriverInfo?.DriverName <br/>
-									<strong>License:</strong> @Model.DriverInfo?.DriverLicenseNumber
-								</p>
-							}
-						</div>
-						<button class="badge-info" data-bs-toggle="collapse" data-bs-target="#bookingDetails">
-							hide
-						</button>
-					</div>
-				}
-			}
-		</div>
-
+		}
+	</div>
 
 </div>
+
+	<div id="staticMap" class="collapse show" style="position: absolute; bottom:45px; right: 20px;">
+	<img src="@Model.MapUrl" alt="Map showing origin and destination" style="width: 100%; height: 100%;" />
+		<button class="badge-info" data-bs-toggle="collapse" data-bs-target="#staticMap">
+		hide
+	</button>
+</div>
+
 
 </main><!-- End #main -->
 
