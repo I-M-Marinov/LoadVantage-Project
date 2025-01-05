@@ -41,7 +41,13 @@ namespace LoadVantage.Infrastructure.Data.Models
 
 		public string DestinationState { get; set; } = null!;
 
-        [Required]
+        // New properties to hold the coordinates for the origin and destination for the visualization of the static map 
+		public double? OriginLatitude { get; set; }
+		public double? OriginLongitude { get; set; }
+		public double? DestinationLatitude { get; set; }
+		public double? DestinationLongitude { get; set; }
+
+		[Required]
         [Comment("Date and Time when the load needs to be picked up")]
 		public DateTime PickupTime { get; set; }
 
