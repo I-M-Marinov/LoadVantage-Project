@@ -6,7 +6,6 @@ using LoadVantage.Core.Contracts;
 
 using LoadVantage.Infrastructure.Data;
 using LoadVantage.Infrastructure.Data.Contracts;
-
 using Microsoft.EntityFrameworkCore;
 
 using static LoadVantage.Common.GeneralConstants.ErrorMessages;
@@ -20,6 +19,9 @@ namespace LoadVantage.Areas.Admin.Services
 		private readonly ILoadHelperService loadHelperService;
 		private IDistanceCalculatorService distanceCalculatorService;
 		private IHtmlSanitizerService htmlSanitizer;
+		private readonly IGeocodeService geocodeService;
+		private readonly IMapBoxService mapBoxService;
+
 
 
 		public AdminLoadStatusService(
@@ -27,13 +29,17 @@ namespace LoadVantage.Areas.Admin.Services
 			IAdminProfileService _adminProfileService, 
 			ILoadHelperService _loadHelperService, 
 			IDistanceCalculatorService _distanceCalculatorServiceService,
-			IHtmlSanitizerService _htmlSanitizer)
+			IHtmlSanitizerService _htmlSanitizer,
+			IGeocodeService _geocodeService,
+			IMapBoxService _mapBoxService)
 		{
 			context = _context;
 			adminProfileService = _adminProfileService;
 			loadHelperService = _loadHelperService;
 			distanceCalculatorService = _distanceCalculatorServiceService;
 			htmlSanitizer = _htmlSanitizer;
+			geocodeService = _geocodeService;
+			mapBoxService = _mapBoxService;
 		}
 
 		public async Task<bool> RestoreLoadAsync(Guid loadId)
@@ -114,13 +120,28 @@ namespace LoadVantage.Areas.Admin.Services
 
 					context.Loads.Update(load);
 					await context.SaveChangesAsync();
-
-					return true;
 				}
 				catch (Exception e)
 				{
 					throw new Exception(ErrorUpdatingThisLoad);
 				}
+			}
+
+			// update the coordinates for the origin and destination if any changes
+
+			if (originChanged)
+			{
+				var originCoordinates = await geocodeService.GetCoordinatesAsync(originFormattedCity, originFormattedState); // get the updated coordinates for the origin
+
+				load.OriginLatitude = originCoordinates.Latitude;
+				load.OriginLongitude = originCoordinates.Longitude;
+			}
+			else if (destinationChanged)
+			{
+				var destinationCoordinates = await geocodeService.GetCoordinatesAsync(destinationFormattedCity, destinationFormattedState); // get the updated coordinates for the destination
+
+				load.DestinationLatitude = destinationCoordinates.Latitude;
+				load.DestinationLongitude = destinationCoordinates.Longitude;
 			}
 
 			context.Loads.Update(load);
@@ -149,7 +170,7 @@ namespace LoadVantage.Areas.Admin.Services
 			var driverInfo = loadHelperService.CreateDriverInfo(load.BookedLoad);
 			var adminProfile = await adminProfileService.GetAdminInformation(userId);
 
-
+			var mapUrl = mapBoxService.GetStaticMapUrl(load.OriginLatitude, load.OriginLongitude, load.DestinationLatitude, load.DestinationLongitude);
 
 			var loadViewModel = new AdminLoadViewModel
 			{
@@ -163,6 +184,7 @@ namespace LoadVantage.Areas.Admin.Services
 				PostedPrice = load.Price,
 				Distance = load.Distance,
 				Weight = load.Weight,
+				MapUrl = mapUrl,
 				Status = load.Status.ToString(),
 				BrokerId = load.BrokerId,
 				Broker = load.Broker,
