@@ -83,6 +83,7 @@ builder.Services.AddScoped<IImageService, ImageService>();									// Add the Im
 builder.Services.AddScoped<IProfileService, ProfileService>();                              // Add the Profile Service 
 builder.Services.AddScoped<IProfileHelperService, ProfileHelperService>();                  // Add the Profile Helper Service 
 builder.Services.AddScoped<IUserService, UserService>();                                    // Add the User Service 
+builder.Services.AddScoped<IMapBoxService, MapboxService>();								// Add the MapBox Service
 builder.Services.AddHttpClient<ICountryStateCityService, CountryStateCityService>();		// Add CountryStateCity Service 
 builder.Services.AddScoped<IGeocodeService, GeocodeService>();								// Add the Geocode Retrieval Service 
 builder.Services.AddScoped<IDistanceCalculatorService, DistanceCalculatorService>();		// Add the Distance Calculator Service
