@@ -240,13 +240,28 @@ namespace LoadVantage.Core.Services
 
 					context.Loads.Update(load);
 					await context.SaveChangesAsync();
-
-					return true;
 				}
 				catch (Exception e)
 				{
 					throw new Exception(ErrorUpdatingThisLoad);
 				}
+			}
+
+			// update the coordinates for the origin and destination if any changes
+
+			if (originChanged)
+			{
+				var originCoordinates = await geocodeService.GetCoordinatesAsync(originFormattedCity, originFormattedState); // get the updated coordinates for the origin
+
+				load.OriginLatitude = originCoordinates.Latitude;
+				load.OriginLongitude = originCoordinates.Longitude;
+			}
+			else if (destinationChanged)
+			{
+				var destinationCoordinates = await geocodeService.GetCoordinatesAsync(destinationFormattedCity, destinationFormattedState); // get the updated coordinates for the destination
+
+				load.DestinationLatitude = destinationCoordinates.Latitude;
+				load.DestinationLongitude = destinationCoordinates.Longitude;
 			}
 
 			context.Loads.Update(load);
