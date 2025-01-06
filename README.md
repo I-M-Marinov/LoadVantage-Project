@@ -821,9 +821,11 @@
 </details>
 
 <div align="center">
-    <h3>TOP 3</h3>
+ <h2></h2>
+ <h3>TOP 3</h3>
     <img src="./documentation_images/top3-small.svg">
     <p>This project was awarded top 3 project for the course. </p>
+ <h2></h2>
 </div>
 
 <div align="center">
