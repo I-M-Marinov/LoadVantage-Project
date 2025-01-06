@@ -76,6 +76,7 @@
    <li>OpenRouteService RESTful API ( Directions V2 - 2000 API requests/day free )</li>
    <li>Country State City RESTful API ( No limitations, but request responsibly! )</li>
    <li>Cloudinary (Cloud Image & Video Management Service)</li>
+   <li>Mapbox Static Images RESTful API (50K requests/month) ⭐Additionally added⭐</li>
   </ul>
 
   <h3>Testing:</h3>
