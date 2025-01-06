@@ -821,6 +821,12 @@
 </details>
 
 <div align="center">
+    <h3>TOP 3</h3>
+    <img src="./documentation_images/top3-small.svg">
+    <p>This project was awarded top 3 project for the course. </p>
+</div>
+
+<div align="center">
     <h3>Just for fun:</h3>
     <p>I have hidden this ASCII art picture in one of the Views, see if you can find it 😏 ( .. no cheating ❗❗  )  </p>
 </div>
