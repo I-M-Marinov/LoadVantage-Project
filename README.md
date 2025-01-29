@@ -863,7 +863,7 @@
    </p>
    <p align="center">
    - Added an additional service - MapBox Service that would be visualizing the origin and destination on a static map directly in the Load Views. 
-    <img src="./documentation_images/static-map.png" alt="Static Map">
+    <img src="./documentation_images/show-map.gif" alt="Static Map">
    </p>
    
   </div>
