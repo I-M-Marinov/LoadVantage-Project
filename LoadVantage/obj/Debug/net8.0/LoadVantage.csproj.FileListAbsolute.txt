@@ -615,3 +615,7 @@ C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\A
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\AngleSharp.Css.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\HtmlSanitizer.dll
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\LoadVantage.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\LoadVantage.staticwebassets.endpoints.json
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets\msbuild.LoadVantage.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

@@ -37,7 +37,7 @@ namespace LoadVantage.Infrastructure.Data.Services
 
 			double centerLongitude = (minLongitude + maxLongitude) / 2;
 			double centerLatitude = (minLatitude + maxLatitude) / 2;
-			int zoomLevel = 5; 
+			int zoomLevel = 4; 
 
 			mapUrl += $"/{centerLongitude},{centerLatitude},{zoomLevel}/1100x700";
 

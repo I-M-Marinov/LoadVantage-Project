@@ -2,7 +2,7 @@
   "Files": [
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\LoadVantage.bundle.scp.css",
-      "PackagePath": "staticwebassets\\LoadVantage.bundle.scp.css"
+      "PackagePath": "staticwebassets\\LoadVantage.m1m5vb0y11.bundle.scp.css"
     },
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\assets\\css\\style.css",
@@ -2407,6 +2407,10 @@
     {
       "Id": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.LoadVantage.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.LoadVantage.Microsoft.AspNetCore.StaticWebAssets.props",
