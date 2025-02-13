@@ -855,7 +855,11 @@
    <p align="center">
    - Added the Total Miles for each driver in the Driver's Table in the ShowDriver View for all Dispatchers
    </p>
-    <p align="center">
+   <p align="center">
+    <img src="./documentation_images/current-load-and-total-miles.png" alt="currentLoadAndTotalMilesScreenshot">
+   </p>
+   
+   <p align="center">
    - Added icons in the ChatWindow View to show users when a message is sent and when it is read ( one check when sent and two checks when it is read )
    </p>
     <p align="center">
