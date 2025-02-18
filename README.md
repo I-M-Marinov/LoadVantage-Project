@@ -826,7 +826,7 @@
  <h2></h2>
  <h3>TOP 3</h3>
     <img src="./documentation_images/top3-small.svg">
-    <p>This project was awarded top 3 project for the course. </p>
+    <h3 style="font: purple;">This project was awarded "TOP 3 Project" for the Software University's ASP.NET Advanced Course 2024. </h3>
  <h2></h2>
 </div>
 
