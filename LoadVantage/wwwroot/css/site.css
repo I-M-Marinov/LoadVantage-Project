@@ -191,7 +191,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    z-index: 9999;
+    z-index: 1000;
 }
 
 #links-area-layout {
@@ -910,8 +910,9 @@ body {
     margin: -2em 2em 2em 2em;
 }
 
-.modal-content{
+.modal-content {
     border: 2px black solid !important;
+    z-index: 9999;
 }
 
 #cancelConfirmationModalLabel {
@@ -1342,6 +1343,7 @@ body {
 #addTruckForm,
 #addDriverForm {
     background-color: ghostwhite !important;
+    z-index: 9999999;
 }
 
 #truckNumberLabel,
