@@ -824,6 +824,38 @@
 </details>
 
 <!-- End Sidebar Toggle and  Dark Theme -->
+ <!--  Start Custom 404 Page  -->
+
+<details>
+   <summary>
+      <h3>
+          Custom 404 Page
+      </h3>
+    </summary>
+  <div style="text-align: center;">
+ 
+   <p align="center">
+      <img src="./documentation_images/404.gif">
+   </p>
+    
+  </div>
+</details>
+<!-- End Custom 404 Page -->
+ <!--  Start Custom 500 Page  -->
+<details>
+   <summary>
+      <h3>
+          Custom 500 Page
+      </h3>
+    </summary>
+  <div style="text-align: center;">
+ 
+   <p align="center">
+      <img src="./documentation_images/500.png">
+   </p>
+    
+  </div>
+</details>
  
 </details>
 
