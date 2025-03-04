@@ -220,7 +220,12 @@
   - Page consists of a simple form for adding new loads in the Broker's Created Loads 
     </br>
     <h6>⭐ Create Load ---> Attempt to add a load to the database and to the Broker's loads, if information is valid. </h6>
-    <h6>⭐ Reset ---> This action would reset the form essentially deleting values from the origin and destination city and state, resetting pickup and delivery time to now and setting the Price and Weight to their default value of 1.</h6>
+ 
+   <p align="center">
+   <img src="./documentation_images/create-load-optimized.gif">
+   </p>
+ 
+   <h6>⭐ Reset ---> This action would reset the form essentially deleting values from the origin and destination city and state, resetting pickup and delivery time to now and setting the Price and Weight to their default value of 1.</h6>
   
  </p>
    
