@@ -693,6 +693,10 @@
    <p align="center">
    <img src="./documentation_images/admin-statistics.png">
    </p>
+
+   <p align="center">
+   <img src="./documentation_images/statistics-flip-cards.gif">
+   </p>
   
 </div>
 </details>
