@@ -679,7 +679,7 @@
    - Page contains information for: 
     </br>
     <h6>⭐Total User Count ( Administrators + Users ) </h6>
-    <h6>⭐Total Revenue ( Amount for all Loads in Status Delivered ) </h6>
+    <h6>⭐Total Revenue ( Amount for all Loads in Status Delivered + Comission, based on the total revenue ) </h6>
     <h6>⭐Total Loads ( Total count of all Loads in all statuses - Cancelled Loads included ) </h6>
     <h6>⭐Total Drivers ( Total count of all Drivers, both active and fired drivers counted ) </h6>
     <h6>⭐Total Trucks ( Total count of all Trucks, both active and decommissioned counted ) </h6>
