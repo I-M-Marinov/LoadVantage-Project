@@ -220,7 +220,12 @@
   - Page consists of a simple form for adding new loads in the Broker's Created Loads 
     </br>
     <h6>⭐ Create Load ---> Attempt to add a load to the database and to the Broker's loads, if information is valid. </h6>
-    <h6>⭐ Reset ---> This action would reset the form essentially deleting values from the origin and destination city and state, resetting pickup and delivery time to now and setting the Price and Weight to their default value of 1.</h6>
+ 
+   <p align="center">
+   <img src="./documentation_images/create-load-optimized.gif">
+   </p>
+ 
+   <h6>⭐ Reset ---> This action would reset the form essentially deleting values from the origin and destination city and state, resetting pickup and delivery time to now and setting the Price and Weight to their default value of 1.</h6>
   
  </p>
    
@@ -674,7 +679,7 @@
    - Page contains information for: 
     </br>
     <h6>⭐Total User Count ( Administrators + Users ) </h6>
-    <h6>⭐Total Revenue ( Amount for all Loads in Status Delivered ) </h6>
+    <h6>⭐Total Revenue ( Amount for all Loads in Status Delivered + Comission, based on the total revenue ) </h6>
     <h6>⭐Total Loads ( Total count of all Loads in all statuses - Cancelled Loads included ) </h6>
     <h6>⭐Total Drivers ( Total count of all Drivers, both active and fired drivers counted ) </h6>
     <h6>⭐Total Trucks ( Total count of all Trucks, both active and decommissioned counted ) </h6>
@@ -687,6 +692,10 @@
  
    <p align="center">
    <img src="./documentation_images/admin-statistics.png">
+   </p>
+
+   <p align="center">
+   <img src="./documentation_images/statistics-flip-cards.gif">
    </p>
   
 </div>
@@ -819,6 +828,38 @@
 </details>
 
 <!-- End Sidebar Toggle and  Dark Theme -->
+ <!--  Start Custom 404 Page  -->
+
+<details>
+   <summary>
+      <h3>
+          Custom 404 Page
+      </h3>
+    </summary>
+  <div style="text-align: center;">
+ 
+   <p align="center">
+      <img src="./documentation_images/404.gif">
+   </p>
+    
+  </div>
+</details>
+<!-- End Custom 404 Page -->
+ <!--  Start Custom 500 Page  -->
+<details>
+   <summary>
+      <h3>
+          Custom 500 Page
+      </h3>
+    </summary>
+  <div style="text-align: center;">
+ 
+   <p align="center">
+      <img src="./documentation_images/500.png">
+   </p>
+    
+  </div>
+</details>
  
 </details>
 
