@@ -252,6 +252,17 @@
 				</form>
 
 			</div>
+			
+			@if (Model.Status == LoadStatus.Created.ToString())
+			{
+				<form asp-area="Admin" asp-controller="AdminLoad" asp-action="RemoveLoad" method="post" id="returnLoadtoBrokerForm">
+					@Html.AntiForgeryToken()
+					<input type="hidden" name="loadId" value="@Model.Id" />
+					<button type="submit" class="btn btn-outline-danger" id="returnLoadToBrokerBtn">
+						<i class="bi bi-emoji-frown"></i> Remove Load
+					</button>
+				</form>
+			}
 					
 			<button id="dispatcherDriverDetailsbtn" class="btn btn-outline-info" data-bs-toggle="collapse" data-bs-target="#bookingDetails">
 				<i class="ri-more-2-fill"></i>
@@ -265,7 +276,7 @@
 					<i class="bx bxs-dashboard"></i> Back to Load Board
 				</button>
 			</form>
-			
+
 			@if (Model.MapUrl != null)
 			{
 				<button id="showMapButton" class="btn btn-outline-info" data-bs-toggle="collapse" data-bs-target="#staticMap2">
