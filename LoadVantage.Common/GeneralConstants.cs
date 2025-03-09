@@ -57,7 +57,9 @@ namespace LoadVantage.Common
             public const string ErrorUnpostingLoad = "An error occured and the load was not unposted.";
             public const string ErrorUnpostingLoads = "An error occured and the loads were not unposted.";
 
-            public const string NoPermissionToCancel = "You do not have permission to cancel the carrier for this load.";
+            public const string ErrorRemovingLoad = "An error occured while trying to remove this load. Try again later.";
+
+			public const string NoPermissionToCancel = "You do not have permission to cancel the carrier for this load.";
             public const string FailedToCancelLoadCarrier = "Failed to cancel the carrier. Please try again.";
             public const string FailedToCancelLoadBroker = "Unable to cancel the booking. Please check the load's status.";
 
@@ -157,6 +159,8 @@ namespace LoadVantage.Common
             public const string LoadWasRestoredSuccessfully = "The load was restored successfully.";
             public const string LoadRepostedAgain = "The load is reposted again looking for a carrier.";
             public const string LoadReturnedToBrokerSuccessfully = "Load was successfully returned to the broker.";
+
+            public const string LoadRemovedSuccessfully = "Load was removed successfully!";
 
 
 			public const string LoadWasBookSuccessfully = "Load was booked successfully!";
