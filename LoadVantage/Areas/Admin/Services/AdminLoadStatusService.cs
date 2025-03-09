@@ -149,6 +149,20 @@ namespace LoadVantage.Areas.Admin.Services
 
 			return true;
 		}
+		public async Task<bool> RemoveLoadAsync(Guid loadId)
+		{
+			var load = await context.Loads.FindAsync(loadId);
+			if (load == null)
+			{
+				return false; // Load not found
+			}
+			load.Status = LoadStatus.Cancelled;
+			context.Loads.Update(load);
+			await context.SaveChangesAsync();
+			return true;
+
+
+		}
 		public async Task<AdminLoadViewModel?> GetLoadInformation(Guid loadId, Guid userId)
 		{
 			var load = await context.Loads

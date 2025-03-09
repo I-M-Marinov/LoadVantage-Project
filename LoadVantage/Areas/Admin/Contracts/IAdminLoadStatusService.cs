@@ -16,5 +16,9 @@ namespace LoadVantage.Areas.Admin.Contracts
 		/// Retrieves all the information for a load  
 		/// </summary>
 		Task<AdminLoadViewModel?> GetLoadInformation(Guid loadId, Guid userId);
+		/// <summary>
+		/// Removes a load from the created board and cancels it  
+		/// </summary>
+		Task<bool> RemoveLoadAsync(Guid loadId);
 	}
 }
