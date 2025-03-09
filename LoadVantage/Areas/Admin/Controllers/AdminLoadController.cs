@@ -125,6 +125,45 @@ namespace LoadVantage.Areas.Admin.Controllers
 			return RedirectToAction("GetLoadInfo", new { loadId = loadId });
 		}
 
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[AdminOnly]
+
+		public async Task<IActionResult> RemoveLoad(Guid loadId)
+		{
+			Guid? userId = User.GetUserId();
+
+			if (string.IsNullOrEmpty(userId.ToString()))
+			{
+				return NotFound();
+			}
+
+			try
+			{
+				var success = await adminLoadStatusService.RemoveLoadAsync(loadId);
+
+				if (success)
+				{
+					TempData.SetSuccessMessage(LoadRemovedSuccessfully);
+				}
+				else
+				{
+					TempData.SetErrorMessage(ErrorRemovingLoad);
+				}
+			}
+			catch (Exception ex) when (ex is UnauthorizedAccessException || ex is InvalidOperationException)
+			{
+				TempData.SetErrorMessage(ex.Message);
+				return RedirectToAction("LoadBoardManagement", "LoadBoardManagement");
+			}
+			catch (Exception ex)
+			{
+				TempData.SetErrorMessage(ex.Message);
+			}
+
+			return RedirectToAction("GetLoadInfo", new { loadId });
+		}
+
 
 	}
 }
