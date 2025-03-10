@@ -255,11 +255,11 @@
 			
 			@if (Model.Status == LoadStatus.Created.ToString())
 			{
-				<form asp-area="Admin" asp-controller="AdminLoad" asp-action="RemoveLoad" method="post" id="returnLoadtoBrokerForm">
+				<form asp-area="Admin" asp-controller="AdminLoad" asp-action="RemoveLoad" method="post" id="removeLoadAdminButtonForm">
 					@Html.AntiForgeryToken()
 					<input type="hidden" name="loadId" value="@Model.Id" />
-					<button type="submit" class="btn btn-outline-danger" id="returnLoadToBrokerBtn">
-						<i class="bi bi-emoji-frown"></i> Remove Load
+					<button type="submit" class="btn btn-outline-danger" id="removeLoadAdminButton">
+					<i class="ri-chat-delete-fill"></i> Remove Load
 					</button>
 				</form>
 			}
