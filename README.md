@@ -919,6 +919,11 @@
    - Added an additional service - MapBox Service that would be visualizing the origin and destination on a static map directly in the Load Views. 
     <img src="./documentation_images/show-map.gif" alt="Static Map">
    </p>
+
+   <p align="center">
+   - Added an additional feature for Administrators ---> Removing a created load before it is posted ( essentially it will cancel the load ). 
+    <img src="./documentation_images/remove-load-feature.png" alt="Remove Load">
+   </p>
    
   </div>
 </details>
