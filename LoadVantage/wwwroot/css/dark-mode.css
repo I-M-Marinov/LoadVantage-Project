@@ -203,7 +203,8 @@ input{
 #markAsDeliveredBtn,
 #driversDropdown,
 #backToUserManagementButton button,
-#showMapButton {
+#showMapButton,
+removeLoadAdminButton {
     background: #333333 !important;
     color: #ffffff !important;
 }
@@ -238,6 +239,11 @@ input{
 #saveChangesBtn:hover,
 #editLoadButton:hover {
     background: #1a00ff !important;
+    color: white !important;
+}
+
+#removeLoadAdminButton {
+    border: 2px solid #ff0000 !important;
     color: white !important;
 }
 

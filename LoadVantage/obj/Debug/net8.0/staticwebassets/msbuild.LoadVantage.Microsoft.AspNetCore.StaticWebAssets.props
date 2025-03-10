@@ -9372,8 +9372,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>8zx50do0lg</Fingerprint>
-      <Integrity>vPByPGTB9LrPYzcuWcjMGD8Pdn0qzGX1R1zyMAkp5sI=</Integrity>
+      <Fingerprint>buguxo4gyn</Fingerprint>
+      <Integrity>Pe6+IzPXYZrR88Jf3c+93g/h7pUmxVz7jHFhTDE+yj8=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\dark-mode.css'))</OriginalItemSpec>
@@ -9426,8 +9426,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>1j3nk5vbrf</Fingerprint>
-      <Integrity>YxYTHbY9wdr+NlRPvE7SOzFVWCDABr6DcTdLfSswS1w=</Integrity>
+      <Fingerprint>z5w9fvbxs7</Fingerprint>
+      <Integrity>6bl6kQTIXimvPh1V1PZFbCEL+ctRyMdpLzg51BGAmTY=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</OriginalItemSpec>
