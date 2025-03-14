@@ -435,12 +435,12 @@
 
 			if (modalTitleText === "Create Administrator") {
 
-				createUserForm.setAttribute('action', 'CreateAdministrator');
+				  createUserForm.setAttribute('action', '/Admin/UserManagement/CreateAdministrator');
 				modalTitle.textContent = 'Creating a new Administrator';
 
 			} else if (modalTitleText === "Create User") {
 
-				createUserForm.setAttribute('action', 'CreateUser');
+				  createUserForm.setAttribute('action', '/Admin/UserManagement/CreateUser');
 				modalTitle.textContent = 'Creating a new User';
 			}
 		});
