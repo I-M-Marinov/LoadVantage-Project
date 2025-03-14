@@ -521,6 +521,7 @@
     <h6>⭐ PM the Broker ---> This action will take the Administrator to the Chat Page and open a chat with the Broker of the load he was viewing.</h6>
     <h6>⭐ Details  ---> This action toggles the info mini window on the left side containing info about the Broker when the load is in status Created.</h6>
     <h6>⭐ Back to Load Board ---> This action would return the Administrator back to the Load Board ( and the Created tab ). </h6>
+    <h6>⭐ Remove Load ---> This action would essentially cancel the load the Administrator is currently reviewing. ( Additionally added feature )  </h6>
  </p>
  
    <p align="center">
@@ -918,6 +919,11 @@
    <p align="center">
    - Added an additional service - MapBox Service that would be visualizing the origin and destination on a static map directly in the Load Views. 
     <img src="./documentation_images/show-map.gif" alt="Static Map">
+   </p>
+
+   <p align="center">
+   - Added an additional feature for Administrators ---> Removing a created load before it is posted ( essentially it will cancel the load ). 
+    <img src="./documentation_images/remove-load-feature.png" alt="Remove Load">
    </p>
    
   </div>
