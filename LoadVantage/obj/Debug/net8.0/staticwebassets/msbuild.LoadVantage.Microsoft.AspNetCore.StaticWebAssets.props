@@ -9372,8 +9372,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>buguxo4gyn</Fingerprint>
-      <Integrity>Pe6+IzPXYZrR88Jf3c+93g/h7pUmxVz7jHFhTDE+yj8=</Integrity>
+      <Fingerprint>qi6pzvm2lc</Fingerprint>
+      <Integrity>vlM2GGMj0/mPbBjgCO2KwwIDnf3fQvIY2/cD1vR6WLw=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\dark-mode.css'))</OriginalItemSpec>

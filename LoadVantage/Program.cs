@@ -229,6 +229,13 @@ app.UseEndpoints(endpoints =>
 	);
 
 	endpoints.MapAreaControllerRoute(
+		name: "Admin_UserManagement",
+		areaName: "Admin",
+		pattern: "Admin/UserManagement/{action=Index}/{id?}",
+		defaults: new { area = "Admin", controller = "UserManagement" }
+	);
+
+	endpoints.MapAreaControllerRoute(
 		name: "Admin_default",
 		areaName: "Admin",
 		pattern: "Admin/AdminChat/{action=Index}/{id?}",

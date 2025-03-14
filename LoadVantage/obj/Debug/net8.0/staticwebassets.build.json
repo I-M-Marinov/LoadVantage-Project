@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "RPOv81kOhFBNwJmRHqeOZGm7AddydAKorPeM/LA31v0=",
+  "Hash": "t+OSxBSDhKjX6jpQDbrEi9g16ysS12TcXLU0xfajifI=",
   "Source": "LoadVantage",
   "BasePath": "_content/LoadVantage",
   "Mode": "Default",
@@ -12253,8 +12253,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "buguxo4gyn",
-      "Integrity": "Pe6+IzPXYZrR88Jf3c+93g/h7pUmxVz7jHFhTDE+yj8=",
+      "Fingerprint": "qi6pzvm2lc",
+      "Integrity": "vlM2GGMj0/mPbBjgCO2KwwIDnf3fQvIY2/cD1vR6WLw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\dark-mode.css"
@@ -56582,51 +56582,6 @@
       ]
     },
     {
-      "Route": "css/dark-mode.buguxo4gyn.css",
-      "AssetFile": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\dark-mode.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "8041"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"Pe6+IzPXYZrR88Jf3c+93g/h7pUmxVz7jHFhTDE+yj8=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 21:06:25 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "buguxo4gyn"
-        },
-        {
-          "Name": "label",
-          "Value": "css/dark-mode.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-Pe6+IzPXYZrR88Jf3c+93g/h7pUmxVz7jHFhTDE+yj8="
-        }
-      ]
-    },
-    {
       "Route": "css/dark-mode.css",
       "AssetFile": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\dark-mode.css",
       "Selectors": [],
@@ -56637,7 +56592,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "8041"
+          "Value": "8071"
         },
         {
           "Name": "Content-Type",
@@ -56645,11 +56600,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Pe6+IzPXYZrR88Jf3c+93g/h7pUmxVz7jHFhTDE+yj8=\""
+          "Value": "\"vlM2GGMj0/mPbBjgCO2KwwIDnf3fQvIY2/cD1vR6WLw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 10 Mar 2025 21:06:25 GMT"
+          "Value": "Mon, 10 Mar 2025 21:07:49 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -56659,7 +56614,52 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Pe6+IzPXYZrR88Jf3c+93g/h7pUmxVz7jHFhTDE+yj8="
+          "Value": "sha256-vlM2GGMj0/mPbBjgCO2KwwIDnf3fQvIY2/cD1vR6WLw="
+        }
+      ]
+    },
+    {
+      "Route": "css/dark-mode.qi6pzvm2lc.css",
+      "AssetFile": "C:\\Users\\Marinov\\source\\repos\\LoadVantage-Project\\LoadVantage\\wwwroot\\css\\dark-mode.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "8071"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"vlM2GGMj0/mPbBjgCO2KwwIDnf3fQvIY2/cD1vR6WLw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 10 Mar 2025 21:07:49 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "qi6pzvm2lc"
+        },
+        {
+          "Name": "label",
+          "Value": "css/dark-mode.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-vlM2GGMj0/mPbBjgCO2KwwIDnf3fQvIY2/cD1vR6WLw="
         }
       ]
     },
