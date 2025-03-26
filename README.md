@@ -7,7 +7,8 @@
     LoadVantage Web Project Application:
   </h2>
 
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FI-M-Marinov%2FLoadVantage-Project&count_bg=%23760BA2&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Views&edge_flat=false)](https://hits.seeyoufarm.com)
+![Repository Views](https://komarev.com/ghpvc/?username=I-M-Marinov&repo=LoadVantage-Project&color=blueviolet&style=for-the-badge&label=Project+Views&base=303)
+
 
   <ul>
    <p> This web application was created as a final project in The Software University's ASP.NET Advanced Course 2024. It is a type of multiservice monolith. The application itself represents a load board web application that users ( Brokerage Firms and Truck Load Carriers ) can use to connect and do business. Users can be two types Brokers and Dispatchers. Brokers can create loads, post the them on the loadboard and on the other side a Dispatcher can book the load and assign a Driver and a Truck on it. After successful completion of the load the Dispatchers mark the load as delivered. Brokes can also unpost loads that are posted ( one or multiple ). They can cancel loads altogether ( essentially removing the load from their boards ) or cancel the Truck Load Carrier that is already assigned on the load. A Dispatcher can also cancel a load ( essentially returning the load to it's owner - the Broker that created it ).</p>
