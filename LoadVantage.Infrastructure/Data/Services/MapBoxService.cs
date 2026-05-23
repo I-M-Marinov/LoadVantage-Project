@@ -13,35 +13,27 @@ namespace LoadVantage.Infrastructure.Data.Services
 			_mapboxApiKey = configuration["ApiKeys:Mapbox:AccessToken"];
 		}
 
-		public string GetStaticMapUrl(double? originLatitude, double? originLongitude, double? destinationLatitude, double? destinationLongitude)
+		public string GetStaticMapUrl(
+			double? originLatitude,
+			double? originLongitude,
+			double? destinationLatitude,
+			double? destinationLongitude)
 		{
-			if (originLatitude == null || originLongitude == null || destinationLatitude == null ||
-			    destinationLongitude == null)
+			if (originLatitude == null || originLongitude == null ||
+			    destinationLatitude == null || destinationLongitude == null)
 			{
 				return null;
 			}
 
-			var mapUrl = $"https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/";
+			var mapUrl = "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/";
 
-			mapUrl += $"pin-s-a+1ee80c({originLongitude},{originLatitude})"; 
+			mapUrl += $"pin-s-a+1ee80c({originLongitude},{originLatitude}),";
+			mapUrl += $"pin-s-b+eb0c26({destinationLongitude},{destinationLatitude})";
 
-			if (destinationLatitude.HasValue && destinationLongitude.HasValue)
-			{
-				mapUrl += $",pin-s-b+eb0c26({destinationLongitude},{destinationLatitude})"; 
-			}
+			// Automatically fit the viewport
+			mapUrl += "/auto/1100x700";
 
-			double minLongitude = Math.Min(originLongitude ?? 0, destinationLongitude ?? originLongitude ?? 0);
-			double minLatitude = Math.Min(originLatitude ?? 0, destinationLatitude ?? originLatitude ?? 0);
-			double maxLongitude = Math.Max(originLongitude ?? 0, destinationLongitude ?? originLongitude ?? 0);
-			double maxLatitude = Math.Max(originLatitude ?? 0, destinationLatitude ?? originLatitude ?? 0);
-
-			double centerLongitude = (minLongitude + maxLongitude) / 2;
-			double centerLatitude = (minLatitude + maxLatitude) / 2;
-			int zoomLevel = 4; 
-
-			mapUrl += $"/{centerLongitude},{centerLatitude},{zoomLevel}/1100x700";
-
-			mapUrl += $"?access_token={_mapboxApiKey}";
+			mapUrl += $"?padding=80&access_token={_mapboxApiKey}";
 
 			return mapUrl;
 		}
