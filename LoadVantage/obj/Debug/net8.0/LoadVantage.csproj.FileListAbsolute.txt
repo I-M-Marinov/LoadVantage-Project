@@ -597,11 +597,6 @@ C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\L
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\LoadVantage.sourcelink.json
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets.development.json
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets\msbuild.LoadVantage.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets\msbuild.build.LoadVantage.props
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.LoadVantage.props
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.LoadVantage.props
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets.pack.json
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\scopedcss\bundle\LoadVantage.styles.css
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\scopedcss\projectbundle\LoadVantage.bundle.scp.css
@@ -617,5 +612,9 @@ C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\H
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\LoadVantage.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\bin\Debug\net8.0\LoadVantage.staticwebassets.endpoints.json
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets\msbuild.LoadVantage.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
 C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\Marinov\source\repos\LoadVantage-Project\LoadVantage\obj\Debug\net8.0\staticwebassets.build.json.cache
