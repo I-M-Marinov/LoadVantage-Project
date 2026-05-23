@@ -147,7 +147,7 @@ namespace LoadVantage.Core.Services
 	        var (destinationFormattedCity, destinationFormattedState) = loadHelperService.FormatLocation(sanitizedDestinationCity, sanitizedDestinationState);
 
 	        var originCoordinates = await geocodeService.GetCoordinatesAsync(sanitizedOriginCity, sanitizedOriginState);
-	        var destinationCoordinates = await geocodeService.GetCoordinatesAsync(sanitizedDestinationCity, sanitizedDestinationCity);
+	        var destinationCoordinates = await geocodeService.GetCoordinatesAsync(sanitizedDestinationCity, sanitizedDestinationState);
 
 			var load = new Load
 	        {
